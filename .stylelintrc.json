@@ -1,0 +1,28 @@
+{
+  "extends": [
+    "stylelint-config-recommended-scss",
+    "stylelint-config-rational-order"
+  ],
+  "plugins": [
+    "stylelint-scss",
+    "stylelint-order",
+    "stylelint-config-rational-order/plugin"
+  ],
+  "rules": {
+    "order/order": [
+      "declarations",
+      {
+        "type": "at-rule"
+      },
+      {
+        "type": "at-rule",
+        "hasBlock": true
+      },
+      "rules"
+    ],
+    "order/properties-order": [
+      "width",
+      "height"
+    ]
+  }
+}

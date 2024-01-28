@@ -1,0 +1,46 @@
+.bookmark-item {
+  padding: 8px 0 16px 0;
+  font-size: 16px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(white, 0.04);
+  }
+
+  &:first-child {
+    padding-top: 8px;
+  }
+}
+
+.bookmark-chapter {
+  margin: 8px 0 8px 0;
+  padding: 4px 16px;
+  overflow: hidden;
+  font-size: 16px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  background-color: rgba(white, 0.05);
+}
+
+.bookmark-parent-chapter-title {
+  &:after {
+    margin: 0 8px;
+    color: gray;
+    content: '>';
+  }
+}
+
+.bookmark-chapter-title {
+  & + &:before {
+    margin: 0 4px;
+    color: gray;
+    content: '-';
+  }
+}
+
+.bookmark-text {
+  margin: 0;
+  padding: 0 16px;
+  font-size: 18px;
+  white-space: pre-line;
+}

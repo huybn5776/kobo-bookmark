@@ -1,0 +1,9 @@
+.bookmark-page {
+  max-width: min(1000px, calc(100vw - 32px));
+}
+
+.books-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
