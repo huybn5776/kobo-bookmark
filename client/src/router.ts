@@ -11,6 +11,11 @@ const routes: RouteRecordRaw[] = [
     name: 'bookmarks',
     component: () => import('@/module/bookmarks/BookmarksPage.vue'),
   },
+  {
+    path: '/notion',
+    name: 'notion',
+    component: () => import('@/module/notion/NotionPage.vue'),
+  },
   { path: '/:catchAll(.*)', redirect: { name: 'home' } },
 ];
 
