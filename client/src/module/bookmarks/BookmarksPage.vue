@@ -9,7 +9,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 
-import { sortWith, descend, isNil } from 'ramda';
+import { sortWith, ascend, descend, isNil } from 'ramda';
 
 import { KoboBook } from '@/dto/kobo-book';
 import BookBookmark from '@/module/bookmarks/components/BookBookmark/BookBookmark.vue';
@@ -24,6 +24,15 @@ onMounted(() => {
       book.info.dateLastRead = book.info.dateLastRead ? new Date(book.info.dateLastRead) : undefined;
     }
     allBooks = sortWith([descend((book) => book.info.dateLastRead?.getTime() ?? Number.MAX_VALUE)], allBooks);
+    for (const book of allBooks) {
+      book.bookmarks = sortWith(
+        [
+          ascend((bookmark) => bookmark.chapter.relatedChapters[0].index),
+          ascend((bookmark) => bookmark.chapterProgress),
+        ],
+        book.bookmarks,
+      );
+    }
     books.value = allBooks;
     fetchMissingBookCoverImageUrl();
   }

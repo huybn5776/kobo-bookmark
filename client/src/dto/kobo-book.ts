@@ -20,6 +20,7 @@ export interface KoboBookmark {
   id: string;
   text: string;
   chapter: KoboBookmarkChapter;
+  chapterProgress: number;
   createdAt: Date;
   updatedAt: Date;
 }

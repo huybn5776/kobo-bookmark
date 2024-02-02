@@ -47,6 +47,7 @@ function bookmarkEntityToKoboBookmark(
       id: bookmark.id,
       text: prettifyBookmarkText(bookmark),
       chapter: koboBookChapter,
+      chapterProgress: bookmark.chapterProgress,
       createdAt: bookmark.createdAt,
       updatedAt: bookmark.updatedAt,
     };
