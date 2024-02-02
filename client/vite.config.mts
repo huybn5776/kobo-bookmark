@@ -7,10 +7,9 @@ import { defineConfig, Alias } from 'vite';
 import * as tsconfig from './tsconfig.json';
 
 function readAliasFromTsConfig(): Alias[] {
-  const pathReplaceRegex = /\/\*$/;
   return Object.entries(tsconfig.compilerOptions.paths).reduce((aliases, [fromPaths, toPaths]) => {
-    const find = fromPaths.replace(pathReplaceRegex, '');
-    const toPath = toPaths[0].replace(pathReplaceRegex, '');
+    const find = fromPaths.replace(/\/\*$/, '');
+    const toPath = toPaths[0].replace(/\/\*$/, '').replace('client/', '');
     const replacement = path.resolve(__dirname, toPath);
     aliases.push({ find, replacement });
     return aliases;

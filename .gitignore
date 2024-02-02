@@ -10,6 +10,7 @@
 /build
 /dist
 /public/build/
+/client/dist
 
 # dotenv environment variables file
 .env

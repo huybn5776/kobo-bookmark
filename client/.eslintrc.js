@@ -5,13 +5,13 @@ module.exports = {
     browser: true,
   },
   extends: [
-    'airbnb-base',
-    'airbnb-typescript',
-    'plugin:@typescript-eslint/recommended',
-    'prettier',
-    'plugin:prettier/recommended',
-    'eslint:recommended',
+    '../.eslintrc.js',
+    'plugin:vue/vue3-essential',
+    '@vue/typescript/recommended',
+    '@vue/prettier',
+    '@vue/eslint-config-typescript',
   ],
+  parser: 'vue-eslint-parser',
   parserOptions: {
     parser: '@typescript-eslint/parser',
     ecmaFeatures: {
@@ -21,7 +21,7 @@ module.exports = {
     sourceType: 'module',
     project: './tsconfig.json',
   },
-  plugins: ['@typescript-eslint', 'import'],
+  plugins: ['@typescript-eslint', 'import', 'jsx-a11y'],
   ignorePatterns: ['dist/**', '.eslintrc.js', 'config-overrides.js'],
   globals: {
     defineProps: 'readonly',
@@ -33,14 +33,20 @@ module.exports = {
     // override rule from 'plugin:@typescript-eslint/recommended'
     'react/jsx-filename-extension': 0,
 
+    '@typescript-eslint/explicit-function-return-type': [2, { allowExpressions: true }],
+
     'import/order': [
       2,
       {
         groups: ['builtin', 'external', 'internal'],
         pathGroups: [
           {
-            pattern:
-              '@+(api|components|compositions|directives|enums|interfaces|layouts|modules|services|utils|views)/**',
+            pattern: 'vue',
+            group: 'external',
+            position: 'before',
+          },
+          {
+            pattern: '@+(api|components|compositions|directives|enums|interfaces|layouts|modules|services|utils|views)/**',
             group: 'internal',
           },
           {
@@ -53,6 +59,7 @@ module.exports = {
             patternOptions: { matchBase: true },
           },
         ],
+        pathGroupsExcludedImportTypes: ['vue'],
         'newlines-between': 'always',
         alphabetize: {
           order: 'asc',
@@ -61,24 +68,25 @@ module.exports = {
       },
     ],
 
-    '@typescript-eslint/explicit-function-return-type': [2, { allowExpressions: true }],
-    '@typescript-eslint/lines-between-class-members': 0,
-    '@typescript-eslint/no-use-before-define': 0,
+    'jsx-a11y/click-events-have-key-events': 0,
+    'jsx-a11y/label-has-associated-control': [
+      2,
+      {
+        some: ['nesting', 'id'],
+        labelComponents: [],
+        labelAttributes: [],
+        controlComponents: [],
+        depth: 25,
+      },
+    ],
+    'jsx-a11y/no-static-element-interactions': 0,
 
-    'class-methods-use-this': 0,
-    'import/prefer-default-export': 0,
-    'import/extensions': 0,
-    'import/no-unresolved': 0,
-    'no-await-in-loop': 0,
-    'no-console': [1, { allow: ['warn', 'error'] }],
-    'no-continue': 0,
-    'no-multiple-empty-lines': 2,
-    'no-return-assign': [2, 'except-parens'],
-    'no-restricted-syntax': [2, 'ForInStatement', 'LabeledStatement', 'WithStatement'],
-    'no-useless-return': 1,
-    'prettier/prettier': 1,
-    quotes: ['error', 'single', { allowTemplateLiterals: true }],
-    semi: [2, 'always'],
-    'no-unused-vars': 1,
+    'vue/component-tags-order': [
+      'error',
+      {
+        order: ['template', 'script', 'style'],
+      },
+    ],
+    'vue/attributes-order': 1,
   },
 };
