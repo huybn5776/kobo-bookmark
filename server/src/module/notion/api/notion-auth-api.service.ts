@@ -7,9 +7,11 @@ export class NotionAuthApiService {
   notionClientId = process.env.NOTION_CLIENT_ID;
   notionClientSecret = process.env.NOTION_CLIENT_SECRET;
 
+  constructor(private readonly notion: Client) {}
+
   async getToken(code: string): Promise<OauthTokenResponse | null> {
     try {
-      return await new Client().oauth.token({
+      return await this.notion.oauth.token({
         code,
         grant_type: 'authorization_code',
         client_id: this.notionClientId,
