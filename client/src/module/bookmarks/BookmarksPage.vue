@@ -1,7 +1,14 @@
 <template>
   <div class="page-content bookmark-page">
     <div class="books-container">
-      <BookBookmark v-for="book in books" :key="book.id" :book="book" :default-expanded="books?.length === 1" />
+      <BookBookmark
+        v-for="book in books"
+        :key="book.id"
+        :book="book"
+        :default-expanded="books?.length === 1"
+        :exportLoading="exportingBooks.includes(book)"
+        @onExportClick="exportBookmark"
+      />
     </div>
   </div>
 </template>
@@ -15,9 +22,13 @@ import { KoboBook } from '@/dto/kobo-book';
 import { SettingKey } from '@/enum/setting-key';
 import BookBookmark from '@/module/bookmarks/components/BookBookmark/BookBookmark.vue';
 import { findCoverImageForBook } from '@/services/book-cover.service';
+import { exportBookBookmarks } from '@/services/notion-export.service';
 import { getSettingFromStorage, saveSettingToStorage } from '@/services/setting.service';
 
 const books = ref<KoboBook[]>();
+const pendingExportRequests = ref<Promise<void>[]>([]);
+const exportingBooks = ref<KoboBook[]>([]);
+
 onMounted(() => {
   let allBooks = getSettingFromStorage(SettingKey.Books);
   if (allBooks) {

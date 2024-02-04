@@ -13,23 +13,29 @@
           <p class="book-info-text book-publisher">{{ book.info.publisher }}</p>
           <p class="book-info-text book-isbn">{{ book.info.isbn }}</p>
         </div>
+        <NButton class="bookmark-export-button" :loading="exportLoading" @click="emits('onExportClick', book)">
+          Export to notion
+        </NButton>
       </div>
       <ChevronArrow v-model:direction="expandedDirection" class="bookmark-expand-handle" />
     </div>
 
-    <BookmarkList v-if="expandedDirection === 'up'" :bookmarks="book.bookmarks"  class="book-bookmark-list"/>
+    <BookmarkList v-if="expandedDirection === 'up'" :bookmarks="book.bookmarks" class="book-bookmark-list" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
 
+import { NButton } from 'naive-ui';
+
 import ChevronArrow from '@/component/ChevronArrow/ChevronArrow.vue';
 import { KoboBook } from '@/dto/kobo-book';
 import BookCoverView from '@/module/bookmarks/components/BookCoverView/BookCoverView.vue';
 import BookmarkList from '@/module/bookmarks/components/BookmarkList/BookmarkList.vue';
 
-const props = defineProps<{ book: KoboBook; defaultExpanded: boolean }>();
+const props = defineProps<{ book: KoboBook; defaultExpanded: boolean; exportLoading: boolean }>();
+const emits = defineEmits<{ (e: 'onExportClick', value: KoboBook): void }>();
 
 const expandedDirection = ref<'up' | 'down'>(props.defaultExpanded ? 'up' : 'down');
 
