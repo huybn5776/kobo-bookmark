@@ -14,6 +14,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 import { getNotionTokenByCode } from '@/api/notion-auth-api.service';
 import { SettingKey } from '@/enum/setting-key';
+import { getNotionExportTargetPageId } from '@/services/notion-page.service';
 import { saveSettingToStorage } from '@/services/setting.service';
 
 const oauthClientId = import.meta.env.VITE_NOTION_CLIENT_ID;
@@ -43,6 +44,19 @@ async function getNotionToken(): Promise<void> {
 
   saveSettingToStorage(SettingKey.NotionAuth, notionAuth);
   await router.push('notion');
+
+  const exportTargetPageId = await getNotionExportTargetPageId(notionAuth);
+  if (!exportTargetPageId) {
+    notification.error({
+      title: 'Invalid Notion page',
+      content: `Please select to 'Use a template' from install Notion integration page, or select one page to share with Kobo Bookmark integration.`,
+      duration: 0,
+      closable: true,
+    });
+    return;
+  }
+
+  saveSettingToStorage(SettingKey.NotionExportTargetPageId, exportTargetPageId);
 }
 
 function handleAuthError(e: unknown): void {

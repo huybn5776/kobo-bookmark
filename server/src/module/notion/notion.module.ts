@@ -4,11 +4,13 @@ import { Client } from '@notionhq/client';
 import { Request } from 'express';
 
 import { NotionAuthApiService } from '@/module/notion/api/notion-auth-api.service';
+import { NotionPageApiService } from '@/module/notion/api/notion-page-api.service';
 import { NotionAuthController } from '@/module/notion/controller/notion-auth.controller';
+import { NotionPageController } from '@/module/notion/controller/notion-page.controller';
 
 @Module({
   imports: [],
-  controllers: [NotionAuthController],
+  controllers: [NotionAuthController, NotionPageController],
   providers: [
     {
       provide: Client,
@@ -21,6 +23,7 @@ import { NotionAuthController } from '@/module/notion/controller/notion-auth.con
       scope: Scope.REQUEST,
     },
     NotionAuthApiService,
+    NotionPageApiService,
   ],
 })
 export class NotionModule {}
