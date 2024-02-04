@@ -1,10 +1,18 @@
+import { isNil } from 'ramda';
+
 export function getFromStorage<T>(key: string): T | null {
   const value = localStorage.getItem(key);
-  return value !== null ? JSON.parse(value) : null;
+  return value?.startsWith('[') || value?.startsWith('{') ? JSON.parse(value) : (value as T);
 }
 
 export function saveToStorage<T>(key: string, value: T | null): void {
-  localStorage.setItem(key.toString(), JSON.stringify(value));
+  if (typeof value === 'object') {
+    localStorage.setItem(key.toString(), JSON.stringify(value));
+  } else if (isNil(value)) {
+    localStorage.removeItem(key.toString());
+  } else {
+    localStorage.setItem(key.toString(), `${value}`);
+  }
 }
 
 export function updateFromStorage<T>(
