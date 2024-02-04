@@ -75,6 +75,7 @@ select ContentID,
        Publisher,
        Description,
        ISBN,
+       ImageId,
        DateLastRead
 from content
 where ContentType = 6
@@ -91,7 +92,8 @@ where ContentType = 6
       publisher: values[4] as string,
       description: values[5] as string,
       isbn: values[6] as string,
-      dateLastRead: new Date(values[7] as string),
+      imageId: values[7] as string,
+      dateLastRead: new Date(values[8] as string),
     };
   });
 }

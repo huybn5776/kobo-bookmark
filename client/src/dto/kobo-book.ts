@@ -13,6 +13,8 @@ export interface KoboBookInfo {
   description?: string;
   publisher?: string;
   isbn?: string;
+  imageId?: string;
+  isSideLoaded: boolean;
   dateLastRead?: Date;
 }
 

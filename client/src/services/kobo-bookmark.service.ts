@@ -130,6 +130,8 @@ function bookInfoEntityToKoboBookInfo(
     description: book?.description,
     publisher: book?.publisher,
     isbn: book?.isbn,
+    imageId: book?.imageId,
+    isSideLoaded: book?.id.startsWith('file') || true,
     dateLastRead: book?.dateLastRead,
   };
 }

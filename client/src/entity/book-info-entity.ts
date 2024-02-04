@@ -6,5 +6,6 @@ export interface BookInfoEntity {
   description?: string;
   publisher?: string;
   isbn?: string;
+  imageId?: string;
   dateLastRead?: Date;
 }
