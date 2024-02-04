@@ -10,7 +10,8 @@ import { onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { getNotionTokenByCode } from '@/api/notion-auth-api.service';
-import { saveToStorage } from '@/util/storage-utils';
+import { SettingKey } from '@/enum/setting-key';
+import { saveSettingToStorage } from '@/services/setting.service';
 
 const oauthClientId = import.meta.env.VITE_NOTION_CLIENT_ID;
 const notionAuthUrl = `https://api.notion.com/v1/oauth/authorize?client_id=${oauthClientId}&response_type=code&owner=user`;
@@ -25,7 +26,7 @@ async function getNotionToken(): Promise<string | null> {
 
   const notionAuth = await getNotionTokenByCode(code);
   const notionToken = notionAuth.access_token;
-  saveToStorage('notion-auto', notionAuth);
+  saveSettingToStorage(SettingKey.NotionAuth, notionAuth);
 
   await router.push('notion');
 

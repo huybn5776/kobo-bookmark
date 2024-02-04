@@ -12,13 +12,14 @@ import { onMounted, ref } from 'vue';
 import { sortWith, ascend, descend, isNil } from 'ramda';
 
 import { KoboBook } from '@/dto/kobo-book';
+import { SettingKey } from '@/enum/setting-key';
 import BookBookmark from '@/module/bookmarks/components/BookBookmark/BookBookmark.vue';
 import { findCoverImageForBook } from '@/services/book-cover.service';
-import { getFromStorage, saveToStorage } from '@/util/storage-utils';
+import { getSettingFromStorage, saveSettingToStorage } from '@/services/setting.service';
 
 const books = ref<KoboBook[]>();
 onMounted(() => {
-  let allBooks = getFromStorage<KoboBook[]>('books');
+  let allBooks = getSettingFromStorage(SettingKey.Books);
   if (allBooks) {
     for (const book of allBooks) {
       book.info.dateLastRead = book.info.dateLastRead ? new Date(book.info.dateLastRead) : undefined;
@@ -55,10 +56,30 @@ async function fetchMissingBookCoverImageUrl(): Promise<void> {
         currentBooks[indexOfBookToUpdate].coverImageUrl = imageUrl;
       }
       books.value = currentBooks;
-      saveToStorage('books', books.value);
+      saveSettingToStorage(SettingKey.Books, books.value);
       return Promise.resolve();
     }),
   );
+}
+
+async function exportBookmark(book: KoboBook): Promise<void> {
+  const request = tryExportBookmark(book);
+  pendingExportRequests.value = [...pendingExportRequests.value, request];
+  exportingBooks.value.push(book);
+  await request;
+  pendingExportRequests.value = pendingExportRequests.value.filter((r) => r !== request);
+  exportingBooks.value = exportingBooks.value.filter((b) => b !== book);
+}
+
+async function tryExportBookmark(book: KoboBook): Promise<void> {
+  try {
+    for (const pendingRequest of pendingExportRequests.value) {
+      await pendingRequest;
+    }
+    await exportBookBookmarks(book);
+  } catch (e) {
+    console.error(e);
+  }
 }
 </script>
 
