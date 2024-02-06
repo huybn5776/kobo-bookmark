@@ -2,6 +2,10 @@
   max-width: min(1000px, calc(100vw - 32px));
 }
 
+.bookmark-page-tools {
+  margin-bottom: 8px;
+}
+
 .books-container {
   display: flex;
   flex-direction: column;

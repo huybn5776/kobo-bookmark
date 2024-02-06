@@ -1,11 +1,15 @@
 <template>
   <div class="page-content bookmark-page">
+    <div class="bookmark-page-tools">
+      <BookSortingSelect v-model:bookSorting="bookSorting" v-model:bookmarkSorting="bookmarkSorting" />
+    </div>
+
     <div class="books-container">
       <BookBookmark
-        v-for="book in books"
+        v-for="book in booksToShow"
         :key="book.id"
         :book="book"
-        :default-expanded="books?.length === 1"
+        :default-expanded="booksToShow?.length === 1"
         :exportLoading="exportingBooks.includes(book)"
         @onExportClick="exportBookmark"
       />
@@ -14,60 +18,69 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 
-import { sortWith, ascend, descend, isNil } from 'ramda';
+import { isNil } from 'ramda';
 
-import { KoboBook } from '@/dto/kobo-book';
+import { useSyncSetting } from '@/composition/use-sync-setting';
+import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
+import { BookSortingKey } from '@/enum/book-sorting-key';
+import { BookmarkSortingKey } from '@/enum/bookmark-sorting-key';
 import { SettingKey } from '@/enum/setting-key';
 import BookBookmark from '@/module/bookmarks/components/BookBookmark/BookBookmark.vue';
+import BookSortingSelect from '@/module/bookmarks/components/BookSortingSelect/BookSortingSelect.vue';
 import { findCoverImageForBook } from '@/services/book-cover.service';
+import { sortKoboBooks, sortKoboBookmarks } from '@/services/kobo-book-sort.service';
 import { exportBookBookmarks } from '@/services/notion-export.service';
 import { getSettingFromStorage, saveSettingToStorage } from '@/services/setting.service';
 
-const books = ref<KoboBook[]>();
+const allBooks = ref<KoboBook[]>();
+const bookSorting = useSyncSetting(SettingKey.BookSorting, BookSortingKey.LastBookmark);
+const bookmarkSorting = useSyncSetting(SettingKey.BookmarkSorting, BookmarkSortingKey.LastUpdate);
 const pendingExportRequests = ref<Promise<void>[]>([]);
 const exportingBooks = ref<KoboBook[]>([]);
 
 onMounted(() => {
-  let allBooks = getSettingFromStorage(SettingKey.Books);
-  if (allBooks) {
-    for (const book of allBooks) {
-      book.info.dateLastRead = book.info.dateLastRead ? new Date(book.info.dateLastRead) : undefined;
-    }
-    allBooks = sortWith([descend((book) => book.info.dateLastRead?.getTime() ?? Number.MAX_VALUE)], allBooks);
-    for (const book of allBooks) {
-      book.bookmarks = sortWith(
-        [
-          ascend((bookmark) => bookmark.chapter.relatedChapters[0].index),
-          ascend((bookmark) => bookmark.chapterProgress),
-        ],
-        book.bookmarks,
-      );
-    }
-    books.value = allBooks;
-    fetchMissingBookCoverImageUrl();
-  }
+  allBooks.value = getSettingFromStorage(SettingKey.Books) || [];
+  fetchMissingBookCoverImageUrl();
 });
 
+const booksToShow = computed(() => {
+  if (!allBooks.value) {
+    return [];
+  }
+  let books = sortKoboBooks(allBooks.value, bookSorting.value ? [bookSorting.value] : []);
+  books = books.map((book) => {
+    return {
+      ...book,
+      bookmarks: bookmarkProcess(book),
+    };
+  });
+  return books;
+});
+
+function bookmarkProcess(book: KoboBook): KoboBookmark[] {
+  return sortKoboBookmarks(book.bookmarks, bookmarkSorting.value ? [bookmarkSorting.value] : []);
+}
+
 async function fetchMissingBookCoverImageUrl(): Promise<void> {
-  if (!books.value?.length) {
+  if (!allBooks.value?.length) {
     return;
   }
-  const pendingBooks = books.value.filter((book) => isNil(book.coverImageUrl));
+  const pendingBooks = allBooks.value.filter((book) => isNil(book.coverImageUrl));
   await Promise.all(
     pendingBooks.map(async (book) => {
       const imageUrl = await findCoverImageForBook(book);
       if (!imageUrl) {
         return Promise.resolve();
       }
-      const currentBooks = books.value || [];
+      const currentBooks = allBooks.value || [];
       const indexOfBookToUpdate = currentBooks.findIndex((b) => b.id === book.id);
       if (indexOfBookToUpdate !== -1) {
         currentBooks[indexOfBookToUpdate].coverImageUrl = imageUrl;
       }
-      books.value = currentBooks;
-      saveSettingToStorage(SettingKey.Books, books.value);
+      allBooks.value = currentBooks;
+      saveSettingToStorage(SettingKey.Books, allBooks.value);
       return Promise.resolve();
     }),
   );

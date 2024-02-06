@@ -5,17 +5,10 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
-
-import { sortBy } from 'ramda';
-
 import { KoboBookmark } from '@/dto/kobo-book';
 import BookmarkItem from '@/module/bookmarks/components/BookmarkItem/BookmarkItem.vue';
 
-const props = defineProps<{ bookmarks: KoboBookmark[] }>();
-const bookmarks = computed(() => {
-  return sortBy((bookmark) => bookmark.chapter.relatedChapters[0].index, props.bookmarks);
-});
+defineProps<{ bookmarks: KoboBookmark[] }>();
 </script>
 
 <style lang="scss" scoped>

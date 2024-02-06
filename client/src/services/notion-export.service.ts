@@ -5,7 +5,7 @@ import type {
   CreatePageResponse,
   BlockObjectRequest,
 } from '@notionhq/client/build/src/api-endpoints';
-import { sortWith, ascend, splitEvery } from 'ramda';
+import { splitEvery } from 'ramda';
 
 import { createNotionPage, appendNotionBlocks } from '@/api/notion-page-api.service';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
@@ -58,15 +58,13 @@ function bookToPageParams(book: KoboBook, parentPageId: string): CreatePageParam
 }
 
 function bookmarksToBlocks(bookmarks: KoboBookmark[]): BlockObjectRequest[] {
-  const sortedBookmarks = sortWith(
-    [ascend((bookmark) => bookmark.chapter.relatedChapters[0].index), ascend((bookmark) => bookmark.chapterProgress)],
-    bookmarks,
-  );
   const divider: BlockObjectRequest = { object: 'block', type: 'divider', divider: {} };
-  return sortedBookmarks.flatMap((bookmark, index) => {
+  return bookmarks.flatMap((bookmark, index) => {
+    const chapterText =
+      bookmark.chapter.parentChapters.map((chapter) => `${chapter.title} > `) + bookmark.chapter.titles.join(' - ');
     const chapterBlock: BlockObjectRequest = {
       paragraph: {
-        rich_text: [{ text: { content: bookmark.chapter.titles.join(' - ') } }],
+        rich_text: [{ text: { content: chapterText } }],
         color: 'gray_background',
       },
     };
