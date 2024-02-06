@@ -12,10 +12,12 @@ export interface KoboBookInfo {
   author?: string;
   description?: string;
   publisher?: string;
+  series?: string;
   isbn?: string;
   imageId?: string;
   isSideLoaded: boolean;
   dateLastRead?: Date;
+  dateAdded?: Date;
 }
 
 export interface KoboBookmark {

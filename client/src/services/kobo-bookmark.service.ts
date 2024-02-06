@@ -129,9 +129,11 @@ function bookInfoEntityToKoboBookInfo(
     author: book?.author,
     description: book?.description,
     publisher: book?.publisher,
+    series: book?.series,
     isbn: book?.isbn,
     imageId: book?.imageId,
     isSideLoaded: book?.id.startsWith('file') || true,
     dateLastRead: book?.dateLastRead,
+    dateAdded: book?.dateAdded,
   };
 }

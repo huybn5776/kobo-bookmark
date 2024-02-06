@@ -73,10 +73,12 @@ select ContentID,
        Subtitle,
        Attribution,
        Publisher,
+       Series,
        Description,
        ISBN,
        ImageId,
-       DateLastRead
+       DateLastRead,
+       DateAdded
 from content
 where ContentType = 6
   and ContentID in (${bookIds.map(() => '?').join(',')})
@@ -90,10 +92,12 @@ where ContentType = 6
       subtitle: values[2] as string,
       author: values[3] as string,
       publisher: values[4] as string,
-      description: values[5] as string,
-      isbn: values[6] as string,
-      imageId: values[7] as string,
-      dateLastRead: new Date(values[8] as string),
+      series: values[5] as string,
+      description: values[6] as string,
+      isbn: values[7] as string,
+      imageId: values[8] as string,
+      dateLastRead: new Date(values[9] as string),
+      dateAdded: new Date(values[10] as string),
     };
   });
 }

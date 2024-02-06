@@ -5,7 +5,9 @@ export interface BookInfoEntity {
   author: string;
   description?: string;
   publisher?: string;
+  series?: string;
   isbn?: string;
   imageId?: string;
   dateLastRead?: Date;
+  dateAdded?: Date;
 }
