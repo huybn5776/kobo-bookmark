@@ -30,14 +30,34 @@ export function sortKoboBookmarks(bookmarks: KoboBookmark[], sorting: BookmarkSo
   const sortFns: ((a: KoboBookmark, b: KoboBookmark) => number)[][] = [
     sorting.includes(BookmarkSortingKey.LastUpdate) ? [descend((bookmark) => bookmark.updatedAt ?? 0)] : [],
     sorting.includes(BookmarkSortingKey.Position)
-      ? [
-          ascend((bookmark) => bookmark.chapter.relatedChapters[0].index),
-          ascend((bookmark) => bookmark.chapterProgress),
-        ]
+      ? [compareChapters, ascend((bookmark) => bookmark.chapterProgress)]
       : [],
   ];
   return sortWith(
     sortFns.flatMap((s) => s),
     bookmarks,
   );
+}
+
+function compareChapters(bookmark1: KoboBookmark, bookmark2: KoboBookmark): number {
+  const chapters1 = [...(bookmark1.chapter.parentChapters || []), ...(bookmark1.chapter.relatedChapters || [])];
+  const chapters2 = [...(bookmark2.chapter.parentChapters || []), ...(bookmark2.chapter.relatedChapters || [])];
+  const maxChaptersLength = Math.max(chapters1.length, chapters2.length);
+
+  for (let i = 0; i < maxChaptersLength; i += 1) {
+    const chapter1 = chapters1[i];
+    const chapter2 = chapters2[i];
+    if (chapter1 && !chapter2) {
+      return 1;
+    }
+    if (!chapter1 && chapter2) {
+      return -1;
+    }
+    if (chapter1.index === chapter2.index) {
+      continue;
+    }
+    return chapter1.index > chapter2.index ? 1 : -1;
+  }
+
+  return 0;
 }
