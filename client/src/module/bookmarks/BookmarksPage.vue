@@ -20,6 +20,7 @@
 <script lang="ts" setup>
 import { onMounted, ref, computed } from 'vue';
 
+import { useNotification } from 'naive-ui';
 import { isNil } from 'ramda';
 
 import { useSyncSetting } from '@/composition/use-sync-setting';
@@ -31,8 +32,11 @@ import BookBookmark from '@/module/bookmarks/components/BookBookmark/BookBookmar
 import BookSortingSelect from '@/module/bookmarks/components/BookSortingSelect/BookSortingSelect.vue';
 import { findCoverImageForBook } from '@/services/book-cover.service';
 import { sortKoboBooks, sortKoboBookmarks } from '@/services/kobo-book-sort.service';
+import { handleNotionApiError } from '@/services/notion-api-error-handing.service';
 import { exportBookBookmarks } from '@/services/notion-export.service';
 import { getSettingFromStorage, saveSettingToStorage } from '@/services/setting.service';
+
+const notification = useNotification();
 
 const allBooks = ref<KoboBook[]>();
 const bookSorting = useSyncSetting(SettingKey.BookSorting, BookSortingKey.LastBookmark);
@@ -103,6 +107,9 @@ async function tryExportBookmark(book: KoboBook): Promise<void> {
     await exportBookBookmarks(book);
   } catch (e) {
     console.error(e);
+    const message = handleNotionApiError(e as Error);
+    notification.destroyAll();
+    notification.error({ title: `Fail to export book to Notion: '${book.info.title}'`, content: message });
   }
 }
 </script>
