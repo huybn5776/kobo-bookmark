@@ -98,6 +98,7 @@ function prettifyBookmarkText(bookmark: BookmarkEntity): string {
       // eslint-disable-next-line no-irregular-whitespace
       .replaceAll(/(\d\.[　 ])/g, '\n$1')
       .replace(/\n$/g, '')
+      .replaceAll(/(^\t+|(?<=\n)\t+)/g, '\t')
   );
 }
 
