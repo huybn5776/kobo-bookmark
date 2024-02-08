@@ -4,14 +4,18 @@ import type {
   CreatePageParameters,
   CreatePageResponse,
   BlockObjectRequest,
+  UpdatePageParameters,
 } from '@notionhq/client/build/src/api-endpoints';
 import { splitEvery } from 'ramda';
 
-import { createNotionPage, appendNotionBlocks } from '@/api/notion-page-api.service';
+import { createNotionPage, appendNotionBlocks, deleteBlocks, updateNotionPage } from '@/api/notion-page-api.service';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import { SettingKey } from '@/enum/setting-key';
-import { getNotionExportTargetPageId } from '@/services/notion-page.service';
+import { getNotionExportTargetPageId, getAllBlocksOfPage } from '@/services/notion-page.service';
 import { getSettingFromStorage, saveSettingToStorage } from '@/services/setting.service';
+
+const maximumBlocksPerRequest = 100;
+const deleteBlockCountPerRequest = 5;
 
 export async function exportBookBookmarks(book: KoboBook): Promise<CreatePageResponse> {
   const targetPageId = await getExportTargetPage();
@@ -19,15 +23,17 @@ export async function exportBookBookmarks(book: KoboBook): Promise<CreatePageRes
     throw new Error('No target Notion page to export');
   }
 
-  const pageParams = bookToPageParams(toRaw(book), targetPageId);
-  if ((pageParams.children?.length ?? 0) <= 100) {
+  const pageParams = bookToCreatePageParams(toRaw(book), targetPageId);
+  const allBlocks = bookmarksToBlocks(book.bookmarks);
+
+  if (allBlocks.length <= maximumBlocksPerRequest) {
+    pageParams.children = allBlocks;
     return createNotionPage(pageParams);
   }
-  const allBlocks = pageParams.children || [];
-  pageParams.children = allBlocks.slice(0, 100);
+  pageParams.children = allBlocks.slice(0, maximumBlocksPerRequest);
   const page = await createNotionPage(pageParams);
 
-  const windowedBlocks = splitEvery(100, allBlocks.slice(100));
+  const windowedBlocks = splitEvery(maximumBlocksPerRequest, allBlocks.slice(maximumBlocksPerRequest));
   for (const blocks of windowedBlocks) {
     await appendNotionBlocks(page.id, blocks);
   }
@@ -35,12 +41,43 @@ export async function exportBookBookmarks(book: KoboBook): Promise<CreatePageRes
   return page;
 }
 
-function bookToPageParams(book: KoboBook, parentPageId: string): CreatePageParameters {
-  const pageParams: CreatePageParameters = {
+export async function updatePagePropertiesByBook(pageId: string, book: KoboBook): Promise<void> {
+  const params = bookToUpdatePageParams(book);
+  await updateNotionPage(pageId, params);
+}
+
+export async function appendBookmarkToPage(pageId: string, book: KoboBook): Promise<void> {
+  const allBlocks = bookmarksToBlocks(book.bookmarks);
+  const windowedBlocks = splitEvery(maximumBlocksPerRequest, allBlocks);
+  for (const blocks of windowedBlocks) {
+    await appendNotionBlocks(pageId, blocks);
+  }
+}
+
+export async function clearPage(pageId: string): Promise<void> {
+  const allBlocks = await getAllBlocksOfPage(pageId);
+  const allBlockIds = allBlocks.map((block) => block.id);
+  const windowedBlockIds = splitEvery(deleteBlockCountPerRequest, allBlockIds);
+  for (const blockIds of windowedBlockIds) {
+    await deleteBlocks(blockIds);
+  }
+}
+
+function bookToCreatePageParams(book: KoboBook, parentPageId: string): CreatePageParameters {
+  const updatePageParams = bookToUpdatePageParams(book);
+  return {
     parent: {
       type: 'page_id',
       page_id: parentPageId,
     },
+    ...updatePageParams,
+  };
+}
+
+function bookToUpdatePageParams(
+  book: KoboBook,
+): Omit<UpdatePageParameters, 'page_id'> & Required<Pick<UpdatePageParameters, 'properties'>> {
+  const pageParams: ReturnType<typeof bookToUpdatePageParams> = {
     properties: {
       title: [{ text: { content: book.info.title || '' } }],
     },
@@ -53,7 +90,6 @@ function bookToPageParams(book: KoboBook, parentPageId: string): CreatePageParam
     pageParams.cover = image;
     pageParams.icon = image;
   }
-  pageParams.children = bookmarksToBlocks(book.bookmarks);
   return pageParams;
 }
 

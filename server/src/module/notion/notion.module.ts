@@ -6,11 +6,12 @@ import { Request } from 'express';
 import { NotionAuthApiService } from '@/module/notion/api/notion-auth-api.service';
 import { NotionPageApiService } from '@/module/notion/api/notion-page-api.service';
 import { NotionAuthController } from '@/module/notion/controller/notion-auth.controller';
+import { NotionBlockController } from '@/module/notion/controller/notion-block.controller';
 import { NotionPageController } from '@/module/notion/controller/notion-page.controller';
 
 @Module({
   imports: [],
-  controllers: [NotionAuthController, NotionPageController],
+  controllers: [NotionAuthController, NotionPageController, NotionBlockController],
   providers: [
     {
       provide: Client,

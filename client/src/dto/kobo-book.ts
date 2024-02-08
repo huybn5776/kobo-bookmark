@@ -4,6 +4,7 @@ export interface KoboBook {
   coverImageUrl?: string;
   chapters: KoboBookChapter[];
   bookmarks: KoboBookmark[];
+  lastExportedNotionPageId?: string;
 }
 
 export interface KoboBookInfo {

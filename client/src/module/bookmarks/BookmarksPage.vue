@@ -33,7 +33,13 @@ import BookSortingSelect from '@/module/bookmarks/components/BookSortingSelect/B
 import { findCoverImageForBook } from '@/services/book-cover.service';
 import { sortKoboBooks, sortKoboBookmarks } from '@/services/kobo-book-sort.service';
 import { handleNotionApiError } from '@/services/notion-api-error-handing.service';
-import { exportBookBookmarks } from '@/services/notion-export.service';
+import {
+  exportBookBookmarks,
+  clearPage,
+  appendBookmarkToPage,
+  updatePagePropertiesByBook,
+} from '@/services/notion-export.service';
+import { isPageExists } from '@/services/notion-page.service';
 import { getSettingFromStorage, saveSettingToStorage } from '@/services/setting.service';
 
 const notification = useNotification();
@@ -75,19 +81,25 @@ async function fetchMissingBookCoverImageUrl(): Promise<void> {
   await Promise.all(
     pendingBooks.map(async (book) => {
       const imageUrl = await findCoverImageForBook(book);
-      if (!imageUrl) {
-        return Promise.resolve();
+      if (imageUrl) {
+        updateBookById(book.id, (b) => ({ ...b, coverImageUrl: imageUrl }));
       }
-      const currentBooks = allBooks.value || [];
-      const indexOfBookToUpdate = currentBooks.findIndex((b) => b.id === book.id);
-      if (indexOfBookToUpdate !== -1) {
-        currentBooks[indexOfBookToUpdate].coverImageUrl = imageUrl;
-      }
-      allBooks.value = currentBooks;
-      saveSettingToStorage(SettingKey.Books, allBooks.value);
       return Promise.resolve();
     }),
   );
+}
+
+function updateBookById(bookId: string, updater: (book: KoboBook) => KoboBook): void {
+  const currentBooks = allBooks.value || [];
+  const indexOfBookToUpdate = currentBooks.findIndex((b) => b.id === bookId);
+  if (indexOfBookToUpdate === -1) {
+    return;
+  }
+  let targetBook = currentBooks[indexOfBookToUpdate];
+  targetBook = updater(targetBook);
+  currentBooks[indexOfBookToUpdate] = targetBook;
+  allBooks.value = currentBooks;
+  saveSettingToStorage(SettingKey.Books, allBooks.value);
 }
 
 async function exportBookmark(book: KoboBook): Promise<void> {
@@ -104,7 +116,14 @@ async function tryExportBookmark(book: KoboBook): Promise<void> {
     for (const pendingRequest of pendingExportRequests.value) {
       await pendingRequest;
     }
-    await exportBookBookmarks(book);
+    if (book.lastExportedNotionPageId && (await isPageExists(book.lastExportedNotionPageId))) {
+      await clearPage(book.lastExportedNotionPageId);
+      await updatePagePropertiesByBook(book.lastExportedNotionPageId, book);
+      await appendBookmarkToPage(book.lastExportedNotionPageId, book);
+    } else {
+      const response = await exportBookBookmarks(book);
+      updateBookById(book.id, (b) => ({ ...b, lastExportedNotionPageId: response.id }));
+    }
   } catch (e) {
     console.error(e);
     const message = handleNotionApiError(e as Error);
