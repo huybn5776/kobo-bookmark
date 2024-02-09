@@ -31,6 +31,7 @@ import { SettingKey } from '@/enum/setting-key';
 import BookBookmark from '@/module/bookmarks/components/BookBookmark/BookBookmark.vue';
 import BookSortingSelect from '@/module/bookmarks/components/BookSortingSelect/BookSortingSelect.vue';
 import { findCoverImageForBook } from '@/services/book-cover.service';
+import { getAllBooksFromDb, putBooksToDb } from '@/services/bookmark-manage.service';
 import { sortKoboBooks, sortKoboBookmarks } from '@/services/kobo-book-sort.service';
 import { handleNotionApiError } from '@/services/notion-api-error-handing.service';
 import {
@@ -40,7 +41,7 @@ import {
   updatePagePropertiesByBook,
 } from '@/services/notion-export.service';
 import { isPageExists } from '@/services/notion-page.service';
-import { getSettingFromStorage, saveSettingToStorage } from '@/services/setting.service';
+import { deepToRaw } from '@/util/vue-utils';
 
 const notification = useNotification();
 
@@ -50,9 +51,9 @@ const bookmarkSorting = useSyncSetting(SettingKey.BookmarkSorting, BookmarkSorti
 const pendingExportRequests = ref<Promise<void>[]>([]);
 const exportingBooks = ref<KoboBook[]>([]);
 
-onMounted(() => {
-  allBooks.value = getSettingFromStorage(SettingKey.Books) || [];
-  fetchMissingBookCoverImageUrl();
+onMounted(async () => {
+  allBooks.value = await getAllBooksFromDb();
+  await fetchMissingBookCoverImageUrl();
 });
 
 const booksToShow = computed(() => {
@@ -99,7 +100,7 @@ function updateBookById(bookId: string, updater: (book: KoboBook) => KoboBook): 
   targetBook = updater(targetBook);
   currentBooks[indexOfBookToUpdate] = targetBook;
   allBooks.value = currentBooks;
-  saveSettingToStorage(SettingKey.Books, allBooks.value);
+  putBooksToDb([deepToRaw(targetBook)]);
 }
 
 async function exportBookmark(book: KoboBook): Promise<void> {

@@ -10,8 +10,8 @@
 import { useRouter } from 'vue-router';
 
 import FileDropZone from '@/component/FileDropZone/FileDropZone.vue';
+import { putBooksToDb } from '@/services/bookmark-manage.service';
 import { getBooksFromSqliteFile } from '@/services/kobo-bookmark.service';
-import { saveToStorage } from '@/util/storage-utils';
 
 const router = useRouter();
 
@@ -21,7 +21,7 @@ async function onFile(files: Record<string, File>): Promise<void> {
     return;
   }
   const allKoboBooks = await getBooksFromSqliteFile(sqliteFile);
-  saveToStorage('books', allKoboBooks);
+  await putBooksToDb(allKoboBooks);
   await router.push('bookmarks');
 }
 </script>
