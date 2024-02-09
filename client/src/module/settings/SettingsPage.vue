@@ -1,6 +1,9 @@
 <template>
-  <div class="page-content notion-page">
-    <a :href="notionAuthUrl">Connect to Notion</a>
+  <div class="page-content settings-page">
+    <a :href="notionAuthUrl"><NButton class="connect-to-button" size="large">Connect to Notion</NButton></a>
+    <p class="setting-note">
+      Please use template page it provided, or select single page you want to export bookmarks.
+    </p>
   </div>
 </template>
 
@@ -9,7 +12,7 @@ import { onMounted } from 'vue';
 
 import type { OauthTokenResponse } from '@notionhq/client/build/src/api-endpoints';
 import { AxiosError } from 'axios';
-import { useNotification } from 'naive-ui';
+import { useNotification, NButton } from 'naive-ui';
 import { useRoute, useRouter } from 'vue-router';
 
 import { getNotionTokenByCode } from '@/api/notion-auth-api.service';
@@ -74,5 +77,5 @@ function handleAuthError(e: unknown): void {
 </script>
 
 <style lang="scss" scoped>
-@import './NotionPage';
+@import './SettingsPage';
 </style>

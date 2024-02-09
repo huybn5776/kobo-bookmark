@@ -7,16 +7,21 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/module/home/HomePage.vue'),
   },
   {
+    path: '/import',
+    name: 'import',
+    component: () => import('@/module/data-import/DataImportPage.vue'),
+  },
+  {
     path: '/bookmarks',
     name: 'bookmarks',
     component: () => import('@/module/bookmarks/BookmarksPage.vue'),
   },
   {
-    path: '/notion',
-    name: 'notion',
-    component: () => import('@/module/notion/NotionPage.vue'),
+    path: '/settings',
+    name: 'settings',
+    component: () => import('@/module/settings/SettingsPage.vue'),
   },
-  { path: '/:catchAll(.*)', redirect: { name: 'home' } },
+  { path: '/:catchAll(.*)', redirect: { name: 'bookmarks' } },
 ];
 
 const route = createRouter({
