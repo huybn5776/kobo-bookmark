@@ -1,10 +1,10 @@
 <template>
   <div class="page-content bookmark-page">
-    <div class="bookmark-page-tools">
+    <div v-if="booksToShow.length" class="bookmark-page-tools">
       <BookSortingSelect v-model:bookSorting="bookSorting" v-model:bookmarkSorting="bookmarkSorting" />
     </div>
 
-    <div class="books-container">
+    <div v-if="booksToShow.length" class="books-container">
       <BookBookmark
         v-for="book in booksToShow"
         :key="book.id"
@@ -13,6 +13,14 @@
         :exportLoading="exportingBooks.includes(book)"
         @onExportClick="exportBookmark"
       />
+    </div>
+
+    <div v-if="!loadBooks && !booksToShow.length" class="empty-bookmarks-message-container">
+      <span class="empty-bookmarks-emoji">¯\_(ツ)_/¯</span>
+      <span class="empty-bookmarks-message">You didn't have any bookmark here yet,</span>
+      <span class="empty-bookmarks-message">
+        try to <router-link :to="{ name: 'import' }">Import</router-link> some?
+      </span>
     </div>
   </div>
 </template>
@@ -47,6 +55,7 @@ import { deepToRaw } from '@/util/vue-utils';
 const message = useMessage();
 const notification = useNotification();
 
+const loadBooks = ref<boolean>(false);
 const allBooks = ref<KoboBook[]>();
 const bookSorting = useSyncSetting(SettingKey.BookSorting, BookSortingKey.LastBookmark);
 const bookmarkSorting = useSyncSetting(SettingKey.BookmarkSorting, BookmarkSortingKey.LastUpdate);
@@ -54,7 +63,9 @@ const pendingExportRequests = ref<Promise<void>[]>([]);
 const exportingBooks = ref<KoboBook[]>([]);
 
 onMounted(async () => {
+  loadBooks.value = true;
   allBooks.value = await getAllBooksFromDb();
+  loadBooks.value = false;
   await fetchMissingBookCoverImageUrl();
 });
 

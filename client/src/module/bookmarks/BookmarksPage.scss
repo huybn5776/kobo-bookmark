@@ -6,6 +6,23 @@
   margin-bottom: 8px;
 }
 
+.empty-bookmarks-message-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  padding: 32px;
+  color: lightgray;
+}
+
+.empty-bookmarks-emoji {
+  font-size: 40px;
+}
+
+.empty-bookmarks-message {
+  font-size: 24px;
+}
+
 .books-container {
   display: flex;
   flex-direction: column;
