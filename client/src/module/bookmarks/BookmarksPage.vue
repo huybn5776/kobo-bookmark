@@ -20,7 +20,7 @@
 <script lang="ts" setup>
 import { onMounted, ref, computed } from 'vue';
 
-import { useNotification } from 'naive-ui';
+import { useMessage, useNotification } from 'naive-ui';
 import { isNil } from 'ramda';
 
 import { useSyncSetting } from '@/composition/use-sync-setting';
@@ -41,8 +41,10 @@ import {
   updatePagePropertiesByBook,
 } from '@/services/notion-export.service';
 import { isPageExists } from '@/services/notion-page.service';
+import { getSettingFromStorage } from '@/services/setting.service';
 import { deepToRaw } from '@/util/vue-utils';
 
+const message = useMessage();
 const notification = useNotification();
 
 const allBooks = ref<KoboBook[]>();
@@ -104,12 +106,20 @@ function updateBookById(bookId: string, updater: (book: KoboBook) => KoboBook): 
 }
 
 async function exportBookmark(book: KoboBook): Promise<void> {
+  if (!isNotionIntegrationReady()) {
+    message.error('Please connect to Notion at Settings page first.');
+    return;
+  }
   const request = tryExportBookmark(book);
   pendingExportRequests.value = [...pendingExportRequests.value, request];
   exportingBooks.value.push(book);
   await request;
   pendingExportRequests.value = pendingExportRequests.value.filter((r) => r !== request);
   exportingBooks.value = exportingBooks.value.filter((b) => b !== book);
+}
+
+function isNotionIntegrationReady(): boolean {
+  return !!getSettingFromStorage(SettingKey.NotionAuth)?.access_token;
 }
 
 async function tryExportBookmark(book: KoboBook): Promise<void> {
@@ -127,9 +137,9 @@ async function tryExportBookmark(book: KoboBook): Promise<void> {
     }
   } catch (e) {
     console.error(e);
-    const message = handleNotionApiError(e as Error);
+    const errorMessage = handleNotionApiError(e as Error);
     notification.destroyAll();
-    notification.error({ title: `Fail to export book to Notion: '${book.info.title}'`, content: message });
+    notification.error({ title: `Fail to export book to Notion: '${book.info.title}'`, content: errorMessage });
   }
 }
 </script>
