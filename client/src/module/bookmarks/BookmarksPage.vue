@@ -10,7 +10,7 @@
         :key="book.id"
         :book="book"
         :default-expanded="booksToShow?.length === 1"
-        :exportLoading="exportingBooks.includes(book)"
+        :exportLoading="exportingBookIds.includes(book.id)"
         @onExportClick="exportBookmark"
       />
     </div>
@@ -22,6 +22,10 @@
         try to <router-link :to="{ name: 'import' }">Import</router-link> some?
       </span>
     </div>
+
+    <Teleport v-if="!!bookExportTasks.length" to="#app">
+      <BookExportProgressModal :tasks="bookExportTasks" />
+    </Teleport>
   </div>
 </template>
 
@@ -36,19 +40,15 @@ import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import { BookSortingKey } from '@/enum/book-sorting-key';
 import { BookmarkSortingKey } from '@/enum/bookmark-sorting-key';
 import { SettingKey } from '@/enum/setting-key';
+import { BookExportTask, BookExportState } from '@/interface/book-export-task';
 import BookBookmark from '@/module/bookmarks/components/BookBookmark/BookBookmark.vue';
+import BookExportProgressModal from '@/module/bookmarks/components/BookExportProgressModal/BookExportProgressModal.vue';
 import BookSortingSelect from '@/module/bookmarks/components/BookSortingSelect/BookSortingSelect.vue';
 import { findCoverImageForBook } from '@/services/book-cover.service';
 import { getAllBooksFromDb, putBooksToDb } from '@/services/bookmark-manage.service';
 import { sortKoboBooks, sortKoboBookmarks } from '@/services/kobo-book-sort.service';
 import { handleNotionApiError } from '@/services/notion-api-error-handing.service';
-import {
-  exportBookBookmarks,
-  clearPage,
-  appendBookmarkToPage,
-  updatePagePropertiesByBook,
-} from '@/services/notion-export.service';
-import { isPageExists } from '@/services/notion-page.service';
+import { exportBookBookmarks } from '@/services/notion-export.service';
 import { getSettingFromStorage } from '@/services/setting.service';
 import { deepToRaw } from '@/util/vue-utils';
 
@@ -60,7 +60,8 @@ const allBooks = ref<KoboBook[]>();
 const bookSorting = useSyncSetting(SettingKey.BookSorting, BookSortingKey.LastBookmark);
 const bookmarkSorting = useSyncSetting(SettingKey.BookmarkSorting, BookmarkSortingKey.LastUpdate);
 const pendingExportRequests = ref<Promise<void>[]>([]);
-const exportingBooks = ref<KoboBook[]>([]);
+const exportingBookIds = ref<string[]>([]);
+const bookExportTasks = ref<BookExportTask[]>([]);
 
 onMounted(async () => {
   loadBooks.value = true;
@@ -121,37 +122,41 @@ async function exportBookmark(book: KoboBook): Promise<void> {
     message.error('Please connect to Notion at Settings page first.');
     return;
   }
-  const request = tryExportBookmark(book);
+  const task: BookExportTask = { id: Date.now(), book, state: BookExportState.Pending, percentage: 0 };
+  bookExportTasks.value.push(task);
+  const request = tryExportBookmark(book, task);
   pendingExportRequests.value = [...pendingExportRequests.value, request];
-  exportingBooks.value.push(book);
+  exportingBookIds.value.push(book.id);
   await request;
   pendingExportRequests.value = pendingExportRequests.value.filter((r) => r !== request);
-  exportingBooks.value = exportingBooks.value.filter((b) => b !== book);
+  exportingBookIds.value = exportingBookIds.value.filter((id) => id !== book.id);
 }
 
 function isNotionIntegrationReady(): boolean {
   return !!getSettingFromStorage(SettingKey.NotionAuth)?.access_token;
 }
 
-async function tryExportBookmark(book: KoboBook): Promise<void> {
+async function tryExportBookmark(book: KoboBook, task: BookExportTask): Promise<void> {
   try {
     for (const pendingRequest of pendingExportRequests.value) {
       await pendingRequest;
     }
-    if (book.lastExportedNotionPageId && (await isPageExists(book.lastExportedNotionPageId))) {
-      await clearPage(book.lastExportedNotionPageId);
-      await updatePagePropertiesByBook(book.lastExportedNotionPageId, book);
-      await appendBookmarkToPage(book.lastExportedNotionPageId, book);
-    } else {
-      const response = await exportBookBookmarks(book);
-      updateBookById(book.id, (b) => ({ ...b, lastExportedNotionPageId: response.id }));
-    }
+    const pageId = await exportBookBookmarks(book, task, updateTask);
+    updateBookById(book.id, (b) => ({ ...b, lastExportedNotionPageId: pageId }));
   } catch (e) {
     console.error(e);
     const errorMessage = handleNotionApiError(e as Error);
     notification.destroyAll();
     notification.error({ title: `Fail to export book to Notion: '${book.info.title}'`, content: errorMessage });
   }
+}
+
+function updateTask(progress: BookExportTask): void {
+  const progressIndex = bookExportTasks.value.findIndex((p) => p.id === progress.id);
+  if (progressIndex === -1) {
+    return;
+  }
+  bookExportTasks.value[progressIndex] = progress;
 }
 </script>
 

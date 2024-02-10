@@ -1,0 +1,33 @@
+.book-export-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding: 8px 16px;
+  font-size: 15px;
+  column-gap: 8px;
+
+  &:hover {
+    background-color: rgba(white, .1);
+  }
+}
+
+.book-export-item-image {
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+}
+
+.book-export-item-name {
+  overflow-x: hidden;
+  white-space: pre;
+  text-overflow: ellipsis;
+}
+
+.book-export-item-progress {
+  width: 24px;
+  height: 24px;
+
+  :deep(.n-progress-icon) {
+    font-size: 24px;
+  }
+}
