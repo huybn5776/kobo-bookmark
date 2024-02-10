@@ -7,6 +7,7 @@
 </template>
 
 <script lang="ts" setup>
+import { useNotification, useLoadingBar } from 'naive-ui';
 import { useRouter } from 'vue-router';
 
 import FileDropZone from '@/component/FileDropZone/FileDropZone.vue';
@@ -14,15 +15,25 @@ import { putBooksToDb } from '@/services/bookmark-manage.service';
 import { getBooksFromSqliteFile } from '@/services/kobo-bookmark.service';
 
 const router = useRouter();
+const notification = useNotification();
+const loadingBar = useLoadingBar();
 
 async function onFile(files: Record<string, File>): Promise<void> {
   const sqliteFile = files['KoboReader.sqlite'] || files['.kobo/KoboReader.sqlite'];
   if (!sqliteFile) {
     return;
   }
-  const allKoboBooks = await getBooksFromSqliteFile(sqliteFile);
-  await putBooksToDb(allKoboBooks);
-  await router.push('bookmarks');
+  loadingBar.start();
+  try {
+    const allKoboBooks = await getBooksFromSqliteFile(sqliteFile);
+    await putBooksToDb(allKoboBooks);
+    loadingBar.finish();
+    await router.push('bookmarks');
+  } catch (e) {
+    console.error(e);
+    notification.error({ title: 'Error when parsing bookmarks', content: (e as Error).message });
+    loadingBar.error();
+  }
 }
 </script>
 
