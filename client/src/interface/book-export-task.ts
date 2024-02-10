@@ -13,8 +13,9 @@ export interface BookExportTask {
 export enum BookExportState {
   Pending = 'pending',
   Running = 'running',
-  Success = 'success',
-  Fail = 'fail',
+  Succeeded = 'succeeded',
+  Failed = 'failed',
+  Canceled = 'canceled',
 }
 
 export enum BookExportStage {

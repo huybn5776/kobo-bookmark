@@ -8,7 +8,7 @@
       :status="status"
       :percentage="percentage"
       :showIndicator="showIndicator"
-      :strokeWidth="16"
+      :strokeWidth="24"
     />
   </div>
 </template>
@@ -37,9 +37,9 @@ const percentage = computed(() => {
       }
       return Math.max(1, percentageValue);
     }
-    case BookExportState.Success:
-      return 100;
-    case BookExportState.Fail:
+    case BookExportState.Succeeded:
+    case BookExportState.Failed:
+    case BookExportState.Canceled:
       return 100;
     default:
       return task.percentage;
@@ -49,9 +49,9 @@ const percentage = computed(() => {
 const status = computed<Status | undefined>(() => {
   const { task } = props;
   switch (task.state) {
-    case BookExportState.Success:
+    case BookExportState.Succeeded:
       return 'success';
-    case BookExportState.Fail:
+    case BookExportState.Failed:
       return 'error';
     default:
       return undefined;
@@ -59,7 +59,7 @@ const status = computed<Status | undefined>(() => {
 });
 
 const showIndicator = computed(() => {
-  return props.task.state === BookExportState.Success || props.task.state === BookExportState.Fail;
+  return props.task.state === BookExportState.Succeeded || props.task.state === BookExportState.Failed;
 });
 </script>
 
