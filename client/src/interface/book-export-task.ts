@@ -8,6 +8,7 @@ export interface BookExportTask {
   step?: number;
   totalStep?: number;
   stage?: BookExportStage;
+  hidden?: boolean;
 }
 
 export enum BookExportState {

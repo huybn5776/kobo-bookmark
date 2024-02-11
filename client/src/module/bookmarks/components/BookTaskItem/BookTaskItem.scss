@@ -9,6 +9,11 @@
   &:hover {
     background-color: rgba(white, .1);
   }
+
+  &.book-export-item-canceled {
+    text-decoration: line-through;
+    opacity: .6;
+  }
 }
 
 .book-export-item-image {
@@ -30,4 +35,18 @@
   :deep(.n-progress-icon) {
     font-size: 24px;
   }
+}
+
+.cancel-icon {
+  width: 24px;
+  height: 24px;
+  background-image: url('/src/assets/svg/cancel.svg');
+}
+
+.book-export-item-cancel-button {
+  width: 28px;
+  height: 28px;
+  margin: -2px;
+  font-size: 0;
+  background: url('/src/assets/svg/close-circle.svg') no-repeat center;
 }

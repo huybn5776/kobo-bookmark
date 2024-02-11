@@ -7,25 +7,33 @@
         :direction="collapsed ? 'up' : 'down'"
         @update:direction="(e) => (collapsed = e === 'up')"
       />
+      <NButton class="book-export-close-button" quaternary circle @click="cancelAllTask">Close</NButton>
     </header>
 
     <div v-if="!collapsed" class="book-export-progress-modal-content">
-      <BookTaskItem v-for="task of tasksToShow" :key="task.id" :task="task" />
+      <BookTaskItem v-for="task of tasks" :key="task.id" :task="task" @cancel="emits('cancelTask', task)" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
+
+import { NButton } from 'naive-ui';
 
 import ChevronArrow from '@/component/ChevronArrow/ChevronArrow.vue';
 import { BookExportTask } from '@/interface/book-export-task';
 import BookTaskItem from '@/module/bookmarks/components/BookTaskItem/BookTaskItem.vue';
 
-const props = defineProps<{ tasks: BookExportTask[] }>();
+defineProps<{ tasks: BookExportTask[] }>();
+const emits = defineEmits<{ (e: 'cancelTask', value: BookExportTask): void; (e: 'cancelAllTask'): void }>();
 
 const collapsed = ref(false);
-const tasksToShow = computed(() => props.tasks.toReversed());
+
+function cancelAllTask() {
+  emits('cancelAllTask');
+  collapsed.value = true;
+}
 </script>
 
 <style lang="scss" scoped>

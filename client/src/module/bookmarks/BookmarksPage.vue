@@ -23,8 +23,8 @@
       </span>
     </div>
 
-    <Teleport v-if="!!bookExportTasks.length" to="#app">
-      <BookExportProgressModal :tasks="bookExportTasks" />
+    <Teleport v-if="!!bookExportTasksToShow.length" to="#app">
+      <BookExportProgressModal :tasks="bookExportTasksToShow" @cancelTask="cancelTask" @cancelAllTask="cancelAllTask" />
     </Teleport>
   </div>
 </template>
@@ -59,9 +59,15 @@ const loadBooks = ref<boolean>(false);
 const allBooks = ref<KoboBook[]>();
 const bookSorting = useSyncSetting(SettingKey.BookSorting, BookSortingKey.LastBookmark);
 const bookmarkSorting = useSyncSetting(SettingKey.BookmarkSorting, BookmarkSortingKey.LastUpdate);
-const pendingExportRequests = ref<Promise<void>[]>([]);
-const exportingBookIds = ref<string[]>([]);
+const pendingExportRequest = ref<Promise<void>>();
 const bookExportTasks = ref<BookExportTask[]>([]);
+
+const bookExportTasksToShow = computed(() => bookExportTasks.value.toReversed().filter((task) => task.hidden !== true));
+const exportingBookIds = computed(() => {
+  return bookExportTasks.value
+    .filter((task) => task.state === BookExportState.Pending || task.state === BookExportState.Running)
+    .map((task) => task.book.id);
+});
 
 onMounted(async () => {
   loadBooks.value = true;
@@ -124,12 +130,13 @@ async function exportBookmark(book: KoboBook): Promise<void> {
   }
   const task: BookExportTask = { id: Date.now(), book, state: BookExportState.Pending, percentage: 0 };
   bookExportTasks.value.push(task);
-  const request = tryExportBookmark(book, task);
-  pendingExportRequests.value = [...pendingExportRequests.value, request];
-  exportingBookIds.value.push(book.id);
-  await request;
-  pendingExportRequests.value = pendingExportRequests.value.filter((r) => r !== request);
-  exportingBookIds.value = exportingBookIds.value.filter((id) => id !== book.id);
+
+  if (pendingExportRequest.value) {
+    return;
+  }
+  pendingExportRequest.value = tryExportBookmark(book, task);
+  await pendingExportRequest.value;
+  pendingExportRequest.value = undefined;
 }
 
 function isNotionIntegrationReady(): boolean {
@@ -138,25 +145,64 @@ function isNotionIntegrationReady(): boolean {
 
 async function tryExportBookmark(book: KoboBook, task: BookExportTask): Promise<void> {
   try {
-    for (const pendingRequest of pendingExportRequests.value) {
-      await pendingRequest;
-    }
-    const pageId = await exportBookBookmarks(book, task, updateTask);
+    const pageId = await exportBookBookmarks(book, task, (updatedTask) => {
+      const currentTask = getTaskById(task);
+      if (currentTask?.state === BookExportState.Canceled) {
+        throw new Error('Task canceled');
+      }
+      updateTask(updatedTask);
+    });
     updateBookById(book.id, (b) => ({ ...b, lastExportedNotionPageId: pageId }));
   } catch (e) {
-    console.error(e);
-    const errorMessage = handleNotionApiError(e as Error);
-    notification.destroyAll();
-    notification.error({ title: `Fail to export book to Notion: '${book.info.title}'`, content: errorMessage });
+    const currentTask = getTaskById(task);
+    if (currentTask?.state !== BookExportState.Canceled) {
+      console.error(e);
+      const errorMessage = handleNotionApiError(e as Error);
+      notification.destroyAll();
+      notification.error({ title: `Fail to export book to Notion: '${book.info.title}'`, content: errorMessage });
+    }
   }
+  await runNextTask();
 }
 
-function updateTask(progress: BookExportTask): void {
-  const progressIndex = bookExportTasks.value.findIndex((p) => p.id === progress.id);
-  if (progressIndex === -1) {
+async function runNextTask(): Promise<void> {
+  const firstPendingTask = bookExportTasks.value.find((task) => task.state === BookExportState.Pending);
+  if (!firstPendingTask) {
     return;
   }
-  bookExportTasks.value[progressIndex] = progress;
+  await tryExportBookmark(firstPendingTask.book, firstPendingTask);
+}
+
+function updateTask(task: BookExportTask): void {
+  const taskIndex = bookExportTasks.value.findIndex((t) => t.id === task.id);
+  if (taskIndex === -1) {
+    return;
+  }
+  bookExportTasks.value[taskIndex] = task;
+}
+
+function getTaskById(task: BookExportTask): BookExportTask | undefined {
+  return bookExportTasks.value.find((t) => t.id === task.id);
+}
+
+function cancelTask(task: BookExportTask): void {
+  const currentTask = bookExportTasks.value.find((t) => t.id === task.id);
+  if (!currentTask) {
+    return;
+  }
+  updateTask({ ...currentTask, state: BookExportState.Canceled });
+}
+
+function cancelAllTask(): void {
+  for (let i = 0; i < bookExportTasks.value.length; i += 1) {
+    const task = bookExportTasks.value[i];
+    const updatedTask = { ...task };
+    if (task.state === BookExportState.Pending || task.state === BookExportState.Running) {
+      updatedTask.state = BookExportState.Canceled;
+    }
+    updatedTask.hidden = true;
+    bookExportTasks.value[i] = updatedTask;
+  }
 }
 </script>
 
