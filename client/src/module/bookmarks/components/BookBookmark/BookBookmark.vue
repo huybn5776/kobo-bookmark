@@ -1,5 +1,5 @@
 <template>
-  <div class="book-bookmark">
+  <div ref="elementRef" class="book-bookmark">
     <div class="book-header">
       <BookCoverView :book="book" />
       <div class="book-section">
@@ -37,7 +37,10 @@ import BookmarkList from '@/module/bookmarks/components/BookmarkList/BookmarkLis
 const props = defineProps<{ book: KoboBook; defaultExpanded: boolean; exportLoading: boolean }>();
 const emits = defineEmits<{ (e: 'onExportClick', value: KoboBook): void }>();
 
+const elementRef = ref<HTMLElement>();
+
 const expandedDirection = ref<'up' | 'down'>(props.defaultExpanded ? 'up' : 'down');
+defineExpose({ elementRef });
 
 function toggleExpanded(): void {
   expandedDirection.value = expandedDirection.value === 'up' ? 'down' : 'up';

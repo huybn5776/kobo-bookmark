@@ -11,7 +11,13 @@
     </header>
 
     <div v-if="!collapsed" class="book-export-progress-modal-content">
-      <BookTaskItem v-for="task of tasks" :key="task.id" :task="task" @cancel="emits('cancelTask', task)" />
+      <BookTaskItem
+        v-for="task of tasks"
+        :key="task.id"
+        :task="task"
+        @click="emits('taskClick', task)"
+        @cancel="emits('cancelTask', task)"
+      />
     </div>
   </div>
 </template>
@@ -27,7 +33,11 @@ import { BookExportTask, BookExportState } from '@/interface/book-export-task';
 import BookTaskItem from '@/module/bookmarks/components/BookTaskItem/BookTaskItem.vue';
 
 const props = defineProps<{ tasks: BookExportTask[] }>();
-const emits = defineEmits<{ (e: 'cancelTask', value: BookExportTask): void; (e: 'discardAllTasks'): void }>();
+const emits = defineEmits<{
+  (e: 'taskClick', value: BookExportTask): void;
+  (e: 'cancelTask', value: BookExportTask): void;
+  (e: 'discardAllTasks'): void;
+}>();
 
 const collapsed = ref(false);
 

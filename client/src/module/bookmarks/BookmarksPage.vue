@@ -8,6 +8,7 @@
       <BookBookmark
         v-for="book in booksToShow"
         :key="book.id"
+        ref="bookBookmarkRefs"
         :book="book"
         :default-expanded="booksToShow?.length === 1"
         :exportLoading="exportingBookIds.includes(book.id)"
@@ -26,6 +27,7 @@
     <Teleport v-if="!!bookExportTasksToShow.length" to="#app">
       <BookExportProgressModal
         :tasks="bookExportTasksToShow"
+        @taskClick="gotoBook"
         @cancelTask="cancelTask"
         @discardAllTasks="discardAllTasks"
       />
@@ -63,6 +65,7 @@ const loadBooks = ref<boolean>(false);
 const allBooks = ref<KoboBook[]>();
 const bookSorting = useSyncSetting(SettingKey.BookSorting, BookSortingKey.LastBookmark);
 const bookmarkSorting = useSyncSetting(SettingKey.BookmarkSorting, BookmarkSortingKey.LastUpdate);
+const bookBookmarkRefs = ref<InstanceType<typeof BookBookmark>[]>([]);
 const pendingExportRequest = ref<Promise<void>>();
 const bookExportTasks = ref<BookExportTask[]>([]);
 
@@ -207,6 +210,12 @@ function discardAllTasks(): void {
     updatedTask.hidden = true;
     bookExportTasks.value[i] = updatedTask;
   }
+}
+
+function gotoBook(task: BookExportTask): void {
+  const bookIndex = booksToShow.value.findIndex((book) => book.id === task.book.id);
+  const bookComponent = bookBookmarkRefs.value[bookIndex];
+  bookComponent?.elementRef?.scrollIntoView({ behavior: 'smooth' });
 }
 </script>
 
