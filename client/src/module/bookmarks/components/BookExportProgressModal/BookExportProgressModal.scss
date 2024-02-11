@@ -3,7 +3,7 @@
   right: 24px;
   bottom: 0;
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto auto 1fr;
   width: 360px;
   background-color: #2c2c32;
   border-radius: 8px 8px 0 0;
@@ -20,6 +20,22 @@
   font-weight: bold;
   font-size: 20px;
   box-shadow: 0 2px 4px rgba(black, .2);
+}
+
+.book-export-progress-current-state {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 4px 4px 4px 16px;
+  background-color: rgba(white, .06);
+}
+
+.book-export-progress-message {
+  overflow: hidden;
+  color: lightgray;
+  font-size: 15px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .book-export-progress-modal-content {

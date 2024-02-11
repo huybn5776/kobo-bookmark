@@ -10,6 +10,11 @@
       <NButton class="book-export-close-button" quaternary circle @click="discardAllTasks">Close</NButton>
     </header>
 
+    <div v-if="runningTask && progressMessage" class="book-export-progress-current-state">
+      <span class="book-export-progress-message">{{ progressMessage }}</span>
+      <NButton secondary @click="emits('cancelTask', runningTask)">Cancel</NButton>
+    </div>
+
     <div v-if="!collapsed" class="book-export-progress-modal-content">
       <BookTaskItem
         v-for="task of tasks"
@@ -26,10 +31,10 @@
 import { ref, computed } from 'vue';
 
 import { NButton } from 'naive-ui';
-import { groupBy } from 'ramda';
+import { groupBy, isNotNil } from 'ramda';
 
 import ChevronArrow from '@/component/ChevronArrow/ChevronArrow.vue';
-import { BookExportTask, BookExportState } from '@/interface/book-export-task';
+import { BookExportTask, BookExportState, BookExportStage } from '@/interface/book-export-task';
 import BookTaskItem from '@/module/bookmarks/components/BookTaskItem/BookTaskItem.vue';
 
 const props = defineProps<{ tasks: BookExportTask[] }>();
@@ -63,6 +68,32 @@ const title = computed<string>(() => {
   }
   return `${props.tasks.length} book completed`;
 });
+
+const runningTask = computed(() => props.tasks.find((t) => t.state === BookExportState.Running));
+const progressMessage = computed(() => {
+  if (!runningTask.value) {
+    return undefined;
+  }
+  return taskToMessage(runningTask.value);
+});
+
+const stageToText: Record<BookExportStage, string> = {
+  [BookExportStage.CreatePage]: 'Creating page',
+  [BookExportStage.UpdatePage]: 'Updating page',
+  [BookExportStage.AddBlocks]: 'Adding blocks',
+  [BookExportStage.CleanupPage]: 'Cleanup page',
+};
+
+function taskToMessage(task: BookExportTask): string {
+  const { percentage, step, totalStep, stage } = task;
+  if (!stage) {
+    return 'Starting...';
+  }
+  const stepText = isNotNil(step) && isNotNil(totalStep) ? `${step + 1}/${totalStep} - ` : '';
+  const stageText = stageToText[stage];
+  const percentageText = isNotNil(percentage) ? ` ${Math.round(percentage)}%` : '';
+  return `${stepText}${stageText}${percentageText}`;
+}
 
 function discardAllTasks() {
   emits('discardAllTasks');
