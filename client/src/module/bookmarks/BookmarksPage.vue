@@ -24,7 +24,11 @@
     </div>
 
     <Teleport v-if="!!bookExportTasksToShow.length" to="#app">
-      <BookExportProgressModal :tasks="bookExportTasksToShow" @cancelTask="cancelTask" @cancelAllTask="cancelAllTask" />
+      <BookExportProgressModal
+        :tasks="bookExportTasksToShow"
+        @cancelTask="cancelTask"
+        @discardAllTasks="discardAllTasks"
+      />
     </Teleport>
   </div>
 </template>
@@ -193,7 +197,7 @@ function cancelTask(task: BookExportTask): void {
   updateTask({ ...currentTask, state: BookExportState.Canceled });
 }
 
-function cancelAllTask(): void {
+function discardAllTasks(): void {
   for (let i = 0; i < bookExportTasks.value.length; i += 1) {
     const task = bookExportTasks.value[i];
     const updatedTask = { ...task };
