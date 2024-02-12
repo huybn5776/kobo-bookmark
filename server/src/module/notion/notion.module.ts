@@ -4,6 +4,7 @@ import { Client } from '@notionhq/client';
 import { Request } from 'express';
 
 import { NotionAuthApiService } from '@/module/notion/api/notion-auth-api.service';
+import { NotionBlockApiService } from '@/module/notion/api/notion-block-api.service';
 import { NotionPageApiService } from '@/module/notion/api/notion-page-api.service';
 import { NotionAuthController } from '@/module/notion/controller/notion-auth.controller';
 import { NotionBlockController } from '@/module/notion/controller/notion-block.controller';
@@ -25,6 +26,7 @@ import { NotionPageController } from '@/module/notion/controller/notion-page.con
     },
     NotionAuthApiService,
     NotionPageApiService,
+    NotionBlockApiService,
   ],
 })
 export class NotionModule {}

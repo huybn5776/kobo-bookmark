@@ -13,12 +13,16 @@ import {
 } from '@notionhq/client/build/src/api-endpoints';
 
 import { NotionAuthInterceptor } from '@/interceptor/notion-auth.interceptor';
+import { NotionBlockApiService } from '@/module/notion/api/notion-block-api.service';
 import { NotionPageApiService } from '@/module/notion/api/notion-page-api.service';
 
 @Controller('/notion/pages')
 @UseInterceptors(NotionAuthInterceptor)
 export class NotionPageController {
-  constructor(private readonly notionPageApiService: NotionPageApiService) {}
+  constructor(
+    private readonly notionPageApiService: NotionPageApiService,
+    private readonly notionBlockApiService: NotionBlockApiService,
+  ) {}
 
   @Get()
   getAllPages(): Promise<SearchResponse> {
@@ -49,21 +53,21 @@ export class NotionPageController {
     @Query('cursor') cursor?: string,
     @Query('pageSize') pageSize?: number,
   ): Promise<ListBlockChildrenResponse> {
-    return this.notionPageApiService.getBlockChildren({ block_id: id, start_cursor: cursor, page_size: pageSize });
+    return this.notionBlockApiService.getBlockChildren({ block_id: id, start_cursor: cursor, page_size: pageSize });
   }
 
   @Post('/:id/blocks')
   appendBlock(@Param('id') id: string, @Body() blocks: BlockObjectRequest[]): Promise<AppendBlockChildrenResponse> {
-    return this.notionPageApiService.appendBlock(id, blocks);
+    return this.notionBlockApiService.appendBlock(id, blocks);
   }
 
   @Delete('/:id')
   deletePage(@Param('id') id: string): Promise<DeleteBlockResponse> {
-    return this.notionPageApiService.deleteBlock(id);
+    return this.notionBlockApiService.deleteBlock(id);
   }
 
   @Delete('/:id/blocks/\\$all')
   deleteAllChildBlocks(@Param('id') id: string): Promise<DeleteBlockResponse[]> {
-    return this.notionPageApiService.deleteAllChildBlocks(id);
+    return this.notionBlockApiService.deleteAllChildBlocks(id);
   }
 }

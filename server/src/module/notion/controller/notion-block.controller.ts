@@ -6,17 +6,17 @@ import {
 } from '@notionhq/client/build/src/api-endpoints';
 
 import { NotionAuthInterceptor } from '@/interceptor/notion-auth.interceptor';
-import { NotionPageApiService } from '@/module/notion/api/notion-page-api.service';
+import { NotionBlockApiService } from '@/module/notion/api/notion-block-api.service';
 
 @Controller('/notion/blocks')
 @UseInterceptors(NotionAuthInterceptor)
 export class NotionBlockController {
-  constructor(private readonly notionPageApiService: NotionPageApiService) {}
+  constructor(private readonly notionBlockApiService: NotionBlockApiService) {}
 
   @Post('/\\$deleteMulti')
   @HttpCode(200)
   deleteBlocks(@Body() blockIds: string[]): Promise<DeleteBlockResponse[]> {
-    return this.notionPageApiService.deleteBlocks(blockIds);
+    return this.notionBlockApiService.deleteBlocks(blockIds);
   }
 
   @Post('/:id')
@@ -24,11 +24,11 @@ export class NotionBlockController {
     @Param('id') id: string,
     @Body() params: Omit<UpdateBlockParameters, 'block_id'>,
   ): Promise<UpdateBlockResponse> {
-    return this.notionPageApiService.updateBlock(id, params);
+    return this.notionBlockApiService.updateBlock(id, params);
   }
 
   @Delete('/:id')
   deleteBlock(@Param('id') id: string): Promise<DeleteBlockResponse> {
-    return this.notionPageApiService.deleteBlock(id);
+    return this.notionBlockApiService.deleteBlock(id);
   }
 }

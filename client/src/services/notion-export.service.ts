@@ -8,7 +8,8 @@ import type {
 } from '@notionhq/client/build/src/api-endpoints';
 import { splitEvery } from 'ramda';
 
-import { createNotionPage, appendNotionBlocks, deleteBlocks, updateNotionPage } from '@/api/notion-page-api.service';
+import { appendNotionBlocks, deleteBlocks } from '@/api/notion-block-api.service';
+import { createNotionPage, updateNotionPage } from '@/api/notion-page-api.service';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import { SettingKey } from '@/enum/setting-key';
 import { BookExportTask, BookExportStage, BookExportState } from '@/interface/book-export-task';

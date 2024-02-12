@@ -4,7 +4,8 @@ import type {
   PageObjectResponse,
 } from '@notionhq/client/build/src/api-endpoints';
 
-import { getAllPages, getBlockChildren, getPage } from '@/api/notion-page-api.service';
+import { getBlockChildren } from '@/api/notion-block-api.service';
+import { getAllPages, getPage } from '@/api/notion-page-api.service';
 
 export async function getNotionExportTargetPageId(authResponse: OauthTokenResponse): Promise<string | null> {
   if (authResponse.duplicated_template_id) {
