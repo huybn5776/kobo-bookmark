@@ -9,8 +9,8 @@ import type {
 
 import axiosInstance from '@/api/notion-axios-instance';
 
-export async function getAllPages(): Promise<SearchResponse> {
-  const response = await axiosInstance.get<SearchResponse>('/api/notion/pages');
+export async function searchPages(title?: string): Promise<SearchResponse> {
+  const response = await axiosInstance.get<SearchResponse>('/api/notion/pages', { params: { title } });
   return response.data;
 }
 

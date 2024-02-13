@@ -13,8 +13,9 @@ import {
 export class NotionPageApiService {
   constructor(private readonly notion: Client) {}
 
-  async searchAllPages(): Promise<SearchResponse> {
+  async searchPages(title?: string): Promise<SearchResponse> {
     return this.notion.search({
+      query: title,
       filter: {
         property: 'object',
         value: 'page',

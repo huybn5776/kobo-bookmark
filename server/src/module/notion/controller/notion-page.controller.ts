@@ -25,8 +25,8 @@ export class NotionPageController {
   ) {}
 
   @Get()
-  getAllPages(): Promise<SearchResponse> {
-    return this.notionPageApiService.searchAllPages();
+  searchPages(@Query('title') title?: string): Promise<SearchResponse> {
+    return this.notionPageApiService.searchPages(title);
   }
 
   @Get('/:id')
