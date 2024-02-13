@@ -2,24 +2,23 @@ import type {
   CreatePageParameters,
   CreatePageResponse,
   BlockObjectRequest,
-  UpdatePageParameters,
-  PartialDatabaseObjectResponse,
 } from '@notionhq/client/build/src/api-endpoints';
-import { splitEvery, maxBy } from 'ramda';
+import { splitEvery } from 'ramda';
 
 import { appendNotionBlocks, deleteBlocks, deleteBlock } from '@/api/notion-block-api.service';
-import { searchDatabase, getDatabase } from '@/api/notion-database-api.service';
 import { createNotionPage, updateNotionPage } from '@/api/notion-page-api.service';
-import { KoboBook, KoboBookmark, NotionExportState } from '@/dto/kobo-book';
-import { SettingKey } from '@/enum/setting-key';
+import { KoboBook, NotionExportState } from '@/dto/kobo-book';
 import { BookExportTask, BookExportStage, BookExportState } from '@/interface/book-export-task';
-import { getNotionExportTargetPageId, getAllBlocksOfPage, isPageExists } from '@/services/notion-page.service';
-import { getSettingFromStorage, saveSettingToStorage } from '@/services/setting.service';
+import {
+  bookToNotionUpdatePageParams,
+  bookmarksToNotionBlocks,
+  bookToNotionDatabasePageProperties,
+} from '@/services/notion-export-mapping.service';
+import { getNotionExportTargetDatabase, getNotionExportTargetPage } from '@/services/notion-export-target.service';
+import { getAllBlocksOfPage, isPageExists } from '@/services/notion-page.service';
 
 const maximumBlocksPerRequest = 100;
 const deleteBlockCountPerRequest = 5;
-const templateDatabaseTitle = 'Library';
-const templateDatabaseProperties = ['Title', 'Author', 'Publisher', 'ISBN'];
 
 export async function exportBookBookmarks(
   book: KoboBook,
@@ -33,7 +32,7 @@ export async function exportBookBookmarks(
   };
   progressCallback(task);
 
-  const targetDatabase = await getExportTargetDatabase();
+  const targetDatabase = await getNotionExportTargetDatabase();
   if (targetDatabase) {
     const page = await exportBookmarksToDatabasePage(targetDatabase, book, task, progressCallback);
     return { ...book.notion, lastDatabasePageId: page.id };
@@ -54,7 +53,7 @@ async function exportBookmarksToNewPage(
 ): Promise<CreatePageResponse> {
   let task: BookExportTask = { ...initialTask, stage: BookExportStage.CreatePage };
 
-  const targetPageId = await getExportTargetPage();
+  const targetPageId = await getNotionExportTargetPage();
   if (!targetPageId) {
     progressCallback({ ...task, state: BookExportState.Failed });
     throw new Error('No target Notion page to export');
@@ -62,9 +61,9 @@ async function exportBookmarksToNewPage(
 
   const pageParams: CreatePageParameters = {
     parent: { type: 'page_id', page_id: targetPageId },
-    ...bookToUpdatePageParams(book),
+    ...bookToNotionUpdatePageParams(book),
   };
-  const allBlocks = bookmarksToBlocks(book.bookmarks);
+  const allBlocks = bookmarksToNotionBlocks(book.bookmarks);
   return createPageAndBlocks(pageParams, allBlocks, (update) => progressCallback((task = update(task))));
 }
 
@@ -84,10 +83,10 @@ async function exportBookmarksToDatabasePage(
   progressCallback((task = { ...task, stage: BookExportStage.CreatePage }));
   const pageParams: CreatePageParameters = {
     parent: { type: 'database_id', database_id: databaseId },
-    ...bookToUpdatePageParams(book),
-    properties: bookToDatabasePageProperties(book),
+    ...bookToNotionUpdatePageParams(book),
+    properties: bookToNotionDatabasePageProperties(book),
   };
-  const allBlocks = bookmarksToBlocks(book.bookmarks);
+  const allBlocks = bookmarksToNotionBlocks(book.bookmarks);
   return createPageAndBlocks(pageParams, allBlocks, (update) => progressCallback((task = update(task))));
 }
 
@@ -148,7 +147,7 @@ export async function exportBookmarksToExistingPage(
 }
 
 export async function updatePagePropertiesByBook(pageId: string, book: KoboBook): Promise<void> {
-  const params = bookToUpdatePageParams(book);
+  const params = bookToNotionUpdatePageParams(book);
   await updateNotionPage(pageId, params);
 }
 
@@ -157,7 +156,7 @@ export async function appendBookmarkToPage(
   book: KoboBook,
   progressCallback?: (percentage: number) => void,
 ): Promise<void> {
-  const allBlocks = bookmarksToBlocks(book.bookmarks);
+  const allBlocks = bookmarksToNotionBlocks(book.bookmarks);
   const windowedBlocks = splitEvery(100, allBlocks);
   progressCallback?.(0);
   let completedCount = 0;
@@ -181,116 +180,4 @@ export async function clearPage(pageId: string, progressCallback?: (percentage: 
     completedCount += blockIds.length;
     progressCallback?.((completedCount / allBlocks.length) * 100);
   }
-}
-
-function bookToUpdatePageParams(
-  book: KoboBook,
-): Omit<UpdatePageParameters, 'page_id'> & Required<Pick<UpdatePageParameters, 'properties'>> {
-  const pageParams: ReturnType<typeof bookToUpdatePageParams> = {
-    properties: {
-      title: [{ text: { content: book.info.title || '' } }],
-    },
-  };
-  if (book.coverImageUrl) {
-    const image: { external: { url: string }; type?: 'external' } = {
-      type: 'external',
-      external: { url: book.coverImageUrl },
-    };
-    pageParams.cover = image;
-    pageParams.icon = image;
-  }
-  return pageParams;
-}
-
-function bookToDatabasePageProperties(book: KoboBook): CreatePageParameters['properties'] {
-  const { title, author, publisher, isbn } = book.info;
-  const lastBookmarkedTime = book.bookmarks.reduce(maxBy((bookmark) => bookmark.updatedAt)).updatedAt;
-  const updateTime = book.info.dateLastRead;
-
-  return {
-    ...(title ? { Title: { title: [{ text: { content: title } }] } } : {}),
-    ...(author ? { Author: { rich_text: [{ text: { content: author } }] } } : {}),
-    ...(publisher ? { Publisher: { rich_text: [{ text: { content: publisher } }] } } : {}),
-    ...(isbn ? { ISBN: { rich_text: [{ text: { content: isbn } }] } } : {}),
-    'Last bookmarked time': { date: { start: lastBookmarkedTime.toISOString() } },
-    ...(updateTime ? { 'Update time': { date: { start: updateTime.toISOString() } } } : {}),
-  };
-}
-
-function bookmarksToBlocks(bookmarks: KoboBookmark[]): BlockObjectRequest[] {
-  const divider: BlockObjectRequest = { object: 'block', type: 'divider', divider: {} };
-  return bookmarks.flatMap((bookmark, index) => {
-    const chapterText =
-      bookmark.chapter.parentChapters.map((chapter) => `${chapter.title} > `) + bookmark.chapter.titles.join(' - ');
-    const chapterBlock: BlockObjectRequest = {
-      paragraph: {
-        rich_text: [{ text: { content: chapterText } }],
-        color: 'gray_background',
-      },
-    };
-    const textBlock: BlockObjectRequest = {
-      paragraph: {
-        rich_text: [
-          {
-            text: {
-              content: bookmark.text,
-            },
-          },
-        ],
-      },
-    };
-    const blocks: BlockObjectRequest[] = [chapterBlock, textBlock];
-    if (index !== 0) {
-      blocks.unshift(divider);
-    }
-    return blocks;
-  });
-}
-
-async function getExportTargetPage(): Promise<string | null> {
-  let exportTargetPageId = getSettingFromStorage(SettingKey.NotionExportTargetPageId);
-  if (exportTargetPageId) {
-    return exportTargetPageId;
-  }
-  const auth = getSettingFromStorage(SettingKey.NotionAuth);
-  if (!auth) {
-    return null;
-  }
-  exportTargetPageId = await getNotionExportTargetPageId(auth);
-  if (exportTargetPageId) {
-    saveSettingToStorage(SettingKey.NotionExportTargetPageId, exportTargetPageId);
-  }
-  return exportTargetPageId;
-}
-
-async function getExportTargetDatabase(): Promise<string | null> {
-  const databaseId = getSettingFromStorage(SettingKey.NotionExportTargetDatabaseId);
-  if (databaseId && (await isLibraryDatabaseId(databaseId))) {
-    return databaseId;
-  }
-  const pageId = getSettingFromStorage(SettingKey.NotionExportTargetPageId);
-  if (!pageId || !(await isPageExists(pageId))) {
-    return null;
-  }
-  const database = await findFirstLibraryDatabase();
-  if (!database) {
-    return null;
-  }
-  saveSettingToStorage(SettingKey.NotionExportTargetDatabaseId, database.id);
-  return database.id;
-}
-
-async function findFirstLibraryDatabase(): Promise<PartialDatabaseObjectResponse | undefined> {
-  const response = await searchDatabase(templateDatabaseTitle);
-  return response.results.find(isLibraryDatabase);
-}
-
-function isLibraryDatabase(database: PartialDatabaseObjectResponse): boolean {
-  const { properties } = database;
-  return templateDatabaseProperties.every((p) => p in properties);
-}
-
-async function isLibraryDatabaseId(databaseId: string): Promise<boolean> {
-  const database = await getDatabase(databaseId);
-  return isLibraryDatabase(database);
 }

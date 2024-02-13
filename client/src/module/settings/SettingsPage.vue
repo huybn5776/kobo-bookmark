@@ -17,7 +17,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 import { getNotionTokenByCode } from '@/api/notion-auth-api.service';
 import { SettingKey } from '@/enum/setting-key';
-import { getNotionExportTargetPageId } from '@/services/notion-page.service';
+import { getNotionExportTargetPageId } from '@/services/notion-export-target.service';
 import { saveSettingToStorage } from '@/services/setting.service';
 
 const oauthClientId = import.meta.env.VITE_NOTION_CLIENT_ID;
