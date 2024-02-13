@@ -1,7 +1,12 @@
-import type { PartialDatabaseObjectResponse, OauthTokenResponse } from '@notionhq/client/build/src/api-endpoints';
+import type {
+  PartialDatabaseObjectResponse,
+  OauthTokenResponse,
+  PageObjectResponse,
+} from '@notionhq/client/build/src/api-endpoints';
 
 import { searchDatabase, getDatabase } from '@/api/notion-database-api.service';
 import { searchPages } from '@/api/notion-page-api.service';
+import { KoboBook } from '@/dto/kobo-book';
 import { SettingKey } from '@/enum/setting-key';
 import { isPageExists } from '@/services/notion-page.service';
 import { getSettingFromStorage, saveSettingToStorage } from '@/services/setting.service';
@@ -63,4 +68,20 @@ function isLibraryDatabase(database: PartialDatabaseObjectResponse): boolean {
 async function isLibraryDatabaseId(databaseId: string): Promise<boolean> {
   const database = await getDatabase(databaseId);
   return isLibraryDatabase(database);
+}
+
+export async function findPageByTitleAndCoverImage(book: KoboBook): Promise<PageObjectResponse | undefined> {
+  const pages = (await searchPages(book.info.title)).results as PageObjectResponse[];
+  return pages.find((page) => {
+    if (page.parent.type !== 'page_id') {
+      return false;
+    }
+    const coverImage = page.cover;
+    if (coverImage?.type !== 'external') {
+      return false;
+    }
+    const url = new URL(coverImage.external.url);
+    const bookId = url.searchParams.get('kobo-bookmark-book-id');
+    return bookId === book.id;
+  });
 }

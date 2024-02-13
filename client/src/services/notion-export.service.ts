@@ -14,7 +14,11 @@ import {
   bookmarksToNotionBlocks,
   bookToNotionDatabasePageProperties,
 } from '@/services/notion-export-mapping.service';
-import { getNotionExportTargetDatabase, getNotionExportTargetPage } from '@/services/notion-export-target.service';
+import {
+  getNotionExportTargetDatabase,
+  getNotionExportTargetPage,
+  findPageByTitleAndCoverImage,
+} from '@/services/notion-export-target.service';
 import { getAllBlocksOfPage, isPageExists } from '@/services/notion-page.service';
 
 const maximumBlocksPerRequest = 100;
@@ -41,6 +45,11 @@ export async function exportBookBookmarks(
   if (book.notion?.lastPageId && (await isPageExists(book.notion.lastPageId))) {
     await exportBookmarksToExistingPage(book.notion.lastPageId, book, task, progressCallback);
     return book.notion;
+  }
+  const existingPage = await findPageByTitleAndCoverImage(book);
+  if (existingPage) {
+    await exportBookmarksToExistingPage(existingPage.id, book, task, progressCallback);
+    return { ...book.notion, lastPageId: existingPage.id };
   }
   const page = await exportBookmarksToNewPage(book, task, progressCallback);
   return { ...book.notion, lastPageId: page.id };
