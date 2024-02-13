@@ -1,5 +1,5 @@
 import { Controller, UseInterceptors, Param, Get, Query } from '@nestjs/common';
-import { GetDatabaseResponse, SearchResponse } from '@notionhq/client/build/src/api-endpoints';
+import { GetDatabaseResponse, SearchResponse, QueryDatabaseResponse } from '@notionhq/client/build/src/api-endpoints';
 
 import { NotionAuthInterceptor } from '@/interceptor/notion-auth.interceptor';
 import { NotionDatabaseApiService } from '@/module/notion/api/notion-database-api.service';
@@ -17,5 +17,13 @@ export class NotionDatabaseController {
   @Get('/:id')
   getDatabase(@Param('id') id: string): Promise<GetDatabaseResponse> {
     return this.notionDatabaseApiService.getDatabase(id);
+  }
+
+  @Get('/:id/query')
+  queryDatabase(
+    @Param('id') id: string,
+    @Query() queryParams?: Record<string, string>,
+  ): Promise<QueryDatabaseResponse> {
+    return this.notionDatabaseApiService.queryDatabase(id, queryParams);
   }
 }

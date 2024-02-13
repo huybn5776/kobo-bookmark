@@ -4,7 +4,7 @@ import type {
   PageObjectResponse,
 } from '@notionhq/client/build/src/api-endpoints';
 
-import { searchDatabase, getDatabase } from '@/api/notion-database-api.service';
+import { searchDatabase, getDatabase, queryDatabase } from '@/api/notion-database-api.service';
 import { searchPages } from '@/api/notion-page-api.service';
 import { KoboBook } from '@/dto/kobo-book';
 import { SettingKey } from '@/enum/setting-key';
@@ -12,7 +12,7 @@ import { isPageExists } from '@/services/notion-page.service';
 import { getSettingFromStorage, saveSettingToStorage } from '@/services/setting.service';
 
 const templateDatabaseTitle = 'Library';
-const templateDatabaseProperties = ['Title', 'Author', 'Publisher', 'ISBN'];
+const templateDatabaseProperties = ['Title', 'Author', 'Publisher', 'ISBN', 'Book id'];
 
 export async function getNotionExportTargetPage(): Promise<string | null> {
   let exportTargetPageId = getSettingFromStorage(SettingKey.NotionExportTargetPageId);
@@ -84,4 +84,12 @@ export async function findPageByTitleAndCoverImage(book: KoboBook): Promise<Page
     const bookId = url.searchParams.get('kobo-bookmark-book-id');
     return bookId === book.id;
   });
+}
+
+export async function findDatabasePageByBookId(
+  databaseId: string,
+  book: KoboBook,
+): Promise<PageObjectResponse | undefined> {
+  const { results } = await queryDatabase(databaseId, { 'Book id': book.id });
+  return results?.[0] as PageObjectResponse;
 }

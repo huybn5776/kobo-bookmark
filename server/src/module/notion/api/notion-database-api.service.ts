@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException, HttpException } from '@nestjs/common';
 import { Client, UnknownHTTPResponseError } from '@notionhq/client';
-import { GetDatabaseResponse, SearchResponse } from '@notionhq/client/build/src/api-endpoints';
+import { GetDatabaseResponse, SearchResponse, QueryDatabaseResponse } from '@notionhq/client/build/src/api-endpoints';
 
 @Injectable()
 export class NotionDatabaseApiService {
@@ -23,6 +23,23 @@ export class NotionDatabaseApiService {
   async getDatabase(id: string): Promise<GetDatabaseResponse> {
     try {
       return await this.notion.databases.retrieve({ database_id: id });
+    } catch (e) {
+      throw this.apiErrorToException(e as Error);
+    }
+  }
+
+  async queryDatabase(id: string, query?: Record<string, string>): Promise<QueryDatabaseResponse> {
+    const filters = Object.entries(query || {}).map(([key, value]) => {
+      return {
+        property: key,
+        rich_text: { contains: value },
+      };
+    });
+    try {
+      return await this.notion.databases.query({
+        database_id: id,
+        filter: { and: filters },
+      });
     } catch (e) {
       throw this.apiErrorToException(e as Error);
     }

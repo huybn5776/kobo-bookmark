@@ -41,6 +41,7 @@ export function bookToNotionDatabasePageProperties(book: KoboBook): CreatePagePa
     ...(isbn ? { ISBN: { rich_text: [{ text: { content: isbn } }] } } : {}),
     'Last bookmarked time': { date: { start: lastBookmarkedTime.toISOString() } },
     ...(updateTime ? { 'Update time': { date: { start: updateTime.toISOString() } } } : {}),
+    'Book id': { rich_text: [{ text: { content: book.id } }] },
   };
 }
 
