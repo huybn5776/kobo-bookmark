@@ -135,7 +135,7 @@ async function exportBookmark(book: KoboBook): Promise<void> {
     message.error('Please connect to Notion at Settings page first.');
     return;
   }
-  const task: BookExportTask = { id: Date.now(), book, state: BookExportState.Pending, percentage: 0 };
+  const task: BookExportTask = { id: Date.now(), book, state: BookExportState.Pending };
   bookExportTasks.value.push(task);
 
   if (pendingExportRequest.value) {

@@ -20,6 +20,7 @@ export enum BookExportState {
 }
 
 export enum BookExportStage {
+  CheckingTargetPage = 'checking-target-page',
   CreatePage = 'create-page',
   UpdatePage = 'update-page',
   AddBlocks = 'add-blocks',

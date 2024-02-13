@@ -78,6 +78,7 @@ const progressMessage = computed(() => {
 });
 
 const stageToText: Record<BookExportStage, string> = {
+  [BookExportStage.CheckingTargetPage]: 'Checking target page',
   [BookExportStage.CreatePage]: 'Creating page',
   [BookExportStage.UpdatePage]: 'Updating page',
   [BookExportStage.AddBlocks]: 'Adding blocks',

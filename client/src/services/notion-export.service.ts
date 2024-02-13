@@ -82,8 +82,14 @@ export async function exportBookmarksToExistingPage(
   book: KoboBook,
   initialTask: BookExportTask,
   progressCallback: (task: BookExportTask) => void,
-) {
-  let task: BookExportTask = { ...initialTask, step: 0, totalStep: 3, stage: BookExportStage.CleanupPage };
+): Promise<void> {
+  let task: BookExportTask = {
+    ...initialTask,
+    percentage: 0,
+    step: 0,
+    totalStep: 3,
+    stage: BookExportStage.CleanupPage,
+  };
   const updateProgress = (t: BookExportTask) => progressCallback((task = t));
 
   await clearPage(pageId, (percentage) => updateProgress({ ...task, percentage }));
