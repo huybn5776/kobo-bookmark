@@ -152,14 +152,14 @@ function isNotionIntegrationReady(): boolean {
 
 async function tryExportBookmark(book: KoboBook, task: BookExportTask): Promise<void> {
   try {
-    const pageId = await exportBookBookmarks(book, task, (updatedTask) => {
+    const notionExportState = await exportBookBookmarks(book, task, (updatedTask) => {
       const currentTask = getTaskById(task);
       if (currentTask?.state === BookExportState.Canceled) {
         throw new Error('Task canceled');
       }
       updateTask(updatedTask);
     });
-    updateBookById(book.id, (b) => ({ ...b, lastExportedNotionPageId: pageId }));
+    updateBookById(book.id, (b) => ({ ...b, notion: notionExportState }));
   } catch (e) {
     const currentTask = getTaskById(task);
     if (currentTask?.state !== BookExportState.Canceled) {

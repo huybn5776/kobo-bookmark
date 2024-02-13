@@ -8,6 +8,7 @@ export enum SettingKey {
   BookmarkSorting = 'bookmark-sorting',
   NotionAuth = 'notion-auth',
   NotionExportTargetPageId = 'notion-export-target-page-id',
+  NotionExportTargetDatabaseId = 'notion-export-target-database-id',
 }
 
 export type SettingValueType = {
@@ -15,4 +16,5 @@ export type SettingValueType = {
   [SettingKey.BookmarkSorting]: BookmarkSortingKey;
   [SettingKey.NotionAuth]: OauthTokenResponse;
   [SettingKey.NotionExportTargetPageId]: string;
+  [SettingKey.NotionExportTargetDatabaseId]: string;
 };
