@@ -11,6 +11,7 @@ import { SettingKey } from '@/enum/setting-key';
 import { isPageExists } from '@/services/notion-page.service';
 import { getSettingFromStorage, saveSettingToStorage } from '@/services/setting.service';
 
+const templatePageTile = 'Kobo bookmarks';
 const templateDatabaseTitle = 'Library';
 const templateDatabaseProperties = ['Title', 'Author', 'Publisher', 'ISBN', 'Book id'];
 
@@ -34,8 +35,13 @@ export async function getNotionExportTargetPageId(authResponse: OauthTokenRespon
   if (authResponse.duplicated_template_id) {
     return authResponse.duplicated_template_id;
   }
-  const pages = await searchPages();
-  return pages.results[0]?.id;
+  const pages = (await searchPages()).results as PageObjectResponse[];
+  const targetPage =
+    pages.find((page) => {
+      const titleProperty = page.properties.title;
+      return titleProperty?.type === 'title' && titleProperty.title[0].plain_text === templatePageTile;
+    }) || pages.find((page) => page.parent.type === 'workspace');
+  return targetPage?.id || null;
 }
 
 export async function getNotionExportTargetDatabase(): Promise<string | null> {
@@ -90,6 +96,6 @@ export async function findDatabasePageByBookId(
   databaseId: string,
   book: KoboBook,
 ): Promise<PageObjectResponse | undefined> {
-  const { results } = await queryDatabase(databaseId, { 'Book id': book.id });
-  return results?.[0] as PageObjectResponse;
+  const pages = (await queryDatabase(databaseId, { 'Book id': book.id })).results;
+  return pages?.[0] as PageObjectResponse;
 }
