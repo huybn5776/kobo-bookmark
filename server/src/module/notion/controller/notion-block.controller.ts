@@ -1,8 +1,9 @@
-import { Controller, Post, UseInterceptors, Param, Body, Delete, HttpCode } from '@nestjs/common';
+import { Controller, Post, UseInterceptors, Param, Body, Delete, HttpCode, Get } from '@nestjs/common';
 import {
   UpdateBlockParameters,
   UpdateBlockResponse,
   DeleteBlockResponse,
+  GetBlockResponse,
 } from '@notionhq/client/build/src/api-endpoints';
 
 import { NotionAuthInterceptor } from '@/interceptor/notion-auth.interceptor';
@@ -12,6 +13,11 @@ import { NotionBlockApiService } from '@/module/notion/api/notion-block-api.serv
 @UseInterceptors(NotionAuthInterceptor)
 export class NotionBlockController {
   constructor(private readonly notionBlockApiService: NotionBlockApiService) {}
+
+  @Get('/:id')
+  getBlock(@Param('id') id: string): Promise<GetBlockResponse> {
+    return this.notionBlockApiService.getBlock(id);
+  }
 
   @Post('/\\$deleteMulti')
   @HttpCode(200)

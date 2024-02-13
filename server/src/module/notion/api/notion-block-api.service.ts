@@ -10,11 +10,20 @@ import {
   DeleteBlockResponse,
   PartialBlockObjectResponse,
   BlockObjectResponse,
+  GetBlockResponse,
 } from '@notionhq/client/build/src/api-endpoints';
 
 @Injectable()
 export class NotionBlockApiService {
   constructor(private readonly notion: Client) {}
+
+  async getBlock(id: string): Promise<GetBlockResponse> {
+    try {
+      return await this.notion.blocks.retrieve({ block_id: id });
+    } catch (e) {
+      throw this.apiErrorToException(e as Error);
+    }
+  }
 
   async appendBlock(parentId: string, blocks: BlockObjectRequest[]): Promise<AppendBlockChildrenResponse> {
     try {
