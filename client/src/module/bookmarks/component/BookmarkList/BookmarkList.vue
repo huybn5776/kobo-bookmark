@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
 import { KoboBookmark } from '@/dto/kobo-book';
-import BookmarkItem from '@/module/bookmarks/components/BookmarkItem/BookmarkItem.vue';
+import BookmarkItem from '@/module/bookmarks/component/BookmarkItem/BookmarkItem.vue';
 
 defineProps<{ bookmarks: KoboBookmark[] }>();
 </script>

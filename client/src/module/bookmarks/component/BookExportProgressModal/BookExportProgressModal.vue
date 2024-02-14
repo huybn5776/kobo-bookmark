@@ -35,7 +35,7 @@ import { groupBy, isNotNil } from 'ramda';
 
 import ChevronArrow from '@/component/ChevronArrow/ChevronArrow.vue';
 import { BookExportTask, BookExportState, BookExportStage } from '@/interface/book-export-task';
-import BookTaskItem from '@/module/bookmarks/components/BookTaskItem/BookTaskItem.vue';
+import BookTaskItem from '@/module/bookmarks/component/BookTaskItem/BookTaskItem.vue';
 
 const props = defineProps<{ tasks: BookExportTask[] }>();
 const emits = defineEmits<{

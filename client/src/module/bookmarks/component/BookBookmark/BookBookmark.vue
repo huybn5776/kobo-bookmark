@@ -31,8 +31,8 @@ import { NButton } from 'naive-ui';
 
 import ChevronArrow from '@/component/ChevronArrow/ChevronArrow.vue';
 import { KoboBook } from '@/dto/kobo-book';
-import BookCoverView from '@/module/bookmarks/components/BookCoverView/BookCoverView.vue';
-import BookmarkList from '@/module/bookmarks/components/BookmarkList/BookmarkList.vue';
+import BookCoverView from '@/module/bookmarks/component/BookCoverView/BookCoverView.vue';
+import BookmarkList from '@/module/bookmarks/component/BookmarkList/BookmarkList.vue';
 
 const props = defineProps<{ book: KoboBook; defaultExpanded: boolean; exportLoading: boolean }>();
 const emits = defineEmits<{ (e: 'onExportClick', value: KoboBook): void }>();
