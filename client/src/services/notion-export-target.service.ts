@@ -15,7 +15,7 @@ const templatePageTile = 'Kobo bookmarks';
 const templateDatabaseTitle = 'Library';
 const templateDatabaseProperties = ['Title', 'Author', 'Publisher', 'ISBN', 'Book id'];
 
-export async function getNotionExportTargetPage(): Promise<string | null> {
+export async function getOrUpdateNotionExportTargetPage(): Promise<string | null> {
   let exportTargetPageId = getSettingFromStorage(SettingKey.NotionExportTargetPageId);
   if (exportTargetPageId) {
     return exportTargetPageId;
@@ -24,18 +24,22 @@ export async function getNotionExportTargetPage(): Promise<string | null> {
   if (!auth) {
     return null;
   }
-  exportTargetPageId = await getNotionExportTargetPageId(auth);
+  exportTargetPageId = await findNotionExportTargetPageId(auth);
   if (exportTargetPageId) {
     saveSettingToStorage(SettingKey.NotionExportTargetPageId, exportTargetPageId);
   }
   return exportTargetPageId;
 }
 
-export async function getNotionExportTargetPageId(authResponse: OauthTokenResponse): Promise<string | null> {
+export async function findNotionExportTargetPageId(authResponse: OauthTokenResponse): Promise<string | null> {
   if (authResponse.duplicated_template_id) {
     return authResponse.duplicated_template_id;
   }
   const pages = (await searchPages()).results as PageObjectResponse[];
+  return findNotionTemplatePageId(pages);
+}
+
+export function findNotionTemplatePageId(pages: PageObjectResponse[]): string | null {
   const targetPage =
     pages.find((page) => {
       const titleProperty = page.properties.title;
@@ -49,7 +53,7 @@ export async function getNotionExportTargetDatabase(): Promise<string | null> {
   if (databaseId && (await isLibraryDatabaseId(databaseId))) {
     return databaseId;
   }
-  const pageId = await getNotionExportTargetPage();
+  const pageId = await getOrUpdateNotionExportTargetPage();
   if (!pageId || !(await isPageExists(pageId))) {
     return null;
   }

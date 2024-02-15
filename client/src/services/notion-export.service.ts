@@ -16,7 +16,7 @@ import {
 } from '@/services/notion-export-mapping.service';
 import {
   getNotionExportTargetDatabase,
-  getNotionExportTargetPage,
+  getOrUpdateNotionExportTargetPage,
   findPageByTitleAndCoverImage,
   findDatabasePageByBookId,
 } from '@/services/notion-export-target.service';
@@ -63,7 +63,7 @@ async function exportBookmarksToNewPage(
 ): Promise<CreatePageResponse> {
   let task: BookExportTask = { ...initialTask, stage: BookExportStage.CreatePage };
 
-  const targetPageId = await getNotionExportTargetPage();
+  const targetPageId = await getOrUpdateNotionExportTargetPage();
   if (!targetPageId) {
     progressCallback({ ...task, state: BookExportState.Failed });
     throw new Error('No target Notion page to export');

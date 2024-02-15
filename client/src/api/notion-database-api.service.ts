@@ -1,15 +1,15 @@
 import type {
   SearchResponse,
-  PartialDatabaseObjectResponse,
   GetDatabaseResponse,
   QueryDatabaseResponse,
+  DatabaseObjectResponse,
 } from '@notionhq/client/build/src/api-endpoints';
 
 import axiosInstance from '@/api/notion-axios-instance';
 
 export async function searchDatabase(
   title?: string,
-): Promise<Omit<SearchResponse, 'results'> & { results: PartialDatabaseObjectResponse[] }> {
+): Promise<Omit<SearchResponse, 'results'> & { results: DatabaseObjectResponse[] }> {
   return (await axiosInstance.get(`/api/notion/databases`, { params: { title } })).data;
 }
 
