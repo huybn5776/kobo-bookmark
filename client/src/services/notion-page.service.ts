@@ -23,3 +23,8 @@ export async function isPageExists(id: string): Promise<boolean> {
     return false;
   }
 }
+
+export function getTitleOfPage(page: PageObjectResponse): string | undefined {
+  const titleProperty = page.properties.title;
+  return (titleProperty?.type === 'title' && titleProperty.title[0].plain_text) || undefined;
+}

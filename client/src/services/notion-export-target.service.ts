@@ -2,13 +2,14 @@ import type {
   PartialDatabaseObjectResponse,
   OauthTokenResponse,
   PageObjectResponse,
+  DatabaseObjectResponse,
 } from '@notionhq/client/build/src/api-endpoints';
 
 import { searchDatabase, getDatabase, queryDatabase } from '@/api/notion-database-api.service';
-import { searchPages } from '@/api/notion-page-api.service';
+import { searchPages, getPage } from '@/api/notion-page-api.service';
 import { KoboBook } from '@/dto/kobo-book';
 import { SettingKey } from '@/enum/setting-key';
-import { isPageExists } from '@/services/notion-page.service';
+import { getTitleOfPage } from '@/services/notion-page.service';
 import { getSettingFromStorage, saveSettingToStorage } from '@/services/setting.service';
 
 const templatePageTile = 'Kobo bookmarks';
@@ -16,7 +17,7 @@ const templateDatabaseTitle = 'Library';
 const templateDatabaseProperties = ['Title', 'Author', 'Publisher', 'ISBN', 'Book id'];
 
 export async function getOrUpdateNotionExportTargetPage(): Promise<string | null> {
-  let exportTargetPageId = getSettingFromStorage(SettingKey.NotionExportTargetPageId);
+  const exportTargetPageId = getSettingFromStorage(SettingKey.NotionExportTargetPageId);
   if (exportTargetPageId) {
     return exportTargetPageId;
   }
@@ -24,38 +25,34 @@ export async function getOrUpdateNotionExportTargetPage(): Promise<string | null
   if (!auth) {
     return null;
   }
-  exportTargetPageId = await findNotionExportTargetPageId(auth);
-  if (exportTargetPageId) {
-    saveSettingToStorage(SettingKey.NotionExportTargetPageId, exportTargetPageId);
+  const exportTargetPage = await findNotionExportTargetPageFromAuth(auth);
+  if (exportTargetPage) {
+    saveSettingToStorage(SettingKey.NotionExportTargetPageId, exportTargetPage.id);
   }
-  return exportTargetPageId;
+  return null;
 }
 
-export async function findNotionExportTargetPageId(authResponse: OauthTokenResponse): Promise<string | null> {
+export async function findNotionExportTargetPageFromAuth(
+  authResponse: OauthTokenResponse,
+): Promise<PageObjectResponse | null> {
   if (authResponse.duplicated_template_id) {
-    return authResponse.duplicated_template_id;
+    return (await getPage(authResponse.duplicated_template_id)) as PageObjectResponse;
   }
   const pages = (await searchPages()).results as PageObjectResponse[];
-  return findNotionTemplatePageId(pages);
+  return findNotionTemplatePage(pages) || null;
 }
 
-export function findNotionTemplatePageId(pages: PageObjectResponse[]): string | null {
-  const targetPage =
-    pages.find((page) => {
-      const titleProperty = page.properties.title;
-      return titleProperty?.type === 'title' && titleProperty.title[0].plain_text === templatePageTile;
-    }) || pages.find((page) => page.parent.type === 'workspace');
-  return targetPage?.id || null;
+export function findNotionTemplatePage(pages: PageObjectResponse[]): PageObjectResponse | undefined {
+  return (
+    pages.find((page) => getTitleOfPage(page) === templatePageTile) ||
+    pages.find((page) => page.parent.type === 'workspace')
+  );
 }
 
 export async function getNotionExportTargetDatabase(): Promise<string | null> {
   const databaseId = getSettingFromStorage(SettingKey.NotionExportTargetDatabaseId);
   if (databaseId && (await isLibraryDatabaseId(databaseId))) {
     return databaseId;
-  }
-  const pageId = await getOrUpdateNotionExportTargetPage();
-  if (!pageId || !(await isPageExists(pageId))) {
-    return null;
   }
   const database = await findFirstLibraryDatabase();
   if (!database) {
@@ -65,12 +62,12 @@ export async function getNotionExportTargetDatabase(): Promise<string | null> {
   return database.id;
 }
 
-async function findFirstLibraryDatabase(): Promise<PartialDatabaseObjectResponse | undefined> {
+export async function findFirstLibraryDatabase(): Promise<DatabaseObjectResponse | undefined> {
   const response = await searchDatabase(templateDatabaseTitle);
   return response.results.find(isLibraryDatabase);
 }
 
-function isLibraryDatabase(database: PartialDatabaseObjectResponse): boolean {
+export function isLibraryDatabase(database: PartialDatabaseObjectResponse): boolean {
   const { properties } = database;
   return templateDatabaseProperties.every((p) => p in properties);
 }

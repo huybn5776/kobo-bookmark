@@ -1,0 +1,31 @@
+.setting-section {
+  & + &::before {
+    display: block;
+    width: 100%;
+    height: 1px;
+    margin: 32px 0 16px 0;
+    background: rgba(white, .3);
+    content: '';
+  }
+}
+
+.setting-section-title {
+  font-size: 20px;
+}
+
+.setting-row-title {
+  margin: 0 0 4px 0;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.setting-row {
+  & + & {
+    margin-top: 16px;
+  }
+}
+
+.setting-note {
+  margin: 0 0 2px 0;
+  color: lightgray;
+}
