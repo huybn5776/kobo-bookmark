@@ -22,6 +22,12 @@
   object-fit: cover;
 }
 
+.book-export-item-fallback-icon {
+  width: 24px;
+  height: 24px;
+  background: url('/src/assets/svg/blue-book.svg') no-repeat center;
+}
+
 .book-export-item-name {
   overflow-x: hidden;
   white-space: pre;

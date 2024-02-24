@@ -5,7 +5,14 @@
     @mouseover="hovered = true"
     @mouseleave="hovered = false"
   >
-    <img class="book-export-item-image" :src="task.book.coverImageUrl" :alt="task.book.info.title" />
+    <img
+      v-if="!failToLoadCoverImage"
+      class="book-export-item-image"
+      :src="task.book.coverImageUrl"
+      :alt="task.book.info.title"
+      @error="failToLoadCoverImage = true"
+    />
+    <i v-if="failToLoadCoverImage" class="book-export-item-fallback-icon" />
     <span class="book-export-item-name">{{ task.book.info.title }}</span>
 
     <i v-if="task.state === BookExportState.Canceled" class="cancel-icon" />
@@ -42,6 +49,7 @@ import { BookExportTask, BookExportState } from '@/interface/book-export-task';
 const props = defineProps<{ task: BookExportTask }>();
 const emits = defineEmits<{ (e: 'cancel'): void }>();
 
+const failToLoadCoverImage = ref(!props.task.book.coverImageUrl);
 const hovered = ref(false);
 
 const percentage = computed(() => {
