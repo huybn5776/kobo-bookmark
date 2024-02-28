@@ -12,9 +12,9 @@ export async function openDb(data?: ArrayLike<number> | Buffer | null): Promise<
 
 export function getBookmarks(db: Database, bookIds?: string[]): BookmarkEntity[] {
   const sql = `
-select BookmarkID, VolumeID, ContentId, Text, ChapterProgress, DateCreated, DateModified
+select BookmarkID, VolumeID, ContentId, Text, Annotation, ChapterProgress, DateCreated, DateModified
 from Bookmark
-where Type = 'highlight'
+where Type = 'highlight' or type = 'note'
 `;
   let results: QueryExecResult[];
   if (bookIds?.length) {
@@ -29,9 +29,10 @@ where Type = 'highlight'
       volumeId: values[1] as string,
       contentId: values[2] as string,
       text: values[3] as string,
-      chapterProgress: values[4] as number,
-      createdAt: new Date(values[5] as string),
-      updatedAt: new Date(values[6] as string),
+      annotation: values[4] as string,
+      chapterProgress: values[5] as number,
+      createdAt: new Date(values[6] as string),
+      updatedAt: new Date(values[7] as string),
     };
   });
 }

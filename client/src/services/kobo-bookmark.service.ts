@@ -46,6 +46,7 @@ function bookmarkEntityToKoboBookmark(
     const koboBook: KoboBookmark = {
       id: bookmark.id,
       text: prettifyBookmarkText(bookmark),
+      annotation: bookmark.annotation,
       chapter: koboBookChapter,
       chapterProgress: bookmark.chapterProgress,
       createdAt: bookmark.createdAt,
@@ -96,7 +97,8 @@ function prettifyBookmarkText(bookmark: BookmarkEntity): string {
       .replaceAll('　　', '\n')
       .replaceAll(/\n+/g, '\n')
       // eslint-disable-next-line no-irregular-whitespace
-      .replaceAll(/(\d\.[　 ])/g, '\n$1')
+      .replaceAll(/(\d{1,2}\.[　 ])/g, '\n$1')
+      .replaceAll(/。(\d{1,2}\.)/g, '。\n$1')
       .replace(/\n$/g, '')
       .replaceAll(/(^\t+|(?<=\n)\t+)/g, '\t')
   );

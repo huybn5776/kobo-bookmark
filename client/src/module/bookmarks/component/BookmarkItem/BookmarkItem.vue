@@ -13,6 +13,9 @@
     <p class="bookmark-text">
       {{ props.bookmark.text }}
     </p>
+    <blockquote v-if="props.bookmark.annotation" class="bookmark-annotation">
+      {{ props.bookmark.annotation }}
+    </blockquote>
   </div>
 </template>
 

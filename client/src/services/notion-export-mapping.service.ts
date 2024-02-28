@@ -62,6 +62,14 @@ export function bookmarksToNotionBlocks(bookmarks: KoboBookmark[]): BlockObjectR
       },
     };
     const blocks: BlockObjectRequest[] = [chapterBlock, textBlock];
+    if (bookmark.annotation) {
+      blocks.push({
+        quote: {
+          rich_text: [{ type: 'text', text: { content: bookmark.annotation } }],
+        },
+      });
+    }
+
     if (index !== 0) {
       blocks.unshift(divider);
     }

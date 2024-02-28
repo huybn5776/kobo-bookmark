@@ -24,6 +24,7 @@ export interface KoboBookInfo {
 export interface KoboBookmark {
   id: string;
   text: string;
+  annotation?: string;
   chapter: KoboBookmarkChapter;
   chapterProgress: number;
   createdAt: Date;
