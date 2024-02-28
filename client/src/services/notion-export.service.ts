@@ -8,6 +8,8 @@ import { splitEvery } from 'ramda';
 import { appendNotionBlocks, deleteBlocks, deleteBlock } from '@/api/notion-block-api.service';
 import { createNotionPage, updateNotionPage } from '@/api/notion-page-api.service';
 import { KoboBook, NotionExportState } from '@/dto/kobo-book';
+import { NotionExportToType } from '@/enum/notion-export-to-type';
+import { SettingKey } from '@/enum/setting-key';
 import { BookExportTask, BookExportStage, BookExportState } from '@/interface/book-export-task';
 import {
   bookToNotionUpdatePageParams,
@@ -21,6 +23,7 @@ import {
   findDatabasePageByBookId,
 } from '@/services/notion-export-target.service';
 import { getAllBlocksOfPage, isPageExists } from '@/services/notion-page.service';
+import { getSettingFromStorage } from '@/services/setting.service';
 
 const maximumBlocksPerRequest = 100;
 const deleteBlockCountPerRequest = 5;
@@ -37,12 +40,37 @@ export async function exportBookBookmarks(
   };
   progressCallback(task);
 
-  const targetDatabase = await getNotionExportTargetDatabase();
-  if (targetDatabase) {
-    const page = await exportBookmarksToDatabasePage(targetDatabase, book, task, progressCallback);
-    return { ...book.notion, lastDatabasePageId: page.id };
+  const exportToType = getSettingFromStorage(SettingKey.NotionExportTo) || NotionExportToType.Auto;
+  switch (exportToType) {
+    case NotionExportToType.Page:
+      return exportBookmarkToPage(book, task, progressCallback);
+    case NotionExportToType.Database:
+      return exportBookmarkToDatabase(book, task, progressCallback);
+    case NotionExportToType.Auto:
+      return exportBookmarkToDatabaseOrPage(book, task, progressCallback);
+    default:
+      throw new Error(`Invalid export type: ${exportToType}`);
   }
+}
 
+async function exportBookmarkToDatabase(
+  book: KoboBook,
+  task: BookExportTask,
+  progressCallback: (progress: BookExportTask) => void,
+): Promise<NotionExportState> {
+  const targetDatabase = await getNotionExportTargetDatabase();
+  if (!targetDatabase) {
+    throw new Error('No library database found under export target page');
+  }
+  const page = await exportBookmarksToDatabasePage(targetDatabase, book, task, progressCallback);
+  return { ...book.notion, lastDatabasePageId: page.id };
+}
+
+async function exportBookmarkToPage(
+  book: KoboBook,
+  task: BookExportTask,
+  progressCallback: (progress: BookExportTask) => void,
+): Promise<NotionExportState> {
   if (book.notion?.lastPageId && (await isPageExists(book.notion.lastPageId))) {
     await exportBookmarksToExistingPage(book.notion.lastPageId, book, task, progressCallback);
     return book.notion;
@@ -54,6 +82,19 @@ export async function exportBookBookmarks(
   }
   const page = await exportBookmarksToNewPage(book, task, progressCallback);
   return { ...book.notion, lastPageId: page.id };
+}
+
+async function exportBookmarkToDatabaseOrPage(
+  book: KoboBook,
+  task: BookExportTask,
+  progressCallback: (progress: BookExportTask) => void,
+): Promise<NotionExportState> {
+  const targetDatabase = await getNotionExportTargetDatabase();
+  if (targetDatabase) {
+    const page = await exportBookmarksToDatabasePage(targetDatabase, book, task, progressCallback);
+    return { ...book.notion, lastDatabasePageId: page.id };
+  }
+  return exportBookmarkToPage(book, task, progressCallback);
 }
 
 async function exportBookmarksToNewPage(

@@ -3,6 +3,24 @@
     <h3 class="setting-section-title">Notion settings</h3>
 
     <div class="setting-row">
+      <p class="setting-row-title">Export to</p>
+      <NRadioGroup v-model:value="exportTo" class="setting-vertical-radio-group">
+        <NRadio :value="NotionExportToType.Page">
+          <span class="setting-vertical-radio-label">Page</span>
+          <p class="setting-vertical-radio-description">Create new page and insert it to the end of connected page.</p>
+        </NRadio>
+        <NRadio :value="NotionExportToType.Database">
+          <span class="setting-vertical-radio-label">Database</span>
+          <p class="setting-vertical-radio-description">Insert into table view, that is better for filtering and sorting.</p>
+        </NRadio>
+        <NRadio :value="NotionExportToType.Auto">
+          <span class="setting-vertical-radio-label">Auto detect</span>
+          <p class="setting-vertical-radio-description">Use the database first if available, otherwise use the page.</p>
+        </NRadio>
+      </NRadioGroup>
+    </div>
+
+    <div class="setting-row">
       <p class="setting-row-title">Export target page</p>
       <NotionConnectedPageSelect
         v-model:id="exportPageId"
@@ -43,7 +61,7 @@ import { onMounted, ref, computed } from 'vue';
 
 import type { OauthTokenResponse, PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 import { AxiosError } from 'axios';
-import { useNotification, NButton, SelectOption } from 'naive-ui';
+import { useNotification, NButton, SelectOption, NRadioGroup, NRadio } from 'naive-ui';
 import { sortBy } from 'ramda';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -51,6 +69,7 @@ import { getNotionTokenByCode } from '@/api/notion-auth-api.service';
 import { searchDatabase } from '@/api/notion-database-api.service';
 import { searchPages } from '@/api/notion-page-api.service';
 import { useSyncSetting } from '@/composition/use-sync-setting';
+import { NotionExportToType } from '@/enum/notion-export-to-type';
 import { SettingKey } from '@/enum/setting-key';
 import NotionConnectedPageSelect from '@/module/settings/component/NotionConnectedPageSelect/NotionConnectedPageSelect.vue';
 import { getTitleOfDatabase } from '@/services/notion-database.service';
@@ -73,6 +92,7 @@ const loadingExportTargetPage = ref(false);
 const loadingExportTargetDatabase = ref(false);
 
 const notionAuth = useSyncSetting(SettingKey.NotionAuth);
+const exportTo = useSyncSetting(SettingKey.NotionExportTo, NotionExportToType.Auto);
 const exportPageId = useSyncSetting(SettingKey.NotionExportTargetPageId);
 const exportPageTitle = useSyncSetting(SettingKey.NotionExportTargetPageTitle);
 const exportDatabaseId = useSyncSetting(SettingKey.NotionExportTargetDatabaseId);
