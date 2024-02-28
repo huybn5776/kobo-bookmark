@@ -15,6 +15,7 @@ import {
   bookToNotionUpdatePageParams,
   bookmarksToNotionBlocks,
   bookToNotionDatabasePageProperties,
+  bookmarksToNotionPageBookDetail,
 } from '@/services/notion-export-mapping.service';
 import {
   getNotionExportTargetDatabase,
@@ -114,7 +115,8 @@ async function exportBookmarksToNewPage(
     parent: { type: 'page_id', page_id: targetPageId },
     ...bookToNotionUpdatePageParams(book),
   };
-  const allBlocks = bookmarksToNotionBlocks(book.bookmarks);
+  const detailBlock = bookmarksToNotionPageBookDetail(book);
+  const allBlocks = [...detailBlock, ...bookmarksToNotionBlocks(book.bookmarks)];
   return createPageAndBlocks(pageParams, allBlocks, (update) => progressCallback((task = update(task))));
 }
 
@@ -213,7 +215,8 @@ export async function appendBookmarkToPage(
   book: KoboBook,
   progressCallback?: (percentage: number) => void,
 ): Promise<void> {
-  const allBlocks = bookmarksToNotionBlocks(book.bookmarks);
+  const detailBlock = bookmarksToNotionPageBookDetail(book);
+  const allBlocks = [...detailBlock, ...bookmarksToNotionBlocks(book.bookmarks)];
   const windowedBlocks = splitEvery(100, allBlocks);
   progressCallback?.(0);
   let completedCount = 0;

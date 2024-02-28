@@ -7,6 +7,9 @@ import { maxBy } from 'ramda';
 
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 
+type BulletedListItem = Pick<Extract<BlockObjectRequest, { bulleted_list_item: unknown }>, 'bulleted_list_item'>;
+type BulletedListChildren = BulletedListItem['bulleted_list_item']['children'];
+
 export function bookToNotionUpdatePageParams(
   book: KoboBook,
 ): Omit<UpdatePageParameters, 'page_id'> & Required<Pick<UpdatePageParameters, 'properties'>> {
@@ -43,6 +46,35 @@ export function bookToNotionDatabasePageProperties(book: KoboBook): CreatePagePa
     ...(updateTime ? { 'Update time': { date: { start: updateTime.toISOString() } } } : {}),
     'Book id': { rich_text: [{ text: { content: book.id } }] },
   };
+}
+
+export function bookmarksToNotionPageBookDetail(book: KoboBook): BlockObjectRequest[] {
+  const listBlocks: BulletedListChildren = [];
+  if (book.info.author) {
+    listBlocks.push({
+      bulleted_list_item: {
+        rich_text: [{ type: 'text', text: { content: `Author: ${book.info.author}` } }],
+      },
+    });
+  }
+  if (book.info.publisher) {
+    listBlocks.push({
+      bulleted_list_item: {
+        rich_text: [{ type: 'text', text: { content: `Publisher: ${book.info.publisher}` } }],
+      },
+    });
+  }
+  if (!listBlocks.length) {
+    return [];
+  }
+  const toggleBlock: BlockObjectRequest = {
+    toggle: {
+      rich_text: [{ type: 'text', text: { content: 'Book details' } }],
+      children: listBlocks,
+    },
+  };
+  const divider: BlockObjectRequest = { object: 'block', type: 'divider', divider: {} };
+  return [toggleBlock, divider];
 }
 
 export function bookmarksToNotionBlocks(bookmarks: KoboBookmark[]): BlockObjectRequest[] {
