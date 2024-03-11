@@ -1,3 +1,4 @@
+import equal from 'fast-deep-equal';
 import { indexBy } from 'ramda';
 
 import { KoboBook, KoboBookChanges, KoboBookmarkChanges, KoboBookmarkChangesType } from '@/dto/kobo-book';
@@ -6,7 +7,7 @@ export function calcUpdatesOfBooks(originalBooks: KoboBook[], currentBooks: Kobo
   const originalBooksIndex = indexBy((book) => book.id, originalBooks);
   const currentBooksIndex = indexBy((book) => book.id, currentBooks);
 
-  const addedAndUpdated = currentBooks.flatMap((book) => {
+  const addedAndUpdated: KoboBookChanges[] = currentBooks.flatMap((book) => {
     const originalBook = originalBooksIndex[book.id];
     if (!originalBook) {
       const changes: KoboBookmarkChanges[] = book.bookmarks.map((bookmark) => ({
@@ -14,7 +15,7 @@ export function calcUpdatesOfBooks(originalBooks: KoboBook[], currentBooks: Kobo
         type: KoboBookmarkChangesType.Added,
         current: bookmark,
       }));
-      return [{ book, changes }];
+      return [{ book, changes, bookFileChanged: true }];
     }
     const bookChanges = findUpdatedBookmarksOfBook(originalBook, book);
     return bookChanges ? [bookChanges] : [];
@@ -28,7 +29,7 @@ export function calcUpdatesOfBooks(originalBooks: KoboBook[], currentBooks: Kobo
         type: KoboBookmarkChangesType.Removed,
         original: bookmark,
       }));
-      return { book, changes };
+      return { book, changes, bookFileChanged: true };
     });
 
   return [...addedAndUpdated, ...removed];
@@ -61,5 +62,16 @@ export function findUpdatedBookmarksOfBook(originalBook: KoboBook, currentBook: 
   if (!changes.length) {
     return null;
   }
-  return { originalBook, book: currentBook, changes };
+  return { book: currentBook, changes, bookFileChanged: !isSameBookFile(originalBook, currentBook) };
+}
+
+export function isSameBookFile(book1: KoboBook, book2: KoboBook): boolean {
+  const info1 = book1.info;
+  const info2 = book2.info;
+  return (
+    book1.id === book2.id &&
+    info1.fileSize === info2.fileSize &&
+    equal(info1.createdAt, info2.createdAt) &&
+    equal(book1.chapters, book2.chapters)
+  );
 }

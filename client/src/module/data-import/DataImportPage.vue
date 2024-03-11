@@ -25,7 +25,7 @@ import { sortWith, ascend, indexBy } from 'ramda';
 import { useRouter } from 'vue-router';
 
 import FileDropZone from '@/component/FileDropZone/FileDropZone.vue';
-import { KoboBookChanges, KoboBook } from '@/dto/kobo-book';
+import { KoboBookChanges, KoboBook, KoboBookmarkChanges, KoboBookmark, KoboBookmarkChangesType } from '@/dto/kobo-book';
 import DataImportResult from '@/module/data-import/component/DataImportResult/DataImportResult.vue';
 import { putBooksToDb, getAllBooksFromDb } from '@/services/bookmark-manage.service';
 import { createBookmarkPositionSortFn } from '@/services/kobo-book-sort.service';
@@ -66,13 +66,15 @@ async function onFile(files: Record<string, File>): Promise<void> {
 
 function sortUpdatesBookmarksByPosition(updates: KoboBookChanges[]): KoboBookChanges[] {
   return updates.map((update) => {
-    const bookChapterChanged =
-      update.originalBook && JSON.stringify(update.originalBook.chapters) !== JSON.stringify(update.book.chapters);
-    if (bookChapterChanged) {
+    if (update.bookFileChanged && update.changes.some((change) => change.type === KoboBookmarkChangesType.Removed)) {
       return update;
     }
     const sortedChanges = sortWith(
-      [createBookmarkPositionSortFn((c) => c.original || c.current), ascend((change) => change.type)],
+      [
+        createBookmarkPositionSortFn((c) => c.original || c.current),
+        ascend<KoboBookmarkChanges>((c) => ((c.original || c.current) as KoboBookmark).startContainerPath),
+        ascend<KoboBookmarkChanges>((change) => change.type),
+      ],
       update.changes,
     );
     return { ...update, changes: sortedChanges };
