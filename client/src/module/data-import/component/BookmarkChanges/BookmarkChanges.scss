@@ -1,0 +1,36 @@
+.bookmark-changes {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 8px;
+  align-items: center;
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.bookmark-changes-tag {
+  padding: 8px;
+  text-align: center;
+  background-color: rgba(white, .04);
+  border-radius: 4px;
+  user-select: none;
+}
+
+.changes-added {
+  color: #9be39a;
+}
+
+.changes-updated {
+  color: #b6cdff;
+}
+
+.changes-removed {
+  color: #fbe5e7;
+}
+
+.changes-content {
+  overflow-x: hidden;
+  font-size: 15px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

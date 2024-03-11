@@ -1,0 +1,25 @@
+.book-changes {
+  & + & {
+    margin-top: 16px;
+  }
+}
+
+.book-changes-header {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.book-changes-title {
+  margin: 0 0 8px;
+}
+
+.book-changes-info {
+  color: lightgray;
+}
+
+.book-changes-bookmark-changes-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

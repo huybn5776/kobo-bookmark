@@ -47,3 +47,22 @@ export interface NotionExportState {
   lastPageId?: string;
   lastDatabasePageId?: string;
 }
+
+export interface KoboBookChanges {
+  originalBook?: KoboBook;
+  book: KoboBook;
+  changes: KoboBookmarkChanges[];
+}
+
+export interface KoboBookmarkChanges {
+  id: string;
+  type: KoboBookmarkChangesType;
+  original?: KoboBookmark;
+  current?: KoboBookmark;
+}
+
+export enum KoboBookmarkChangesType {
+  Added = 'added',
+  Updated = 'updated',
+  Removed = 'removed',
+}

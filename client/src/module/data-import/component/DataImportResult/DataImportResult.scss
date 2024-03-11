@@ -1,0 +1,33 @@
+.data-import-result {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.data-import-result-header {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.data-import-result-title {
+  margin: 0;
+}
+
+.data-import-result-info {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.data-import-result-info-text {
+  color: lightgray;
+}
+
+.data-import-result-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
