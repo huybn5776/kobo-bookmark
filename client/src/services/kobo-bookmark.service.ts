@@ -91,17 +91,14 @@ function getParentChaptersOfChapter(relatedChapters: KoboBookChapter[]): KoboBoo
 }
 
 function prettifyBookmarkText(bookmark: BookmarkEntity): string {
-  return (
-    bookmark.text
-      .trim()
-      .replaceAll('　　', '\n')
-      .replaceAll(/\n+/g, '\n')
-      // eslint-disable-next-line no-irregular-whitespace
-      .replaceAll(/(\d{1,2}\.[　 ])/g, '\n$1')
-      .replaceAll(/。(\d{1,2}\.)/g, '。\n$1')
-      .replace(/\n$/g, '')
-      .replaceAll(/(^\t+|(?<=\n)\t+)/g, '\t')
-  );
+  return bookmark.text
+    .trim()
+    .replaceAll(/\t+\n/g, '')
+    .replaceAll(/\n+/g, '\n')
+    .replaceAll(/\n\s+/g, '\n')
+    .replaceAll(/\n\u3000+/g, '\n')
+    .replace(/\n$/g, '')
+    .replaceAll(/(^\t+|(?<=\n)\t+)/g, '\t');
 }
 
 function chapterEntityToKoboChapters(chapters: ChapterEntity[]): KoboBookChapter[] {
