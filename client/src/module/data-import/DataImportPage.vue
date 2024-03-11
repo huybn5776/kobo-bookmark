@@ -51,7 +51,8 @@ async function onFile(files: Record<string, File>): Promise<void> {
   loadingBar.start();
   try {
     const allKoboBooks = await getBooksFromSqliteFile(sqliteFile);
-    const updates = calcUpdatesOfBooks(await getAllBooksFromDb(), allKoboBooks);
+    let updates = calcUpdatesOfBooks(await getAllBooksFromDb(), allKoboBooks);
+    updates = sortUpdatesBookmarksByPosition(updates);
     importedBooks.value = allKoboBooks;
     bookChanges.value = updates;
     sqlFileLoaded.value = true;
@@ -61,6 +62,21 @@ async function onFile(files: Record<string, File>): Promise<void> {
     notification.error({ title: 'Error when parsing bookmarks', content: (e as Error).message });
     loadingBar.error();
   }
+}
+
+function sortUpdatesBookmarksByPosition(updates: KoboBookChanges[]): KoboBookChanges[] {
+  return updates.map((update) => {
+    const bookChapterChanged =
+      update.originalBook && JSON.stringify(update.originalBook.chapters) !== JSON.stringify(update.book.chapters);
+    if (bookChapterChanged) {
+      return update;
+    }
+    const sortedChanges = sortWith(
+      [createBookmarkPositionSortFn((c) => c.original || c.current), ascend((change) => change.type)],
+      update.changes,
+    );
+    return { ...update, changes: sortedChanges };
+  });
 }
 
 function discardChanges(): void {

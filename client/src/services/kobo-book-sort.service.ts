@@ -39,7 +39,21 @@ export function sortKoboBookmarks(bookmarks: KoboBookmark[], sorting: BookmarkSo
   );
 }
 
-function compareChapters(bookmark1: KoboBookmark, bookmark2: KoboBookmark): number {
+export function createBookmarkPositionSortFn<T>(
+  bookmarkGetter: (v: T) => KoboBookmark | undefined,
+): (v1: T, v2: T) => number {
+  const progressSortFn = ascend<KoboBookmark>((bookmark) => bookmark.chapterProgress);
+  return (v1: T, v2: T) => {
+    const bookmark1 = bookmarkGetter(v1);
+    const bookmark2 = bookmarkGetter(v2);
+    if (!bookmark1 || !bookmark2) {
+      return 0;
+    }
+    return compareChapters(bookmark1, bookmark2) || progressSortFn(bookmark1, bookmark2);
+  };
+}
+
+export function compareChapters(bookmark1: KoboBookmark, bookmark2: KoboBookmark): number {
   const chapters1 = [...(bookmark1.chapter.parentChapters || []), ...(bookmark1.chapter.relatedChapters || [])];
   const chapters2 = [...(bookmark2.chapter.parentChapters || []), ...(bookmark2.chapter.relatedChapters || [])];
   const maxChaptersLength = Math.max(chapters1.length, chapters2.length);
