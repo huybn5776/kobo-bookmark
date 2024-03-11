@@ -35,7 +35,7 @@ export function bookToNotionUpdatePageParams(
 export function bookToNotionDatabasePageProperties(book: KoboBook): CreatePageParameters['properties'] {
   const { title, author, publisher, isbn } = book.info;
   const lastBookmarkedTime = book.bookmarks.reduce(maxBy((bookmark) => bookmark.createdAt)).createdAt;
-  const updateTime = book.info.dateLastRead;
+  const updateTime = book.info.lastReadAt;
 
   return {
     ...(title ? { Title: { title: [{ text: { content: title } }] } } : {}),

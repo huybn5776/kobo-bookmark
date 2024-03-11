@@ -14,8 +14,8 @@ export function sortKoboBooks(books: KoboBook[], sorting: BookSortingKey[]): Kob
           }),
         ]
       : [],
-    sorting.includes(BookSortingKey.LastUpdate) ? [descend((book) => book.info.dateLastRead ?? 0)] : [],
-    sorting.includes(BookSortingKey.LastAdded) ? [descend((book) => book.info.dateAdded ?? 0)] : [],
+    sorting.includes(BookSortingKey.LastUpdate) ? [descend((book) => book.info.lastReadAt ?? 0)] : [],
+    sorting.includes(BookSortingKey.LastAdded) ? [descend((book) => book.info.createdAt ?? 0)] : [],
     sorting.includes(BookSortingKey.BookName) ? [ascend((book) => book.info.title ?? '')] : [],
     sorting.includes(BookSortingKey.Author) ? [ascend((book) => book.info.author ?? '')] : [],
     sorting.includes(BookSortingKey.Series) ? [ascend((book) => book.info.series ?? '')] : [],

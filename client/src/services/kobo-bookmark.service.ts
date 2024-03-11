@@ -49,6 +49,8 @@ function bookmarkEntityToKoboBookmark(
       annotation: bookmark.annotation,
       chapter: koboBookChapter,
       chapterProgress: bookmark.chapterProgress,
+      startContainerPath: bookmark.startContainerPath,
+      endContainerPath: bookmark.endContainerPath,
       createdAt: bookmark.createdAt,
       updatedAt: bookmark.updatedAt,
     };
@@ -133,7 +135,8 @@ function bookInfoEntityToKoboBookInfo(
     isbn: book?.isbn,
     imageId: book?.imageId,
     isSideLoaded: book?.id.startsWith('file') || true,
-    dateLastRead: book?.dateLastRead,
-    dateAdded: book?.dateAdded,
+    fileSize: book?.fileSize,
+    lastReadAt: book?.lastReadAt,
+    createdAt: book?.createdAt,
   };
 }

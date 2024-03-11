@@ -5,6 +5,8 @@ export interface BookmarkEntity {
   text: string;
   annotation?: string;
   chapterProgress: number;
+  startContainerPath: string;
+  endContainerPath: string;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -12,7 +12,7 @@ export async function openDb(data?: ArrayLike<number> | Buffer | null): Promise<
 
 export function getBookmarks(db: Database, bookIds?: string[]): BookmarkEntity[] {
   const sql = `
-select BookmarkID, VolumeID, ContentId, Text, Annotation, ChapterProgress, DateCreated, DateModified
+select BookmarkID, VolumeID, ContentId, Text, Annotation, ChapterProgress, StartContainerPath, EndContainerPath, DateCreated, DateModified
 from Bookmark
 where Type = 'highlight' or type = 'note'
 `;
@@ -31,8 +31,10 @@ where Type = 'highlight' or type = 'note'
       text: values[3] as string,
       annotation: values[4] as string,
       chapterProgress: values[5] as number,
-      createdAt: new Date(values[6] as string),
-      updatedAt: new Date(values[7] as string),
+      startContainerPath: values[6] as string,
+      endContainerPath: values[7] as string,
+      createdAt: new Date(values[8] as string),
+      updatedAt: new Date(values[9] as string),
     };
   });
 }
@@ -78,8 +80,9 @@ select ContentID,
        Description,
        ISBN,
        ImageId,
+       ___FileSize,
        DateLastRead,
-       DateAdded
+       DateCreated
 from content
 where ContentType = 6
   and ContentID in (${bookIds.map(() => '?').join(',')})
@@ -97,8 +100,9 @@ where ContentType = 6
       description: values[6] as string,
       isbn: values[7] as string,
       imageId: values[8] as string,
-      dateLastRead: new Date(values[9] as string),
-      dateAdded: new Date(values[10] as string),
+      fileSize: values[9] as number,
+      lastReadAt: new Date(values[10] as string),
+      createdAt: new Date(values[11] as string),
     };
   });
 }

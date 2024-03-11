@@ -8,6 +8,7 @@ export interface BookInfoEntity {
   series?: string;
   isbn?: string;
   imageId?: string;
-  dateLastRead?: Date;
-  dateAdded?: Date;
+  fileSize?: number;
+  lastReadAt?: Date;
+  createdAt?: Date;
 }

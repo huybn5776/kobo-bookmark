@@ -17,8 +17,9 @@ export interface KoboBookInfo {
   isbn?: string;
   imageId?: string;
   isSideLoaded: boolean;
-  dateLastRead?: Date;
-  dateAdded?: Date;
+  fileSize?: number;
+  lastReadAt?: Date;
+  createdAt?: Date;
 }
 
 export interface KoboBookmark {
@@ -27,6 +28,8 @@ export interface KoboBookmark {
   annotation?: string;
   chapter: KoboBookmarkChapter;
   chapterProgress: number;
+  startContainerPath: string;
+  endContainerPath: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -49,9 +52,9 @@ export interface NotionExportState {
 }
 
 export interface KoboBookChanges {
-  originalBook?: KoboBook;
   book: KoboBook;
   changes: KoboBookmarkChanges[];
+  bookFileChanged: boolean;
 }
 
 export interface KoboBookmarkChanges {
