@@ -1,11 +1,6 @@
 <template>
-  <div class="page-content data-import-page">
-    <FileDropZone
-      v-if="!sqlFileLoaded"
-      class="file-dropzone"
-      targetPath=".kobo/KoboReader.sqlite"
-      @fileDropped="onFile"
-    >
+  <div ref="dropTargetRef" class="page-content data-import-page">
+    <FileDropZone v-if="!sqlFileLoaded" class="file-dropzone" :targetPath="targetFlePath" @fileDropped="onFile">
       Drop "KoboReader.sqlite" file or entire kobo storage here
     </FileDropZone>
     <DataImportResult
@@ -14,6 +9,14 @@
       @onDiscardClick="discardChanges"
       @onSaveClick="saveChanges"
     />
+    <FullPageFileDropZone
+      :dropTarget="dropTargetRef"
+      :targetPath="targetFlePath"
+      :enabled="sqlFileLoaded"
+      @fileDropped="onFile"
+    >
+      Drop file to re-import
+    </FullPageFileDropZone>
   </div>
 </template>
 
@@ -25,6 +28,7 @@ import { sortWith, ascend, indexBy } from 'ramda';
 import { useRouter } from 'vue-router';
 
 import FileDropZone from '@/component/FileDropZone/FileDropZone.vue';
+import FullPageFileDropZone from '@/component/FullPageFileDropZone/FullPageFileDropZone.vue';
 import { KoboBookChanges, KoboBook, KoboBookmarkChanges, KoboBookmark, KoboBookmarkChangesType } from '@/dto/kobo-book';
 import DataImportResult from '@/module/data-import/component/DataImportResult/DataImportResult.vue';
 import { putBooksToDb, getAllBooksFromDb } from '@/services/bookmark-manage.service';
@@ -33,11 +37,14 @@ import { calcUpdatesOfBooks } from '@/services/kobo-bookmark-compare.service';
 import { getBooksFromSqliteFile } from '@/services/kobo-bookmark.service';
 import { deepToRaw } from '@/util/vue-utils';
 
+const targetFlePath = '.kobo/KoboReader.sqlite';
+
 const router = useRouter();
 const message = useMessage();
 const notification = useNotification();
 const loadingBar = useLoadingBar();
 
+const dropTargetRef = ref<HTMLElement>();
 const sqlFileLoaded = ref(false);
 const bookChanges = ref<KoboBookChanges[]>([]);
 const importedBooks = ref<KoboBook[]>([]);

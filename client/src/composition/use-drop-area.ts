@@ -1,4 +1,4 @@
-import { ref, onMounted, Ref, UnwrapRef } from 'vue';
+import { ref, onMounted, Ref, UnwrapRef, watch } from 'vue';
 
 import { fromEvent, tap, exhaustMap, Observable, merge, filter } from 'rxjs';
 
@@ -9,6 +9,7 @@ interface DropAreaOptions {
   fileDropped: (filesMap: Record<string, File>) => void;
   fileTypes?: string[];
   targetPath?: string;
+  enabled?: Ref<boolean>;
 }
 
 interface UseDropArea {
@@ -23,7 +24,13 @@ export function useDropArea(options: DropAreaOptions): UseDropArea {
   const untilDestroyed = useUntilDestroyed();
   const fileDragEnter = ref(false);
 
-  onMounted(() => {
+  watch(
+    () => dropOverlayRef.value,
+    () => initEvents(),
+  );
+  onMounted(() => initEvents());
+
+  function initEvents(): void {
     const targetElement = dropTargetRef.value;
     const overlayElement = dropOverlayRef.value;
     if (!targetElement || !overlayElement) {
@@ -32,6 +39,7 @@ export function useDropArea(options: DropAreaOptions): UseDropArea {
 
     fromEvent<DragEvent>(targetElement, 'dragenter')
       .pipe(
+        filter(() => (options.enabled?.value ?? true) as boolean),
         tap(onDragEnter),
         exhaustMap((event) => getDragOutObservable(event, targetElement)),
         untilDestroyed(),
@@ -60,9 +68,12 @@ export function useDropArea(options: DropAreaOptions): UseDropArea {
       });
 
     fromEvent(overlayElement, 'dragover')
-      .pipe(untilDestroyed())
+      .pipe(
+        filter(() => (options.enabled?.value ?? true) as boolean),
+        untilDestroyed(),
+      )
       .subscribe((event) => event.preventDefault());
-  });
+  }
 
   function onDragEnter(): void {
     fileDragEnter.value = true;

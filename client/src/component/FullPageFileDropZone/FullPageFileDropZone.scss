@@ -1,0 +1,55 @@
+.full-page-file-drop-zone-overlay {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  bottom: 8px;
+  left: 8px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
+  background-color: rgba(white, 0.1);
+  border: 4px solid #0184d1;
+  border-radius: 16px;
+
+  & > * {
+    pointer-events: none;
+  }
+}
+
+.full-page-file-drop-zone-message-container {
+  position: fixed;
+  right: 0;
+  bottom: 32px;
+  left: 0;
+  padding: 0 64px;
+  transition: transform .1s;
+}
+
+.full-page-file-drop-overlay-message-container-hidden {
+  transform: translateY(calc(100% + 32px));
+}
+
+.full-page-file-drop-zone-message {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  max-width: 800px;
+  margin: auto;
+  padding: 16px;
+  background-color: lightgray;
+  border-radius: 8px;
+  transition: transform .1s;
+}
+
+.full-page-file-drop-zone-message-icon {
+  width: 24px;
+  height: 24px;
+  background: url('/src/assets/svg/import.svg') no-repeat center;
+}
+
+.full-page-file-drop-zone-message-text {
+  color: black;
+  font-size: 16px;
+}
