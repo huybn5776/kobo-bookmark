@@ -64,6 +64,10 @@
     animation-iteration-count: infinite;
     content: '';
   }
+
+  &.chevron-arrow-container-disabled {
+    pointer-events: none;
+  }
 }
 
 .chevron-arrow {
@@ -81,5 +85,9 @@
 
   &.up {
     clip-path: polygon(0 60.5%, 50% 18.55%, 100% 60.5%, 100% 85%, 50% 43.05%, 0 85%);
+  }
+
+  .chevron-arrow-container-disabled & {
+    background-color: gray;
   }
 }

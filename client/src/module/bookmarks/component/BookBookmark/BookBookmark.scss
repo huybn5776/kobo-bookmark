@@ -87,6 +87,10 @@
   &:hover {
     background-color: rgba(white, 0.1);
   }
+
+  &.book-title-button-disabled {
+    pointer-events: none;
+  }
 }
 
 .book-info-text {

@@ -1,5 +1,9 @@
 <template>
-  <div class="chevron-arrow-container" @click="toggleDirection">
+  <div
+    class="chevron-arrow-container"
+    :class="{ 'chevron-arrow-container-disabled': disabled }"
+    @click="toggleDirection"
+  >
     <i class="chevron-arrow" :class="direction"></i>
   </div>
 </template>
@@ -12,6 +16,7 @@ const props = defineProps({
     type: String as PropType<'up' | 'down'>,
     default: () => 'down',
   },
+  disabled: { type: Boolean },
 });
 const emits = defineEmits<{ (direction: 'update:direction', value: 'up' | 'down'): void }>();
 

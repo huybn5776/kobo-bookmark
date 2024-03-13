@@ -4,7 +4,11 @@
       <BookCoverView :book="book" />
       <div class="book-section">
         <h2 class="book-title">
-          <button class="book-title-button" @click="toggleExpanded">
+          <button
+            class="book-title-button"
+            :class="{ 'book-title-button-disabled': disableBookmarkExpand }"
+            @click="toggleExpanded"
+          >
             {{ book.info.title }}
           </button>
         </h2>
@@ -22,11 +26,15 @@
           </div>
         </div>
       </div>
-      <ChevronArrow v-model:direction="expandedDirection" class="bookmark-expand-handle" />
+      <ChevronArrow
+        v-model:direction="expandedDirection"
+        :disabled="disableBookmarkExpand"
+        class="bookmark-expand-handle"
+      />
     </div>
 
     <BookmarkList
-      v-if="expandedDirection === 'up'"
+      v-if="expandedDirection === 'up' && !disableBookmarkExpand"
       :bookmarks="book.bookmarks"
       class="book-bookmark-list"
       @onBookmarkDelete="emits('onBookmarkDelete', book, $event)"
@@ -35,7 +43,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 import { NButton } from 'naive-ui';
 
@@ -56,7 +64,12 @@ const elementRef = ref<HTMLElement>();
 const expandedDirection = ref<'up' | 'down'>(props.defaultExpanded ? 'up' : 'down');
 defineExpose({ elementRef });
 
+const disableBookmarkExpand = computed(() => !props.book.bookmarks.length);
+
 function toggleExpanded(): void {
+  if (disableBookmarkExpand.value) {
+    return;
+  }
   expandedDirection.value = expandedDirection.value === 'up' ? 'down' : 'up';
 }
 </script>
