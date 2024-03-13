@@ -13,6 +13,8 @@
         :default-expanded="booksToShow?.length === 1"
         :exportLoading="exportingBookIds.includes(book.id)"
         @onExportClick="exportBookmark"
+        @onBookDelete="deleteBookConfirm"
+        @onBookmarkDelete="deleteBookmark"
       />
     </div>
 
@@ -36,9 +38,9 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, computed } from 'vue';
+import { onMounted, ref, computed, h } from 'vue';
 
-import { useMessage, useNotification } from 'naive-ui';
+import { useMessage, useNotification, useDialog } from 'naive-ui';
 import { isNil } from 'ramda';
 
 import { useSyncSetting } from '@/composition/use-sync-setting';
@@ -50,8 +52,9 @@ import { BookExportTask, BookExportState } from '@/interface/book-export-task';
 import BookBookmark from '@/module/bookmarks/component/BookBookmark/BookBookmark.vue';
 import BookExportProgressModal from '@/module/bookmarks/component/BookExportProgressModal/BookExportProgressModal.vue';
 import BookSortingSelect from '@/module/bookmarks/component/BookSortingSelect/BookSortingSelect.vue';
+import DeleteBookDialogContent from '@/module/bookmarks/component/DeleteBookDialogContent/DeleteBookDialogContent.vue';
 import { findCoverImageForBook } from '@/services/book-cover.service';
-import { getAllBooksFromDb, putBooksToDb } from '@/services/bookmark-manage.service';
+import { getAllBooksFromDb, putBooksToDb, deleteBooksInDb } from '@/services/bookmark-manage.service';
 import { sortKoboBooks, sortKoboBookmarks } from '@/services/kobo-book-sort.service';
 import { handleNotionApiError } from '@/services/notion-api-error-handing.service';
 import { exportBookBookmarks } from '@/services/notion-export.service';
@@ -60,6 +63,7 @@ import { deepToRaw } from '@/util/vue-utils';
 
 const message = useMessage();
 const notification = useNotification();
+const dialog = useDialog();
 
 const loadBooks = ref<boolean>(false);
 const allBooks = ref<KoboBook[]>();
@@ -216,6 +220,27 @@ function gotoBook(task: BookExportTask): void {
   const bookIndex = booksToShow.value.findIndex((book) => book.id === task.book.id);
   const bookComponent = bookBookmarkRefs.value[bookIndex];
   bookComponent?.elementRef?.scrollIntoView({ behavior: 'smooth' });
+}
+
+function deleteBookConfirm(book: KoboBook): void {
+  dialog.warning({
+    title: 'Delete',
+    content: () => h(DeleteBookDialogContent, { book }),
+    negativeText: 'Cancel',
+    positiveText: 'Yes',
+    onPositiveClick: () => deleteBook(book),
+  });
+}
+
+async function deleteBook(book: KoboBook): Promise<void> {
+  await deleteBooksInDb([book.id]);
+  allBooks.value = await getAllBooksFromDb();
+}
+
+async function deleteBookmark(book: KoboBook, bookmark: KoboBookmark): Promise<void> {
+  const updatedBook: KoboBook = { ...book, bookmarks: book.bookmarks.filter((bm) => bm.id !== bookmark.id) };
+  await putBooksToDb([deepToRaw(updatedBook)]);
+  allBooks.value = await getAllBooksFromDb();
 }
 </script>
 

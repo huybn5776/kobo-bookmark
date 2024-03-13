@@ -1,5 +1,5 @@
 .bookmark-item {
-  padding: 8px 0 16px 0;
+  padding: 8px 0 8px 0;
   font-size: 16px;
   transition: background-color 0.2s;
 
@@ -50,4 +50,26 @@
   padding: 4px 8px;
   font-size: 16px;
   border-left: solid 4px lightgray;
+}
+
+.bookmark-toolbar {
+  display: flex;
+  gap: 8px;
+  justify-content: end;
+  margin-top: -4px;
+  margin-right: 16px;
+  transition: opacity .2s;
+
+  .bookmark-item:not(:hover):not(:focus-within) & {
+    opacity: 0;
+  }
+}
+
+.bookmark-delete-button {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-size: 0;
+  background: url('/src/assets/svg/delete.svg') no-repeat center;
+  background-size: 24px 24px;
 }

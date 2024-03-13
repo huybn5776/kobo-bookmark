@@ -13,14 +13,24 @@
           <p class="book-info-text book-publisher">{{ book.info.publisher }}</p>
           <p class="book-info-text book-isbn">{{ book.info.isbn }}</p>
         </div>
-        <NButton class="bookmark-export-button" :loading="exportLoading" @click="emits('onExportClick', book)">
-          Export to notion
-        </NButton>
+        <div class="book-actions">
+          <NButton class="bookmark-export-button" :loading="exportLoading" @click="emits('onExportClick', book)">
+            Export to notion
+          </NButton>
+          <div class="book-toolbar">
+            <NButton class="book-delete-button" secondary round @click="emits('onBookDelete', book)">Delete</NButton>
+          </div>
+        </div>
       </div>
       <ChevronArrow v-model:direction="expandedDirection" class="bookmark-expand-handle" />
     </div>
 
-    <BookmarkList v-if="expandedDirection === 'up'" :bookmarks="book.bookmarks" class="book-bookmark-list" />
+    <BookmarkList
+      v-if="expandedDirection === 'up'"
+      :bookmarks="book.bookmarks"
+      class="book-bookmark-list"
+      @onBookmarkDelete="emits('onBookmarkDelete', book, $event)"
+    />
   </div>
 </template>
 
@@ -30,12 +40,16 @@ import { ref } from 'vue';
 import { NButton } from 'naive-ui';
 
 import ChevronArrow from '@/component/ChevronArrow/ChevronArrow.vue';
-import { KoboBook } from '@/dto/kobo-book';
+import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import BookCoverView from '@/module/bookmarks/component/BookCoverView/BookCoverView.vue';
 import BookmarkList from '@/module/bookmarks/component/BookmarkList/BookmarkList.vue';
 
 const props = defineProps<{ book: KoboBook; defaultExpanded: boolean; exportLoading: boolean }>();
-const emits = defineEmits<{ (e: 'onExportClick', value: KoboBook): void }>();
+const emits = defineEmits<{
+  (e: 'onExportClick', value: KoboBook): void;
+  (e: 'onBookDelete', value: KoboBook): void;
+  (e: 'onBookmarkDelete', book: KoboBook, bookmark: KoboBookmark): void;
+}>();
 
 const elementRef = ref<HTMLElement>();
 

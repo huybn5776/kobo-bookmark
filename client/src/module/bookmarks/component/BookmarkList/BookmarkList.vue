@@ -1,6 +1,11 @@
 <template>
   <div class="bookmark-list">
-    <BookmarkItem v-for="bookmark in bookmarks" :key="bookmark.id" :bookmark="bookmark" />
+    <BookmarkItem
+      v-for="bookmark in bookmarks"
+      :key="bookmark.id"
+      :bookmark="bookmark"
+      @onDeleteClick="emits('onBookmarkDelete', bookmark)"
+    />
   </div>
 </template>
 
@@ -9,6 +14,9 @@ import { KoboBookmark } from '@/dto/kobo-book';
 import BookmarkItem from '@/module/bookmarks/component/BookmarkItem/BookmarkItem.vue';
 
 defineProps<{ bookmarks: KoboBookmark[] }>();
+const emits = defineEmits<{
+  (e: 'onBookmarkDelete', value: KoboBookmark): void;
+}>();
 </script>
 
 <style lang="scss" scoped>

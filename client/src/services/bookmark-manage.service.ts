@@ -28,6 +28,14 @@ export async function putBooksToDb(books: KoboBook[]): Promise<void> {
   await tx.done;
 }
 
+export async function deleteBooksInDb(ids: string[]): Promise<void> {
+  const db = await getDbInstance();
+  const tx = db.transaction(booksStore, 'readwrite');
+  const store = tx.objectStore(booksStore);
+  await Promise.all(ids.map((id) => store.delete(id)));
+  await tx.done;
+}
+
 function openDb(): Promise<IDBPDatabase<BookDb>> {
   return openDB<BookDb>(dbName, 1, { upgrade });
 }
