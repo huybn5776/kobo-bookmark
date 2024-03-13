@@ -1,4 +1,4 @@
-import { groupBy, prop, indexBy } from 'ramda';
+import { groupBy, prop, indexBy, maxBy } from 'ramda';
 
 import { KoboBook, KoboBookmark, KoboBookChapter, KoboBookmarkChapter, KoboBookInfo } from '@/dto/kobo-book';
 import { BookmarkEntity, ChapterEntity } from '@/entity';
@@ -28,6 +28,7 @@ export async function getBooksFromSqliteFile(file: Blob, bookIds?: string[]): Pr
       chapters: koboBookChapters,
       bookmarks: koboBookmarks,
     };
+    koboBook.info.lastBookmarkAt = koboBookmarks.reduce(maxBy((bookmark) => bookmark.createdAt)).createdAt;
     return koboBook;
   });
 }

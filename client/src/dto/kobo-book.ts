@@ -19,6 +19,7 @@ export interface KoboBookInfo {
   isSideLoaded: boolean;
   fileSize?: number;
   lastReadAt?: Date;
+  lastBookmarkAt?: Date;
   createdAt?: Date;
 }
 
