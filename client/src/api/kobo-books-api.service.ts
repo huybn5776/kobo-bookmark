@@ -1,6 +1,7 @@
 import axios from 'axios';
 import rateLimit from 'axios-rate-limit';
 
+import { KoboBook } from '@/dto/kobo-book';
 import { KoboBooksSearchResult } from '@/dto/kobo-book-search';
 
 const rakutenApplicationId = import.meta.env.VITE_RAKUTEN_APPLICATION_ID;
