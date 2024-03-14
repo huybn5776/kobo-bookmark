@@ -131,12 +131,11 @@ async function exportBookmarksToDatabasePage(
   if (book.notion?.lastDatabasePageId) {
     progressCallback((task = { ...task, stage: BookExportStage.CleanupPage }));
     await deleteBlock(book.notion?.lastDatabasePageId);
-  } else {
-    const existingPage = await findDatabasePageByBookId(databaseId, book);
-    if (existingPage) {
-      progressCallback((task = { ...task, stage: BookExportStage.CleanupPage }));
-      await deleteBlock(existingPage.id);
-    }
+  }
+  const existingPage = await findDatabasePageByBookId(databaseId, book);
+  if (existingPage) {
+    progressCallback((task = { ...task, stage: BookExportStage.CleanupPage }));
+    await deleteBlock(existingPage.id);
   }
 
   progressCallback((task = { ...task, stage: BookExportStage.CreatePage }));
