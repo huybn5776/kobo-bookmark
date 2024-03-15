@@ -19,12 +19,9 @@ export function bookToNotionUpdatePageParams(
     },
   };
   if (book.coverImageUrl) {
-    const url = new URL(book.coverImageUrl);
-    url.searchParams.set('kobo-bookmark-book-id', book.id);
-    const urlWithBookId = url.toString();
     const image: { external: { url: string }; type?: 'external' } = {
       type: 'external',
-      external: { url: urlWithBookId },
+      external: { url: book.coverImageUrl },
     };
     pageParams.cover = image;
     pageParams.icon = image;
