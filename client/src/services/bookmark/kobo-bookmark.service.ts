@@ -134,6 +134,7 @@ function bookInfoEntityToKoboBookInfo(
     publisher: book?.publisher,
     series: book?.series,
     isbn: book?.isbn,
+    timeSpentReading: book?.timeSpentReading,
     imageId: book?.imageId,
     isSideLoaded: book ? book.id.startsWith('file') : true,
     fileSize: book?.fileSize,

@@ -15,6 +15,7 @@ export interface KoboBookInfo {
   publisher?: string;
   series?: string;
   isbn?: string;
+  timeSpentReading?: number;
   imageId?: string;
   isSideLoaded: boolean;
   fileSize?: number;

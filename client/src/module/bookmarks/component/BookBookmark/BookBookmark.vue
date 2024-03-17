@@ -13,9 +13,13 @@
           </button>
         </h2>
         <div class="book-info">
-          <p class="book-info-text book-author">{{ book.info.author }}</p>
-          <p class="book-info-text book-publisher">{{ book.info.publisher }}</p>
-          <p class="book-info-text book-isbn">{{ book.info.isbn }}</p>
+          <p v-if="book.info.author" class="book-info-text book-author">{{ book.info.author }}</p>
+          <p v-if="book.info.publisher" class="book-info-text book-publisher">{{ book.info.publisher }}</p>
+          <p v-if="book.info.isbn" class="book-info-text book-isbn">{{ book.info.isbn }}</p>
+          <div v-if="timeSpanReadingHours" class="book-time-span-reading">
+            <i class="book-clock-icon" />
+            <span>{{ timeSpanReadingHours }}</span>
+          </div>
         </div>
         <div class="book-actions">
           <NButton class="bookmark-export-button" :loading="exportLoading" @click="emits('onExportClick', book)">
@@ -64,6 +68,18 @@ const elementRef = ref<HTMLElement>();
 const expandedDirection = ref<'up' | 'down'>(props.defaultExpanded ? 'up' : 'down');
 defineExpose({ elementRef });
 
+const timeSpanReadingHours = computed(() => {
+  if (!props.book?.info.timeSpentReading) {
+    return null;
+  }
+  const seconds = props.book?.info.timeSpentReading ?? 0;
+  const minutes = seconds / 60;
+  const hours = minutes / 60;
+  if (hours >= 1) {
+    return `${hours.toFixed(1)} ${hours > 1 ? 'hours' : 'hour'}`;
+  }
+  return `${Math.max(1, minutes).toFixed(0)} ${minutes > 1 ? 'minutes' : 'minute'}`;
+});
 const disableBookmarkExpand = computed(() => !props.book.bookmarks.length);
 
 function toggleExpanded(): void {

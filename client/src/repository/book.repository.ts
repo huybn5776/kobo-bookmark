@@ -79,6 +79,7 @@ select ContentID,
        Series,
        Description,
        ISBN,
+       TimeSpentReading,
        ImageId,
        ___FileSize,
        DateLastRead,
@@ -99,10 +100,11 @@ where ContentType = 6
       series: values[5] as string,
       description: values[6] as string,
       isbn: values[7] as string,
-      imageId: values[8] as string,
-      fileSize: values[9] as number,
-      lastReadAt: new Date(values[10] as string),
-      createdAt: new Date(values[11] as string),
+      timeSpentReading: values[8] as number,
+      imageId: values[9] as string,
+      fileSize: values[10] as number,
+      lastReadAt: new Date(values[11] as string),
+      createdAt: new Date(values[12] as string),
     };
   });
 }

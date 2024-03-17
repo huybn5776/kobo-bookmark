@@ -98,6 +98,20 @@
   font-size: 16px;
 }
 
+.book-time-span-reading {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  color: gray;
+  font-size: 16px;
+}
+
+.book-clock-icon {
+  width: 24px;
+  height: 24px;
+  background: url('/src/assets/svg/book-clock-outline.svg') no-repeat center;
+}
+
 .book-bookmark-list {
   border-top: 1px solid rgba(white, 0.15);
 }
