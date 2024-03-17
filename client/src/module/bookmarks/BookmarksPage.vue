@@ -53,11 +53,11 @@ import BookBookmark from '@/module/bookmarks/component/BookBookmark/BookBookmark
 import BookExportProgressModal from '@/module/bookmarks/component/BookExportProgressModal/BookExportProgressModal.vue';
 import BookSortingSelect from '@/module/bookmarks/component/BookSortingSelect/BookSortingSelect.vue';
 import DeleteBookDialogContent from '@/module/bookmarks/component/DeleteBookDialogContent/DeleteBookDialogContent.vue';
-import { findCoverImageForBook } from '@/services/book-cover.service';
-import { getAllBooksFromDb, putBooksToDb, deleteBooksInDb } from '@/services/bookmark-manage.service';
-import { sortKoboBooks, sortKoboBookmarks } from '@/services/kobo-book-sort.service';
-import { handleNotionApiError } from '@/services/notion-api-error-handing.service';
-import { exportBookBookmarks } from '@/services/notion-export.service';
+import { findCoverImageForBook } from '@/services/bookmark/book-cover.service';
+import { getAllBooksFromDb, putBooksToDb, deleteBooksInDb } from '@/services/bookmark/bookmark-manage.service';
+import { sortKoboBooks, sortKoboBookmarks } from '@/services/bookmark/kobo-book-sort.service';
+import { handleNotionApiError } from '@/services/notion/notion-api-error-handing.service';
+import { exportBookBookmarks } from '@/services/notion/notion-export.service';
 import { getSettingFromStorage } from '@/services/setting.service';
 import { deepToRaw } from '@/util/vue-utils';
 

@@ -16,14 +16,14 @@ import {
   bookmarksToNotionBlocks,
   bookToNotionDatabasePageProperties,
   bookmarksToNotionPageBookDetail,
-} from '@/services/notion-export-mapping.service';
+} from '@/services/notion/notion-export-mapping.service';
 import {
   getNotionExportTargetDatabase,
   getOrUpdateNotionExportTargetPage,
   findPageByTitleAndCoverImage,
   findDatabasePageByBookId,
-} from '@/services/notion-export-target.service';
-import { getAllBlocksOfPage, isPageExists } from '@/services/notion-page.service';
+} from '@/services/notion/notion-export-target.service';
+import { getAllBlocksOfPage, isPageExists } from '@/services/notion/notion-page.service';
 import { getSettingFromStorage } from '@/services/setting.service';
 
 const maximumBlocksPerRequest = 100;

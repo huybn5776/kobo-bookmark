@@ -9,7 +9,7 @@ import { searchDatabase, getDatabase, queryDatabase } from '@/api/notion-databas
 import { searchPages, getPage } from '@/api/notion-page-api.service';
 import { KoboBook } from '@/dto/kobo-book';
 import { SettingKey } from '@/enum/setting-key';
-import { getTitleOfPage } from '@/services/notion-page.service';
+import { getTitleOfPage } from '@/services/notion/notion-page.service';
 import { getSettingFromStorage, saveSettingToStorage } from '@/services/setting.service';
 
 const templatePageTile = 'Kobo bookmarks';

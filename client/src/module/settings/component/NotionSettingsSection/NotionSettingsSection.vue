@@ -72,14 +72,14 @@ import { useSyncSetting } from '@/composition/use-sync-setting';
 import { NotionExportToType } from '@/enum/notion-export-to-type';
 import { SettingKey } from '@/enum/setting-key';
 import NotionConnectedPageSelect from '@/module/settings/component/NotionConnectedPageSelect/NotionConnectedPageSelect.vue';
-import { getTitleOfDatabase } from '@/services/notion-database.service';
+import { getTitleOfDatabase } from '@/services/notion/notion-database.service';
 import {
   findNotionTemplatePage,
   findNotionExportTargetPageFromAuth,
   findFirstLibraryDatabase,
   isLibraryDatabase,
-} from '@/services/notion-export-target.service';
-import { getTitleOfPage } from '@/services/notion-page.service';
+} from '@/services/notion/notion-export-target.service';
+import { getTitleOfPage } from '@/services/notion/notion-page.service';
 
 const oauthClientId = import.meta.env.VITE_NOTION_CLIENT_ID;
 const authUrl = `https://api.notion.com/v1/oauth/authorize?client_id=${oauthClientId}&response_type=code&owner=user`;

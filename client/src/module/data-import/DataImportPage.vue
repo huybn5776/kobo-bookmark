@@ -31,10 +31,10 @@ import FileDropZone from '@/component/FileDropZone/FileDropZone.vue';
 import FullPageFileDropZone from '@/component/FullPageFileDropZone/FullPageFileDropZone.vue';
 import { KoboBookChanges, KoboBook, KoboBookmarkChanges, KoboBookmark, KoboBookmarkChangesType } from '@/dto/kobo-book';
 import DataImportResult from '@/module/data-import/component/DataImportResult/DataImportResult.vue';
-import { putBooksToDb, getAllBooksFromDb } from '@/services/bookmark-manage.service';
-import { createBookmarkPositionSortFn } from '@/services/kobo-book-sort.service';
-import { calcUpdatesOfBooks } from '@/services/kobo-bookmark-compare.service';
-import { getBooksFromSqliteFile } from '@/services/kobo-bookmark.service';
+import { putBooksToDb, getAllBooksFromDb } from '@/services/bookmark/bookmark-manage.service';
+import { createBookmarkPositionSortFn } from '@/services/bookmark/kobo-book-sort.service';
+import { calcUpdatesOfBooks } from '@/services/bookmark/kobo-bookmark-compare.service';
+import { getBooksFromSqliteFile } from '@/services/bookmark/kobo-bookmark.service';
 import { deepToRaw } from '@/util/vue-utils';
 
 const targetFlePath = '.kobo/KoboReader.sqlite';
