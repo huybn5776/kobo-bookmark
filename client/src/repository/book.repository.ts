@@ -12,7 +12,7 @@ export async function openDb(data?: ArrayLike<number> | Buffer | null): Promise<
 
 export function getBookmarks(db: Database, bookIds?: string[]): BookmarkEntity[] {
   const sql = `
-select BookmarkID, VolumeID, ContentId, Text, Annotation, ChapterProgress, StartContainerPath, EndContainerPath, DateCreated, DateModified
+select BookmarkID, VolumeID, ContentId, Text, Annotation, ChapterProgress, StartContainerPath, EndContainerPath, Hidden, DateCreated, DateModified
 from Bookmark
 where Type = 'highlight' or type = 'note'
 `;
@@ -33,8 +33,9 @@ where Type = 'highlight' or type = 'note'
       chapterProgress: values[5] as number,
       startContainerPath: values[6] as string,
       endContainerPath: values[7] as string,
-      createdAt: new Date(values[8] as string),
-      updatedAt: new Date(values[9] as string),
+      hidden: (values[8] as string) === 'true',
+      createdAt: new Date(values[9] as string),
+      updatedAt: new Date(values[10] as string),
     };
   });
 }

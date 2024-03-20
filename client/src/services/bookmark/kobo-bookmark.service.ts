@@ -8,7 +8,7 @@ import { openDb, getBookmarks, getBookChapters, getBooksInfo } from '@/repositor
 export async function getBooksFromSqliteFile(file: Blob, bookIds?: string[]): Promise<KoboBook[]> {
   const buffer = await file.arrayBuffer();
   const db = await openDb(new Uint8Array(buffer));
-  const allBookmarks = getBookmarks(db, bookIds);
+  const allBookmarks = getBookmarks(db, bookIds).filter((bookmark) => !bookmark.hidden);
   const bookIdsToQuery = Array.from(new Set(allBookmarks.map((bookmark) => bookmark.volumeId)));
   const allChapters = getBookChapters(db, bookIdsToQuery);
   const allBooksInfo = getBooksInfo(db, bookIdsToQuery);
