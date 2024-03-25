@@ -20,9 +20,15 @@
 
     <div v-if="!loadBooks && !booksToShow.length" class="empty-bookmarks-message-container">
       <span class="empty-bookmarks-emoji">¯\_(ツ)_/¯</span>
-      <span class="empty-bookmarks-message">You didn't have any bookmark here yet,</span>
       <span class="empty-bookmarks-message">
-        try to <router-link :to="{ name: 'import' }">Import</router-link> some?
+        <i18n-t keypath="page.bookmarks.empty_bookmarks1" />
+      </span>
+      <span class="empty-bookmarks-message">
+        <i18n-t keypath="page.bookmarks.empty_bookmarks2">
+          <router-link :to="{ name: 'import' }">
+            <i18n-t keypath="page_name.import" />
+          </router-link>
+        </i18n-t>
       </span>
     </div>
 
@@ -42,6 +48,7 @@ import { onMounted, ref, computed, h } from 'vue';
 
 import { useMessage, useNotification, useDialog } from 'naive-ui';
 import { isNil } from 'ramda';
+import { useI18n } from 'vue-i18n';
 
 import { useSyncSetting } from '@/composition/use-sync-setting';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
@@ -60,6 +67,8 @@ import { handleNotionApiError } from '@/services/notion/notion-api-error-handing
 import { exportBookBookmarks } from '@/services/notion/notion-export.service';
 import { getSettingFromStorage } from '@/services/setting.service';
 import { deepToRaw } from '@/util/vue-utils';
+
+const { t } = useI18n<[I18NMessageSchema]>();
 
 const message = useMessage();
 const notification = useNotification();
@@ -136,7 +145,7 @@ function updateBookById(bookId: string, updater: (book: KoboBook) => KoboBook): 
 
 async function exportBookmark(book: KoboBook): Promise<void> {
   if (!isNotionIntegrationReady()) {
-    message.error('Please connect to Notion at Settings page first.');
+    message.error(t('page.bookmarks.connect_to_notion_notice'));
     return;
   }
   const task: BookExportTask = { id: Date.now(), book, state: BookExportState.Pending };
@@ -184,20 +193,20 @@ async function runNextTask(): Promise<void> {
   await tryExportBookmark(firstPendingTask.book, firstPendingTask);
 }
 
-function updateTask(task: BookExportTask): void {
-  const taskIndex = bookExportTasks.value.findIndex((t) => t.id === task.id);
+function updateTask(exportTask: BookExportTask): void {
+  const taskIndex = bookExportTasks.value.findIndex((task) => task.id === exportTask.id);
   if (taskIndex === -1) {
     return;
   }
-  bookExportTasks.value[taskIndex] = task;
+  bookExportTasks.value[taskIndex] = exportTask;
 }
 
-function getTaskById(task: BookExportTask): BookExportTask | undefined {
-  return bookExportTasks.value.find((t) => t.id === task.id);
+function getTaskById(exportTask: BookExportTask): BookExportTask | undefined {
+  return bookExportTasks.value.find((task) => task.id === exportTask.id);
 }
 
-function cancelTask(task: BookExportTask): void {
-  const currentTask = bookExportTasks.value.find((t) => t.id === task.id);
+function cancelTask(exportTask: BookExportTask): void {
+  const currentTask = bookExportTasks.value.find((task) => task.id === exportTask.id);
   if (!currentTask) {
     return;
   }
@@ -224,10 +233,10 @@ function gotoBook(task: BookExportTask): void {
 
 function deleteBookConfirm(book: KoboBook): void {
   dialog.warning({
-    title: 'Delete',
+    title: t('common.delete'),
     content: () => h(DeleteBookDialogContent, { book }),
-    negativeText: 'Cancel',
-    positiveText: 'Yes',
+    negativeText: t('common.cancel'),
+    positiveText: t('common.yes'),
     onPositiveClick: () => deleteBook(book),
   });
 }

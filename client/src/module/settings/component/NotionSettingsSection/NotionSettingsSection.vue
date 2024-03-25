@@ -1,27 +1,45 @@
 <template>
   <div class="setting-section">
-    <h3 class="setting-section-title">Notion settings</h3>
+    <h3 class="setting-section-title">
+      <i18n-t keypath="page.settings.notion.title" />
+    </h3>
 
     <div class="setting-row">
-      <p class="setting-row-title">Export to</p>
+      <p class="setting-row-title">
+        <i18n-t keypath="page.settings.notion.export_to" />
+      </p>
       <NRadioGroup v-model:value="exportTo" class="setting-vertical-radio-group">
         <NRadio :value="NotionExportToType.Page">
-          <span class="setting-vertical-radio-label">Page</span>
-          <p class="setting-vertical-radio-description">Create new page and insert it to the end of connected page.</p>
+          <span class="setting-vertical-radio-label">
+            <i18n-t keypath="page.settings.notion.export_to_page" />
+          </span>
+          <p class="setting-vertical-radio-description">
+            <i18n-t keypath="page.settings.notion.export_to_page_description" />
+          </p>
         </NRadio>
         <NRadio :value="NotionExportToType.Database">
-          <span class="setting-vertical-radio-label">Database</span>
-          <p class="setting-vertical-radio-description">Insert into table view, that is better for filtering and sorting.</p>
+          <span class="setting-vertical-radio-label">
+            <i18n-t keypath="page.settings.notion.export_to_database" />
+          </span>
+          <p class="setting-vertical-radio-description">
+            <i18n-t keypath="page.settings.notion.export_to_database_description" />
+          </p>
         </NRadio>
         <NRadio :value="NotionExportToType.Auto">
-          <span class="setting-vertical-radio-label">Auto detect</span>
-          <p class="setting-vertical-radio-description">Use the database first if available, otherwise use the page.</p>
+          <span class="setting-vertical-radio-label">
+            <i18n-t keypath="page.settings.notion.export_to_auto" />
+          </span>
+          <p class="setting-vertical-radio-description">
+            <i18n-t keypath="page.settings.notion.export_to_auto_description" />
+          </p>
         </NRadio>
       </NRadioGroup>
     </div>
 
     <div class="setting-row">
-      <p class="setting-row-title">Export target page</p>
+      <p class="setting-row-title">
+        <i18n-t keypath="page.settings.notion.connected_page" />
+      </p>
       <NotionConnectedPageSelect
         v-model:id="exportPageId"
         v-model:title="exportPageTitle"
@@ -33,7 +51,9 @@
     </div>
 
     <div class="setting-row">
-      <p class="setting-row-title">Database to export</p>
+      <p class="setting-row-title">
+        <i18n-t keypath="page.settings.notion.connected_database" />
+      </p>
       <NotionConnectedPageSelect
         v-model:id="exportDatabaseId"
         v-model:title="exportDatabaseTitle"
@@ -45,12 +65,14 @@
     </div>
 
     <div class="setting-row">
-      <p class="setting-row-title">Integration connect</p>
+      <p class="setting-row-title">
+        <i18n-t keypath="page.settings.notion.integration_connect" />
+      </p>
       <p class="setting-note">
-        Please use template page it provided, or select a page previously created from template.
+        <i18n-t keypath="page.settings.notion.notion_connect_description" />
       </p>
       <a :href="authUrl">
-        <NButton>Connect to Notion</NButton>
+        <NButton><i18n-t keypath="page.settings.notion.connect_to_notion" /></NButton>
       </a>
     </div>
   </div>

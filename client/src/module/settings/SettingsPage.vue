@@ -1,6 +1,8 @@
 <template>
   <div class="page-content settings-page">
-    <h1 class="setting-page-title">Settings</h1>
+    <h1 class="setting-page-title">
+      <i18n-t keypath="page.settings.title" />
+    </h1>
 
     <NotionSettingsSection />
   </div>

@@ -1,7 +1,11 @@
 <template>
   <div ref="dropTargetRef" class="page-content data-import-page">
     <FileDropZone v-if="!sqlFileLoaded" class="file-dropzone" :targetPath="targetFlePath" @fileDropped="onFile">
-      Drop "KoboReader.sqlite" file or entire kobo storage here
+      <span>
+        <i18n-t keypath="page.data_import.drop_file">
+          <code>KoboReader.sqlite</code>
+        </i18n-t>
+      </span>
     </FileDropZone>
     <DataImportResult
       v-if="sqlFileLoaded"
@@ -15,7 +19,7 @@
       :enabled="sqlFileLoaded"
       @fileDropped="onFile"
     >
-      Drop file to re-import
+      <i18n-t keypath="page.data_import.drop_reimport" />
     </FullPageFileDropZone>
   </div>
 </template>
@@ -25,10 +29,12 @@ import { ref } from 'vue';
 
 import { useMessage, useNotification, useLoadingBar } from 'naive-ui';
 import { sortWith, ascend, indexBy } from 'ramda';
+import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
 import FileDropZone from '@/component/FileDropZone/FileDropZone.vue';
 import FullPageFileDropZone from '@/component/FullPageFileDropZone/FullPageFileDropZone.vue';
+import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBookChanges, KoboBook, KoboBookmarkChanges, KoboBookmark, KoboBookmarkChangesType } from '@/dto/kobo-book';
 import DataImportResult from '@/module/data-import/component/DataImportResult/DataImportResult.vue';
 import { putBooksToDb, getAllBooksFromDb } from '@/services/bookmark/bookmark-manage.service';
@@ -39,6 +45,7 @@ import { deepToRaw } from '@/util/vue-utils';
 
 const targetFlePath = '.kobo/KoboReader.sqlite';
 
+const { t } = useI18n<[I18NMessageSchema]>();
 const router = useRouter();
 const message = useMessage();
 const notification = useNotification();
@@ -52,7 +59,7 @@ const importedBooks = ref<KoboBook[]>([]);
 async function onFile(files: Record<string, File>): Promise<void> {
   const sqliteFile = findKoboReaderSqlFile(files);
   if (!sqliteFile) {
-    message.error(`No "KoboReader.sqlite" found in dropped files.`);
+    message.error(t('page.data_import.no_sql_file'));
     return;
   }
   loadingBar.start();
@@ -66,7 +73,7 @@ async function onFile(files: Record<string, File>): Promise<void> {
     loadingBar.finish();
   } catch (e) {
     console.error(e);
-    notification.error({ title: 'Error when parsing bookmarks', content: (e as Error).message });
+    notification.error({ title: t('page.data_import.error_parsing'), content: (e as Error).message });
     loadingBar.error();
   }
 }

@@ -32,8 +32,10 @@ import { ref, computed } from 'vue';
 
 import { NButton } from 'naive-ui';
 import { groupBy, isNotNil } from 'ramda';
+import { useI18n } from 'vue-i18n';
 
 import ChevronArrow from '@/component/ChevronArrow/ChevronArrow.vue';
+import { I18NMessageSchema } from '@/config/i18n-config';
 import { BookExportTask, BookExportState, BookExportStage } from '@/interface/book-export-task';
 import BookTaskItem from '@/module/bookmarks/component/BookTaskItem/BookTaskItem.vue';
 
@@ -44,6 +46,8 @@ const emits = defineEmits<{
   (e: 'discardAllTasks'): void;
 }>();
 
+const { t } = useI18n<[I18NMessageSchema]>();
+
 const collapsed = ref(false);
 
 const title = computed<string>(() => {
@@ -52,24 +56,25 @@ const title = computed<string>(() => {
     (taskStateGrouping[BookExportState.Pending]?.length ?? 0) +
     (taskStateGrouping[BookExportState.Running]?.length ?? 0);
   if (ongoingTasksCount) {
-    return `Exporting ${ongoingTasksCount} books`;
+    return t('page.bookmarks.exporting_books', [ongoingTasksCount], ongoingTasksCount);
   }
   const succeededTasksCount = taskStateGrouping[BookExportState.Succeeded]?.length ?? 0;
   if (succeededTasksCount) {
-    return `${succeededTasksCount} books exported`;
+    return t('page.bookmarks.book_exported', [succeededTasksCount], succeededTasksCount);
   }
   const failedTasksCount = taskStateGrouping[BookExportState.Failed]?.length ?? 0;
   if (failedTasksCount) {
-    return `${failedTasksCount} books failed`;
+    return t('page.bookmarks.book_failed', [failedTasksCount], failedTasksCount);
   }
   const canceledTasksCount = taskStateGrouping[BookExportState.Canceled]?.length ?? 0;
   if (canceledTasksCount) {
-    return `${canceledTasksCount} books canceled`;
+    return t('page.bookmarks.book_canceled', [canceledTasksCount], canceledTasksCount);
   }
-  return `${props.tasks.length} book completed`;
+  const completedCount = props.tasks.length;
+  return t('page.bookmarks.book_completed', [completedCount], completedCount);
 });
 
-const runningTask = computed(() => props.tasks.find((t) => t.state === BookExportState.Running));
+const runningTask = computed(() => props.tasks.find((task) => task.state === BookExportState.Running));
 const progressMessage = computed(() => {
   if (!runningTask.value) {
     return undefined;
@@ -78,17 +83,17 @@ const progressMessage = computed(() => {
 });
 
 const stageToText: Record<BookExportStage, string> = {
-  [BookExportStage.CheckingTargetPage]: 'Checking target page',
-  [BookExportStage.CreatePage]: 'Creating page',
-  [BookExportStage.UpdatePage]: 'Updating page',
-  [BookExportStage.AddBlocks]: 'Adding blocks',
-  [BookExportStage.CleanupPage]: 'Cleanup page',
+  [BookExportStage.CheckingTargetPage]: t('page.bookmarks.checking_target_page'),
+  [BookExportStage.CreatePage]: t('page.bookmarks.creating_page'),
+  [BookExportStage.UpdatePage]: t('page.bookmarks.updating_page'),
+  [BookExportStage.AddBlocks]: t('page.bookmarks.adding_blocks'),
+  [BookExportStage.CleanupPage]: t('page.bookmarks.cleanup_page'),
 };
 
 function taskToMessage(task: BookExportTask): string {
   const { percentage, step, totalStep, stage } = task;
   if (!stage) {
-    return 'Starting...';
+    return t('page.bookmarks.starting');
   }
   const stepText = isNotNil(step) && isNotNil(totalStep) ? `${step + 1}/${totalStep} - ` : '';
   const stageText = stageToText[stage];

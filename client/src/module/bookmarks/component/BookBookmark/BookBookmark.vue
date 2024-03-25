@@ -23,10 +23,12 @@
         </div>
         <div class="book-actions">
           <NButton class="bookmark-export-button" :loading="exportLoading" @click="emits('onExportClick', book)">
-            Export to notion
+            <i18n-t keypath="page.bookmarks.export_notion" />
           </NButton>
           <div class="book-toolbar">
-            <NButton class="book-delete-button" secondary round @click="emits('onBookDelete', book)">Delete</NButton>
+            <NButton class="book-delete-button" secondary round @click="emits('onBookDelete', book)">
+              <i18n-t keypath="common.delete" />
+            </NButton>
           </div>
         </div>
       </div>
@@ -50,8 +52,10 @@
 import { ref, computed } from 'vue';
 
 import { NButton } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 
 import ChevronArrow from '@/component/ChevronArrow/ChevronArrow.vue';
+import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import BookCoverView from '@/module/bookmarks/component/BookCoverView/BookCoverView.vue';
 import BookmarkList from '@/module/bookmarks/component/BookmarkList/BookmarkList.vue';
@@ -63,6 +67,7 @@ const emits = defineEmits<{
   (e: 'onBookmarkDelete', book: KoboBook, bookmark: KoboBookmark): void;
 }>();
 
+const { t } = useI18n<[I18NMessageSchema]>();
 const elementRef = ref<HTMLElement>();
 
 const expandedDirection = ref<'up' | 'down'>(props.defaultExpanded ? 'up' : 'down');
@@ -76,9 +81,9 @@ const timeSpanReadingHours = computed(() => {
   const minutes = seconds / 60;
   const hours = minutes / 60;
   if (hours >= 1) {
-    return `${hours.toFixed(1)} ${hours > 1 ? 'hours' : 'hour'}`;
+    return t('common.number_hour', [hours.toFixed(1)], hours);
   }
-  return `${Math.max(1, minutes).toFixed(0)} ${minutes > 1 ? 'minutes' : 'minute'}`;
+  return t('common.number_minute', [minutes.toFixed(0)], minutes);
 });
 const disableBookmarkExpand = computed(() => !props.book.bookmarks.length);
 

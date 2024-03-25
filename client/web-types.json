@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/web-types",
+  "framework": "vue",
+  "js-types-syntax": "typescript",
+  "description-markup": "markdown",
+  "framework-config": {
+    "enable-when": {
+      "file-extensions": ["vue"]
+    }
+  },
+  "contributions": {
+    "html": {
+      "types-syntax": "typescript",
+      "attributes": [
+        {
+          "name": "v-t"
+        }
+      ]
+    }
+  }
+}
