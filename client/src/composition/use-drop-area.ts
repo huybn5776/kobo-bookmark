@@ -1,6 +1,6 @@
 import { ref, onMounted, Ref, UnwrapRef, watch } from 'vue';
 
-import { fromEvent, tap, exhaustMap, Observable, merge, filter } from 'rxjs';
+import { fromEvent, tap, exhaustMap, Observable, merge, filter, Subscription } from 'rxjs';
 
 import { useUntilDestroyed } from '@/composition/use-until-destroyed';
 import { getFilesFromDataTransfer, getFileWithPathFromDataTransfer } from '@/util/file-utils';
@@ -23,6 +23,7 @@ export function useDropArea(options: DropAreaOptions): UseDropArea {
   const dropOverlayRef = ref<HTMLElement>();
   const untilDestroyed = useUntilDestroyed();
   const fileDragEnter = ref(false);
+  const subscriptions = ref<Subscription[]>([]);
 
   watch(
     () => dropOverlayRef.value,
@@ -31,13 +32,16 @@ export function useDropArea(options: DropAreaOptions): UseDropArea {
   onMounted(() => initEvents());
 
   function initEvents(): void {
+    subscriptions.value.forEach((s) => s.unsubscribe());
+    subscriptions.value = [];
+
     const targetElement = dropTargetRef.value;
     const overlayElement = dropOverlayRef.value;
     if (!targetElement || !overlayElement) {
       return;
     }
 
-    fromEvent<DragEvent>(targetElement, 'dragenter')
+    const dragEnterSubscription = fromEvent<DragEvent>(targetElement, 'dragenter')
       .pipe(
         filter(() => (options.enabled?.value ?? true) as boolean),
         tap(onDragEnter),
@@ -66,13 +70,15 @@ export function useDropArea(options: DropAreaOptions): UseDropArea {
           options.fileDropped(filesMap);
         }
       });
+    subscriptions.value.push(dragEnterSubscription);
 
-    fromEvent(overlayElement, 'dragover')
+    const dragOverSubscription = fromEvent(overlayElement, 'dragover')
       .pipe(
         filter(() => (options.enabled?.value ?? true) as boolean),
         untilDestroyed(),
       )
       .subscribe((event) => event.preventDefault());
+    subscriptions.value.push(dragOverSubscription);
   }
 
   function onDragEnter(): void {
