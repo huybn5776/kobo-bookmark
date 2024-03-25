@@ -43,10 +43,10 @@ export function useDropArea(options: DropAreaOptions): UseDropArea {
 
     const dragEnterSubscription = fromEvent<DragEvent>(targetElement, 'dragenter')
       .pipe(
+        untilDestroyed(),
         filter(() => (options.enabled?.value ?? true) as boolean),
         tap(onDragEnter),
         exhaustMap((event) => getDragOutObservable(event, targetElement)),
-        untilDestroyed(),
       )
       .subscribe(async (event) => {
         event.preventDefault();
@@ -74,8 +74,8 @@ export function useDropArea(options: DropAreaOptions): UseDropArea {
 
     const dragOverSubscription = fromEvent(overlayElement, 'dragover')
       .pipe(
-        filter(() => (options.enabled?.value ?? true) as boolean),
         untilDestroyed(),
+        filter(() => (options.enabled?.value ?? true) as boolean),
       )
       .subscribe((event) => event.preventDefault());
     subscriptions.value.push(dragOverSubscription);
