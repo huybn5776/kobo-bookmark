@@ -18,7 +18,9 @@
     </blockquote>
 
     <div class="bookmark-toolbar">
-      <NButton class="bookmark-delete-button" secondary round @click="emits('onDeleteClick')">Delete</NButton>
+      <NButton class="bookmark-delete-button" secondary round @click="emits('onDeleteClick')">
+        <i18n-t keypath="common.delete" />
+      </NButton>
     </div>
   </div>
 </template>

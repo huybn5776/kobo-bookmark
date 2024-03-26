@@ -89,6 +89,7 @@ export const i18nEn = {
         integration_connect: 'Integration connect',
         notion_connect_description: `On the second page after redirection (that show the 'Allow access' button), please select 'Use a template…' option, or select a page previously created from template.`,
         connect_to_notion: 'Connect to Notion',
+        clear_notion_connection: 'Clear Notion connection setting',
       },
     },
   },

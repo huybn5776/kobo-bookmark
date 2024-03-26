@@ -4,7 +4,7 @@
       <i18n-t keypath="page.settings.notion.title" />
     </h3>
 
-    <div class="setting-row">
+    <div v-if="notionAuth" class="setting-row">
       <p class="setting-row-title">
         <i18n-t keypath="page.settings.notion.export_to" />
       </p>
@@ -36,7 +36,7 @@
       </NRadioGroup>
     </div>
 
-    <div class="setting-row">
+    <div v-if="notionAuth" class="setting-row">
       <p class="setting-row-title">
         <i18n-t keypath="page.settings.notion.connected_page" />
       </p>
@@ -50,7 +50,7 @@
       />
     </div>
 
-    <div class="setting-row">
+    <div v-if="notionAuth" class="setting-row">
       <p class="setting-row-title">
         <i18n-t keypath="page.settings.notion.connected_database" />
       </p>
@@ -68,12 +68,19 @@
       <p class="setting-row-title">
         <i18n-t keypath="page.settings.notion.integration_connect" />
       </p>
-      <p class="setting-note">
-        <i18n-t keypath="page.settings.notion.notion_connect_description" />
-      </p>
-      <a :href="authUrl">
-        <NButton><i18n-t keypath="page.settings.notion.connect_to_notion" /></NButton>
-      </a>
+      <template v-if="!notionAuth">
+        <p class="setting-note">
+          <i18n-t keypath="page.settings.notion.notion_connect_description" />
+        </p>
+        <a :href="authUrl">
+          <NButton><i18n-t keypath="page.settings.notion.connect_to_notion" /></NButton>
+        </a>
+      </template>
+      <template v-if="notionAuth">
+        <NButton v-if="notionAuth" :onClick="clearNotionConnection">
+          <i18n-t keypath="page.settings.notion.clear_notion_connection" />
+        </NButton>
+      </template>
     </div>
   </div>
 </template>
@@ -205,6 +212,15 @@ async function getNotionDatabaseOptions(): Promise<SelectOption[]> {
     const title = database.title[0].plain_text;
     return { value: database.id, label: title };
   });
+}
+
+function clearNotionConnection(): void {
+  notionAuth.value = undefined;
+  exportTo.value = undefined;
+  exportPageId.value = undefined;
+  exportPageTitle.value = undefined;
+  exportDatabaseId.value = undefined;
+  exportDatabaseTitle.value = undefined;
 }
 </script>
 

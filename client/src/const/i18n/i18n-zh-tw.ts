@@ -88,6 +88,7 @@ export const i18nZhTw = {
         integration_connect: '整合連線',
         notion_connect_description: `在跳轉過後的第二頁 'Allow access' 那邊，請選擇 'Use a template…' 選項，或選取先前建立的頁面`,
         connect_to_notion: '連線至 Notion',
+        clear_notion_connection: '清除 Notion 的連線設定',
       },
     },
   },
