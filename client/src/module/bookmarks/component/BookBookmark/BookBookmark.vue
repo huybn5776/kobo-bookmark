@@ -26,9 +26,9 @@
             <i18n-t keypath="page.bookmarks.export_notion" />
           </NButton>
           <div class="book-toolbar">
-            <NButton class="book-delete-button" secondary round @click="emits('onBookDelete', book)">
+            <IconButton class="book-delete-button" @click="emits('onBookDelete', book)">
               <i18n-t keypath="common.delete" />
-            </NButton>
+            </IconButton>
           </div>
         </div>
       </div>
@@ -55,6 +55,7 @@ import { NButton } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 
 import ChevronArrow from '@/component/ChevronArrow/ChevronArrow.vue';
+import IconButton from '@/component/IconButton/IconButton.vue';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import BookCoverView from '@/module/bookmarks/component/BookCoverView/BookCoverView.vue';

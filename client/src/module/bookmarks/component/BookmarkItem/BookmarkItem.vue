@@ -18,16 +18,15 @@
     </blockquote>
 
     <div class="bookmark-toolbar">
-      <NButton class="bookmark-delete-button" secondary round @click="emits('onDeleteClick')">
+      <IconButton class="bookmark-delete-button" @click="emits('onDeleteClick')" >
         <i18n-t keypath="common.delete" />
-      </NButton>
+      </IconButton>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { NButton } from 'naive-ui';
-
+import IconButton from '@/component/IconButton/IconButton.vue';
 import { KoboBookmark } from '@/dto/kobo-book';
 
 const props = defineProps<{ bookmark: KoboBookmark }>();

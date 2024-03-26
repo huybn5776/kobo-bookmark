@@ -65,11 +65,6 @@
   }
 }
 
-.bookmark-delete-button {
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  font-size: 0;
-  background: url('/src/assets/svg/delete.svg') no-repeat center;
-  background-size: 24px 24px;
+:deep .bookmark-delete-button {
+  background-image: url('/src/assets/svg/delete.svg');
 }
