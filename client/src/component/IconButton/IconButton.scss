@@ -5,4 +5,24 @@
   font-size: 0;
   background: none no-repeat center;
   background-size: 24px 24px;
+
+  &:deep(.n-button__icon) {
+    margin: 0;
+  }
+}
+
+.icon-button-icon-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  transition: opacity .2s;
+
+  .icon-button-loading & {
+    opacity: .2;
+  }
 }

@@ -24,8 +24,7 @@
 
 .book-export-item-fallback-icon {
   width: 24px;
-  height: 24px;
-  background: url('/src/assets/svg/blue-book.svg') no-repeat center;
+  height: 30px;
 }
 
 .book-export-item-name {
@@ -44,15 +43,13 @@
 }
 
 .cancel-icon {
-  width: 24px;
-  height: 24px;
-  background-image: url('/src/assets/svg/cancel.svg');
+  color: gray;
 }
 
 .book-export-item-cancel-button {
   width: 28px;
   height: 28px;
   margin: -2px;
+  color: #eee;
   font-size: 0;
-  background: url('/src/assets/svg/close-circle.svg') no-repeat center;
 }

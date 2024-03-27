@@ -17,17 +17,21 @@
           <p v-if="book.info.publisher" class="book-info-text book-publisher">{{ book.info.publisher }}</p>
           <p v-if="book.info.isbn" class="book-info-text book-isbn">{{ book.info.isbn }}</p>
           <div v-if="timeSpanReadingHours" class="book-time-span-reading">
-            <i class="book-clock-icon" />
+            <BookClockIcon class="book-clock-icon" />
             <span>{{ timeSpanReadingHours }}</span>
           </div>
         </div>
         <div class="book-actions">
-          <NButton class="bookmark-export-button" :loading="exportLoading" @click="emits('onExportClick', book)">
-            <i18n-t keypath="page.bookmarks.export_notion" />
-          </NButton>
           <div class="book-toolbar">
-            <IconButton class="book-delete-button" @click="emits('onBookDelete', book)">
-              <i18n-t keypath="common.delete" />
+            <IconButton
+              i18nKey="page.bookmarks.export_notion"
+              :loading="exportNotionLoading"
+              @click="emits('onExportClick', book)"
+            >
+              <NotionIcon class="book-toolbar-icon" />
+            </IconButton>
+            <IconButton i18nKey="common.delete" @click="emits('onBookDelete', book)">
+              <DeleteIcon class="book-toolbar-icon" />
             </IconButton>
           </div>
         </div>
@@ -51,17 +55,17 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
 
-import { NButton } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 
 import ChevronArrow from '@/component/ChevronArrow/ChevronArrow.vue';
+import { BookClockIcon, DeleteIcon, NotionIcon } from '@/component/icon';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import BookCoverView from '@/module/bookmarks/component/BookCoverView/BookCoverView.vue';
 import BookmarkList from '@/module/bookmarks/component/BookmarkList/BookmarkList.vue';
 
-const props = defineProps<{ book: KoboBook; defaultExpanded: boolean; exportLoading: boolean }>();
+const props = defineProps<{ book: KoboBook; defaultExpanded: boolean; exportNotionLoading: boolean }>();
 const emits = defineEmits<{
   (e: 'onExportClick', value: KoboBook): void;
   (e: 'onBookDelete', value: KoboBook): void;

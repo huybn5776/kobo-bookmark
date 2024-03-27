@@ -7,7 +7,10 @@
         :direction="collapsed ? 'up' : 'down'"
         @update:direction="(e) => (collapsed = e === 'up')"
       />
-      <NButton class="book-export-close-button" quaternary circle @click="discardAllTasks">Close</NButton>
+      <NButton class="book-export-close-button" quaternary circle @click="discardAllTasks">
+        <CloseIcon class="book-export-close-button-icon" />
+        Close
+      </NButton>
     </header>
 
     <div v-if="runningTask && progressMessage" class="book-export-progress-current-state">
@@ -35,6 +38,7 @@ import { groupBy, isNotNil } from 'ramda';
 import { useI18n } from 'vue-i18n';
 
 import ChevronArrow from '@/component/ChevronArrow/ChevronArrow.vue';
+import { CloseIcon } from '@/component/icon';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { BookExportTask, BookExportState, BookExportStage } from '@/interface/book-export-task';
 import BookTaskItem from '@/module/bookmarks/component/BookTaskItem/BookTaskItem.vue';

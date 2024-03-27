@@ -13,9 +13,8 @@
   position: relative;
   width: 100%;
   height: 100%;
-  background-image: url('/src/assets/svg/blue-book.svg');
-  background-repeat: no-repeat;
-  background-position: center;
+  background: url('/src/assets/svg/blue-book.svg') no-repeat center;
+  background-size: contain;
 }
 
 .fallback-image-cover-text {

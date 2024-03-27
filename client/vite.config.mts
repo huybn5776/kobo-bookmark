@@ -1,6 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import path from 'path';
 
+import svgLoader from 'vite-svg-loader';
 import vue from '@vitejs/plugin-vue';
 import { defineConfig, Alias } from 'vite';
 
@@ -17,7 +18,7 @@ function readAliasFromTsConfig(): Alias[] {
 }
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [vue(), svgLoader()],
   resolve: {
     alias: readAliasFromTsConfig(),
   },

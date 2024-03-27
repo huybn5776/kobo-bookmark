@@ -12,10 +12,10 @@
       :alt="task.book.info.title"
       @error="failToLoadCoverImage = true"
     />
-    <i v-if="failToLoadCoverImage" class="book-export-item-fallback-icon" />
+    <BlueBookIcon v-if="failToLoadCoverImage" class="book-export-item-fallback-icon" />
     <span class="book-export-item-name">{{ task.book.info.title }}</span>
 
-    <i v-if="task.state === BookExportState.Canceled" class="cancel-icon" />
+    <CancelIcon v-if="task.state === BookExportState.Canceled" class="icon-24" />
     <NButton
       v-else-if="hovered && (task.state === BookExportState.Running || task.state === BookExportState.Pending)"
       class="book-export-item-cancel-button"
@@ -23,6 +23,7 @@
       circle
       @click="onCancelClick"
     >
+      <CloseCircleIcon class="icon-24" />
       Cancel
     </NButton>
     <NProgress
@@ -44,6 +45,7 @@ import { NProgress, NButton } from 'naive-ui';
 import type { Status } from 'naive-ui/es/progress/src/interface';
 import { isNotNil } from 'ramda';
 
+import { BlueBookIcon, CancelIcon, CloseCircleIcon } from '@/component/icon';
 import { BookExportTask, BookExportState } from '@/interface/book-export-task';
 
 const props = defineProps<{ task: BookExportTask }>();

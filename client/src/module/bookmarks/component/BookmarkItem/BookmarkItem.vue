@@ -18,14 +18,15 @@
     </blockquote>
 
     <div class="bookmark-toolbar">
-      <IconButton class="bookmark-delete-button" @click="emits('onDeleteClick')" >
-        <i18n-t keypath="common.delete" />
+      <IconButton i18nKey="common.delete" @click="emits('onDeleteClick')">
+        <DeleteIcon class="bookmark-action-icon" />
       </IconButton>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { DeleteIcon } from '@/component/icon';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { KoboBookmark } from '@/dto/kobo-book';
 

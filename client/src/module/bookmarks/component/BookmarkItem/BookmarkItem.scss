@@ -65,6 +65,8 @@
   }
 }
 
-:deep .bookmark-delete-button {
-  background-image: url('/src/assets/svg/delete.svg');
+.bookmark-action-icon {
+  width: 24px;
+  height: 24px;
+  color: lightgray;
 }
