@@ -21,19 +21,24 @@
             <span>{{ timeSpanReadingHours }}</span>
           </div>
         </div>
-        <div class="book-actions">
-          <div class="book-toolbar">
-            <IconButton
-              i18nKey="page.bookmarks.export_notion"
-              :loading="exportNotionLoading"
-              @click="emits('onExportClick', book)"
-            >
-              <NotionIcon class="book-toolbar-icon" />
-            </IconButton>
-            <IconButton i18nKey="common.delete" @click="emits('onBookDelete', book)">
-              <DeleteIcon class="book-toolbar-icon" />
-            </IconButton>
-          </div>
+        <div class="book-toolbar">
+          <IconButton i18nKey="page.bookmarks.export_text" @click="emits('onTextExportClick', book)">
+            <TextIcon class="book-toolbar-icon" />
+          </IconButton>
+          <IconButton i18nKey="page.bookmarks.export_markdown" @click="emits('onMarkdownExportClick', book)">
+            <i18n-t keypath="page.bookmarks.export_markdown" />
+            <MarkdownIcon class="book-toolbar-icon" />
+          </IconButton>
+          <IconButton
+            i18nKey="page.bookmarks.export_notion"
+            :loading="exportNotionLoading"
+            @click="emits('onNotionExportClick', book)"
+          >
+            <NotionIcon class="book-toolbar-icon" />
+          </IconButton>
+          <IconButton i18nKey="common.delete" @click="emits('onBookDelete', book)">
+            <DeleteIcon class="book-toolbar-icon" />
+          </IconButton>
         </div>
       </div>
       <ChevronArrow
@@ -58,7 +63,7 @@ import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import ChevronArrow from '@/component/ChevronArrow/ChevronArrow.vue';
-import { BookClockIcon, DeleteIcon, NotionIcon } from '@/component/icon';
+import { BookClockIcon, DeleteIcon, MarkdownIcon, NotionIcon, TextIcon } from '@/component/icon';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
@@ -67,7 +72,9 @@ import BookmarkList from '@/module/bookmarks/component/BookmarkList/BookmarkList
 
 const props = defineProps<{ book: KoboBook; defaultExpanded: boolean; exportNotionLoading: boolean }>();
 const emits = defineEmits<{
-  (e: 'onExportClick', value: KoboBook): void;
+  (e: 'onTextExportClick', value: KoboBook): void;
+  (e: 'onMarkdownExportClick', value: KoboBook): void;
+  (e: 'onNotionExportClick', value: KoboBook): void;
   (e: 'onBookDelete', value: KoboBook): void;
   (e: 'onBookmarkDelete', book: KoboBook, bookmark: KoboBookmark): void;
 }>();

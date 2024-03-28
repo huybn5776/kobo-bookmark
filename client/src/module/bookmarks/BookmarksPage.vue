@@ -11,8 +11,10 @@
         ref="bookBookmarkRefs"
         :book="book"
         :default-expanded="booksToShow?.length === 1"
-        :exportLoading="exportingBookIds.includes(book.id)"
-        @onExportClick="exportBookmark"
+        :exportNotionLoading="exportingBookIds.includes(book.id)"
+        @onTextExportClick="exportBookmarkToText"
+        @onMarkdownExportClick="exportBookmarkToMarkdown"
+        @onNotionExportClick="exportBookmarkToNotion"
         @onBookDelete="deleteBookConfirm"
         @onBookmarkDelete="deleteBookmark"
       />
@@ -63,9 +65,11 @@ import DeleteBookDialogContent from '@/module/bookmarks/component/DeleteBookDial
 import { findCoverImageForBook } from '@/services/bookmark/book-cover.service';
 import { getAllBooksFromDb, putBooksToDb, deleteBooksInDb } from '@/services/bookmark/bookmark-manage.service';
 import { sortKoboBooks, sortKoboBookmarks } from '@/services/bookmark/kobo-book-sort.service';
+import { bookmarkToText, bookmarkToMarkdown } from '@/services/export/bookmark-export.service';
 import { handleNotionApiError } from '@/services/notion/notion-api-error-handing.service';
 import { exportBookBookmarks } from '@/services/notion/notion-export.service';
 import { getSettingFromStorage } from '@/services/setting.service';
+import { textToFileDownload } from '@/util/browser-utils';
 import { deepToRaw } from '@/util/vue-utils';
 
 const { t } = useI18n<[I18NMessageSchema]>();
@@ -143,7 +147,17 @@ function updateBookById(bookId: string, updater: (book: KoboBook) => KoboBook): 
   putBooksToDb([deepToRaw(targetBook)]);
 }
 
-async function exportBookmark(book: KoboBook): Promise<void> {
+function exportBookmarkToText(book: KoboBook): void {
+  const content = bookmarkToText(book);
+  textToFileDownload(content, `${book.info.title}.txt`, 'text/plain');
+}
+
+function exportBookmarkToMarkdown(book: KoboBook): void {
+  const content = bookmarkToMarkdown(book);
+  textToFileDownload(content, `${book.info.title}.md`, 'text/markdown');
+}
+
+async function exportBookmarkToNotion(book: KoboBook): Promise<void> {
   if (!isNotionIntegrationReady()) {
     message.error(t('page.bookmarks.connect_to_notion_notice'));
     return;

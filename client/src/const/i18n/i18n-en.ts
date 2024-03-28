@@ -56,6 +56,8 @@ export const i18nEn = {
       author: 'Author',
       series: 'Series',
       position: 'Position',
+      export_text: 'Export as text',
+      export_markdown: 'Export as markdown',
       export_notion: 'Export to Notion',
       connect_to_notion_notice: 'Please connect to Notion at Settings page first.',
       delete_book_with_bookmarks: `Delete book "{0}" with {1} @:{'common.bookmark'}?`,
@@ -73,6 +75,22 @@ export const i18nEn = {
     },
     settings: {
       title: 'Settings',
+      text_export: {
+        title: 'Text export settings',
+        export_mode: 'Export mode',
+        mode_list: 'List',
+        mode_list_description: 'Show highlights by list, better for viewing large number of content.',
+        mode_paragraph: 'Paragraph',
+        mode_paragraph_description: 'Show highlight content by paragraph, allow more details to be displayed.',
+      },
+      markdown: {
+        title: 'Markdown settings',
+        export_mode: 'Export mode',
+        mode_list: 'List',
+        mode_list_description: 'Show highlights by list, better for viewing large number of content.',
+        mode_paragraph: 'Paragraph',
+        mode_paragraph_description: 'Show highlight content by paragraph, allow more details to be displayed.',
+      },
       notion: {
         title: 'Notion settings',
         export_to: 'Export to',

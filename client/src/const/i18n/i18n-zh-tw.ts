@@ -55,6 +55,8 @@ export const i18nZhTw = {
       author: '作者',
       series: '系列',
       position: '位置',
+      export_text: '以文字匯出',
+      export_markdown: '以 Markdown 匯出',
       export_notion: '匯出至 Notion',
       connect_to_notion_notice: '請先至設定頁面整合 Notion 的連線設定',
       delete_book_with_bookmarks: `刪除書本 "{0}" 以及 {1} 個@:{'common.bookmark'}?`,
@@ -72,6 +74,22 @@ export const i18nZhTw = {
     },
     settings: {
       title: '設定',
+      text_export: {
+        title: '文字匯出設定',
+        export_mode: '匯出模式',
+        mode_list: '清單',
+        mode_list_description: '以清單列舉劃線內容，適合同時檢視大量劃線',
+        mode_paragraph: '段落',
+        mode_paragraph_description: '以段落顯示劃線內容，以顯示更詳細的內容',
+      },
+      markdown: {
+        title: 'Markdown 設定',
+        export_mode: '匯出模式',
+        mode_list: '清單',
+        mode_list_description: '以清單列舉劃線內容，適合同時檢視大量劃線',
+        mode_paragraph: '段落',
+        mode_paragraph_description: '以段落顯示劃線內容，以顯示更詳細的內容',
+      },
       notion: {
         title: 'Notion 設定',
         export_to: '匯出至',

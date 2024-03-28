@@ -6,6 +6,7 @@ import type {
 import { maxBy } from 'ramda';
 
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
+import { chapterTitleToText } from '@/services/bookmark/bookmark-format.service';
 
 type BulletedListItem = Pick<Extract<BlockObjectRequest, { bulleted_list_item: unknown }>, 'bulleted_list_item'>;
 type BulletedListChildren = BulletedListItem['bulleted_list_item']['children'];
@@ -77,8 +78,7 @@ export function bookmarksToNotionPageBookDetail(book: KoboBook): BlockObjectRequ
 export function bookmarksToNotionBlocks(bookmarks: KoboBookmark[]): BlockObjectRequest[] {
   const divider: BlockObjectRequest = { object: 'block', type: 'divider', divider: {} };
   return bookmarks.flatMap((bookmark, index) => {
-    const chapterText =
-      bookmark.chapter.parentChapters.map((chapter) => `${chapter.title} > `) + bookmark.chapter.titles.join(' - ');
+    const chapterText = chapterTitleToText(bookmark.chapter);
     const chapterBlock: BlockObjectRequest = {
       paragraph: {
         rich_text: [{ text: { content: chapterText } }],

@@ -26,12 +26,6 @@
   flex-direction: column;
 }
 
-.book-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: auto;
-}
-
 .bookmark-export-button {
   width: min-content;
 }
@@ -39,17 +33,18 @@
 .book-toolbar {
   position: absolute;
   right: 16px;
+  bottom: 16px;
   display: flex;
   gap: 8px;
   transition: opacity .2s;
 
-  .book-header:not(:hover) & {
-    opacity: 0;
+  .book-bookmark:not(:hover):not(:focus-within) & {
+    opacity: .4;
   }
 }
 
-:deep .book-delete-button {
-  background-image: url('/src/assets/svg/delete.svg');
+.book-export-notion-icon {
+  color: lightgray;
 }
 
 .bookmark-expand-handle {
