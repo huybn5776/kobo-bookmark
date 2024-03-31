@@ -13,3 +13,7 @@ export function textToFileDownload(text: string, filename: string, mimeType: str
     document.body.removeChild(a);
   });
 }
+
+export function textToClipboard(text: string): Promise<void> {
+  return navigator.clipboard.writeText(text);
+}

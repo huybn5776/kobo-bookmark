@@ -6,24 +6,24 @@ import { bookmarkToMarkdownList, bookmarkToMarkdownParagraph } from '@/services/
 import { getSettingFromStorage } from '@/services/setting.service';
 import { bookmarkToTextList, bookmarkToTextParagraph } from '@/services/text-export/text-export.service';
 
-export function bookmarkToText(book: KoboBook): string {
+export function bookmarkToText(books: KoboBook[]): string {
   const mode = getSettingFromStorage(SettingKey.TextExportMode) || TextExportMode.Paragraph;
   switch (mode) {
     case TextExportMode.List:
-      return bookmarkToTextList(book);
+      return bookmarkToTextList(books);
     case TextExportMode.Paragraph:
     default:
-      return bookmarkToTextParagraph(book);
+      return bookmarkToTextParagraph(books);
   }
 }
 
-export function bookmarkToMarkdown(book: KoboBook): string {
+export function bookmarkToMarkdown(books: KoboBook[]): string {
   const mode = getSettingFromStorage(SettingKey.MarkdownExportMode) || MarkdownExportMode.Paragraph;
   switch (mode) {
     case MarkdownExportMode.List:
-      return bookmarkToMarkdownList(book);
+      return bookmarkToMarkdownList(books);
     case MarkdownExportMode.Paragraph:
     default:
-      return bookmarkToMarkdownParagraph(book);
+      return bookmarkToMarkdownParagraph(books);
   }
 }

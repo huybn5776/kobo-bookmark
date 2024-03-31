@@ -10,6 +10,10 @@
     <DataImportResult
       v-if="sqlFileLoaded"
       :bookChanges="bookChanges"
+      @onExportTextFileClick="exportChangeAsTextFile"
+      @onExportTextClipboardClick="exportChangeAsTextClipboard"
+      @onExportMarkdownFileClick="exportChangeAsMarkdownFile"
+      @onExportMarkdownClipboardClick="exportChangeAsMarkdownClipboard"
       @onDiscardClick="discardChanges"
       @onSaveClick="saveChanges"
     />
@@ -37,6 +41,7 @@ import FullPageFileDropZone from '@/component/FullPageFileDropZone/FullPageFileD
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBookChanges, KoboBook, KoboBookmarkChanges, KoboBookmark, KoboBookmarkChangesType } from '@/dto/kobo-book';
 import DataImportResult from '@/module/data-import/component/DataImportResult/DataImportResult.vue';
+import { useExportChanges } from '@/module/data-import/composition/use-export-changes';
 import { putBooksToDb, getAllBooksFromDb } from '@/services/bookmark/bookmark-manage.service';
 import { createBookmarkPositionSortFn } from '@/services/bookmark/kobo-book-sort.service';
 import { calcUpdatesOfBooks } from '@/services/bookmark/kobo-bookmark-compare.service';
@@ -55,6 +60,13 @@ const dropTargetRef = ref<HTMLElement>();
 const sqlFileLoaded = ref(false);
 const bookChanges = ref<KoboBookChanges[]>([]);
 const importedBooks = ref<KoboBook[]>([]);
+
+const {
+  exportChangeAsTextFile,
+  exportChangeAsTextClipboard,
+  exportChangeAsMarkdownFile,
+  exportChangeAsMarkdownClipboard,
+} = useExportChanges({ bookChanges });
 
 async function onFile(files: Record<string, File>): Promise<void> {
   const sqliteFile = findKoboReaderSqlFile(files);

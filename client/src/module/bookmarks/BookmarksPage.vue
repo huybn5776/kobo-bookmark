@@ -148,12 +148,12 @@ function updateBookById(bookId: string, updater: (book: KoboBook) => KoboBook): 
 }
 
 function exportBookmarkToText(book: KoboBook): void {
-  const content = bookmarkToText(book);
+  const content = bookmarkToText([book]);
   textToFileDownload(content, `${book.info.title}.txt`, 'text/plain');
 }
 
 function exportBookmarkToMarkdown(book: KoboBook): void {
-  const content = bookmarkToMarkdown(book);
+  const content = bookmarkToMarkdown([book]);
   textToFileDownload(content, `${book.info.title}.md`, 'text/markdown');
 }
 
