@@ -7,11 +7,13 @@
     <TextExportSettingsSection />
     <MarkdownSettingsSection />
     <NotionSettingsSection />
+    <MiscSettingsSection />
   </div>
 </template>
 
 <script lang="ts" setup>
 import MarkdownSettingsSection from '@/module/settings/component/MarkdownSettingsSection/MarkdownSettingsSection.vue';
+import MiscSettingsSection from '@/module/settings/component/MiscSettingsSection/MiscSettingsSection.vue';
 import NotionSettingsSection from '@/module/settings/component/NotionSettingsSection/NotionSettingsSection.vue';
 import TextExportSettingsSection from '@/module/settings/component/TextExportSettingsSection/TextExportSettingsSection.vue';
 </script>

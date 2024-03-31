@@ -108,6 +108,11 @@ export const i18nZhTw = {
         connect_to_notion: '連線至 Notion',
         clear_notion_connection: '清除 Notion 的連線設定',
       },
+      misc: {
+        title: '雜項',
+        language: '語言',
+        language_auto: '瀏覽器預設',
+      },
     },
   },
 };

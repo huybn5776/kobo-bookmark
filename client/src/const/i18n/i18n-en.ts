@@ -109,6 +109,11 @@ export const i18nEn = {
         connect_to_notion: 'Connect to Notion',
         clear_notion_connection: 'Clear Notion connection setting',
       },
+      misc: {
+        title: 'Misc',
+        language: 'Language',
+        language_auto: 'Browser default',
+      },
     },
   },
 };
