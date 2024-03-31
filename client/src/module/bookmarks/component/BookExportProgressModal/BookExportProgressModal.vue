@@ -105,7 +105,7 @@ function taskToMessage(task: BookExportTask): string {
   return `${stepText}${stageText}${percentageText}`;
 }
 
-function discardAllTasks() {
+function discardAllTasks(): void {
   emits('discardAllTasks');
   collapsed.value = true;
 }

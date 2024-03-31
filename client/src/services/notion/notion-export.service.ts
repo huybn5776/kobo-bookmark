@@ -192,7 +192,7 @@ export async function exportBookmarksToExistingPage(
     totalStep: 3,
     stage: BookExportStage.CleanupPage,
   };
-  const updateProgress = (t: BookExportTask) => progressCallback((task = t));
+  const updateProgress = (t: BookExportTask): void => progressCallback((task = t));
 
   await clearPage(pageId, (percentage) => updateProgress({ ...task, percentage }));
 
