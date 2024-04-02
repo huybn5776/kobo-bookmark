@@ -63,6 +63,7 @@ export const i18nEn = {
       author: 'Author',
       series: 'Series',
       position: 'Position',
+      read_time: 'Read time',
       export_text: 'Export as text',
       export_markdown: 'Export as markdown',
       export_notion: 'Export to Notion',

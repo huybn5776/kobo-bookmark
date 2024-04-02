@@ -17,7 +17,12 @@
           <p v-if="book.info.publisher" class="book-info-text book-publisher">{{ book.info.publisher }}</p>
           <p v-if="book.info.isbn" class="book-info-text book-isbn">{{ book.info.isbn }}</p>
           <div v-if="timeSpanReadingHours" class="book-time-span-reading">
-            <BookClockIcon class="book-clock-icon" />
+            <NPopover trigger="hover" :delay="500">
+              <template #trigger>
+                <BookClockIcon class="book-clock-icon" />
+              </template>
+              <i18n-t keypath="page.bookmarks.read_time" />
+            </NPopover>
             <span>{{ timeSpanReadingHours }}</span>
           </div>
         </div>
@@ -60,6 +65,7 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
 
+import { NPopover } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 
 import ChevronArrow from '@/component/ChevronArrow/ChevronArrow.vue';

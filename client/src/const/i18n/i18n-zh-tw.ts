@@ -62,6 +62,7 @@ export const i18nZhTw = {
       author: '作者',
       series: '系列',
       position: '位置',
+      read_time: '閱讀時間',
       export_text: '以文字匯出',
       export_markdown: '以 Markdown 匯出',
       export_notion: '匯出至 Notion',
