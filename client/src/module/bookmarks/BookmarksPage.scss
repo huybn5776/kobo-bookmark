@@ -10,6 +10,14 @@
   height: 36px;
   margin-bottom: 8px;
   padding: 0 8px 0 16px;
+
+  &.bookmark-page-tools-sticky {
+    position: sticky;
+    top: 8px;
+    z-index: 1;
+    background-color: var(--bg-dark);
+    box-shadow: 0 -8px 0 var(--bg-dark);
+  }
 }
 
 .empty-bookmarks-message-container {

@@ -1,6 +1,10 @@
 <template>
   <div class="page-content bookmark-page">
-    <div v-if="booksToShow.length" class="bookmark-page-tools">
+    <div
+      v-if="booksToShow.length"
+      class="bookmark-page-tools"
+      :class="{ 'bookmark-page-tools-sticky': showMultiSelectToolbar }"
+    >
       <BookSortingSelect
         v-if="!showMultiSelectToolbar"
         v-model:bookSorting="bookSorting"

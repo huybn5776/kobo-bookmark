@@ -1,5 +1,6 @@
 :root {
   color-scheme: dark;
+  --bg-dark: #202124;
 }
 
 body {
@@ -11,7 +12,7 @@ body {
   height: 100vh;
   overflow-y: auto;
   color: white;
-  background-color: #202124;
+  background-color: var(--bg-dark);
 }
 
 a {
