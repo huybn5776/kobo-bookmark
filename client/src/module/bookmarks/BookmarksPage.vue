@@ -1,7 +1,25 @@
 <template>
   <div class="page-content bookmark-page">
     <div v-if="booksToShow.length" class="bookmark-page-tools">
-      <BookSortingSelect v-model:bookSorting="bookSorting" v-model:bookmarkSorting="bookmarkSorting" />
+      <BookSortingSelect
+        v-if="!showMultiSelectToolbar"
+        v-model:bookSorting="bookSorting"
+        v-model:bookmarkSorting="bookmarkSorting"
+      />
+      <MultiBookActionBar
+        v-if="showMultiSelectToolbar"
+        :selectedBooks="selectedBooks"
+        @onTextExportClick="exportSelectedAsText"
+        @onMarkdownExportClick="exportSelectedAsMarkdown"
+        @onNotionExportClick="exportSelectedToNotion"
+        @onDeleteClick="deleteSelected"
+      />
+      <NCheckbox
+        size="large"
+        :checked="selectedBooksCheckState === CheckboxState.Checked"
+        :indeterminate="selectedBooksCheckState === CheckboxState.Indeterminate"
+        @click="handleMasterCheckboxClick"
+      />
     </div>
 
     <div v-if="booksToShow.length" class="books-container">
@@ -11,7 +29,9 @@
         ref="bookBookmarkRefs"
         :book="book"
         :default-expanded="booksToShow?.length === 1"
+        :selected="selectedBookIds.includes(book.id)"
         :exportNotionLoading="exportingBookIds.includes(book.id)"
+        @update:selected="(v) => onBookSelectChanges(book, v)"
         @onTextExportClick="exportBookmarkToText"
         @onMarkdownExportClick="exportBookmarkToMarkdown"
         @onNotionExportClick="exportBookmarkToNotion"
@@ -48,20 +68,24 @@
 <script lang="ts" setup>
 import { onMounted, ref, computed, h } from 'vue';
 
-import { useMessage, useNotification, useDialog } from 'naive-ui';
+import { useMessage, useNotification, useDialog, NCheckbox } from 'naive-ui';
 import { isNil } from 'ramda';
 import { useI18n } from 'vue-i18n';
 
 import { useSyncSetting } from '@/composition/use-sync-setting';
+import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import { BookSortingKey } from '@/enum/book-sorting-key';
 import { BookmarkSortingKey } from '@/enum/bookmark-sorting-key';
+import { CheckboxState } from '@/enum/checkbox-state';
 import { SettingKey } from '@/enum/setting-key';
 import { BookExportTask, BookExportState } from '@/interface/book-export-task';
 import BookBookmark from '@/module/bookmarks/component/BookBookmark/BookBookmark.vue';
 import BookExportProgressModal from '@/module/bookmarks/component/BookExportProgressModal/BookExportProgressModal.vue';
 import BookSortingSelect from '@/module/bookmarks/component/BookSortingSelect/BookSortingSelect.vue';
 import DeleteBookDialogContent from '@/module/bookmarks/component/DeleteBookDialogContent/DeleteBookDialogContent.vue';
+import MultiBookActionBar from '@/module/bookmarks/component/MultiBookActionBar/MultiBookActionBar.vue';
+import { useMultiBookActions } from '@/module/bookmarks/composition/use-multi-book-actions';
 import { findCoverImageForBook } from '@/services/bookmark/book-cover.service';
 import { getAllBooksFromDb, putBooksToDb, deleteBooksInDb } from '@/services/bookmark/bookmark-manage.service';
 import { sortKoboBooks, sortKoboBookmarks } from '@/services/bookmark/kobo-book-sort.service';
@@ -79,12 +103,23 @@ const notification = useNotification();
 const dialog = useDialog();
 
 const loadBooks = ref<boolean>(false);
-const allBooks = ref<KoboBook[]>();
+const allBooks = ref<KoboBook[]>([]);
 const bookSorting = useSyncSetting(SettingKey.BookSorting, BookSortingKey.LastBookmark);
 const bookmarkSorting = useSyncSetting(SettingKey.BookmarkSorting, BookmarkSortingKey.LastUpdate);
 const bookBookmarkRefs = ref<InstanceType<typeof BookBookmark>[]>([]);
 const pendingExportRequest = ref<Promise<void>>();
 const bookExportTasks = ref<BookExportTask[]>([]);
+const {
+  selectedBooks,
+  selectedBookIds,
+  selectedBooksCheckState,
+  showMultiSelectToolbar,
+  handleMasterCheckboxClick,
+  onBookSelectChanges,
+  exportSelectedAsText,
+  exportSelectedAsMarkdown,
+  deleteSelected,
+} = useMultiBookActions({ allBooks, deleteBooks });
 
 const bookExportTasksToShow = computed(() => bookExportTasks.value.toReversed().filter((task) => task.hidden !== true));
 const exportingBookIds = computed(() => {
@@ -173,6 +208,10 @@ async function exportBookmarkToNotion(book: KoboBook): Promise<void> {
   pendingExportRequest.value = undefined;
 }
 
+function exportSelectedToNotion(): void {
+  selectedBooks.value.forEach((book) => exportBookmarkToNotion(book));
+}
+
 function isNotionIntegrationReady(): boolean {
   return !!getSettingFromStorage(SettingKey.NotionAuth)?.access_token;
 }
@@ -251,12 +290,12 @@ function deleteBookConfirm(book: KoboBook): void {
     content: () => h(DeleteBookDialogContent, { book }),
     negativeText: t('common.cancel'),
     positiveText: t('common.yes'),
-    onPositiveClick: () => deleteBook(book),
+    onPositiveClick: () => deleteBooks([book]),
   });
 }
 
-async function deleteBook(book: KoboBook): Promise<void> {
-  await deleteBooksInDb([book.id]);
+async function deleteBooks(books: KoboBook[]): Promise<void> {
+  await deleteBooksInDb(books.map((book) => book.id));
   allBooks.value = await getAllBooksFromDb();
 }
 

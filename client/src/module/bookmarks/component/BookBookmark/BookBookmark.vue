@@ -1,5 +1,5 @@
 <template>
-  <div ref="elementRef" class="book-bookmark">
+  <div ref="elementRef" class="book-bookmark" :class="{ 'book-selected': selected }">
     <div class="book-header">
       <BookCoverView :book="book" />
       <div class="book-section">
@@ -33,6 +33,9 @@
           :disabled="disableBookmarkExpand"
           class="bookmark-expand-handle"
         />
+        <div class="book-checkbox-container">
+          <NCheckbox size="large" :checked="selected" @update:checked="(v) => emits('update:selected', v)" />
+        </div>
         <div class="book-toolbar-container">
           <div class="book-toolbar">
             <IconButton i18nKey="page.bookmarks.export_text" @click="emits('onTextExportClick', book)">
@@ -69,7 +72,7 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
 
-import { NPopover } from 'naive-ui';
+import { NCheckbox, NPopover } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 
 import ChevronArrow from '@/component/ChevronArrow/ChevronArrow.vue';
@@ -80,8 +83,14 @@ import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import BookCoverView from '@/module/bookmarks/component/BookCoverView/BookCoverView.vue';
 import BookmarkList from '@/module/bookmarks/component/BookmarkList/BookmarkList.vue';
 
-const props = defineProps<{ book: KoboBook; defaultExpanded: boolean; exportNotionLoading: boolean }>();
+const props = defineProps<{
+  book: KoboBook;
+  defaultExpanded: boolean;
+  selected: boolean;
+  exportNotionLoading?: boolean;
+}>();
 const emits = defineEmits<{
+  (e: 'update:selected', value: boolean): void;
   (e: 'onTextExportClick', value: KoboBook): void;
   (e: 'onMarkdownExportClick', value: KoboBook): void;
   (e: 'onNotionExportClick', value: KoboBook): void;

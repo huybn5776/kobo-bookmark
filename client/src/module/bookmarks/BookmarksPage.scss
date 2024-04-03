@@ -3,7 +3,13 @@
 }
 
 .bookmark-page-tools {
+  display: grid;
+  grid-template-columns: 1fr 32px;
+  gap: 16px;
+  align-items: center;
+  height: 36px;
   margin-bottom: 8px;
+  padding: 0 8px 0 16px;
 }
 
 .empty-bookmarks-message-container {

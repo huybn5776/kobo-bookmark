@@ -49,6 +49,14 @@
   }
 }
 
+.book-checkbox-container {
+  align-self: center;
+
+  .book-bookmark:not(:hover):not(:focus-within):not(.book-selected) & {
+    opacity: .4;
+  }
+}
+
 .book-toolbar-container {
   position: relative;
   height: 32px;

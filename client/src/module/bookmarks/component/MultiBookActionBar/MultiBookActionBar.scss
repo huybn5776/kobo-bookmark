@@ -1,0 +1,18 @@
+.multi-book-action-bar {
+  display: flex;
+  align-items: center;
+}
+
+.multi-book-action-text {
+  font-size: 18px;
+}
+
+.multi-book-actions {
+  display: grid;
+  grid-auto-columns: 32px;
+  grid-auto-flow: column;
+  gap: 8px;
+  align-items: center;
+  justify-items: center;
+  margin-left: auto;
+}
