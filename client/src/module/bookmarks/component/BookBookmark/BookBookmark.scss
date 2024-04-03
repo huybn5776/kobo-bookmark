@@ -30,10 +30,34 @@
   width: min-content;
 }
 
+.book-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 32px;
+}
+
+.bookmark-expand-handle {
+  align-self: center;
+  margin-top: 4px;
+  background-color: rgba(black, .2);
+  border-radius: 4px;
+  transition: background-color .2s;
+
+  &:hover {
+    background-color: rgba(black, .6);
+  }
+}
+
+.book-toolbar-container {
+  position: relative;
+  height: 32px;
+}
+
 .book-toolbar {
   position: absolute;
-  right: 16px;
-  bottom: 16px;
+  right: 0;
+  bottom: 0;
   display: flex;
   gap: 8px;
   transition: opacity .2s;
@@ -45,17 +69,6 @@
 
 .book-export-notion-icon {
   color: lightgray;
-}
-
-.bookmark-expand-handle {
-  align-self: center;
-  background-color: rgba(black, .2);
-  border-radius: 4px;
-  transition: background-color .2s;
-
-  &:hover {
-    background-color: rgba(black, .6);
-  }
 }
 
 .book-title {
@@ -73,6 +86,7 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  user-select: auto;
 
   &:hover {
     background-color: rgba(white, 0.1);

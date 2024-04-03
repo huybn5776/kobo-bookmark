@@ -26,31 +26,35 @@
             <span>{{ timeSpanReadingHours }}</span>
           </div>
         </div>
-        <div class="book-toolbar">
-          <IconButton i18nKey="page.bookmarks.export_text" @click="emits('onTextExportClick', book)">
-            <TextIcon class="book-toolbar-icon" />
-          </IconButton>
-          <IconButton i18nKey="page.bookmarks.export_markdown" @click="emits('onMarkdownExportClick', book)">
-            <i18n-t keypath="page.bookmarks.export_markdown" />
-            <MarkdownIcon class="book-toolbar-icon" />
-          </IconButton>
-          <IconButton
-            i18nKey="page.bookmarks.export_notion"
-            :loading="exportNotionLoading"
-            @click="emits('onNotionExportClick', book)"
-          >
-            <NotionIcon class="book-toolbar-icon" />
-          </IconButton>
-          <IconButton i18nKey="common.delete" @click="emits('onBookDelete', book)">
-            <DeleteIcon class="book-toolbar-icon" />
-          </IconButton>
+      </div>
+      <div class="book-actions">
+        <ChevronArrow
+          v-model:direction="expandedDirection"
+          :disabled="disableBookmarkExpand"
+          class="bookmark-expand-handle"
+        />
+        <div class="book-toolbar-container">
+          <div class="book-toolbar">
+            <IconButton i18nKey="page.bookmarks.export_text" @click="emits('onTextExportClick', book)">
+              <TextIcon class="icon-24" />
+            </IconButton>
+            <IconButton i18nKey="page.bookmarks.export_markdown" @click="emits('onMarkdownExportClick', book)">
+              <i18n-t keypath="page.bookmarks.export_markdown" />
+              <MarkdownIcon class="icon-24" />
+            </IconButton>
+            <IconButton
+              i18nKey="page.bookmarks.export_notion"
+              :loading="exportNotionLoading"
+              @click="emits('onNotionExportClick', book)"
+            >
+              <NotionIcon class="icon-24" />
+            </IconButton>
+            <IconButton i18nKey="common.delete" @click="emits('onBookDelete', book)">
+              <DeleteIcon class="icon-24" />
+            </IconButton>
+          </div>
         </div>
       </div>
-      <ChevronArrow
-        v-model:direction="expandedDirection"
-        :disabled="disableBookmarkExpand"
-        class="bookmark-expand-handle"
-      />
     </div>
 
     <BookmarkList
