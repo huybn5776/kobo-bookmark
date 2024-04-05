@@ -39,6 +39,7 @@
         @onTextExportClick="exportBookmarkToText"
         @onMarkdownExportClick="exportBookmarkToMarkdown"
         @onNotionExportClick="exportBookmarkToNotion"
+        @onBookCoverImageUpdated="(v) => updateBookCoverImage(book, v)"
         @onBookDelete="deleteBookConfirm"
         @onBookmarkDelete="deleteBookmark"
       />
@@ -286,6 +287,11 @@ function gotoBook(task: BookExportTask): void {
   const bookIndex = booksToShow.value.findIndex((book) => book.id === task.book.id);
   const bookComponent = bookBookmarkRefs.value[bookIndex];
   bookComponent?.elementRef?.scrollIntoView({ behavior: 'smooth' });
+}
+
+async function updateBookCoverImage(book: KoboBook, coverImageUrl: string): Promise<void> {
+  updateBookById(book.id, (b) => ({ ...b, coverImageUrl }));
+  allBooks.value = await getAllBooksFromDb();
 }
 
 function deleteBookConfirm(book: KoboBook): void {

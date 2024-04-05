@@ -1,7 +1,7 @@
 <template>
   <div ref="elementRef" class="book-bookmark" :class="{ 'book-selected': selected }">
     <div class="book-header">
-      <BookCoverView :book="book" />
+      <BookCoverView :book="book" @onCoverImageUpdated="(v) => emits('onBookCoverImageUpdated', v)" />
       <div class="book-section">
         <h2 class="book-title">
           <button
@@ -94,6 +94,7 @@ const emits = defineEmits<{
   (e: 'onTextExportClick', value: KoboBook): void;
   (e: 'onMarkdownExportClick', value: KoboBook): void;
   (e: 'onNotionExportClick', value: KoboBook): void;
+  (e: 'onBookCoverImageUpdated', value: string): void;
   (e: 'onBookDelete', value: KoboBook): void;
   (e: 'onBookmarkDelete', book: KoboBook, bookmark: KoboBookmark): void;
 }>();
