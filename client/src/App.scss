@@ -53,3 +53,8 @@ a {
   width: 24px;
   height: 24px;
 }
+
+.n-image-preview {
+  height: 100%;
+  object-fit: contain;
+}
