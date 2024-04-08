@@ -1,4 +1,4 @@
-import { openDB, DBSchema, IDBPDatabase } from 'idb';
+import { openDB, deleteDB, DBSchema, IDBPDatabase } from 'idb';
 
 import { KoboBook } from '@/dto/kobo-book';
 
@@ -12,6 +12,11 @@ interface BookDb extends DBSchema {
 export async function getAllBooksFromDb(): Promise<KoboBook[]> {
   const db = await getDbInstance();
   return db.getAll(booksStore);
+}
+
+export async function countAllBooksFromDb(): Promise<number> {
+  const db = await getDbInstance();
+  return db.count(booksStore);
 }
 
 export async function getBooksByIdFromDb(ids: string[]): Promise<KoboBook[]> {
@@ -36,6 +41,12 @@ export async function deleteBooksInDb(ids: string[]): Promise<void> {
   await tx.done;
 }
 
+export async function deleteBookTable(): Promise<void> {
+  (await getDbInstance()).close();
+  dbInstance = undefined;
+  return deleteDB(dbName);
+}
+
 function openDb(): Promise<IDBPDatabase<BookDb>> {
   return openDB<BookDb>(dbName, 1, { upgrade });
 }
@@ -44,12 +55,11 @@ function upgrade(database: IDBPDatabase<BookDb>): void {
   database.createObjectStore(booksStore, { keyPath: 'id' });
 }
 
-const getDbInstance: () => Promise<IDBPDatabase<BookDb>> = (() => {
-  let db: IDBPDatabase<BookDb> | undefined;
-  return async () => {
-    if (!db) {
-      db = await openDb();
-    }
-    return db;
-  };
-})();
+let dbInstance: IDBPDatabase<BookDb> | undefined;
+
+async function getDbInstance(): Promise<IDBPDatabase<BookDb>> {
+  if (!dbInstance) {
+    dbInstance = await openDb();
+  }
+  return dbInstance;
+}

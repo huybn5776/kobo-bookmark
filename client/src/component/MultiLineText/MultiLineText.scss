@@ -1,0 +1,10 @@
+.multi-line-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.multi-line-text-line {
+  margin: 0;
+  line-height: 1.2;
+}

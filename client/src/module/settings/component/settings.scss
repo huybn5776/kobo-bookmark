@@ -4,7 +4,7 @@
     width: 100%;
     height: 1px;
     margin: 32px 0 16px 0;
-    background: rgba(white, .3);
+    background: rgba(white, 0.3);
     content: '';
   }
 }
@@ -22,6 +22,10 @@
 .setting-row {
   & + & {
     margin-top: 16px;
+  }
+
+  button + button {
+    margin-left: 8px;
   }
 }
 

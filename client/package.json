@@ -17,6 +17,7 @@
     "fp-ts": "^2.16.2",
     "googleapis": "^131.0.0",
     "idb": "^8.0.0",
+    "mitt": "^3.0.1",
     "naive-ui": "^2.37.3",
     "ramda": "^0.29.1",
     "reflect-metadata": "^0.2.1",
@@ -25,7 +26,8 @@
     "vite-svg-loader": "^5.1.0",
     "vue": "^3.4.15",
     "vue-i18n": "^9.10.2",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@notionhq/client": "^2.2.14",
@@ -55,6 +57,7 @@
     "stylelint-config-recommended-scss": "^14.0.0",
     "stylelint-order": "^6.0.4",
     "stylelint-scss": "^6.1.0",
+    "ts-to-zod": "^3.8.0",
     "typescript": "^5.3.3",
     "vite": "^5.0.12",
     "vue-eslint-parser": "^9.4.2",

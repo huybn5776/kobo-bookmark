@@ -8,6 +8,7 @@ import type {
 import { searchDatabase, getDatabase, queryDatabase } from '@/api/notion-database-api.service';
 import { searchPages, getPage } from '@/api/notion-page-api.service';
 import { KoboBook } from '@/dto/kobo-book';
+import { SettingEventType } from '@/enum/setting-event-type';
 import { SettingKey } from '@/enum/setting-key';
 import { getTitleOfPage } from '@/services/notion/notion-page.service';
 import { getSettingFromStorage, saveSettingToStorage } from '@/services/setting.service';
@@ -27,7 +28,7 @@ export async function getOrUpdateNotionExportTargetPage(): Promise<string | null
   }
   const exportTargetPage = await findNotionExportTargetPageFromAuth(auth);
   if (exportTargetPage) {
-    saveSettingToStorage(SettingKey.NotionExportTargetPageId, exportTargetPage.id);
+    saveSettingToStorage(SettingKey.NotionExportTargetPageId, exportTargetPage.id, SettingEventType.Program);
   }
   return null;
 }
@@ -58,7 +59,7 @@ export async function getNotionExportTargetDatabase(): Promise<string | null> {
   if (!database) {
     return null;
   }
-  saveSettingToStorage(SettingKey.NotionExportTargetDatabaseId, database.id);
+  saveSettingToStorage(SettingKey.NotionExportTargetDatabaseId, database.id, SettingEventType.Program);
   return database.id;
 }
 

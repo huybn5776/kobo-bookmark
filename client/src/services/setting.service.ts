@@ -1,5 +1,7 @@
+import { SettingEventType } from '@/enum/setting-event-type';
 import { SettingValueType, SettingKey } from '@/enum/setting-key';
-import { isNilOrEmpty } from '@/util/object-utils';
+import { emitter } from '@/services/emitter-service';
+import { isNilOrEmpty, isNotNilOrEmpty } from '@/util/object-utils';
 import { saveToStorage, getFromStorage, deleteFromStorage } from '@/util/storage-utils';
 
 export function getSettingFromStorage<K extends SettingKey, T extends SettingValueType[K]>(key: K): T | null {
@@ -9,21 +11,44 @@ export function getSettingFromStorage<K extends SettingKey, T extends SettingVal
 export function saveSettingToStorage<K extends SettingKey, T extends SettingValueType[K]>(
   key: K,
   value: T | null | undefined,
+  type: SettingEventType,
 ): void {
   saveToStorage(key, value);
+  emitter.emit(key, { type, key, value: value as never });
 }
 
 export function saveOrDelete<K extends SettingKey, T extends SettingValueType[K]>(
   key: K,
   value: T | null | undefined,
+  type: SettingEventType,
 ): void {
   if (isNilOrEmpty(value)) {
-    deleteSettingFromStorage(key);
+    deleteSettingFromStorage(key, type);
     return;
   }
-  saveSettingToStorage(key, value);
+  saveSettingToStorage(key, value, type);
 }
 
-export function deleteSettingFromStorage(key: SettingKey): void {
+export function deleteSettingFromStorage(key: SettingKey, type: SettingEventType): void {
   deleteFromStorage(key);
+  emitter.emit(key, { type, key, value: null });
+}
+
+export function deleteAllSettingFromStorage(type: SettingEventType): void {
+  for (const key of Object.values(SettingKey)) {
+    deleteSettingFromStorage(key, type);
+  }
+}
+
+export function getSettingValues(): Partial<SettingValueType> {
+  const settingValues: Record<string, unknown> = {};
+
+  for (const key of Object.values(SettingKey)) {
+    const value = getSettingFromStorage(key);
+    if (isNotNilOrEmpty(value)) {
+      settingValues[key] = value;
+    }
+  }
+
+  return settingValues as Partial<SettingValueType>;
 }
