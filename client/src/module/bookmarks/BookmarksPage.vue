@@ -41,6 +41,7 @@
         @onNotionExportClick="exportBookmarkToNotion"
         @onBookCoverImageUpdated="(v) => updateBookCoverImage(book, v)"
         @onBookDelete="deleteBookConfirm"
+        @onBookmarkColorChanged="updateBookmarkColor"
         @onBookmarkDelete="deleteBookmark"
       />
     </div>
@@ -83,6 +84,7 @@ import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import { BookSortingKey } from '@/enum/book-sorting-key';
 import { BookmarkSortingKey } from '@/enum/bookmark-sorting-key';
 import { CheckboxState } from '@/enum/checkbox-state';
+import { HighlightColor } from '@/enum/highlight-color';
 import { SettingKey } from '@/enum/setting-key';
 import { BookExportTask, BookExportState } from '@/interface/book-export-task';
 import BookBookmark from '@/module/bookmarks/component/BookBookmark/BookBookmark.vue';
@@ -306,6 +308,18 @@ function deleteBookConfirm(book: KoboBook): void {
 
 async function deleteBooks(books: KoboBook[]): Promise<void> {
   await deleteBooksInDb(books.map((book) => book.id));
+  allBooks.value = await getAllBooksFromDb();
+}
+
+async function updateBookmarkColor(book: KoboBook, bookmark: KoboBookmark, color: HighlightColor): Promise<void> {
+  const targetBookmarkIndex = book.bookmarks.indexOf(bookmark);
+  if (targetBookmarkIndex === -1) {
+    return;
+  }
+  const bookmarks = [...book.bookmarks];
+  bookmarks[targetBookmarkIndex] = { ...bookmarks[targetBookmarkIndex], color };
+  const updatedBook: KoboBook = { ...book, bookmarks };
+  await putBooksToDb([deepToRaw(updatedBook)]);
   allBooks.value = await getAllBooksFromDb();
 }
 

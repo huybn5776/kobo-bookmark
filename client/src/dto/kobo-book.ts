@@ -1,3 +1,5 @@
+import { HighlightColor } from '@/enum/highlight-color';
+
 export interface KoboBook {
   id: string;
   info: KoboBookInfo;
@@ -32,6 +34,7 @@ export interface KoboBookmark {
   chapterProgress: number;
   startContainerPath: string;
   endContainerPath: string;
+  color?: HighlightColor;
   createdAt: Date;
   updatedAt: Date;
 }

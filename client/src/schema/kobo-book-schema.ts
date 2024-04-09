@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { HighlightColor } from '@/enum/highlight-color';
+
 export const koboBookInfoSchema = z.object({
   title: z.string(),
   subtitle: z.string().optional().nullable(),
@@ -44,6 +46,7 @@ export const koboBookmarkSchema = z.object({
   chapterProgress: z.number(),
   startContainerPath: z.string(),
   endContainerPath: z.string(),
+  color: z.nativeEnum(HighlightColor).optional().nullable(),
   createdAt: z.string().pipe(z.coerce.date()),
   updatedAt: z.string().pipe(z.coerce.date()),
 });

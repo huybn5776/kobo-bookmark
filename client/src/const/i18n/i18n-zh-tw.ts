@@ -16,6 +16,15 @@ export const i18nZhTw = {
     invalid_url: '無效的網址',
     invalid_url_format: '網址格式錯誤',
     cannot_get_response_from_url: '無法從網址取得正確的回應',
+    color: {
+      default: '預設',
+      yellow: '黃色',
+      red: '紅色',
+      green: '綠色',
+      blue: '藍色',
+      pink: '粉紅色',
+      purple: '紫色',
+    },
   },
   page_name: {
     import: '匯入',
@@ -84,6 +93,7 @@ export const i18nZhTw = {
       delete_book_with_bookmarks: `刪除書本 "{0}" 以及 {1} 個@:{'common.bookmark'}?`,
       delete_multi_books: '刪除 {0} 本書',
       with_bookmarks: `以及共 {0} 個@:{'common.bookmark'}?`,
+      change_highlight_color: '更改劃線顏色',
       exporting_books: '正在匯出 {0} 本書',
       book_exported: '已匯出 {0} 本書',
       book_failed: '{0} 本書已失敗',

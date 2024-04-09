@@ -16,6 +16,15 @@ export const i18nEn = {
     invalid_url: 'Invalid url.',
     invalid_url_format: 'Invalid url format.',
     cannot_get_response_from_url: 'Cannot get correct response from url.',
+    color: {
+      default: 'Default',
+      yellow: 'Yellow',
+      red: 'Red',
+      green: 'Green',
+      blue: 'Blue',
+      pink: 'Pink',
+      purple: 'Purple',
+    },
   },
   page_name: {
     import: 'Import',
@@ -85,6 +94,7 @@ export const i18nEn = {
       delete_book_with_bookmarks: `Delete book "{0}" with {1} @:{'common.bookmark'}?`,
       delete_multi_books: `Delete {0} @:common.book`,
       with_bookmarks: `with total {0} @:{'common.bookmark'}?`,
+      change_highlight_color: 'Change highlight color',
       exporting_books: 'Exporting {0} book | Exporting {0} books',
       book_exported: '{0} book exported | {0} books exported',
       book_failed: '{0} book failed | {0} books failed',

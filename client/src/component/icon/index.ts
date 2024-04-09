@@ -8,6 +8,7 @@ export { default as DeleteIcon } from '@/assets/svg/delete.svg';
 export { default as DotsVerticalIcon } from '@/assets/svg/dots-vertical.svg';
 export { default as DragIcon } from '@/assets/svg/drag.svg';
 export { default as FilterSettingsIcon } from '@/assets/svg/filter-settings.svg';
+export { default as FormatColorHighlight } from '@/assets/svg/format-color-highlight.svg';
 export { default as GithubIcon } from '@/assets/svg/github.svg';
 export { default as ImageEditIcon } from '@/assets/svg/image-edit.svg';
 export { default as ImportIcon } from '@/assets/svg/import.svg';

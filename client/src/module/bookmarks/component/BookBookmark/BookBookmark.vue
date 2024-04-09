@@ -64,6 +64,7 @@
       v-if="expandedDirection === 'up' && !disableBookmarkExpand"
       :bookmarks="book.bookmarks"
       class="book-bookmark-list"
+      @onBookmarkColorChanged="(bookmark, color) => emits('onBookmarkColorChanged', book, bookmark, color)"
       @onBookmarkDelete="emits('onBookmarkDelete', book, $event)"
     />
   </div>
@@ -80,6 +81,7 @@ import { BookClockIcon, DeleteIcon, MarkdownIcon, NotionIcon, TextIcon } from '@
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
+import { HighlightColor } from '@/enum/highlight-color';
 import BookCoverView from '@/module/bookmarks/component/BookCoverView/BookCoverView.vue';
 import BookmarkList from '@/module/bookmarks/component/BookmarkList/BookmarkList.vue';
 
@@ -96,6 +98,7 @@ const emits = defineEmits<{
   (e: 'onNotionExportClick', value: KoboBook): void;
   (e: 'onBookCoverImageUpdated', value: string): void;
   (e: 'onBookDelete', value: KoboBook): void;
+  (e: 'onBookmarkColorChanged', book: KoboBook, bookmark: KoboBookmark, color: HighlightColor): void;
   (e: 'onBookmarkDelete', book: KoboBook, bookmark: KoboBookmark): void;
 }>();
 
