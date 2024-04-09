@@ -77,6 +77,9 @@
         </a>
       </template>
       <template v-if="notionAuth">
+        <p class="setting-label">
+          <i18n-t keypath="page.settings.notion.connected_workspace" />: {{ notionAuth.workspace_name }}
+        </p>
         <NButton v-if="notionAuth" :onClick="clearNotionConnection">
           <i18n-t keypath="page.settings.notion.clear_notion_connection" />
         </NButton>
