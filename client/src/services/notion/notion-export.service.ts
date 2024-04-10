@@ -130,7 +130,9 @@ async function exportBookmarksToDatabasePage(
 
   if (book.notion?.lastDatabasePageId) {
     progressCallback((task = { ...task, stage: BookExportStage.CleanupPage }));
-    await deleteBlock(book.notion?.lastDatabasePageId);
+    if (await isPageExists(book.notion?.lastDatabasePageId)) {
+      await deleteBlock(book.notion?.lastDatabasePageId);
+    }
   }
   const existingPage = await findDatabasePageByBookId(databaseId, book);
   if (existingPage) {
