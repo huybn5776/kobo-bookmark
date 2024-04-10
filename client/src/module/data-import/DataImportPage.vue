@@ -32,7 +32,7 @@
 import { ref } from 'vue';
 
 import { useMessage, useNotification, useLoadingBar } from 'naive-ui';
-import { sortWith, ascend, indexBy } from 'ramda';
+import { sortWith, ascend } from 'ramda';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
@@ -42,7 +42,7 @@ import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBookChanges, KoboBook, KoboBookmarkChanges, KoboBookmark, KoboBookmarkChangesType } from '@/dto/kobo-book';
 import DataImportResult from '@/module/data-import/component/DataImportResult/DataImportResult.vue';
 import { useExportChanges } from '@/module/data-import/composition/use-export-changes';
-import { putBooksToDb, getAllBooksFromDb } from '@/services/bookmark/bookmark-manage.service';
+import { getAllBooksFromDb, upsertBook } from '@/services/bookmark/bookmark-manage.service';
 import { createBookmarkPositionSortFn } from '@/services/bookmark/kobo-book-sort.service';
 import { calcUpdatesOfBooks } from '@/services/bookmark/kobo-bookmark-compare.service';
 import { getBooksFromSqliteFile } from '@/services/bookmark/kobo-bookmark.service';
@@ -117,14 +117,10 @@ async function saveChanges(): Promise<void> {
   if (!importedBooks.value) {
     return;
   }
-  const originalBooks = await getAllBooksFromDb();
-  const originalBooksIndex = indexBy((book) => book.id, originalBooks);
-  const currentBooks = deepToRaw(importedBooks.value);
-  const booksToSave = currentBooks.map((book) => {
-    const originalBook = originalBooksIndex[book.id];
-    return originalBook ? { ...originalBook, ...book } : book;
-  });
-  await putBooksToDb(booksToSave);
+  const booksToSave = deepToRaw(importedBooks.value);
+  for (const book of booksToSave) {
+    await upsertBook(deepToRaw(book));
+  }
   await router.push('bookmarks');
 }
 

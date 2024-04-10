@@ -1,4 +1,5 @@
 import { openDB, deleteDB, DBSchema, IDBPDatabase } from 'idb';
+import { indexBy } from 'ramda';
 
 import { KoboBook } from '@/dto/kobo-book';
 
@@ -31,6 +32,26 @@ export async function putBooksToDb(books: KoboBook[]): Promise<void> {
   const store = tx.objectStore(booksStore);
   await Promise.all(books.map((book) => store.put(book)));
   await tx.done;
+}
+
+export async function upsertBook(book: KoboBook): Promise<void> {
+  const originalBook = (await getBooksByIdFromDb([book.id]))[0];
+  if (!originalBook) {
+    await putBooksToDb([book]);
+    return;
+  }
+
+  const originalBookmarksIndex = indexBy((b) => b.id, originalBook.bookmarks);
+  const updatedBook = {
+    ...originalBook,
+    ...book,
+    bookmarks: book.bookmarks.map((bookmark) => {
+      const originalBookmark = originalBookmarksIndex[bookmark.id];
+      return originalBookmark ? { ...originalBookmark, ...bookmark } : bookmark;
+    }),
+  };
+
+  await putBooksToDb([updatedBook]);
 }
 
 export async function deleteBooksInDb(ids: string[]): Promise<void> {
