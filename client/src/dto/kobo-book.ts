@@ -7,6 +7,7 @@ export interface KoboBook {
   chapters: KoboBookChapter[];
   bookmarks: KoboBookmark[];
   notion?: NotionExportState;
+  isArchived: number;
 }
 
 export interface KoboBookInfo {
@@ -35,6 +36,7 @@ export interface KoboBookmark {
   startContainerPath: string;
   endContainerPath: string;
   color?: HighlightColor;
+  isArchived?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

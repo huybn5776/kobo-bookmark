@@ -16,6 +16,7 @@
         @onTextExportClick="exportSelectedAsText"
         @onMarkdownExportClick="exportSelectedAsMarkdown"
         @onNotionExportClick="exportSelectedToNotion"
+        @onArchiveClick="archiveSelected"
         @onDeleteClick="deleteSelected"
       />
       <NCheckbox
@@ -40,9 +41,11 @@
         @onMarkdownExportClick="exportBookmarkToMarkdown"
         @onNotionExportClick="exportBookmarkToNotion"
         @onBookCoverImageUpdated="(v) => updateBookCoverImage(book, v)"
-        @onBookDelete="deleteBookConfirm"
+        @onBookArchiveClick="archiveBook"
+        @onBookCancelArchive="cancelArchiveBook"
         @onBookmarkColorChanged="updateBookmarkColor"
-        @onBookmarkDelete="deleteBookmark"
+        @onBookmarkArchiveClick="archiveBookmark"
+        @onBookmarkCancelArchiveClick="cancelArchiveBookmark"
       />
     </div>
 
@@ -72,9 +75,9 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, computed, h } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 
-import { useMessage, useNotification, useDialog, NCheckbox } from 'naive-ui';
+import { useMessage, useNotification, NCheckbox } from 'naive-ui';
 import { isNil } from 'ramda';
 import { useI18n } from 'vue-i18n';
 
@@ -90,11 +93,11 @@ import { BookExportTask, BookExportState } from '@/interface/book-export-task';
 import BookBookmark from '@/module/bookmarks/component/BookBookmark/BookBookmark.vue';
 import BookExportProgressModal from '@/module/bookmarks/component/BookExportProgressModal/BookExportProgressModal.vue';
 import BookSortingSelect from '@/module/bookmarks/component/BookSortingSelect/BookSortingSelect.vue';
-import DeleteBookDialogContent from '@/module/bookmarks/component/DeleteBookDialogContent/DeleteBookDialogContent.vue';
 import MultiBookActionBar from '@/module/bookmarks/component/MultiBookActionBar/MultiBookActionBar.vue';
+import { useBookBookmarkArchive } from '@/module/bookmarks/composition/use-book-bookmark-archive';
 import { useMultiBookActions } from '@/module/bookmarks/composition/use-multi-book-actions';
 import { findCoverImageForBook } from '@/services/bookmark/book-cover.service';
-import { getAllBooksFromDb, putBooksToDb, deleteBooksInDb } from '@/services/bookmark/bookmark-manage.service';
+import { getBooksFromDb, putBooksToDb } from '@/services/bookmark/bookmark-manage.service';
 import { sortKoboBooks, sortKoboBookmarks } from '@/services/bookmark/kobo-book-sort.service';
 import { bookmarkToText, bookmarkToMarkdown } from '@/services/export/bookmark-export.service';
 import { handleNotionApiError } from '@/services/notion/notion-api-error-handing.service';
@@ -107,7 +110,6 @@ const { t } = useI18n<[I18NMessageSchema]>();
 
 const message = useMessage();
 const notification = useNotification();
-const dialog = useDialog();
 
 const loadBooks = ref<boolean>(false);
 const allBooks = ref<KoboBook[]>([]);
@@ -116,6 +118,9 @@ const bookmarkSorting = useSyncSetting(SettingKey.BookmarkSorting, BookmarkSorti
 const bookBookmarkRefs = ref<InstanceType<typeof BookBookmark>[]>([]);
 const pendingExportRequest = ref<Promise<void>>();
 const bookExportTasks = ref<BookExportTask[]>([]);
+const { archiveBook, cancelArchiveBook, archiveBookmark, cancelArchiveBookmark } = useBookBookmarkArchive({
+  reloadBooks,
+});
 const {
   selectedBooks,
   selectedBookIds,
@@ -125,8 +130,10 @@ const {
   onBookSelectChanges,
   exportSelectedAsText,
   exportSelectedAsMarkdown,
+  archiveSelected,
   deleteSelected,
-} = useMultiBookActions({ allBooks, deleteBooks });
+} = useMultiBookActions({ allBooks, reloadBooks });
+useBookBookmarkArchive({ reloadBooks });
 
 const bookExportTasksToShow = computed(() => bookExportTasks.value.toReversed().filter((task) => task.hidden !== true));
 const exportingBookIds = computed(() => {
@@ -137,7 +144,7 @@ const exportingBookIds = computed(() => {
 
 onMounted(async () => {
   loadBooks.value = true;
-  allBooks.value = await getAllBooksFromDb();
+  allBooks.value = await getBooksFromDb();
   loadBooks.value = false;
   await fetchMissingBookCoverImageUrl();
 });
@@ -293,22 +300,11 @@ function gotoBook(task: BookExportTask): void {
 
 async function updateBookCoverImage(book: KoboBook, coverImageUrl: string): Promise<void> {
   updateBookById(book.id, (b) => ({ ...b, coverImageUrl }));
-  allBooks.value = await getAllBooksFromDb();
+  allBooks.value = await getBooksFromDb();
 }
 
-function deleteBookConfirm(book: KoboBook): void {
-  dialog.warning({
-    title: t('common.delete'),
-    content: () => h(DeleteBookDialogContent, { book }),
-    negativeText: t('common.cancel'),
-    positiveText: t('common.yes'),
-    onPositiveClick: () => deleteBooks([book]),
-  });
-}
-
-async function deleteBooks(books: KoboBook[]): Promise<void> {
-  await deleteBooksInDb(books.map((book) => book.id));
-  allBooks.value = await getAllBooksFromDb();
+async function reloadBooks(): Promise<void> {
+  allBooks.value = await getBooksFromDb();
 }
 
 async function updateBookmarkColor(book: KoboBook, bookmark: KoboBookmark, color: HighlightColor): Promise<void> {
@@ -320,13 +316,7 @@ async function updateBookmarkColor(book: KoboBook, bookmark: KoboBookmark, color
   bookmarks[targetBookmarkIndex] = { ...bookmarks[targetBookmarkIndex], color };
   const updatedBook: KoboBook = { ...book, bookmarks };
   await putBooksToDb([deepToRaw(updatedBook)]);
-  allBooks.value = await getAllBooksFromDb();
-}
-
-async function deleteBookmark(book: KoboBook, bookmark: KoboBookmark): Promise<void> {
-  const updatedBook: KoboBook = { ...book, bookmarks: book.bookmarks.filter((bm) => bm.id !== bookmark.id) };
-  await putBooksToDb([deepToRaw(updatedBook)]);
-  allBooks.value = await getAllBooksFromDb();
+  allBooks.value = await getBooksFromDb();
 }
 </script>
 

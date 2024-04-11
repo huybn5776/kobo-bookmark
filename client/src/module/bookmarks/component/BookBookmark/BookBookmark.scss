@@ -124,6 +124,12 @@
   color: gray;
 }
 
+.book-state-text {
+  align-self: center;
+  width: max-content;
+  color: rgba(white, .8);
+}
+
 .book-bookmark-list {
   border-top: 1px solid rgba(white, 0.15);
 }

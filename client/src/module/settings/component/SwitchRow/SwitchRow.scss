@@ -1,6 +1,11 @@
 .switch-row {
+  display: block;
   padding: 0;
   background: initial;
   border: 0;
   cursor: pointer;
+}
+
+.switch-row-content {
+  margin-left: 8px;
 }

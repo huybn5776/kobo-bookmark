@@ -38,23 +38,31 @@
         </div>
         <div class="book-toolbar-container">
           <div class="book-toolbar">
-            <IconButton i18nKey="page.bookmarks.export_text" @click="emits('onTextExportClick', book)">
-              <TextIcon class="icon-24" />
-            </IconButton>
-            <IconButton i18nKey="page.bookmarks.export_markdown" @click="emits('onMarkdownExportClick', book)">
-              <i18n-t keypath="page.bookmarks.export_markdown" />
-              <MarkdownIcon class="icon-24" />
-            </IconButton>
-            <IconButton
-              i18nKey="page.bookmarks.export_notion"
-              :loading="exportNotionLoading"
-              @click="emits('onNotionExportClick', book)"
-            >
-              <NotionIcon class="icon-24" />
-            </IconButton>
-            <IconButton i18nKey="common.delete" @click="emits('onBookDelete', book)">
-              <DeleteIcon class="icon-24" />
-            </IconButton>
+            <template v-if="!book.isArchived">
+              <IconButton i18nKey="common.archive" @click="emits('onBookArchiveClick', book)">
+                <ArchiveIcon class="icon-24" />
+              </IconButton>
+              <IconButton i18nKey="page.bookmarks.export_text" @click="emits('onTextExportClick', book)">
+                <TextIcon class="icon-24" />
+              </IconButton>
+              <IconButton i18nKey="page.bookmarks.export_markdown" @click="emits('onMarkdownExportClick', book)">
+                <i18n-t keypath="page.bookmarks.export_markdown" />
+                <MarkdownIcon class="icon-24" />
+              </IconButton>
+              <IconButton
+                i18nKey="page.bookmarks.export_notion"
+                :loading="exportNotionLoading"
+                @click="emits('onNotionExportClick', book)"
+              >
+                <NotionIcon class="icon-24" />
+              </IconButton>
+            </template>
+            <template v-if="book.isArchived">
+              <span class="book-state-text">(<i18n-t keypath="common.archived" />)</span>
+              <IconButton i18nKey="common.cancel_archive" @click="emits('onBookCancelArchive', book)">
+                <ArchiveRefreshIcon class="icon-24" />
+              </IconButton>
+            </template>
           </div>
         </div>
       </div>
@@ -63,9 +71,11 @@
     <BookmarkList
       v-if="expandedDirection === 'up' && !disableBookmarkExpand"
       :bookmarks="book.bookmarks"
+      :disabled="!!book.isArchived"
       class="book-bookmark-list"
       @onBookmarkColorChanged="(bookmark, color) => emits('onBookmarkColorChanged', book, bookmark, color)"
-      @onBookmarkDelete="emits('onBookmarkDelete', book, $event)"
+      @onBookmarkArchive="emits('onBookmarkArchiveClick', book, $event)"
+      @onBookmarkCancelArchive="emits('onBookmarkCancelArchiveClick', book, $event)"
     />
   </div>
 </template>
@@ -77,7 +87,7 @@ import { NCheckbox, NPopover } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 
 import ChevronArrow from '@/component/ChevronArrow/ChevronArrow.vue';
-import { BookClockIcon, DeleteIcon, MarkdownIcon, NotionIcon, TextIcon } from '@/component/icon';
+import { BookClockIcon, ArchiveIcon, ArchiveRefreshIcon, MarkdownIcon, NotionIcon, TextIcon } from '@/component/icon';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
@@ -97,9 +107,11 @@ const emits = defineEmits<{
   (e: 'onMarkdownExportClick', value: KoboBook): void;
   (e: 'onNotionExportClick', value: KoboBook): void;
   (e: 'onBookCoverImageUpdated', value: string): void;
-  (e: 'onBookDelete', value: KoboBook): void;
+  (e: 'onBookArchiveClick', value: KoboBook): void;
+  (e: 'onBookCancelArchive', value: KoboBook): void;
   (e: 'onBookmarkColorChanged', book: KoboBook, bookmark: KoboBookmark, color: HighlightColor): void;
-  (e: 'onBookmarkDelete', book: KoboBook, bookmark: KoboBookmark): void;
+  (e: 'onBookmarkArchiveClick', book: KoboBook, bookmark: KoboBookmark): void;
+  (e: 'onBookmarkCancelArchiveClick', book: KoboBook, bookmark: KoboBookmark): void;
 }>();
 
 const { t } = useI18n<[I18NMessageSchema]>();

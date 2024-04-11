@@ -1,18 +1,32 @@
-import { openDB, deleteDB, DBSchema, IDBPDatabase } from 'idb';
+import { openDB, deleteDB, DBSchema, IDBPDatabase, StoreNames, IDBPCursorWithValue } from 'idb';
 import { indexBy } from 'ramda';
 
-import { KoboBook } from '@/dto/kobo-book';
+import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
+import { SettingKey } from '@/enum/setting-key';
+import { getSettingFromStorage } from '@/services/setting.service';
+import { deepToRaw } from '@/util/vue-utils';
 
 const dbName = 'book-db';
 const booksStore = 'books-store';
 
 interface BookDb extends DBSchema {
-  [booksStore]: { key: string; value: KoboBook };
+  [booksStore]: { key: string; value: KoboBook; indexes: { isArchived: number } };
+}
+
+export async function getBooksFromDb(): Promise<KoboBook[]> {
+  return getSettingFromStorage(SettingKey.ShowArchived) ? getAllBooksFromDb() : getNotArchivedBooksFromDb();
 }
 
 export async function getAllBooksFromDb(): Promise<KoboBook[]> {
   const db = await getDbInstance();
   return db.getAll(booksStore);
+}
+
+export async function getNotArchivedBooksFromDb(): Promise<KoboBook[]> {
+  const db = await getDbInstance();
+  const index = db.transaction(booksStore, 'readonly').objectStore(booksStore).index('isArchived');
+  const cursor = await index.openCursor(IDBKeyRange.only(0));
+  return readAllFromCursor(cursor);
 }
 
 export async function countAllBooksFromDb(): Promise<number> {
@@ -54,12 +68,45 @@ export async function upsertBook(book: KoboBook): Promise<void> {
   await putBooksToDb([updatedBook]);
 }
 
+export async function archiveBooksInDb(bookIds: string[]): Promise<void> {
+  const books = await getBooksByIdFromDb(bookIds);
+  const updatedBooks = books.map((book) => ({ ...book, isArchived: 1 }));
+  return putBooksToDb(updatedBooks);
+}
+
+export async function cancelArchiveBooksInDb(bookIds: string[]): Promise<void> {
+  const books = await getBooksByIdFromDb(bookIds);
+  const updatedBooks = books.map((book) => ({ ...book, isArchived: 0 }));
+  return putBooksToDb(updatedBooks);
+}
+
 export async function deleteBooksInDb(ids: string[]): Promise<void> {
   const db = await getDbInstance();
   const tx = db.transaction(booksStore, 'readwrite');
   const store = tx.objectStore(booksStore);
   await Promise.all(ids.map((id) => store.delete(id)));
   await tx.done;
+}
+
+export async function updateBookmark(
+  bookId: string,
+  bookmarkId: string,
+  updater: (bookmark: KoboBookmark) => KoboBookmark,
+): Promise<boolean> {
+  const book = (await getBooksByIdFromDb([bookId]))[0];
+  if (!book) {
+    return false;
+  }
+  const targetBookmarkIndex = book?.bookmarks.findIndex((bookmark) => bookmark.id === bookmarkId);
+  if (targetBookmarkIndex === -1) {
+    return false;
+  }
+  const updatedBookmarks = [...book.bookmarks];
+  updatedBookmarks[targetBookmarkIndex] = updater(book.bookmarks[targetBookmarkIndex]);
+  const updatedBook = { ...book, bookmarks: updatedBookmarks };
+  await putBooksToDb([deepToRaw(updatedBook)]);
+
+  return true;
 }
 
 export async function deleteBookTable(): Promise<void> {
@@ -73,7 +120,8 @@ function openDb(): Promise<IDBPDatabase<BookDb>> {
 }
 
 function upgrade(database: IDBPDatabase<BookDb>): void {
-  database.createObjectStore(booksStore, { keyPath: 'id' });
+  const store = database.createObjectStore(booksStore, { keyPath: 'id' });
+  store.createIndex('isArchived', 'isArchived', { unique: false });
 }
 
 let dbInstance: IDBPDatabase<BookDb> | undefined;
@@ -83,4 +131,16 @@ async function getDbInstance(): Promise<IDBPDatabase<BookDb>> {
     dbInstance = await openDb();
   }
   return dbInstance;
+}
+
+async function readAllFromCursor(
+  cursor: IDBPCursorWithValue<BookDb, [StoreNames<BookDb>], typeof booksStore> | null,
+): Promise<KoboBook[]> {
+  const books: KoboBook[] = [];
+  let currentCursor = cursor;
+  while (currentCursor) {
+    books.push(currentCursor.value);
+    currentCursor = await currentCursor.continue();
+  }
+  return books;
 }

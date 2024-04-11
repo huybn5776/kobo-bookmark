@@ -19,6 +19,7 @@ export enum SettingKey {
   NotionExportTargetPageTitle = 'notion-export-target-page-title',
   NotionExportTargetDatabaseId = 'notion-export-target-database-id',
   NotionExportTargetDatabaseTitle = 'notion-export-target-database-title',
+  ShowArchived = 'show-archived',
   Language = 'language',
 }
 
@@ -33,5 +34,6 @@ export type SettingValueType = {
   [SettingKey.NotionExportTargetPageTitle]: string;
   [SettingKey.NotionExportTargetDatabaseId]: string;
   [SettingKey.NotionExportTargetDatabaseTitle]: string;
+  [SettingKey.ShowArchived]: boolean;
   [SettingKey.Language]: string;
 };

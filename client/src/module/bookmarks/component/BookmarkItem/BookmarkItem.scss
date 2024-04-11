@@ -19,7 +19,12 @@
   font-size: 16px;
   white-space: nowrap;
   text-overflow: ellipsis;
-  background-color: rgba(white, 0.05);
+  background-color: rgba(white, .05);
+  transition: opacity .2s;
+
+  .bookmark-item:not(:hover) &.bookmark-chapter-archived {
+    opacity: .5;
+  }
 }
 
 .bookmark-parent-chapter-title {
@@ -43,6 +48,11 @@
   padding: 0 16px;
   font-size: 18px;
   white-space: pre-wrap;
+  transition: opacity .2s;
+
+  .bookmark-item:not(:hover) &.bookmark-text-archived {
+    opacity: .5;
+  }
 }
 
 .bookmark-text-yellow {
@@ -80,6 +90,7 @@
   display: flex;
   gap: 8px;
   justify-content: end;
+  height: 32px;
   margin-top: -4px;
   margin-right: 16px;
   transition: opacity .2s;
@@ -87,6 +98,12 @@
   .bookmark-item:not(:hover):not(:focus-within) & {
     opacity: 0;
   }
+}
+
+.bookmark-state-text {
+  align-self: center;
+  color: rgba(white, .8);
+  user-select: none;
 }
 
 .bookmark-action-icon {

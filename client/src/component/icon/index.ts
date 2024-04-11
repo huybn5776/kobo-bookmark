@@ -1,3 +1,5 @@
+export { default as ArchiveIcon } from '@/assets/svg/archive.svg';
+export { default as ArchiveRefreshIcon } from '@/assets/svg/archive-refresh.svg';
 export { default as BlueBookIcon } from '@/assets/svg/blue-book.svg';
 export { default as BookClockIcon } from '@/assets/svg/book-clock-outline.svg';
 export { default as CancelIcon } from '@/assets/svg/cancel.svg';

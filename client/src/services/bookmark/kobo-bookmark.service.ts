@@ -27,6 +27,7 @@ export async function getBooksFromSqliteFile(file: Blob, bookIds?: string[]): Pr
       info: bookInfoEntityToKoboBookInfo(bookInfo, chapters),
       chapters: koboBookChapters,
       bookmarks: koboBookmarks,
+      isArchived: 0,
     };
     koboBook.info.lastBookmarkAt = koboBookmarks.reduce(maxBy((bookmark) => bookmark.createdAt)).createdAt;
     return koboBook;

@@ -1,27 +1,31 @@
 <template>
   <button ref="switchRowRef" class="setting-row switch-row" @click="onSwitchRowClick">
-    <NSwitch ref="switchRef" v-model:value="checked" :disabled="disabled" :loading="loading" />
-    <span><slot /></span>
+    <NSwitch
+      ref="switchRef"
+      :value="valueModel"
+      :disabled="disabled"
+      :loading="loading"
+      @update:value="valueModel = $event"
+    />
+    <span class="switch-row-content"><slot /></span>
   </button>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
 
-import { useVModel } from '@vueuse/core';
 import { NSwitch } from 'naive-ui';
 
-const props = defineProps<{ value?: boolean | undefined; loading?: boolean; disabled?: boolean }>();
-const emits = defineEmits<{ (e: 'update:value', value: boolean): void }>();
+defineProps<{ loading?: boolean; disabled?: boolean }>();
+const valueModel = defineModel<boolean | undefined>('value');
 
-const checked = useVModel(props, 'value', emits);
 const switchRowRef = ref<HTMLElement>();
 
 function onSwitchRowClick(event: MouseEvent): void {
   if (isClickOnSwitch(event)) {
     return;
   }
-  checked.value = !checked.value;
+  valueModel.value = !valueModel.value;
 }
 
 function isClickOnSwitch(event: MouseEvent): boolean {
@@ -38,4 +42,5 @@ function isClickOnSwitch(event: MouseEvent): boolean {
 
 <style lang="scss" scoped>
 @import './SwitchRow';
+@import '../settings';
 </style>

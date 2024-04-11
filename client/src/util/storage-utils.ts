@@ -2,7 +2,16 @@ import { isNil } from 'ramda';
 
 export function getFromStorage<T>(key: string): T | null {
   const value = localStorage.getItem(key);
-  return value?.startsWith('[') || value?.startsWith('{') ? JSON.parse(value) : (value as T);
+  if (value?.startsWith('[') || value?.startsWith('{')) {
+    return JSON.parse(value);
+  }
+  if (value === 'true') {
+    return true as T;
+  }
+  if (value === 'false') {
+    return false as T;
+  }
+  return value as T;
 }
 
 export function saveToStorage<T>(key: string, value: T | null): void {
