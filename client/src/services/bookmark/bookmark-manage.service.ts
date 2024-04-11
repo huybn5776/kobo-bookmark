@@ -56,16 +56,27 @@ export async function upsertBook(book: KoboBook): Promise<void> {
   }
 
   const originalBookmarksIndex = indexBy((b) => b.id, originalBook.bookmarks);
-  const updatedBook = {
+  const bookmarks = book.bookmarks.map((bookmark) => {
+    const originalBookmark = originalBookmarksIndex[bookmark.id];
+    return originalBookmark ? updateExistingBookmark(originalBookmark, bookmark) : bookmark;
+  });
+  const bookmarksChanged = JSON.stringify(originalBook.bookmarks) !== JSON.stringify(bookmarks);
+  const updatedBook: KoboBook = {
     ...originalBook,
     ...book,
-    bookmarks: book.bookmarks.map((bookmark) => {
-      const originalBookmark = originalBookmarksIndex[bookmark.id];
-      return originalBookmark ? { ...originalBookmark, ...bookmark } : bookmark;
-    }),
+    bookmarks,
+    isArchived: bookmarksChanged ? 0 : originalBook.isArchived || 0,
   };
 
   await putBooksToDb([updatedBook]);
+}
+
+function updateExistingBookmark(originalBookmark: KoboBookmark, currentBookmark: KoboBookmark): KoboBookmark {
+  const updatedBookmark: KoboBookmark = { ...originalBookmark, ...currentBookmark };
+  if (originalBookmark.updatedAt !== currentBookmark.updatedAt && updatedBookmark.isArchived) {
+    updatedBookmark.isArchived = false;
+  }
+  return updatedBookmark;
 }
 
 export async function archiveBooksInDb(bookIds: string[]): Promise<void> {
