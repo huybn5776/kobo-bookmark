@@ -16,14 +16,16 @@
           <p v-if="book.info.author" class="book-info-text book-author">{{ book.info.author }}</p>
           <p v-if="book.info.publisher" class="book-info-text book-publisher">{{ book.info.publisher }}</p>
           <p v-if="book.info.isbn" class="book-info-text book-isbn">{{ book.info.isbn }}</p>
-          <div v-if="timeSpanReadingHours" class="book-time-span-reading">
-            <NPopover trigger="hover" :delay="500">
-              <template #trigger>
-                <BookClockIcon class="book-clock-icon" />
-              </template>
-              <i18n-t keypath="page.bookmarks.read_time" />
-            </NPopover>
-            <span>{{ timeSpanReadingHours }}</span>
+
+          <div class="book-info-bar">
+            <BookInfoItem i18nKey="page.bookmarks.bookmarks_count">
+              <BookmarkMultipleIcon class="book-info-item-icon" />
+              <span>{{ book.bookmarks.length }}</span>
+            </BookInfoItem>
+            <BookInfoItem v-if="timeSpanReadingHours" i18nKey="page.bookmarks.read_time">
+              <BookClockIcon class="book-info-item-icon" />
+              <span>{{ timeSpanReadingHours }}</span>
+            </BookInfoItem>
           </div>
         </div>
       </div>
@@ -83,16 +85,25 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
 
-import { NCheckbox, NPopover } from 'naive-ui';
+import { NCheckbox } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 
 import ChevronArrow from '@/component/ChevronArrow/ChevronArrow.vue';
-import { BookClockIcon, ArchiveIcon, ArchiveRefreshIcon, MarkdownIcon, NotionIcon, TextIcon } from '@/component/icon';
+import {
+  BookmarkMultipleIcon,
+  BookClockIcon,
+  ArchiveIcon,
+  ArchiveRefreshIcon,
+  MarkdownIcon,
+  NotionIcon,
+  TextIcon,
+} from '@/component/icon';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import { HighlightColor } from '@/enum/highlight-color';
 import BookCoverView from '@/module/bookmarks/component/BookCoverView/BookCoverView.vue';
+import BookInfoItem from '@/module/bookmarks/component/BookInfoItem/BookInfoItem.vue';
 import BookmarkList from '@/module/bookmarks/component/BookmarkList/BookmarkList.vue';
 
 const props = defineProps<{

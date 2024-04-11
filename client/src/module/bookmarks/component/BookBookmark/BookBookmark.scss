@@ -110,18 +110,10 @@
   font-size: 16px;
 }
 
-.book-time-span-reading {
+.book-info-bar {
   display: flex;
-  gap: 4px;
-  align-items: center;
-  color: gray;
-  font-size: 16px;
-}
-
-.book-clock-icon {
-  width: 24px;
-  height: 24px;
-  color: gray;
+  gap: 2px;
+  margin-left: -4px;
 }
 
 .book-state-text {

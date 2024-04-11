@@ -85,6 +85,7 @@ export const i18nEn = {
       author: 'Author',
       series: 'Series',
       position: 'Position',
+      bookmarks_count: 'Bookmarks count',
       read_time: 'Read time',
       book_selected: '{0} @:common.book selected',
       change_cover_image: 'Change cover image',

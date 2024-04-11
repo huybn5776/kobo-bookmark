@@ -84,6 +84,7 @@ export const i18nZhTw = {
       author: '作者',
       series: '系列',
       position: '位置',
+      bookmarks_count: '書籤數量',
       read_time: '閱讀時間',
       book_selected: '已選取 {0} 本書',
       change_cover_image: '更換封面圖片',
