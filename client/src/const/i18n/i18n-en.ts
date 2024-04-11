@@ -65,6 +65,7 @@ export const i18nEn = {
       bookmark_copied: 'Bookmarks of {0} book has copied to clipboard | Bookmarks of {0} books has copied to clipboard',
       imported_book: 'book | books',
       imported_bookmark: 'bookmark | bookmarks',
+      book_absent: 'Book absent',
       added: '{0} added',
       updated: '{0} updated',
       removed: '{0} removed',
@@ -157,6 +158,7 @@ export const i18nEn = {
       },
       misc: {
         title: 'Misc',
+        show_removed_book_when_importing: 'Show absent books on change list when importing from database file',
         show_archived: 'Show archived books and bookmarks',
         language: 'Language',
         language_auto: 'Browser default',

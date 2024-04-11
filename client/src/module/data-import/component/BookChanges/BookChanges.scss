@@ -23,3 +23,12 @@
   flex-direction: column;
   gap: 8px;
 }
+
+.book-removed-message {
+  padding: 8px 16px;
+  color: #fbe5e7;
+  text-align: center;
+  background-color: rgba(white, .04);
+  border-radius: 4px;
+  user-select: none;
+}

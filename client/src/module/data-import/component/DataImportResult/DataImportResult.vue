@@ -4,23 +4,23 @@
       <h1 class="data-import-result-title">
         <i18n-t keypath="page.data_import.bookmark_changes" />
       </h1>
-      <span v-if="!bookChanges.length" class="data-import-result-info-text">
+      <span v-if="!bookChangesToShow.length" class="data-import-result-info-text">
         <i18n-t keypath="page.data_import.no_change" />
       </span>
-      <div v-if="bookChanges.length">
+      <div v-if="bookChangesToShow.length">
         <span class="data-import-result-info-text">
-          {{ bookChanges.length }} {{ booksWording }}, {{ changedBookmarksCount }} {{ bookmarksWording }}
+          {{ bookChangesToShow.length }} {{ booksWording }}, {{ changedBookmarksCount }} {{ bookmarksWording }}
           <i18n-t keypath="page.data_import.changed" />
         </span>
       </div>
     </div>
 
-    <BookChanges v-for="bookChange of bookChanges" :key="bookChange.book.id" :bookChange="bookChange" />
+    <BookChanges v-for="bookChange of bookChangesToShow" :key="bookChange.book.id" :bookChange="bookChange" />
 
     <div class="data-import-result-footer">
       <div class="data-import-result-info">
         <NDropdown
-          v-if="bookChanges.length"
+          v-if="bookChangesToShow.length"
           trigger="click"
           placement="bottom-start"
           :options="exportChangesOptions"
@@ -50,7 +50,9 @@ import { useI18n } from 'vue-i18n';
 import { TextIcon, MarkdownIcon } from '@/component/icon';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBookChanges } from '@/dto/kobo-book';
+import { SettingKey } from '@/enum/setting-key';
 import BookChanges from '@/module/data-import/component/BookChanges/BookChanges.vue';
+import { getSettingFromStorage } from '@/services/setting.service';
 
 const props = defineProps<{ bookChanges: KoboBookChanges[] }>();
 const emits = defineEmits<{
@@ -63,6 +65,12 @@ const emits = defineEmits<{
 }>();
 
 const { t } = useI18n<[I18NMessageSchema]>();
+
+const bookChangesToShow = computed(() => {
+  return getSettingFromStorage(SettingKey.ShowRemovedBooksWhenImporting)
+    ? props.bookChanges
+    : props.bookChanges.filter((changes) => !changes.bookRemoved);
+});
 
 const exportChangesOptions: DropdownOption[] = [
   { key: 'text-file', label: t('page.data_import.as_text_file'), icon: () => h(TextIcon, { class: 'icon-24' }) },
@@ -83,8 +91,10 @@ const exportChangesOptions: DropdownOption[] = [
   },
 ];
 
-const booksWording = computed(() => t('page.data_import.imported_book', [], props.bookChanges.length));
-const changedBookmarksCount = computed(() => props.bookChanges.reduce((count, book) => count + book.changes.length, 0));
+const booksWording = computed(() => t('page.data_import.imported_book', [], bookChangesToShow.value.length));
+const changedBookmarksCount = computed(() =>
+  bookChangesToShow.value.reduce((count, book) => count + book.changes.length, 0),
+);
 const bookmarksWording = computed(() => t('page.data_import.imported_bookmark', [], changedBookmarksCount.value));
 
 function onExportChangeSelected(id: string): void {

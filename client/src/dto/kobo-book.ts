@@ -62,6 +62,7 @@ export interface KoboBookChanges {
   book: KoboBook;
   changes: KoboBookmarkChanges[];
   bookFileChanged: boolean;
+  bookRemoved?: boolean;
 }
 
 export interface KoboBookmarkChanges {

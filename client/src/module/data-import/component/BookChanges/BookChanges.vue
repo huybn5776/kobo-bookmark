@@ -5,13 +5,16 @@
       <span class="book-changes-info">{{ changesText }}</span>
     </div>
 
-    <div class="book-changes-bookmark-changes-container">
+    <div v-if="!bookChange.bookRemoved" class="book-changes-bookmark-changes-container">
       <BookmarkChanges
         v-for="bookmarkChanges of bookChange.changes"
         :key="bookmarkChanges.id"
         :bookmarkChanges="bookmarkChanges"
       />
     </div>
+    <span v-if="bookChange.bookRemoved" class="book-removed-message">
+      <i18n-t keypath="page.data_import.book_absent" />
+    </span>
   </div>
 </template>
 

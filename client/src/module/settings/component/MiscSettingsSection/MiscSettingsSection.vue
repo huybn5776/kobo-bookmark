@@ -4,6 +4,10 @@
       <i18n-t keypath="page.settings.misc.title" />
     </h3>
 
+    <SwitchRow v-model:value="showRemovedBooksWhenImporting">
+      <i18n-t keypath="page.settings.misc.show_removed_book_when_importing" />
+    </SwitchRow>
+
     <SwitchRow v-model:value="showArchived">
       <i18n-t keypath="page.settings.misc.show_archived" />
     </SwitchRow>
@@ -23,6 +27,7 @@ import { SettingKey } from '@/enum/setting-key';
 import LanguageSelect from '@/module/settings/component/LanguageSelect/LanguageSelect.vue';
 import SwitchRow from '@/module/settings/component/SwitchRow/SwitchRow.vue';
 
+const showRemovedBooksWhenImporting = useSyncSetting(SettingKey.ShowRemovedBooksWhenImporting);
 const showArchived = useSyncSetting(SettingKey.ShowArchived);
 const language = useSyncSetting(SettingKey.Language);
 </script>

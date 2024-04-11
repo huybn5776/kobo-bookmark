@@ -64,6 +64,7 @@ export const i18nZhTw = {
       no_changes_to_export: '沒有可匯出的變更',
       imported_book: '本書',
       imported_bookmark: '個書籤',
+      book_absent: '書本不存在',
       added: '{0} 已新增',
       updated: '{0} 已更新',
       removed: '{0} 已刪除',
@@ -156,6 +157,7 @@ export const i18nZhTw = {
       },
       misc: {
         title: '雜項',
+        show_removed_book_when_importing: '從資料庫匯入書本資料時，於比較清單中顯示未存在於匯入檔中的書',
         show_archived: '顯示已封存的書本以及書籤',
         language: '語言',
         language_auto: '瀏覽器預設',

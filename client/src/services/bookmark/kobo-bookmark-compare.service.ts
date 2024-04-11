@@ -29,7 +29,7 @@ export function calcUpdatesOfBooks(originalBooks: KoboBook[], currentBooks: Kobo
         type: KoboBookmarkChangesType.Removed,
         original: bookmark,
       }));
-      return { book, changes, bookFileChanged: true };
+      return { book, changes, bookFileChanged: true, bookRemoved: true };
     });
 
   return [...addedAndUpdated, ...removed];
