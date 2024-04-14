@@ -114,7 +114,8 @@ import {
 import { getTitleOfPage } from '@/services/notion/notion-page.service';
 
 const oauthClientId = import.meta.env.VITE_NOTION_CLIENT_ID;
-const authUrl = `https://api.notion.com/v1/oauth/authorize?client_id=${oauthClientId}&response_type=code&owner=user`;
+const redirectUri = `${location.origin}/settings/notion`;
+const authUrl = `https://api.notion.com/v1/oauth/authorize?client_id=${oauthClientId}&response_type=code&owner=user&redirect_uri=${encodeURIComponent(redirectUri)}`;
 const route = useRoute();
 const router = useRouter();
 const notification = useNotification();
@@ -140,21 +141,25 @@ onMounted(async () => {
 });
 
 async function getNotionToken(): Promise<void> {
+  if (route.matched?.[0]?.path !== '/settings/notion') {
+    return;
+  }
   const { code } = route.query;
   if (typeof code !== 'string') {
+    await router.push({ name: 'settings', force: true });
     return;
   }
   notification.destroyAll();
 
   loadingToken.value = true;
   try {
-    notionAuth.value = await getNotionTokenByCode(code);
+    notionAuth.value = await getNotionTokenByCode(code, redirectUri);
   } catch (e) {
     handleAuthError(e);
     return;
   } finally {
     loadingToken.value = false;
-    await router.push('settings');
+    await router.push({ name: 'settings', force: true });
   }
 
   await Promise.all([autoDetectPage(notionAuth.value), autoDetectDatabase()]);

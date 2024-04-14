@@ -8,7 +8,7 @@ export class NotionAuthController {
   constructor(private readonly notionAuthApiService: NotionAuthApiService) {}
 
   @Post('/oauth')
-  getToken(@Body() { code }: { code: string }): Promise<OauthTokenResponse | null> {
-    return this.notionAuthApiService.getToken(code);
+  getToken(@Body() { code, redirectUri }: { code: string; redirectUri: string }): Promise<OauthTokenResponse | null> {
+    return this.notionAuthApiService.getToken(code, redirectUri);
   }
 }
