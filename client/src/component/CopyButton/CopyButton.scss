@@ -1,0 +1,28 @@
+@use 'sass:math';
+
+.copy-button {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  font-size: 0;
+}
+
+.copy-button-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.copy-button-shake {
+  display: block;
+  color: red;
+  font-weight: bold;
+  animation: 2s shake infinite step-start;
+}
+
+@keyframes shake {
+  @for $i from 0 through 50 {
+    #{$i * 2%} {
+      transform: translate((math.random(10) - 5) + px, (math.random(10) - 5) + px);
+    }
+  }
+}

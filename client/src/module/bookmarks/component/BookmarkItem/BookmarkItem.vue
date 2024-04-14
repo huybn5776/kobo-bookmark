@@ -29,7 +29,7 @@
     </blockquote>
 
     <div class="bookmark-toolbar">
-      <template v-if="!bookmark.isArchived && !disabled">
+      <template v-if="!bookmark.isArchived && !disabled && !readonly">
         <IconButton i18nKey="common.archive" @click="emits('onArchiveClick')">
           <ArchiveIcon class="bookmark-action-icon" />
         </IconButton>
@@ -37,7 +37,7 @@
       </template>
       <template v-if="bookmark.isArchived && !disabled">
         <span class="bookmark-state-text">(<i18n-t keypath="common.archived" />)</span>
-        <IconButton i18nKey="common.cancel_archive" @click="emits('onCancelArchiveClick')">
+        <IconButton v-if="!readonly" i18nKey="common.cancel_archive" @click="emits('onCancelArchiveClick')">
           <ArchiveRefreshIcon class="bookmark-action-icon" />
         </IconButton>
       </template>
@@ -52,7 +52,7 @@ import { KoboBookmark } from '@/dto/kobo-book';
 import { HighlightColor } from '@/enum/highlight-color';
 import HighlightColorDropdown from '@/module/bookmarks/component/HighlightColorDropdown/HighlightColorDropdown.vue';
 
-defineProps<{ bookmark: KoboBookmark; disabled?: boolean }>();
+defineProps<{ bookmark: KoboBookmark; disabled?: boolean; readonly?: boolean }>();
 const emits = defineEmits<{
   (e: 'onColorChanged', value: HighlightColor): void;
   (e: 'onArchiveClick'): void;

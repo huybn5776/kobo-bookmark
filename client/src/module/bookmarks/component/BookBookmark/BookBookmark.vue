@@ -41,8 +41,11 @@
         <div class="book-toolbar-container">
           <div class="book-toolbar">
             <template v-if="!book.isArchived">
-              <IconButton i18nKey="common.archive" @click="emits('onBookArchiveClick', book)">
+              <IconButton v-if="!readonly" i18nKey="common.archive" @click="emits('onBookArchiveClick', book)">
                 <ArchiveIcon class="icon-24" />
+              </IconButton>
+              <IconButton v-if="!readonly" i18nKey="page.bookmarks.share_dropbox" @click="emits('onShareClick', book)">
+                <DropboxShareIcon />
               </IconButton>
               <IconButton i18nKey="page.bookmarks.export_text" @click="emits('onTextExportClick', book)">
                 <TextIcon class="icon-24" />
@@ -61,7 +64,7 @@
             </template>
             <template v-if="book.isArchived">
               <span class="book-state-text">(<i18n-t keypath="common.archived" />)</span>
-              <IconButton i18nKey="common.cancel_archive" @click="emits('onBookCancelArchive', book)">
+              <IconButton v-if="!readonly" i18nKey="common.cancel_archive" @click="emits('onBookCancelArchive', book)">
                 <ArchiveRefreshIcon class="icon-24" />
               </IconButton>
             </template>
@@ -74,6 +77,7 @@
       v-if="expandedDirection === 'up' && !disableBookmarkExpand"
       :bookmarks="book.bookmarks"
       :disabled="!!book.isArchived"
+      :readonly="readonly"
       class="book-bookmark-list"
       @onBookmarkColorChanged="(bookmark, color) => emits('onBookmarkColorChanged', book, bookmark, color)"
       @onBookmarkArchive="emits('onBookmarkArchiveClick', book, $event)"
@@ -93,6 +97,7 @@ import {
   BookmarkMultipleIcon,
   BookClockIcon,
   ArchiveIcon,
+  DropboxShareIcon,
   ArchiveRefreshIcon,
   MarkdownIcon,
   NotionIcon,
@@ -110,6 +115,7 @@ const props = defineProps<{
   book: KoboBook;
   defaultExpanded: boolean;
   selected: boolean;
+  readonly?: boolean;
   exportNotionLoading?: boolean;
 }>();
 const emits = defineEmits<{
@@ -120,6 +126,7 @@ const emits = defineEmits<{
   (e: 'onBookCoverImageUpdated', value: string): void;
   (e: 'onBookArchiveClick', value: KoboBook): void;
   (e: 'onBookCancelArchive', value: KoboBook): void;
+  (e: 'onShareClick', value: KoboBook): void;
   (e: 'onBookmarkColorChanged', book: KoboBook, bookmark: KoboBookmark, color: HighlightColor): void;
   (e: 'onBookmarkArchiveClick', book: KoboBook, bookmark: KoboBookmark): void;
   (e: 'onBookmarkCancelArchiveClick', book: KoboBook, bookmark: KoboBookmark): void;

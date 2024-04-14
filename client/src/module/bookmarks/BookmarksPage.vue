@@ -1,5 +1,7 @@
 <template>
   <div class="page-content bookmark-page">
+    <BookmarkShareView v-if="bookmarkShare" :bookmarkShare="bookmarkShare" />
+
     <div
       v-if="booksToShow.length"
       class="bookmark-page-tools"
@@ -12,12 +14,14 @@
       />
       <MultiBookActionBar
         v-if="showMultiSelectToolbar"
+        :readonly="!!bookmarkShare"
         :selectedBooks="selectedBooks"
         @onTextExportClick="exportSelectedAsText"
         @onMarkdownExportClick="exportSelectedAsMarkdown"
         @onNotionExportClick="exportSelectedToNotion"
         @onArchiveClick="archiveSelected"
         @onDeleteClick="deleteSelected"
+        @onShareClick="openShareBooksWithDropboxDialog(selectedBooks)"
       />
       <NCheckbox
         size="large"
@@ -35,6 +39,7 @@
         :book="book"
         :default-expanded="booksToShow?.length === 1"
         :selected="selectedBookIds.includes(book.id)"
+        :readonly="!!bookmarkShare"
         :exportNotionLoading="exportingBookIds.includes(book.id)"
         @update:selected="(v) => onBookSelectChanges(book, v)"
         @onTextExportClick="exportBookmarkToText"
@@ -42,6 +47,7 @@
         @onNotionExportClick="exportBookmarkToNotion"
         @onBookCoverImageUpdated="(v) => updateBookCoverImage(book, v)"
         @onBookArchiveClick="archiveBook"
+        @onShareClick="openShareBooksWithDropboxDialog([book])"
         @onBookCancelArchive="cancelArchiveBook"
         @onBookmarkColorChanged="updateBookmarkColor"
         @onBookmarkArchiveClick="archiveBookmark"
@@ -49,11 +55,12 @@
       />
     </div>
 
-    <PageLoading v-if="loadingBooks">
-      <i18n-t keypath="page.bookmarks.loading_books" />
+    <PageLoading v-if="loadingBooks || loadingFailedMessage" :state="loadingFailedMessage ? 'warning' : undefined">
+      <i18n-t v-if="!loadingFailedMessage" keypath="page.bookmarks.loading_books" />
+      <template v-if="loadingFailedMessage">{{ loadingFailedMessage }}</template>
     </PageLoading>
 
-    <div v-if="!loadingBooks && !booksToShow.length" class="empty-bookmarks-message-container">
+    <div v-if="!loadingBooks && !loadingFailedMessage && !booksToShow.length" class="empty-bookmarks-message-container">
       <span class="empty-bookmarks-emoji">¯\_(ツ)_/¯</span>
       <span class="empty-bookmarks-message">
         <i18n-t keypath="page.bookmarks.empty_bookmarks1" />
@@ -79,14 +86,18 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, computed } from 'vue';
+import { ref, computed, watchEffect } from 'vue';
 
+import * as E from 'fp-ts/Either';
 import { useMessage, useNotification, NCheckbox } from 'naive-ui';
 import { isNil } from 'ramda';
 import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
 
+import PageLoading from '@/component/PageLoading/PageLoading.vue';
 import { useSyncSetting } from '@/composition/use-sync-setting';
 import { I18NMessageSchema } from '@/config/i18n-config';
+import { BookmarkShare } from '@/dto/bookmark-share';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import { BookSortingKey } from '@/enum/book-sorting-key';
 import { BookmarkSortingKey } from '@/enum/bookmark-sorting-key';
@@ -96,13 +107,16 @@ import { SettingKey } from '@/enum/setting-key';
 import { BookExportTask, BookExportState } from '@/interface/book-export-task';
 import BookBookmark from '@/module/bookmarks/component/BookBookmark/BookBookmark.vue';
 import BookExportProgressModal from '@/module/bookmarks/component/BookExportProgressModal/BookExportProgressModal.vue';
+import BookmarkShareView from '@/module/bookmarks/component/BookmarkShareView/BookmarkShareView.vue';
 import BookSortingSelect from '@/module/bookmarks/component/BookSortingSelect/BookSortingSelect.vue';
 import MultiBookActionBar from '@/module/bookmarks/component/MultiBookActionBar/MultiBookActionBar.vue';
 import { useBookBookmarkArchive } from '@/module/bookmarks/composition/use-book-bookmark-archive';
 import { useMultiBookActions } from '@/module/bookmarks/composition/use-multi-book-actions';
+import { useShareBookDialog } from '@/module/bookmarks/composition/use-share-book-dialog';
 import { findCoverImageForBook } from '@/services/bookmark/book-cover.service';
 import { getBooksFromDb, putBooksToDb } from '@/services/bookmark/bookmark-manage.service';
 import { sortKoboBooks, sortKoboBookmarks } from '@/services/bookmark/kobo-book-sort.service';
+import { getBookmarksShareFromDropboxShareId } from '@/services/dropbox/dropbox.service';
 import { bookmarkToText, bookmarkToMarkdown } from '@/services/export/bookmark-export.service';
 import { handleNotionApiError } from '@/services/notion/notion-api-error-handing.service';
 import { exportBookBookmarks } from '@/services/notion/notion-export.service';
@@ -112,10 +126,14 @@ import { deepToRaw } from '@/util/vue-utils';
 
 const { t } = useI18n<[I18NMessageSchema]>();
 
+const route = useRoute();
 const message = useMessage();
 const notification = useNotification();
 
+const bookmarkShare = ref<BookmarkShare>();
 const loadingBooks = ref<boolean>(false);
+const loadingFailedMessage = ref<string>();
+
 const allBooks = ref<KoboBook[]>([]);
 const bookSorting = useSyncSetting(SettingKey.BookSorting, BookSortingKey.LastBookmark);
 const bookmarkSorting = useSyncSetting(SettingKey.BookmarkSorting, BookmarkSortingKey.LastUpdate);
@@ -125,6 +143,7 @@ const bookExportTasks = ref<BookExportTask[]>([]);
 const { archiveBook, cancelArchiveBook, archiveBookmark, cancelArchiveBookmark } = useBookBookmarkArchive({
   reloadBooks,
 });
+const { openShareBooksWithDropboxDialog } = useShareBookDialog();
 const {
   selectedBooks,
   selectedBookIds,
@@ -146,9 +165,13 @@ const exportingBookIds = computed(() => {
     .map((task) => task.book.id);
 });
 
-onMounted(async () => {
+watchEffect(async () => {
+  allBooks.value = [];
+  bookmarkShare.value = undefined;
+  loadingFailedMessage.value = undefined;
+
   loadingBooks.value = true;
-  allBooks.value = await getBooksFromDb();
+  await loadBooks();
   loadingBooks.value = false;
   await fetchMissingBookCoverImageUrl();
 });
@@ -166,6 +189,25 @@ const booksToShow = computed(() => {
   });
   return books;
 });
+
+async function loadBooks(): Promise<void> {
+  const shareId = route.params.shareId as string;
+  if (shareId) {
+    await loadBooksFromShareId(shareId);
+  } else {
+    allBooks.value = await getBooksFromDb();
+  }
+}
+
+async function loadBooksFromShareId(shareId: string): Promise<void> {
+  const result = await getBookmarksShareFromDropboxShareId(shareId);
+  if (E.isLeft(result)) {
+    loadingFailedMessage.value = t(result.left);
+    return;
+  }
+  bookmarkShare.value = result.right;
+  allBooks.value = bookmarkShare.value?.books;
+}
 
 function bookmarkProcess(book: KoboBook): KoboBookmark[] {
   return sortKoboBookmarks(book.bookmarks, bookmarkSorting.value ? [bookmarkSorting.value] : []);

@@ -5,6 +5,7 @@
       :key="bookmark.id"
       :bookmark="bookmark"
       :disabled="disabled"
+      :readonly="readonly"
       @onColorChanged="emits('onBookmarkColorChanged', bookmark, $event)"
       @onArchiveClick="emits('onBookmarkArchive', bookmark)"
       @onCancelArchiveClick="emits('onBookmarkCancelArchive', bookmark)"
@@ -21,7 +22,7 @@ import { SettingKey } from '@/enum/setting-key';
 import BookmarkItem from '@/module/bookmarks/component/BookmarkItem/BookmarkItem.vue';
 import { getSettingFromStorage } from '@/services/setting.service';
 
-const props = defineProps<{ bookmarks: KoboBookmark[]; disabled?: boolean }>();
+const props = defineProps<{ bookmarks: KoboBookmark[]; disabled?: boolean; readonly?: boolean }>();
 const emits = defineEmits<{
   (e: 'onBookmarkColorChanged', bookmark: KoboBookmark, color: HighlightColor): void;
   (e: 'onBookmarkArchive', value: KoboBookmark): void;

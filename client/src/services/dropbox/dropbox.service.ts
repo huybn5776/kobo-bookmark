@@ -1,8 +1,12 @@
 import { Dropbox, DropboxAuth, files as DropboxFiles } from 'dropbox';
+import * as E from 'fp-ts/Either';
+
+import { BookmarkShare } from '@/dto/bookmark-share';
 import { SettingEventType } from '@/enum/setting-event-type';
 import { SettingKey } from '@/enum/setting-key';
 import { DropboxApiError } from '@/interface/dropbox-api-error';
 import { DropboxTokenInfo } from '@/interface/dropbox-token-info';
+import { bookmarkShareSchema } from '@/schema/bookmark-share-schema';
 import { saveSettingToStorage, getSettingFromStorage } from '@/services/setting.service';
 import { readBlobAsJson } from '@/util/browser-utils';
 
@@ -122,4 +126,57 @@ export async function getFileFromDropbox(filename: string): Promise<DropboxFile>
   const dbx = getDropbox();
   const response = await dbx.filesDownload({ path: `/${filename}` });
   return response.result as DropboxFile;
+}
+
+export async function createDropboxShareLink(path: string): Promise<string> {
+  const dbx = getDropbox();
+  const response = await dbx.sharingCreateSharedLinkWithSettings({ path });
+  return response.result.url;
+}
+
+export async function getBookmarksShareFromDropboxShareId(shareId: string): Promise<E.Either<string, BookmarkShare>> {
+  let downloadUrl: string | null;
+  try {
+    downloadUrl = dropboxShareIdToDownloadUrl(shareId);
+    if (!downloadUrl) {
+      return E.left('page.bookmarks.dropbox_bookmark_share_invalid_share_link');
+    }
+  } catch (e) {
+    return E.left('page.bookmarks.dropbox_bookmark_share_invalid_share_link');
+  }
+  const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(downloadUrl)}`;
+  const response = await fetch(proxyUrl);
+  if (response.headers.get('content-type')?.startsWith('text/html')) {
+    return E.left('page.bookmarks.dropbox_bookmark_share_not_available');
+  }
+  const file = await response.blob();
+  let fileContent: BookmarkShare;
+  try {
+    fileContent = await readBlobAsJson(file);
+  } catch (e) {
+    return E.left('page.bookmarks.dropbox_bookmark_share_invalid_format');
+  }
+  try {
+    return E.right(bookmarkShareSchema.parse(fileContent) as BookmarkShare);
+  } catch (e) {
+    return E.left('page.bookmarks.dropbox_bookmark_share_invalid_content');
+  }
+}
+
+export function calcShareIdOfDropboxLink(dropboxLink: string): string {
+  const urlPathRegex = /\/scl\/fi\/(.+)\/(.+)/g;
+  const url = new URL(dropboxLink);
+  const [, fileId, fileName] = urlPathRegex.exec(url.pathname) || [];
+  const rlKey = url.searchParams.get('rlkey');
+  const base64Content = [fileId, fileName, rlKey].join(',');
+  return btoa(base64Content);
+}
+
+export function dropboxShareIdToDownloadUrl(shareId: string): string | null {
+  const base64Content = atob(shareId);
+  const [fileId, fileName, rlKey] = base64Content.split(',');
+  if (!fileId || !fileName || !rlKey) {
+    return null;
+  }
+  return `https://www.dropbox.com/scl/fi/${fileId}/${fileName}?rlkey=${rlKey}&dl=1`;
 }

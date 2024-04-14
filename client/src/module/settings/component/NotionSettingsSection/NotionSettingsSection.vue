@@ -92,6 +92,7 @@
 import { onMounted, ref, computed } from 'vue';
 
 import type { OauthTokenResponse, PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
+import { useBrowserLocation } from '@vueuse/core';
 import { AxiosError } from 'axios';
 import { useNotification, NButton, SelectOption, NRadioGroup, NRadio } from 'naive-ui';
 import { sortBy } from 'ramda';
@@ -113,8 +114,9 @@ import {
 } from '@/services/notion/notion-export-target.service';
 import { getTitleOfPage } from '@/services/notion/notion-page.service';
 
+const location = useBrowserLocation();
 const oauthClientId = import.meta.env.VITE_NOTION_CLIENT_ID;
-const redirectUri = `${location.origin}/settings/notion`;
+const redirectUri = `${location.value.origin}/settings/notion`;
 const authUrl = `https://api.notion.com/v1/oauth/authorize?client_id=${oauthClientId}&response_type=code&owner=user&redirect_uri=${encodeURIComponent(redirectUri)}`;
 const route = useRoute();
 const router = useRouter();

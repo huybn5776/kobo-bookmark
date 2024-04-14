@@ -1,0 +1,51 @@
+.bookmark-share-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bookmark-share-book-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px;
+  align-items: center;
+  padding-top: 4px;
+}
+
+.bookmark-share-book-title {
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.bookmark-share-result-row {
+  & + & {
+    margin-top: 16px;
+  }
+}
+
+.bookmark-share-result-row-label {
+  margin: 0;
+  color: white;
+  font-size: 18px;
+}
+
+.bookmark-share-link {
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.bookmark-share-result-url {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px;
+  align-items: center;
+}
+
+.bookmark-share-dialog-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: end;
+  margin-top: 16px;
+}

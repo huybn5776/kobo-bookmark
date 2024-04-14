@@ -44,7 +44,7 @@ const optionsToShow = computed<SelectOption[]>(() => {
     ? options.value
     : [
         ...(props.id ? [{ value: props.id, label: props.title }] : []),
-        { value: '', label: t('page.settings.notion.loading'), disabled: true },
+        { value: '', label: t('common.loading'), disabled: true },
       ];
 });
 

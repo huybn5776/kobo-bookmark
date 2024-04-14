@@ -1,0 +1,22 @@
+.dropbox-share-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.share-icon {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: 22px;
+  height: 22px;
+  mask-image: radial-gradient(ellipse 10px 10px at 21px 20px, transparent 100%, black 100%);
+}
+
+.dropbox-icon {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 14px;
+  height: 14px;
+}

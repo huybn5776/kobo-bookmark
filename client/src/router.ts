@@ -17,6 +17,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/module/bookmarks/BookmarksPage.vue'),
   },
   {
+    path: '/bookmarks/:shareId',
+    name: 'bookmarks-share',
+    component: () => import('@/module/bookmarks/BookmarksPage.vue'),
+  },
+  {
     path: '/settings',
     alias: ['/settings/notion', '/settings/dropbox'],
     name: 'settings',

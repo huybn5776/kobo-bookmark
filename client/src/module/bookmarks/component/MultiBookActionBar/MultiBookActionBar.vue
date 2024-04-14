@@ -6,11 +6,14 @@
       </i18n-t>
     </span>
     <div class="multi-book-actions">
-      <IconButton i18nKey="common.archive_selected" @click="emits('onArchiveClick')">
+      <IconButton v-if="!readonly" i18nKey="common.archive_selected" @click="emits('onArchiveClick')">
         <ArchiveIcon class="icon-24" />
       </IconButton>
-      <IconButton i18nKey="common.delete_selected" @click="emits('onDeleteClick')">
+      <IconButton v-if="!readonly" i18nKey="common.delete_selected" @click="emits('onDeleteClick')">
         <DeleteIcon class="icon-24" />
+      </IconButton>
+      <IconButton v-if="!readonly" i18nKey="page.bookmarks.share_dropbox" @click="emits('onShareClick')">
+        <DropboxShareIcon class="icon-24" />
       </IconButton>
       <IconButton i18nKey="page.bookmarks.export_all_text" @click="emits('onTextExportClick')">
         <TextIcon class="icon-24" />
@@ -26,17 +29,18 @@
 </template>
 
 <script lang="ts" setup>
-import { ArchiveIcon, DeleteIcon, MarkdownIcon, NotionIcon, TextIcon } from '@/component/icon';
+import { ArchiveIcon, DeleteIcon, MarkdownIcon, NotionIcon, TextIcon, DropboxShareIcon } from '@/component/icon';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { KoboBook } from '@/dto/kobo-book';
 
-defineProps<{ selectedBooks: KoboBook[] }>();
+defineProps<{ selectedBooks: KoboBook[]; readonly?: boolean; exportNotionLoading?: boolean }>();
 const emits = defineEmits<{
   (e: 'onTextExportClick'): void;
   (e: 'onMarkdownExportClick'): void;
   (e: 'onNotionExportClick'): void;
   (e: 'onArchiveClick'): void;
   (e: 'onDeleteClick'): void;
+  (e: 'onShareClick'): void;
 }>();
 </script>
 
