@@ -5,14 +5,7 @@
     @mouseover="hovered = true"
     @mouseleave="hovered = false"
   >
-    <img
-      v-if="!failToLoadCoverImage"
-      class="book-export-item-image"
-      :src="task.book.coverImageUrl"
-      :alt="task.book.info.title"
-      @error="failToLoadCoverImage = true"
-    />
-    <BlueBookIcon v-if="failToLoadCoverImage" class="book-export-item-fallback-icon" />
+    <BookCoverIconView :src="task.book.coverImageUrl" :title="task.book.info.title" />
     <span class="book-export-item-name">{{ task.book.info.title }}</span>
 
     <CancelIcon v-if="task.state === BookExportState.Canceled" class="icon-24" />
@@ -45,13 +38,13 @@ import { NProgress, NButton } from 'naive-ui';
 import type { Status } from 'naive-ui/es/progress/src/interface';
 import { isNotNil } from 'ramda';
 
-import { BlueBookIcon, CancelIcon, CloseCircleIcon } from '@/component/icon';
+import BookCoverIconView from '@/component/BookCoverIconView/BookCoverIconView.vue';
+import { CancelIcon, CloseCircleIcon } from '@/component/icon';
 import { BookExportTask, BookExportState } from '@/interface/book-export-task';
 
 const props = defineProps<{ task: BookExportTask }>();
 const emits = defineEmits<{ (e: 'cancel'): void }>();
 
-const failToLoadCoverImage = ref(!props.task.book.coverImageUrl);
 const hovered = ref(false);
 
 const percentage = computed(() => {
