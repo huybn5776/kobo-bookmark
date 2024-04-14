@@ -21,6 +21,9 @@ export const i18nEn = {
     invalid_url: 'Invalid url.',
     invalid_url_format: 'Invalid url format.',
     cannot_get_response_from_url: 'Cannot get correct response from url.',
+    connected: 'Connected',
+    not_connected: 'Not connected',
+    expired: 'Expired',
     color: {
       default: 'Default',
       yellow: 'Yellow',
@@ -156,6 +159,11 @@ export const i18nEn = {
         connect_to_notion: 'Connect to Notion',
         clear_notion_connection: 'Clear Notion connection setting',
         connected_workspace: 'Connected workspace',
+      },
+      dropbox: {
+        dropbox_connect: 'Dropbox connect',
+        connect_to_dropbox: 'Connect to Dropbox',
+        clear_dropbox_setting: 'Clear dropbox setting',
       },
       misc: {
         title: 'Misc',

@@ -18,7 +18,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/settings',
-    alias: ['/settings/notion'],
+    alias: ['/settings/notion', '/settings/dropbox'],
     name: 'settings',
     component: () => import('@/module/settings/SettingsPage.vue'),
   },

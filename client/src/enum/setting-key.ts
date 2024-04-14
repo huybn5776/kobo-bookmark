@@ -5,6 +5,7 @@ import { BookmarkSortingKey } from '@/enum/bookmark-sorting-key';
 import { MarkdownExportMode } from '@/enum/markdown-export-mode';
 import { NotionExportToType } from '@/enum/notion-export-to-type';
 import { TextExportMode } from '@/enum/text-export-mode';
+import { DropboxTokenInfo } from '@/interface/dropbox-token-info';
 
 export enum SettingKey {
   BookSorting = 'book-sorting',
@@ -19,6 +20,7 @@ export enum SettingKey {
   NotionExportTargetPageTitle = 'notion-export-target-page-title',
   NotionExportTargetDatabaseId = 'notion-export-target-database-id',
   NotionExportTargetDatabaseTitle = 'notion-export-target-database-title',
+  DropboxToken = 'dropbox-token',
   ShowRemovedBooksWhenImporting = 'show-removed-books-when-importing',
   ShowArchived = 'show-archived',
   Language = 'language',
@@ -35,6 +37,7 @@ export type SettingValueType = {
   [SettingKey.NotionExportTargetPageTitle]: string;
   [SettingKey.NotionExportTargetDatabaseId]: string;
   [SettingKey.NotionExportTargetDatabaseTitle]: string;
+  [SettingKey.DropboxToken]: DropboxTokenInfo;
   [SettingKey.ShowRemovedBooksWhenImporting]: boolean;
   [SettingKey.ShowArchived]: boolean;
   [SettingKey.Language]: string;

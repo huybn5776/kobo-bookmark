@@ -21,6 +21,9 @@ export const i18nZhTw = {
     invalid_url: '無效的網址',
     invalid_url_format: '網址格式錯誤',
     cannot_get_response_from_url: '無法從網址取得正確的回應',
+    connected: '已連線',
+    not_connected: '未連線',
+    expired: '已過期',
     color: {
       default: '預設',
       yellow: '黃色',
@@ -155,6 +158,11 @@ export const i18nZhTw = {
         connect_to_notion: '連線至 Notion',
         clear_notion_connection: '清除 Notion 的連線設定',
         connected_workspace: '已連線的 Workspace',
+      },
+      dropbox: {
+        dropbox_connect: 'Dropbox 連線',
+        connect_to_dropbox: '連線至 Dropbox',
+        clear_dropbox_setting: '清除 Dropbox 設定',
       },
       misc: {
         title: '雜項',
