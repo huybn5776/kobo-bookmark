@@ -1,0 +1,12 @@
+.page-loading {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  padding: 24px;
+}
+
+.loading-message {
+  color: gray;
+  font-size: 24px;
+}

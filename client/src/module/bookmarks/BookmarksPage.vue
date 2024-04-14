@@ -49,7 +49,11 @@
       />
     </div>
 
-    <div v-if="!loadBooks && !booksToShow.length" class="empty-bookmarks-message-container">
+    <PageLoading v-if="loadingBooks">
+      <i18n-t keypath="page.bookmarks.loading_books" />
+    </PageLoading>
+
+    <div v-if="!loadingBooks && !booksToShow.length" class="empty-bookmarks-message-container">
       <span class="empty-bookmarks-emoji">¯\_(ツ)_/¯</span>
       <span class="empty-bookmarks-message">
         <i18n-t keypath="page.bookmarks.empty_bookmarks1" />
@@ -111,7 +115,7 @@ const { t } = useI18n<[I18NMessageSchema]>();
 const message = useMessage();
 const notification = useNotification();
 
-const loadBooks = ref<boolean>(false);
+const loadingBooks = ref<boolean>(false);
 const allBooks = ref<KoboBook[]>([]);
 const bookSorting = useSyncSetting(SettingKey.BookSorting, BookSortingKey.LastBookmark);
 const bookmarkSorting = useSyncSetting(SettingKey.BookmarkSorting, BookmarkSortingKey.LastUpdate);
@@ -143,9 +147,9 @@ const exportingBookIds = computed(() => {
 });
 
 onMounted(async () => {
-  loadBooks.value = true;
+  loadingBooks.value = true;
   allBooks.value = await getBooksFromDb();
-  loadBooks.value = false;
+  loadingBooks.value = false;
   await fetchMissingBookCoverImageUrl();
 });
 
