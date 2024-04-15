@@ -1,0 +1,12 @@
+.bookmark-filter-button {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-size: 0;
+  background: none;
+  transition: opacity .2s;
+
+  &:not(.bookmark-filter-button-active):not(:hover):not(:focus-within) {
+    opacity: .4;
+  }
+}

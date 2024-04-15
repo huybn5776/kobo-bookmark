@@ -3,7 +3,7 @@
     <BookmarkShareView v-if="bookmarkShare" :bookmarkShare="bookmarkShare" />
 
     <div
-      v-if="booksToShow.length"
+      v-if="allBooks.length"
       class="bookmark-page-tools"
       :class="{ 'bookmark-page-tools-sticky': showMultiSelectToolbar }"
     >
@@ -23,6 +23,7 @@
         @onDeleteClick="deleteSelected"
         @onShareClick="openShareBooksWithDropboxDialog(selectedBooks)"
       />
+      <BookmarkFilterDropdown v-model:colors="highlightColorFilter" :disabled="!allBooks.length" />
       <NCheckbox
         size="large"
         :checked="selectedBooksCheckState === CheckboxState.Checked"
@@ -31,7 +32,7 @@
       />
     </div>
 
-    <div v-if="booksToShow.length" class="books-container">
+    <div v-if="allBooks.length" class="books-container">
       <BookBookmark
         v-for="book in booksToShow"
         :key="book.id"
@@ -55,12 +56,12 @@
       />
     </div>
 
-    <PageLoading v-if="loadingBooks || loadingFailedMessage" :state="loadingFailedMessage ? 'warning' : undefined">
-      <i18n-t v-if="!loadingFailedMessage" keypath="page.bookmarks.loading_books" />
-      <template v-if="loadingFailedMessage">{{ loadingFailedMessage }}</template>
-    </PageLoading>
+    <PageResult v-if="loadingBooks || pageResultMessage" :state="loadingBooks ? 'loading' : 'warning'">
+      <i18n-t v-if="loadingBooks" keypath="page.bookmarks.loading_books" />
+      <template v-if="pageResultMessage">{{ pageResultMessage }}</template>
+    </PageResult>
 
-    <div v-if="!loadingBooks && !loadingFailedMessage && !booksToShow.length" class="empty-bookmarks-message-container">
+    <div v-if="!loadingBooks && !pageResultMessage && !allBooks.length" class="empty-bookmarks-message-container">
       <span class="empty-bookmarks-emoji">¯\_(ツ)_/¯</span>
       <span class="empty-bookmarks-message">
         <i18n-t keypath="page.bookmarks.empty_bookmarks1" />
@@ -94,7 +95,7 @@ import { isNil } from 'ramda';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
-import PageLoading from '@/component/PageLoading/PageLoading.vue';
+import PageResult from '@/component/PageResult/PageResult.vue';
 import { useSyncSetting } from '@/composition/use-sync-setting';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { BookmarkShare } from '@/dto/bookmark-share';
@@ -107,6 +108,7 @@ import { SettingKey } from '@/enum/setting-key';
 import { BookExportTask, BookExportState } from '@/interface/book-export-task';
 import BookBookmark from '@/module/bookmarks/component/BookBookmark/BookBookmark.vue';
 import BookExportProgressModal from '@/module/bookmarks/component/BookExportProgressModal/BookExportProgressModal.vue';
+import BookmarkFilterDropdown from '@/module/bookmarks/component/BookmarkFilterDropdown/BookmarkFilterDropdown.vue';
 import BookmarkShareView from '@/module/bookmarks/component/BookmarkShareView/BookmarkShareView.vue';
 import BookSortingSelect from '@/module/bookmarks/component/BookSortingSelect/BookSortingSelect.vue';
 import MultiBookActionBar from '@/module/bookmarks/component/MultiBookActionBar/MultiBookActionBar.vue';
@@ -132,12 +134,13 @@ const notification = useNotification();
 
 const bookmarkShare = ref<BookmarkShare>();
 const loadingBooks = ref<boolean>(false);
-const loadingFailedMessage = ref<string>();
+const pageResultMessage = ref<string>();
 
 const allBooks = ref<KoboBook[]>([]);
 const bookSorting = useSyncSetting(SettingKey.BookSorting, BookSortingKey.LastBookmark);
 const bookmarkSorting = useSyncSetting(SettingKey.BookmarkSorting, BookmarkSortingKey.LastUpdate);
 const bookBookmarkRefs = ref<InstanceType<typeof BookBookmark>[]>([]);
+const highlightColorFilter = ref<HighlightColor[]>([]);
 const pendingExportRequest = ref<Promise<void>>();
 const bookExportTasks = ref<BookExportTask[]>([]);
 const { archiveBook, cancelArchiveBook, archiveBookmark, cancelArchiveBookmark } = useBookBookmarkArchive({
@@ -168,7 +171,7 @@ const exportingBookIds = computed(() => {
 watchEffect(async () => {
   allBooks.value = [];
   bookmarkShare.value = undefined;
-  loadingFailedMessage.value = undefined;
+  pageResultMessage.value = undefined;
 
   loadingBooks.value = true;
   await loadBooks();
@@ -176,7 +179,7 @@ watchEffect(async () => {
   await fetchMissingBookCoverImageUrl();
 });
 
-const booksToShow = computed(() => {
+const sortedBooks = computed(() => {
   if (!allBooks.value) {
     return [];
   }
@@ -188,6 +191,20 @@ const booksToShow = computed(() => {
     };
   });
   return books;
+});
+const booksToShow = computed(() => {
+  const colors = highlightColorFilter.value;
+  if (!colors.length) {
+    return sortedBooks.value;
+  }
+  return sortedBooks.value.flatMap((book) => {
+    const bookmarks = book.bookmarks.filter((bookmark) => bookmark.color && colors.includes(bookmark.color));
+    return bookmarks.length ? [{ ...book, bookmarks }] : [];
+  });
+});
+watchEffect(() => {
+  pageResultMessage.value =
+    allBooks.value.length && !booksToShow.value.length ? t('page.bookmarks.no_matching_bookmarks') : undefined;
 });
 
 async function loadBooks(): Promise<void> {
@@ -202,7 +219,7 @@ async function loadBooks(): Promise<void> {
 async function loadBooksFromShareId(shareId: string): Promise<void> {
   const result = await getBookmarksShareFromDropboxShareId(shareId);
   if (E.isLeft(result)) {
-    loadingFailedMessage.value = t(result.left);
+    pageResultMessage.value = t(result.left);
     return;
   }
   bookmarkShare.value = result.right;

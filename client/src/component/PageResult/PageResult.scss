@@ -1,4 +1,4 @@
-.page-loading {
+.page-result {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -6,17 +6,17 @@
   padding: 24px;
 }
 
-.page-loading-state-icon {
+.page-result-state-icon {
   width: 56px;
   height: 56px;
   color: rgba(white, .8);
 }
 
-.loading-message {
+.page-result-message {
   color: gray;
   font-size: 24px;
 
-  &.loading-message-primary {
+  &.page-result-message-primary {
     color: white;
   }
 }
