@@ -1,5 +1,10 @@
 <template>
-  <div class="bookmark-item">
+  <div
+    ref="elementRef"
+    class="bookmark-item"
+    :class="{ 'bookmark-item-focused': focused && readyToRunHighlight }"
+    @animationend="emits('onHighlightAnimationEnd')"
+  >
     <p class="bookmark-chapter" :class="{ 'bookmark-chapter-archived': bookmark.isArchived }">
       <span
         v-for="chapter in bookmark.chapter.parentChapters"
@@ -46,18 +51,50 @@
 </template>
 
 <script lang="ts" setup>
+import { ref, watch, onMounted } from 'vue';
+
 import { ArchiveIcon, ArchiveRefreshIcon } from '@/component/icon';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { KoboBookmark } from '@/dto/kobo-book';
 import { HighlightColor } from '@/enum/highlight-color';
 import HighlightColorDropdown from '@/module/bookmarks/component/HighlightColorDropdown/HighlightColorDropdown.vue';
 
-defineProps<{ bookmark: KoboBookmark; disabled?: boolean; readonly?: boolean }>();
+const props = defineProps<{ bookmark: KoboBookmark; focused?: boolean; disabled?: boolean; readonly?: boolean }>();
 const emits = defineEmits<{
   (e: 'onColorChanged', value: HighlightColor): void;
   (e: 'onArchiveClick'): void;
   (e: 'onCancelArchiveClick'): void;
+  (e: 'onHighlightAnimationEnd'): void;
 }>();
+const elementRef = ref<HTMLElement>();
+defineExpose({ elementRef });
+
+const readyToRunHighlight = ref<boolean>(false);
+
+onMounted(() => highlightSelfIfNeed());
+watch(
+  () => props.focused,
+  () => highlightSelfIfNeed(),
+);
+
+function highlightSelfIfNeed(): void {
+  const element = elementRef.value;
+  if (!props.focused || !element) {
+    readyToRunHighlight.value = false;
+    return;
+  }
+
+  const intersectionObserver = new IntersectionObserver(onIntersection, { threshold: 0.5 });
+  function onIntersection(entries: IntersectionObserverEntry[]): void {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        readyToRunHighlight.value = true;
+        intersectionObserver.disconnect();
+      }
+    });
+  }
+  intersectionObserver.observe(element);
+}
 </script>
 
 <style lang="scss" scoped>

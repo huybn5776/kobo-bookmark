@@ -1,0 +1,12 @@
+.bookmark-search-button {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-size: 0;
+  background: none;
+  transition: opacity .2s;
+
+  &:not(.bookmark-search-button-active):not(:hover):not(:focus-within) {
+    opacity: .4;
+  }
+}

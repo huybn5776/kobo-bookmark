@@ -5,10 +5,10 @@
     <div
       v-if="allBooks.length"
       class="bookmark-page-tools"
-      :class="{ 'bookmark-page-tools-sticky': showMultiSelectToolbar }"
+      :class="{ 'bookmark-page-tools-sticky': showMultiSelectToolbar || bookmarkSearchActive }"
     >
       <BookSortingSelect
-        v-if="!showMultiSelectToolbar"
+        v-if="!showMultiSelectToolbar && !bookmarkSearchActive"
         v-model:bookSorting="bookSorting"
         v-model:bookmarkSorting="bookmarkSorting"
       />
@@ -23,6 +23,13 @@
         @onDeleteClick="deleteSelected"
         @onShareClick="openShareBooksWithDropboxDialog(selectedBooks)"
       />
+      <BookmarkSearch
+        v-if="bookmarkSearchActive"
+        :books="booksToShow"
+        @selected="gotoBookmark"
+        @cancel="bookmarkSearchActive = false"
+      />
+      <BookmarkSearchButton v-model:active="bookmarkSearchActive" />
       <BookmarkFilterDropdown v-model:colors="highlightColorFilter" :disabled="!allBooks.length" />
       <NCheckbox
         size="large"
@@ -109,6 +116,8 @@ import { BookExportTask, BookExportState } from '@/interface/book-export-task';
 import BookBookmark from '@/module/bookmarks/component/BookBookmark/BookBookmark.vue';
 import BookExportProgressModal from '@/module/bookmarks/component/BookExportProgressModal/BookExportProgressModal.vue';
 import BookmarkFilterDropdown from '@/module/bookmarks/component/BookmarkFilterDropdown/BookmarkFilterDropdown.vue';
+import BookmarkSearch from '@/module/bookmarks/component/BookmarkSearch/BookmarkSearch.vue';
+import BookmarkSearchButton from '@/module/bookmarks/component/BookmarkSearchButton/BookmarkSearchButton.vue';
 import BookmarkShareView from '@/module/bookmarks/component/BookmarkShareView/BookmarkShareView.vue';
 import BookSortingSelect from '@/module/bookmarks/component/BookSortingSelect/BookSortingSelect.vue';
 import MultiBookActionBar from '@/module/bookmarks/component/MultiBookActionBar/MultiBookActionBar.vue';
@@ -140,6 +149,7 @@ const allBooks = ref<KoboBook[]>([]);
 const bookSorting = useSyncSetting(SettingKey.BookSorting, BookSortingKey.LastBookmark);
 const bookmarkSorting = useSyncSetting(SettingKey.BookmarkSorting, BookmarkSortingKey.LastUpdate);
 const bookBookmarkRefs = ref<InstanceType<typeof BookBookmark>[]>([]);
+const bookmarkSearchActive = ref<boolean>(false);
 const highlightColorFilter = ref<HighlightColor[]>([]);
 const pendingExportRequest = ref<Promise<void>>();
 const bookExportTasks = ref<BookExportTask[]>([]);
@@ -178,6 +188,9 @@ watchEffect(async () => {
   loadingBooks.value = false;
   await fetchMissingBookCoverImageUrl();
 });
+
+watchEffect(() => (bookmarkSearchActive.value ? (selectedBooks.value = []) : undefined));
+watchEffect(() => (selectedBooks.value.length ? (bookmarkSearchActive.value = false) : undefined));
 
 const sortedBooks = computed(() => {
   if (!allBooks.value) {
@@ -359,6 +372,12 @@ function gotoBook(task: BookExportTask): void {
   const bookIndex = booksToShow.value.findIndex((book) => book.id === task.book.id);
   const bookComponent = bookBookmarkRefs.value[bookIndex];
   bookComponent?.elementRef?.scrollIntoView({ behavior: 'smooth' });
+}
+
+function gotoBookmark(book: KoboBook, bookmark: KoboBookmark): void {
+  const bookIndex = booksToShow.value.findIndex((b) => b.id === book.id);
+  const bookComponent = bookBookmarkRefs.value[bookIndex];
+  bookComponent?.scrollToBookmark(bookmark);
 }
 
 async function updateBookCoverImage(book: KoboBook, coverImageUrl: string): Promise<void> {

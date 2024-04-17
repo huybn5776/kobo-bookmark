@@ -19,6 +19,7 @@ export { default as FormatColorHighlight } from '@/assets/svg/format-color-highl
 export { default as GithubIcon } from '@/assets/svg/github.svg';
 export { default as ImageEditIcon } from '@/assets/svg/image-edit.svg';
 export { default as ImportIcon } from '@/assets/svg/import.svg';
+export { default as MagnifyIcon } from '@/assets/svg/magnify.svg';
 export { default as MarkdownIcon } from '@/assets/svg/markdown.svg';
 export { default as NotionIcon } from '@/assets/svg/notion.svg';
 export { default as PencilIcon } from '@/assets/svg/pencil.svg';

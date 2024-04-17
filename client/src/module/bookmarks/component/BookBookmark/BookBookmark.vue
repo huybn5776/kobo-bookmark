@@ -31,9 +31,10 @@
       </div>
       <div class="book-actions">
         <ChevronArrow
-          v-model:direction="expandedDirection"
-          :disabled="disableBookmarkExpand"
           class="bookmark-expand-handle"
+          :direction="expandedDirection"
+          :disabled="disableBookmarkExpand"
+          @update:direction="expanded = $event === 'up'"
         />
         <div class="book-checkbox-container">
           <NCheckbox size="large" :checked="selected" @update:checked="(v) => emits('update:selected', v)" />
@@ -74,14 +75,17 @@
     </div>
 
     <BookmarkList
-      v-if="expandedDirection === 'up' && !disableBookmarkExpand"
+      v-if="expanded && !disableBookmarkExpand"
+      ref="bookmarkListRef"
       :bookmarks="book.bookmarks"
+      :focusBookmark="focusedBookmark"
       :disabled="!!book.isArchived"
       :readonly="readonly"
       class="book-bookmark-list"
       @onBookmarkColorChanged="(bookmark, color) => emits('onBookmarkColorChanged', book, bookmark, color)"
       @onBookmarkArchive="emits('onBookmarkArchiveClick', book, $event)"
       @onBookmarkCancelArchive="emits('onBookmarkCancelArchiveClick', book, $event)"
+      @onFocusToBookmarkEnd="focusedBookmark = undefined"
     />
   </div>
 </template>
@@ -135,8 +139,10 @@ const emits = defineEmits<{
 const { t } = useI18n<[I18NMessageSchema]>();
 const elementRef = ref<HTMLElement>();
 
-const expandedDirection = ref<'up' | 'down'>(props.defaultExpanded ? 'up' : 'down');
-defineExpose({ elementRef });
+const expanded = ref<boolean>(false);
+const bookmarkListRef = ref<InstanceType<typeof BookmarkList>>();
+const focusedBookmark = ref<KoboBookmark>();
+defineExpose({ elementRef, scrollToBookmark });
 
 const timeSpanReadingHours = computed(() => {
   if (!props.book?.info.timeSpentReading) {
@@ -156,7 +162,12 @@ function toggleExpanded(): void {
   if (disableBookmarkExpand.value) {
     return;
   }
-  expandedDirection.value = expandedDirection.value === 'up' ? 'down' : 'up';
+  expanded.value = !expanded.value;
+}
+
+function scrollToBookmark(bookmark: KoboBookmark): void {
+  expanded.value = true;
+  focusedBookmark.value = bookmark;
 }
 </script>
 

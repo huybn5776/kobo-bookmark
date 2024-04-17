@@ -14,6 +14,7 @@ export const i18nZhTw = {
     enter: '輸入',
     undo: '還原',
     filter: '過濾',
+    search: '搜尋',
     link: '連結',
     state: '狀態',
     loading: '載入中…',
