@@ -12,6 +12,9 @@
       <IconButton v-if="!readonly" i18nKey="common.delete_selected" @click="emits('onDeleteClick')">
         <DeleteIcon class="icon-24" />
       </IconButton>
+      <IconButton i18nKey="common.export_selected" @click="emits('onExportBookFileClick')">
+        <ExportIcon class="icon-24" />
+      </IconButton>
       <IconButton v-if="!readonly" i18nKey="page.bookmarks.share_dropbox" @click="emits('onShareClick')">
         <DropboxShareIcon class="icon-24" />
       </IconButton>
@@ -29,7 +32,15 @@
 </template>
 
 <script lang="ts" setup>
-import { ArchiveIcon, DeleteIcon, MarkdownIcon, NotionIcon, TextIcon, DropboxShareIcon } from '@/component/icon';
+import {
+  ArchiveIcon,
+  DeleteIcon,
+  ExportIcon,
+  MarkdownIcon,
+  NotionIcon,
+  TextIcon,
+  DropboxShareIcon,
+} from '@/component/icon';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { KoboBook } from '@/dto/kobo-book';
 
@@ -38,6 +49,7 @@ const emits = defineEmits<{
   (e: 'onTextExportClick'): void;
   (e: 'onMarkdownExportClick'): void;
   (e: 'onNotionExportClick'): void;
+  (e: 'onExportBookFileClick'): void;
   (e: 'onArchiveClick'): void;
   (e: 'onDeleteClick'): void;
   (e: 'onShareClick'): void;

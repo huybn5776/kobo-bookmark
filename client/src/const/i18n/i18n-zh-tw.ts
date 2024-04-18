@@ -2,6 +2,7 @@ export const i18nZhTw = {
   common: {
     delete: '刪除',
     delete_selected: '刪除選取',
+    export_selected: '匯出選取的書本為 json 檔',
     archive: '封存',
     archive_selected: '封存選取',
     cancel_archive: '取消封存',

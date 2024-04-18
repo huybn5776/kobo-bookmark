@@ -11,6 +11,7 @@ import DeleteMultiBookDialogContent from '@/module/bookmarks/component/DeleteMul
 import { deleteBooksInDb, archiveBooksInDb, cancelArchiveBooksInDb } from '@/services/bookmark/bookmark-manage.service';
 import { bookmarkToText, bookmarkToMarkdown } from '@/services/export/bookmark-export.service';
 import { textToFileDownload } from '@/util/browser-utils';
+import { saveDataToJsonFile } from '@/util/file-utils';
 
 export function useMultiBookActions({
   allBooks,
@@ -27,6 +28,7 @@ export function useMultiBookActions({
   onBookSelectChanges: (book: KoboBook, selected: boolean) => void;
   exportSelectedAsText: () => void;
   exportSelectedAsMarkdown: () => void;
+  exportSelectedAsFile: () => void;
   archiveSelected: () => void;
   deleteSelected: () => void;
 } {
@@ -78,6 +80,11 @@ export function useMultiBookActions({
     const books = selectedBooks.value;
     const content = bookmarkToMarkdown(books);
     textToFileDownload(content, `${getFilenameOfBooks(books)}.md`, 'text/markdown');
+  }
+
+  function exportSelectedAsFile(): void {
+    const books = selectedBooks.value;
+    saveDataToJsonFile(books, { fileName: 'kobo-books' });
   }
 
   async function archiveSelected(): Promise<void> {
@@ -141,6 +148,7 @@ export function useMultiBookActions({
     onBookSelectChanges,
     exportSelectedAsText,
     exportSelectedAsMarkdown,
+    exportSelectedAsFile,
     archiveSelected,
     deleteSelected,
   };

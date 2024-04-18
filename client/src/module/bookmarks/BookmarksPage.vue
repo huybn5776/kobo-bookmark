@@ -19,6 +19,7 @@
         @onTextExportClick="exportSelectedAsText"
         @onMarkdownExportClick="exportSelectedAsMarkdown"
         @onNotionExportClick="exportSelectedToNotion"
+        @onExportBookFileClick="exportSelectedAsFile"
         @onArchiveClick="archiveSelected"
         @onDeleteClick="deleteSelected"
         @onShareClick="openShareBooksWithDropboxDialog(selectedBooks)"
@@ -169,6 +170,7 @@ const {
   onBookSelectChanges,
   exportSelectedAsText,
   exportSelectedAsMarkdown,
+  exportSelectedAsFile,
   archiveSelected,
   deleteSelected,
 } = useMultiBookActions({ allBooks, reloadBooks });

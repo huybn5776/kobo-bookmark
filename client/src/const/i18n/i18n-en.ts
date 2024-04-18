@@ -2,6 +2,7 @@ export const i18nEn = {
   common: {
     delete: 'Delete',
     delete_selected: 'Delete selected',
+    export_selected: 'Export selected as json file',
     archive: 'Archive',
     archive_selected: 'Archive selected',
     cancel_archive: 'Cancel archive',

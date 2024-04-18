@@ -16,6 +16,7 @@ export { default as DotsVerticalIcon } from '@/assets/svg/dots-vertical.svg';
 export { default as DragIcon } from '@/assets/svg/drag.svg';
 export { default as DropboxIcon } from '@/assets/svg/dropbox.svg';
 export { default as DropboxShareIcon } from '@/component/icon/DropboxShareIcon/DropboxShareIcon.vue';
+export { default as ExportIcon } from '@/assets/svg/export.svg';
 export { default as FilterIcon } from '@/assets/svg/filter.svg';
 export { default as FormatColorHighlightIcon } from '@/assets/svg/format-color-highlight.svg';
 export { default as FormatFontSizeDecreaseIcon } from '@/assets/svg/format-font-size-decrease.svg';
