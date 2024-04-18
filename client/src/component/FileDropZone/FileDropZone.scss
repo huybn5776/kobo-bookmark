@@ -1,7 +1,9 @@
 .file-drop-zone {
   position: relative;
+  box-sizing: border-box;
   width: fit-content;
   height: fit-content;
+  padding: 36px;
 }
 
 .drag-overlay {
