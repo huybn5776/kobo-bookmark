@@ -1,6 +1,6 @@
 <template>
   <div ref="dropTargetRef" class="page-content data-import-page">
-    <FileDropZone v-if="!sqlFileLoaded" class="file-dropzone" :targetPath="targetFlePath" @fileDropped="onFile">
+    <FileDropZone v-if="!targetFileLoaded" class="file-dropzone" :targetPath="targetFlePath" @fileDropped="onFile">
       <span>
         <i18n-t keypath="page.data_import.drop_file">
           <code>KoboReader.sqlite</code>
@@ -8,7 +8,7 @@
       </span>
     </FileDropZone>
     <DataImportResult
-      v-if="sqlFileLoaded"
+      v-if="targetFileLoaded"
       :bookChanges="bookChanges"
       @onExportTextFileClick="exportChangeAsTextFile"
       @onExportTextClipboardClick="exportChangeAsTextClipboard"
@@ -20,7 +20,7 @@
     <FullPageFileDropZone
       :dropTarget="dropTargetRef"
       :targetPath="targetFlePath"
-      :enabled="sqlFileLoaded"
+      :enabled="targetFileLoaded"
       @fileDropped="onFile"
     >
       <i18n-t keypath="page.data_import.drop_reimport" />
@@ -38,6 +38,7 @@ import { useRouter } from 'vue-router';
 
 import FileDropZone from '@/component/FileDropZone/FileDropZone.vue';
 import FullPageFileDropZone from '@/component/FullPageFileDropZone/FullPageFileDropZone.vue';
+import { useParseKoboBooksJson } from '@/composition/use-parse-kobo-books-json';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBookChanges, KoboBook, KoboBookmarkChanges, KoboBookmark, KoboBookmarkChangesType } from '@/dto/kobo-book';
 import DataImportResult from '@/module/data-import/component/DataImportResult/DataImportResult.vue';
@@ -46,6 +47,7 @@ import { getAllBooksFromDb, upsertBook } from '@/services/bookmark/bookmark-mana
 import { createBookmarkPositionSortFn } from '@/services/bookmark/kobo-book-sort.service';
 import { calcUpdatesOfBooks } from '@/services/bookmark/kobo-bookmark-compare.service';
 import { getBooksFromSqliteFile } from '@/services/bookmark/kobo-bookmark.service';
+import { readBlobAsText } from '@/util/browser-utils';
 import { deepToRaw } from '@/util/vue-utils';
 
 const targetFlePath = '.kobo/KoboReader.sqlite';
@@ -57,7 +59,7 @@ const notification = useNotification();
 const loadingBar = useLoadingBar();
 
 const dropTargetRef = ref<HTMLElement>();
-const sqlFileLoaded = ref(false);
+const targetFileLoaded = ref(false);
 const bookChanges = ref<KoboBookChanges[]>([]);
 const importedBooks = ref<KoboBook[]>([]);
 
@@ -67,21 +69,31 @@ const {
   exportChangeAsMarkdownFile,
   exportChangeAsMarkdownClipboard,
 } = useExportChanges({ bookChanges });
+const { parseBooksJson } = useParseKoboBooksJson();
 
 async function onFile(files: Record<string, File>): Promise<void> {
-  const sqliteFile = findKoboReaderSqlFile(files);
-  if (!sqliteFile) {
-    message.error(t('page.data_import.no_sql_file'));
+  targetFileLoaded.value = false;
+  bookChanges.value = [];
+  importedBooks.value = [];
+  notification.destroyAll();
+
+  const targetFile = findSqliteFromFile(files) || findJsonFromFiles(files);
+  if (!targetFile) {
+    message.error(t('page.data_import.no_target_file'));
     return;
   }
   loadingBar.start();
   try {
-    const allKoboBooks = await getBooksFromSqliteFile(sqliteFile);
+    const allKoboBooks = await parseBooksFromFile(targetFile);
+    if (!allKoboBooks) {
+      loadingBar.finish();
+      return;
+    }
     let updates = calcUpdatesOfBooks(await getAllBooksFromDb(), allKoboBooks);
     updates = sortUpdatesBookmarksByPosition(updates);
     importedBooks.value = allKoboBooks;
     bookChanges.value = updates;
-    sqlFileLoaded.value = true;
+    targetFileLoaded.value = true;
     loadingBar.finish();
   } catch (e) {
     console.error(e);
@@ -108,7 +120,7 @@ function sortUpdatesBookmarksByPosition(updates: KoboBookChanges[]): KoboBookCha
 }
 
 function discardChanges(): void {
-  sqlFileLoaded.value = false;
+  targetFileLoaded.value = false;
   bookChanges.value = [];
   importedBooks.value = [];
 }
@@ -124,11 +136,29 @@ async function saveChanges(): Promise<void> {
   await router.push('bookmarks');
 }
 
-function findKoboReaderSqlFile(files: Record<string, File>): File | null {
+function findSqliteFromFile(files: Record<string, File>): File | null {
   if (Object.entries(files).length === 1 && Object.keys(files)[0].endsWith('.sqlite')) {
-    return Object.values(files)[0];
+    return Object.values(files)[0] || null;
   }
   return files['KoboReader.sqlite'] || files['.kobo/KoboReader.sqlite'] || null;
+}
+
+function findJsonFromFiles(files: Record<string, File>): File | null {
+  if (Object.entries(files).length === 1 && Object.keys(files)[0].endsWith('.json')) {
+    return Object.values(files)[0];
+  }
+  return null;
+}
+
+async function parseBooksFromFile(file: File): Promise<KoboBook[] | null> {
+  if (file.name.endsWith('.sqlite')) {
+    return getBooksFromSqliteFile(file);
+  }
+  if (file.name.endsWith('.json')) {
+    const jsonContent = await readBlobAsText(file);
+    return parseBooksJson(jsonContent);
+  }
+  return null;
 }
 </script>
 

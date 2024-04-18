@@ -76,9 +76,9 @@ export const i18nEn = {
         'If it looks ok at {0} page, connect your Notion account in {1} page and than go back to {0} page export it.',
     },
     data_import: {
-      drop_file: 'Drop {0} file or entire kobo storage here',
+      drop_file: 'Drop {0} file, entire kobo storage or exported books json file here',
       drop_reimport: 'Drop file to re-import',
-      no_sql_file: `No "KoboReader.sqlite" found in dropped files.`,
+      no_target_file: `No target sqlite or json file found in dropped files.`,
       error_parsing: 'Error when parsing bookmarks',
       bookmark_changes: 'Bookmark changes',
       changed: 'changed',

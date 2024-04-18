@@ -75,9 +75,9 @@ export const i18nZhTw = {
       connect_notion: '如果在 {0} 頁看起來一切看起來都很正常，可以在 {1} 頁面連結你的 Notion 帳號，並回到 {1} 頁來匯出',
     },
     data_import: {
-      drop_file: '將 {0} 檔案或者整個裝置目錄拖放至此處',
+      drop_file: '將 {0} 檔案、整個裝置目錄或者已匯出的書本 json 檔拖放至此處',
       drop_reimport: '拖放檔案以重新匯入',
-      no_sql_file: `拖放的檔案中沒有 "KoboReader.sqlite" 這個檔案`,
+      no_target_file: `拖放的檔案中沒有目標的 sqlite 或者 json 檔`,
       error_parsing: '解析書籤時發生錯誤',
       bookmark_changes: '書籤變更',
       changed: '已變更',
