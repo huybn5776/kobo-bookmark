@@ -1,0 +1,121 @@
+.bookmark-card-dialog-content {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.bookmark-card-setting {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bookmark-card-setting-label {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+}
+
+.bookmark-card-theme {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.bookmark-card-font-size {
+  display: flex;
+  gap: 4px;
+}
+
+.bookmark-card-preview {
+  position: relative;
+  width: 500px;
+  height: 300px;
+}
+
+.bookmark-card-background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 500px;
+  height: 300px;
+  object-fit: cover;
+  filter: contrast(.3);
+}
+
+.bookmark-card-background-cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 500px;
+  height: 300px;
+  opacity: .7;
+}
+
+.bookmark-card-background-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 500px;
+  height: 300px;
+  background: linear-gradient(180deg, rgba(black, 0), rgba(black, .3));
+}
+
+.bookmark-card-quote {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+}
+
+.bookmark-card-quote-open {
+  top: 16px;
+  left: 16px;
+}
+
+.bookmark-card-quote-close {
+  right: 16px;
+  bottom: 24px;
+}
+
+.bookmark-card-bookmark-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.bookmark-card-bookmark-text {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: calc(100% - 80px);
+  padding: 0 32px;
+  overflow: hidden;
+  font-size: 20px;
+}
+
+.bookmark-card-book-name {
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 32px;
+  overflow-x: hidden;
+  font-size: 16px;
+  white-space: pre;
+  text-align: center;
+  text-overflow: ellipsis;
+}
+
+.bookmark-card-dialog-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: end;
+  margin-top: 16px;
+}

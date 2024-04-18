@@ -82,6 +82,7 @@
       :disabled="!!book.isArchived"
       :readonly="readonly"
       class="book-bookmark-list"
+      @onCreateBookmarkCardClick="emits('onShareWithBookmarkClick', book, $event)"
       @onBookmarkColorChanged="(bookmark, color) => emits('onBookmarkColorChanged', book, bookmark, color)"
       @onBookmarkArchive="emits('onBookmarkArchiveClick', book, $event)"
       @onBookmarkCancelArchive="emits('onBookmarkCancelArchiveClick', book, $event)"
@@ -131,6 +132,7 @@ const emits = defineEmits<{
   (e: 'onBookArchiveClick', value: KoboBook): void;
   (e: 'onBookCancelArchive', value: KoboBook): void;
   (e: 'onShareClick', value: KoboBook): void;
+  (e: 'onShareWithBookmarkClick', book: KoboBook, bookmark: KoboBookmark): void;
   (e: 'onBookmarkColorChanged', book: KoboBook, bookmark: KoboBookmark, color: HighlightColor): void;
   (e: 'onBookmarkArchiveClick', book: KoboBook, bookmark: KoboBookmark): void;
   (e: 'onBookmarkCancelArchiveClick', book: KoboBook, bookmark: KoboBookmark): void;

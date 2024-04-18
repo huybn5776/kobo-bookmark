@@ -9,6 +9,7 @@
       :disabled="disabled"
       :readonly="readonly"
       @onColorChanged="emits('onBookmarkColorChanged', bookmark, $event)"
+      @onCreateCardClick="emits('onCreateBookmarkCardClick', bookmark)"
       @onArchiveClick="emits('onBookmarkArchive', bookmark)"
       @onCancelArchiveClick="emits('onBookmarkCancelArchive', bookmark)"
       @onHighlightAnimationEnd="emits('onFocusToBookmarkEnd', bookmark)"
@@ -34,6 +35,7 @@ const props = defineProps<{
 }>();
 const emits = defineEmits<{
   (e: 'onBookmarkColorChanged', bookmark: KoboBookmark, color: HighlightColor): void;
+  (e: 'onCreateBookmarkCardClick', bookmark: KoboBookmark): void;
   (e: 'onBookmarkArchive', value: KoboBookmark): void;
   (e: 'onBookmarkCancelArchive', value: KoboBookmark): void;
   (e: 'onFocusToBookmarkEnd', value: KoboBookmark): void;

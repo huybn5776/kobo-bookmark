@@ -58,6 +58,7 @@
         @onShareClick="openShareBooksWithDropboxDialog([book])"
         @onBookCancelArchive="cancelArchiveBook"
         @onBookmarkColorChanged="updateBookmarkColor"
+        @onShareWithBookmarkClick="openBookmarkCardDialog"
         @onBookmarkArchiveClick="archiveBookmark"
         @onBookmarkCancelArchiveClick="cancelArchiveBookmark"
       />
@@ -113,6 +114,7 @@ import { CheckboxState } from '@/enum/checkbox-state';
 import { HighlightColor } from '@/enum/highlight-color';
 import { SettingKey } from '@/enum/setting-key';
 import { BookExportTask, BookExportState } from '@/interface/book-export-task';
+import { useBookmarkCardDialog } from '@/module/bookmark-card-dialog/composition/use-bookmark-card-dialog';
 import BookBookmark from '@/module/bookmarks/component/BookBookmark/BookBookmark.vue';
 import BookExportProgressModal from '@/module/bookmarks/component/BookExportProgressModal/BookExportProgressModal.vue';
 import BookmarkFilterDropdown from '@/module/bookmarks/component/BookmarkFilterDropdown/BookmarkFilterDropdown.vue';
@@ -157,6 +159,7 @@ const { archiveBook, cancelArchiveBook, archiveBookmark, cancelArchiveBookmark }
   reloadBooks,
 });
 const { openShareBooksWithDropboxDialog } = useShareBookDialog();
+const { openBookmarkCardDialog } = useBookmarkCardDialog();
 const {
   selectedBooks,
   selectedBookIds,

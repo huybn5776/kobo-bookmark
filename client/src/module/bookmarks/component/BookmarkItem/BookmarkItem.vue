@@ -34,12 +34,26 @@
     </blockquote>
 
     <div class="bookmark-toolbar">
-      <template v-if="!bookmark.isArchived && !disabled && !readonly">
-        <IconButton i18nKey="common.archive" @click="emits('onArchiveClick')">
-          <ArchiveIcon class="bookmark-action-icon" />
-        </IconButton>
-        <HighlightColorDropdown :color="bookmark.color" @update:color="(v) => emits('onColorChanged', v)" />
-      </template>
+      <IconButton
+        v-if="!bookmark.isArchived && !disabled && !readonly"
+        i18nKey="common.archive"
+        @click="emits('onArchiveClick')"
+      >
+        <ArchiveIcon class="bookmark-action-icon" />
+      </IconButton>
+      <IconButton
+        v-if="!disabled && !bookmark.isArchived"
+        i18nKey="page.bookmarks.create_bookmark_card"
+        @click="emits('onCreateCardClick')"
+      >
+        <CardTextIcon class="bookmark-action-icon" />
+      </IconButton>
+      <HighlightColorDropdown
+        v-if="!bookmark.isArchived && !disabled && !readonly"
+        :color="bookmark.color"
+        @update:color="(v) => emits('onColorChanged', v)"
+      />
+
       <template v-if="bookmark.isArchived && !disabled">
         <span class="bookmark-state-text">(<i18n-t keypath="common.archived" />)</span>
         <IconButton v-if="!readonly" i18nKey="common.cancel_archive" @click="emits('onCancelArchiveClick')">
@@ -53,7 +67,7 @@
 <script lang="ts" setup>
 import { ref, watch, onMounted } from 'vue';
 
-import { ArchiveIcon, ArchiveRefreshIcon } from '@/component/icon';
+import { ArchiveIcon, ArchiveRefreshIcon, CardTextIcon } from '@/component/icon';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { KoboBookmark } from '@/dto/kobo-book';
 import { HighlightColor } from '@/enum/highlight-color';
@@ -62,6 +76,7 @@ import HighlightColorDropdown from '@/module/bookmarks/component/HighlightColorD
 const props = defineProps<{ bookmark: KoboBookmark; focused?: boolean; disabled?: boolean; readonly?: boolean }>();
 const emits = defineEmits<{
   (e: 'onColorChanged', value: HighlightColor): void;
+  (e: 'onCreateCardClick'): void;
   (e: 'onArchiveClick'): void;
   (e: 'onCancelArchiveClick'): void;
   (e: 'onHighlightAnimationEnd'): void;

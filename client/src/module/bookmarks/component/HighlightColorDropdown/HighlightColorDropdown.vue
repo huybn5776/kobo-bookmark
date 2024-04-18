@@ -2,7 +2,7 @@
   <NDropdown :value="dropdownValue" trigger="click" :options="highlightOptions" @select="onColorSelect">
     <div>
       <IconButton i18nKey="page.bookmarks.change_highlight_color">
-        <FormatColorHighlight class="bookmark-action-icon" />
+        <FormatColorHighlightIcon class="bookmark-action-icon" />
       </IconButton>
     </div>
   </NDropdown>
@@ -15,7 +15,7 @@ import { NDropdown } from 'naive-ui';
 import { DropdownOption } from 'naive-ui/es/dropdown/src/interface';
 import { useI18n } from 'vue-i18n';
 
-import { FormatColorHighlight } from '@/component/icon';
+import { FormatColorHighlightIcon } from '@/component/icon';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { HighlightColor } from '@/enum/highlight-color';
