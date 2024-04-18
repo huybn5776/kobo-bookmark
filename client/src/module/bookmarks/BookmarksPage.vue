@@ -149,7 +149,7 @@ const pageResultMessage = ref<string>();
 
 const allBooks = ref<KoboBook[]>([]);
 const bookSorting = useSyncSetting(SettingKey.BookSorting, BookSortingKey.LastBookmark);
-const bookmarkSorting = useSyncSetting(SettingKey.BookmarkSorting, BookmarkSortingKey.LastUpdate);
+const bookmarkSorting = useSyncSetting(SettingKey.BookmarkSorting, BookmarkSortingKey.Position);
 const bookBookmarkRefs = ref<InstanceType<typeof BookBookmark>[]>([]);
 const bookmarkSearchActive = ref<boolean>(false);
 const highlightColorFilter = ref<HighlightColor[]>([]);
