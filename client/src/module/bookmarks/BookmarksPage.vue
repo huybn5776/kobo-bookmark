@@ -99,12 +99,13 @@
 import { ref, computed, watchEffect } from 'vue';
 
 import * as E from 'fp-ts/Either';
-import { useMessage, useNotification, NCheckbox } from 'naive-ui';
+import { useNotification, NCheckbox } from 'naive-ui';
 import { isNil } from 'ramda';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
 import PageResult from '@/component/PageResult/PageResult.vue';
+import { useCheckNotionToken } from '@/composition/use-check-notion-token';
 import { useSyncSetting } from '@/composition/use-sync-setting';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { BookmarkShare } from '@/dto/bookmark-share';
@@ -134,14 +135,12 @@ import { getBookmarksShareFromDropboxShareId } from '@/services/dropbox/dropbox.
 import { bookmarkToText, bookmarkToMarkdown } from '@/services/export/bookmark-export.service';
 import { handleNotionApiError } from '@/services/notion/notion-api-error-handing.service';
 import { exportBookBookmarks } from '@/services/notion/notion-export.service';
-import { getSettingFromStorage } from '@/services/setting.service';
 import { textToFileDownload } from '@/util/browser-utils';
 import { deepToRaw } from '@/util/vue-utils';
 
 const { t } = useI18n<[I18NMessageSchema]>();
 
 const route = useRoute();
-const message = useMessage();
 const notification = useNotification();
 
 const bookmarkShare = ref<BookmarkShare>();
@@ -175,6 +174,7 @@ const {
   deleteSelected,
 } = useMultiBookActions({ allBooks, reloadBooks });
 useBookBookmarkArchive({ reloadBooks });
+const { checkIsNotionReady } = useCheckNotionToken();
 
 const bookExportTasksToShow = computed(() => bookExportTasks.value.toReversed().filter((task) => task.hidden !== true));
 const exportingBookIds = computed(() => {
@@ -288,8 +288,7 @@ function exportBookmarkToMarkdown(book: KoboBook): void {
 }
 
 async function exportBookmarkToNotion(book: KoboBook): Promise<void> {
-  if (!isNotionIntegrationReady()) {
-    message.error(t('page.bookmarks.connect_to_notion_notice'));
+  if (!checkIsNotionReady()) {
     return;
   }
   const task: BookExportTask = { id: Date.now(), book, state: BookExportState.Pending };
@@ -305,10 +304,6 @@ async function exportBookmarkToNotion(book: KoboBook): Promise<void> {
 
 function exportSelectedToNotion(): void {
   selectedBooks.value.forEach((book) => exportBookmarkToNotion(book));
-}
-
-function isNotionIntegrationReady(): boolean {
-  return !!getSettingFromStorage(SettingKey.NotionAuth)?.access_token;
 }
 
 async function tryExportBookmark(book: KoboBook, task: BookExportTask): Promise<void> {
