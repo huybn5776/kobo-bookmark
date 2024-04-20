@@ -8,7 +8,9 @@
       :placeholder="t('common.search')"
       :options="options"
       :value="selectedValue"
+      :show="showModel"
       @update:value="onSelect"
+      @update:show="showModel = $event"
     />
   </div>
 </template>
@@ -26,9 +28,9 @@ import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 
 const props = defineProps<{ books: KoboBook[] }>();
 const emits = defineEmits<{
-  (e: 'cancel'): void;
   (e: 'selected', book: KoboBook, bookmark: KoboBookmark): void;
 }>();
+const showModel = defineModel<boolean>('show', { default: false });
 
 const { t } = useI18n<[I18NMessageSchema]>();
 const selectedValue = ref<string[]>([]);

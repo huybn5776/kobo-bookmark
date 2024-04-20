@@ -7,11 +7,6 @@
       class="bookmark-page-tools"
       :class="{ 'bookmark-page-tools-sticky': showMultiSelectToolbar || bookmarkSearchActive }"
     >
-      <BookSortingSelect
-        v-if="!showMultiSelectToolbar && !bookmarkSearchActive"
-        v-model:bookSorting="bookSorting"
-        v-model:bookmarkSorting="bookmarkSorting"
-      />
       <MultiBookActionBar
         v-if="showMultiSelectToolbar"
         :readonly="!!bookmarkShare"
@@ -25,13 +20,13 @@
         @onShareClick="openShareBooksWithDropboxDialog(selectedBooks)"
       />
       <BookmarkSearch
-        v-if="bookmarkSearchActive"
+        v-if="!selectedBooks.length"
+        v-model:show="bookmarkSearchActive"
         :books="booksToShow"
         @selected="gotoBookmark"
-        @cancel="bookmarkSearchActive = false"
       />
-      <BookmarkSearchButton v-model:active="bookmarkSearchActive" />
       <BookmarkFilterDropdown v-model:colors="highlightColorFilter" :disabled="!allBooks.length" />
+      <BookmarkSortingDropdown v-model:bookSorting="bookSorting" v-model:bookmarkSorting="bookmarkSorting" />
       <NCheckbox
         size="large"
         :checked="selectedBooksCheckState === CheckboxState.Checked"
@@ -121,9 +116,8 @@ import BookBookmark from '@/module/bookmarks/component/BookBookmark/BookBookmark
 import BookExportProgressModal from '@/module/bookmarks/component/BookExportProgressModal/BookExportProgressModal.vue';
 import BookmarkFilterDropdown from '@/module/bookmarks/component/BookmarkFilterDropdown/BookmarkFilterDropdown.vue';
 import BookmarkSearch from '@/module/bookmarks/component/BookmarkSearch/BookmarkSearch.vue';
-import BookmarkSearchButton from '@/module/bookmarks/component/BookmarkSearchButton/BookmarkSearchButton.vue';
 import BookmarkShareView from '@/module/bookmarks/component/BookmarkShareView/BookmarkShareView.vue';
-import BookSortingSelect from '@/module/bookmarks/component/BookSortingSelect/BookSortingSelect.vue';
+import BookmarkSortingDropdown from '@/module/bookmarks/component/BookmarkSortingDropdown/BookmarkSortingDropdown.vue';
 import MultiBookActionBar from '@/module/bookmarks/component/MultiBookActionBar/MultiBookActionBar.vue';
 import { useBookBookmarkArchive } from '@/module/bookmarks/composition/use-book-bookmark-archive';
 import { useMultiBookActions } from '@/module/bookmarks/composition/use-multi-book-actions';

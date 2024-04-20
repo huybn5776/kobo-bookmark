@@ -15,6 +15,7 @@ export const i18nEn = {
     enter: 'Enter',
     undo: 'Undo',
     filter: 'Filter',
+    sorting: 'Sorting',
     search: 'search',
     state: 'State',
     loading: 'Loading…',
