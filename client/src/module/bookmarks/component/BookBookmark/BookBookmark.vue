@@ -1,5 +1,5 @@
 <template>
-  <div ref="elementRef" class="book-bookmark" :class="{ 'book-selected': selected }">
+  <div ref="elementRef" class="book-bookmark" :class="{ 'book-selected': selected, 'book-expanded': expanded }">
     <div class="book-header">
       <BookCoverView :book="book" @onCoverImageUpdated="(v) => emits('onBookCoverImageUpdated', v)" />
       <div class="book-section">

@@ -24,6 +24,7 @@
 .book-section {
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 
 .bookmark-export-button {
@@ -68,9 +69,23 @@
   bottom: 0;
   display: flex;
   gap: 8px;
-  transition: opacity .2s;
+  background-color: var(--bg-dark);
 
-  .book-bookmark:not(:hover):not(:focus-within) & {
+  &::before {
+    position: absolute;
+    left: -32px;
+    display: block;
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(90deg, rgba(32, 33, 36, 0) 0%, rgba(32, 33, 36, 1) 100%);
+    content: '';
+  }
+
+  & * {
+    transition: opacity .2s;
+  }
+
+  .book-bookmark:not(:hover):not(:focus-within) & * {
     opacity: .4;
   }
 }
@@ -103,11 +118,23 @@
   &.book-title-button-disabled {
     pointer-events: none;
   }
+
+  &:not(.book-expanded &) {
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 }
 
 .book-info-text {
   margin: 0;
   font-size: 16px;
+
+  &:not(.book-expanded &) {
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 }
 
 .book-info-bar {
