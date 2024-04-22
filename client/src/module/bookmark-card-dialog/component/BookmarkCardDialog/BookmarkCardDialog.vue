@@ -1,11 +1,38 @@
 <template>
   <div class="bookmark-card-dialog">
-    <div class="bookmark-card-dialog-content">
+    <div ref="dialogContentRef" class="bookmark-card-dialog-content">
+      <div
+          ref="cardPreviewContainerRef"
+          class="bookmark-card-preview-container"
+          :style="{ maxWidth: previewWidth, maxHeight: previewHeight }"
+      >
+        <div
+            ref="cardPreviewRef"
+            class="bookmark-card-preview"
+            :style="{ color: cardFontColor, transform: `scale(${previewScale})` }"
+        >
+          <img class="bookmark-card-background-image" :src="book.coverImageUrl" :alt="book.info.title" />
+          <i class="bookmark-card-background-cover" :style="{ backgroundColor: cardBackgroundColor }" />
+          <i class="bookmark-card-background-gradient" />
+          <FormatQuoteOpenIcon class="bookmark-card-quote bookmark-card-quote-open" />
+          <FormatQuoteCloseIcon class="bookmark-card-quote bookmark-card-quote-close" />
+          <div class="bookmark-card-bookmark-content">
+            <span
+                ref="cardTextRef"
+                contenteditable
+                class="bookmark-card-bookmark-text"
+                :style="{ fontSize: `${fontSize}px` }"
+                @input="onBookmarkTextChange"
+            >
+              {{ bookmarkText }}
+            </span>
+            <span contenteditable class="bookmark-card-book-name" @input="onBookTitleChange">{{ bookTitle }}</span>
+          </div>
+        </div>
+      </div>
+
       <div class="bookmark-card-setting">
         <div class="bookmark-card-setting-item">
-          <p class="bookmark-card-setting-label">
-            <i18n-t keypath="page.bookmarks.theme" />
-          </p>
           <div class="bookmark-card-theme">
             <NButton
                 v-for="theme of cardThemes"
@@ -37,26 +64,6 @@
           </div>
         </div>
       </div>
-
-      <div ref="cardPreviewRef" class="bookmark-card-preview" :style="{ color: cardFontColor }">
-        <img class="bookmark-card-background-image" :src="book.coverImageUrl" :alt="book.info.title" />
-        <i class="bookmark-card-background-cover" :style="{ backgroundColor: cardBackgroundColor }" />
-        <i class="bookmark-card-background-gradient" />
-        <FormatQuoteOpenIcon class="bookmark-card-quote bookmark-card-quote-open" />
-        <FormatQuoteCloseIcon class="bookmark-card-quote bookmark-card-quote-close" />
-        <div class="bookmark-card-bookmark-content">
-          <span
-              ref="cardTextRef"
-              contenteditable
-              class="bookmark-card-bookmark-text"
-              :style="{ fontSize: `${fontSize}px` }"
-              @input="onBookmarkTextChange"
-          >
-            {{ bookmarkText }}
-          </span>
-          <span contenteditable class="bookmark-card-book-name" @input="onBookTitleChange">{{ bookTitle }}</span>
-        </div>
-      </div>
     </div>
 
     <div class="bookmark-card-dialog-actions">
@@ -71,8 +78,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 
+import { useEventListener } from '@vueuse/core';
 import { toJpeg } from 'html-to-image';
 import { NButton } from 'naive-ui';
 
@@ -114,7 +122,11 @@ const cardThemes: { bg: string; fg: string }[] = [
 const minFontSize = 10;
 const maxFontSize = 36;
 const maxFileNameLength = 50;
+const bookmarkCardWidth = 500;
+const bookmarkCardHeight = 300;
 
+const dialogContentRef = ref<HTMLElement>();
+const cardPreviewContainerRef = ref<HTMLElement>();
 const cardPreviewRef = ref<HTMLElement>();
 const cardTextRef = ref<HTMLElement>();
 const cardBackgroundColor = ref(cardThemes[0].bg);
@@ -124,7 +136,28 @@ const fontSize = ref(36);
 const bookmarkText = ref(props.bookmark.text);
 const bookTitle = ref(props.book.info.title);
 
-onMounted(() => autoFontSize());
+const previewScale = ref(1);
+const previewWidth = computed(() =>
+    previewScale.value === 1 ? `${bookmarkCardWidth}px` : `${bookmarkCardWidth * previewScale.value}px`,
+);
+const previewHeight = computed(() =>
+    previewScale.value === 1 ? `${bookmarkCardHeight}px` : `${bookmarkCardHeight * previewScale.value}px`,
+);
+
+onMounted(() => {
+  autoPreviewSize();
+  autoFontSize();
+});
+
+useEventListener(window, 'resize', () => autoPreviewSize());
+
+function autoPreviewSize(): void {
+  const [dialogContentElement, containerElement] = [dialogContentRef.value, cardPreviewContainerRef.value];
+  if (!dialogContentElement || !containerElement) {
+    return;
+  }
+  previewScale.value = Math.min(bookmarkCardWidth, dialogContentElement.offsetWidth) / bookmarkCardWidth;
+}
 
 function onBookmarkTextChange(event: Event): void {
   bookmarkText.value = (event.target as HTMLElement).innerText;
@@ -177,9 +210,15 @@ async function downloadBookmarkImage(): Promise<void> {
   if (!cardElement) {
     return;
   }
-  const dataUrl = await toJpeg(cardElement);
+  const cardElementClone = cardElement.cloneNode(true) as HTMLElement;
+  cardElementClone.style.transform = '';
+  cardElement.parentElement?.appendChild(cardElementClone);
+
+  const dataUrl = await toJpeg(cardElementClone);
   const fileName = bookmarkText.value.slice(0, maxFileNameLength);
   downloadFile(dataUrl, `${fileName}.jpg`);
+
+  cardElement.parentElement?.removeChild(cardElementClone);
 }
 </script>
 

@@ -1,13 +1,18 @@
 .bookmark-card-dialog-content {
-  display: grid;
-  grid-template-columns: 1fr auto;
+  display: flex;
+  flex-direction: column;
   gap: 8px;
+  align-items: center;
 }
 
 .bookmark-card-setting {
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: 16px;
+  width: 100%;
+  min-width: 148px;
+  max-width: 500px;
 }
 
 .bookmark-card-setting-label {
@@ -16,8 +21,8 @@
 }
 
 .bookmark-card-theme {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(34px, auto));
   gap: 4px;
 }
 
@@ -26,10 +31,17 @@
   gap: 4px;
 }
 
+.bookmark-card-preview-container {
+  margin: auto;
+  overflow: hidden;
+}
+
 .bookmark-card-preview {
   position: relative;
+  flex-shrink: 0;
   width: 500px;
   height: 300px;
+  transform-origin: left top;
 }
 
 .bookmark-card-background-image {

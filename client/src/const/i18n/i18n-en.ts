@@ -145,7 +145,6 @@ export const i18nEn = {
       with_bookmarks: `with total {0} @:{'common.bookmark'}?`,
       books_deleted: `{0} @:common.book deleted`,
       create_bookmark_card: 'Create bookmark card',
-      theme: 'Theme',
       font_size: 'Font size',
       download_image: 'Download image',
       change_highlight_color: 'Change highlight color',

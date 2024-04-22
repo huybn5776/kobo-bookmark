@@ -17,7 +17,7 @@ export function useBookmarkCardDialog(): {
     const dialogReactive = dialog.create({
       showIcon: false,
       title: t('page.bookmarks.create_bookmark_card'),
-      style: { width: '800px' },
+      style: { width: '600px', maxWidth: '90vw' },
       content: () =>
         h(BookmarkCardDialog, {
           book,
