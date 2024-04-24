@@ -1,6 +1,6 @@
 <template>
   <div class="book-header">
-    <BookCoverView :book="book" @onCoverImageUpdated="(v) => emits('bookCoverImageUpdated', v)" />
+    <BookCoverView :book="book" @coverImageUpdated="(v) => emits('bookCoverImageUpdated', v)" />
     <div class="book-section">
       <h2 class="book-title">
         <button

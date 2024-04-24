@@ -11,13 +11,13 @@
         v-if="showMultiSelectToolbar"
         :readonly="!!bookmarkShare"
         :selectedBooks="selectedBooks"
-        @onTextExportClick="exportSelectedAsText"
-        @onMarkdownExportClick="exportSelectedAsMarkdown"
-        @onNotionExportClick="exportSelectedToNotion"
-        @onExportBookFileClick="exportSelectedAsFile"
-        @onArchiveClick="archiveSelected"
-        @onDeleteClick="deleteSelected"
-        @onShareClick="openShareBooksWithDropboxDialog(selectedBooks)"
+        @textExportClick="exportSelectedAsText"
+        @markdownExportClick="exportSelectedAsMarkdown"
+        @notionExportClick="exportSelectedToNotion"
+        @exportBookFileClick="exportSelectedAsFile"
+        @archiveClick="archiveSelected"
+        @deleteClick="deleteSelected"
+        @shareClick="openShareBooksWithDropboxDialog(selectedBooks)"
       />
       <div v-if="!showMultiSelectToolbar" class="bookmark-list-actions">
         <BookmarkSearch v-model:show="bookmarkSearchActive" :books="booksToShow" @selected="gotoBookmark" />

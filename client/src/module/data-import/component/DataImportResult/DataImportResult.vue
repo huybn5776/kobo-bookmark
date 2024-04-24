@@ -30,10 +30,10 @@
             <i18n-t keypath="page.data_import.export_changes" />
           </NButton>
         </NDropdown>
-        <NButton @click="emits('onDiscardClick')">
+        <NButton @click="emits('discardClick')">
           <i18n-t keypath="page.data_import.discard_changes" />
         </NButton>
-        <NButton type="primary" @click="emits('onSaveClick')">
+        <NButton type="primary" @click="emits('saveClick')">
           <i18n-t keypath="page.data_import.save_changes" />
         </NButton>
       </div>
@@ -56,12 +56,12 @@ import { getSettingFromStorage } from '@/services/setting.service';
 
 const props = defineProps<{ bookChanges: KoboBookChanges[] }>();
 const emits = defineEmits<{
-  (e: 'onExportTextFileClick'): void;
-  (e: 'onExportTextClipboardClick'): void;
-  (e: 'onExportMarkdownFileClick'): void;
-  (e: 'onExportMarkdownClipboardClick'): void;
-  (e: 'onDiscardClick'): void;
-  (e: 'onSaveClick'): void;
+  (e: 'exportTextFileClick'): void;
+  (e: 'exportTextClipboardClick'): void;
+  (e: 'exportMarkdownFileClick'): void;
+  (e: 'exportMarkdownClipboardClick'): void;
+  (e: 'discardClick'): void;
+  (e: 'saveClick'): void;
 }>();
 
 const { t } = useI18n<[I18NMessageSchema]>();
@@ -99,10 +99,10 @@ const bookmarksWording = computed(() => t('page.data_import.imported_bookmark', 
 
 function onExportChangeSelected(id: string): void {
   const action = {
-    'text-file': () => emits('onExportTextFileClick'),
-    'text-clipboard': () => emits('onExportTextClipboardClick'),
-    'markdown-file': () => emits('onExportMarkdownFileClick'),
-    'markdown-clipboard': () => emits('onExportMarkdownClipboardClick'),
+    'text-file': () => emits('exportTextFileClick'),
+    'text-clipboard': () => emits('exportTextClipboardClick'),
+    'markdown-file': () => emits('exportMarkdownFileClick'),
+    'markdown-clipboard': () => emits('exportMarkdownClipboardClick'),
   }[id];
   action?.();
 }

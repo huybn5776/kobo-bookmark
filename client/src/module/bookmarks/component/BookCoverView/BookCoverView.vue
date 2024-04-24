@@ -26,7 +26,7 @@ import { KoboBook } from '@/dto/kobo-book';
 import { processImageUrl } from '@/services/bookmark/book-cover.service';
 
 const props = defineProps<{ book: KoboBook }>();
-const emits = defineEmits<{ (e: 'onCoverImageUpdated', value: string): void }>();
+const emits = defineEmits<{ (e: 'coverImageUpdated', value: string): void }>();
 
 const { t } = useI18n<[I18NMessageSchema]>();
 
@@ -56,7 +56,7 @@ async function onNewCoverImageEntered(newCoverImageUrl: string): Promise<boolean
     inputDialog.setErrorMessage(t(result.left));
     return false;
   }
-  emits('onCoverImageUpdated', result.right);
+  emits('coverImageUpdated', result.right);
   message.success(t('page.bookmarks.cover_image_updated'));
   return true;
 }

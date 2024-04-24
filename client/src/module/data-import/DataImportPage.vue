@@ -10,12 +10,12 @@
     <DataImportResult
       v-if="targetFileLoaded"
       :bookChanges="bookChanges"
-      @onExportTextFileClick="exportChangeAsTextFile"
-      @onExportTextClipboardClick="exportChangeAsTextClipboard"
-      @onExportMarkdownFileClick="exportChangeAsMarkdownFile"
-      @onExportMarkdownClipboardClick="exportChangeAsMarkdownClipboard"
-      @onDiscardClick="discardChanges"
-      @onSaveClick="saveChanges"
+      @exportTextFileClick="exportChangeAsTextFile"
+      @exportTextClipboardClick="exportChangeAsTextClipboard"
+      @exportMarkdownFileClick="exportChangeAsMarkdownFile"
+      @exportMarkdownClipboardClick="exportChangeAsMarkdownClipboard"
+      @discardClick="discardChanges"
+      @saveClick="saveChanges"
     />
     <FullPageFileDropZone
       :dropTarget="dropTargetRef"

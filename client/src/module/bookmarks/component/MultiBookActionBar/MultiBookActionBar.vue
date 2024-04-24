@@ -5,25 +5,25 @@
       >&nbsp;<span class="multi-book-action-selected-text"><i18n-t keypath="common.selected" /></span>
     </span>
     <div class="multi-book-actions">
-      <IconButton v-if="!readonly" i18nKey="common.archive_selected" @click="emits('onArchiveClick')">
+      <IconButton v-if="!readonly" i18nKey="common.archive_selected" @click="emits('archiveClick')">
         <ArchiveIcon class="icon-24" />
       </IconButton>
-      <IconButton v-if="!readonly" i18nKey="common.delete_selected" @click="emits('onDeleteClick')">
+      <IconButton v-if="!readonly" i18nKey="common.delete_selected" @click="emits('deleteClick')">
         <DeleteIcon class="icon-24" />
       </IconButton>
-      <IconButton i18nKey="common.export_selected" @click="emits('onExportBookFileClick')">
+      <IconButton i18nKey="common.export_selected" @click="emits('exportBookFileClick')">
         <ExportIcon class="icon-24" />
       </IconButton>
-      <IconButton v-if="!readonly" i18nKey="page.bookmarks.share_dropbox" @click="emits('onShareClick')">
+      <IconButton v-if="!readonly" i18nKey="page.bookmarks.share_dropbox" @click="emits('shareClick')">
         <DropboxShareIcon class="icon-24" />
       </IconButton>
-      <IconButton i18nKey="page.bookmarks.export_all_text" @click="emits('onTextExportClick')">
+      <IconButton i18nKey="page.bookmarks.export_all_text" @click="emits('textExportClick')">
         <TextIcon class="icon-24" />
       </IconButton>
-      <IconButton i18nKey="page.bookmarks.export_all_markdown" @click="emits('onMarkdownExportClick')">
+      <IconButton i18nKey="page.bookmarks.export_all_markdown" @click="emits('markdownExportClick')">
         <MarkdownIcon class="icon-24" />
       </IconButton>
-      <IconButton i18nKey="page.bookmarks.export_all_notion" @click="emits('onNotionExportClick')">
+      <IconButton i18nKey="page.bookmarks.export_all_notion" @click="emits('notionExportClick')">
         <NotionIcon class="icon-24" />
       </IconButton>
     </div>
@@ -45,13 +45,13 @@ import { KoboBook } from '@/dto/kobo-book';
 
 defineProps<{ selectedBooks: KoboBook[]; readonly?: boolean; exportNotionLoading?: boolean }>();
 const emits = defineEmits<{
-  (e: 'onTextExportClick'): void;
-  (e: 'onMarkdownExportClick'): void;
-  (e: 'onNotionExportClick'): void;
-  (e: 'onExportBookFileClick'): void;
-  (e: 'onArchiveClick'): void;
-  (e: 'onDeleteClick'): void;
-  (e: 'onShareClick'): void;
+  (e: 'textExportClick'): void;
+  (e: 'markdownExportClick'): void;
+  (e: 'notionExportClick'): void;
+  (e: 'exportBookFileClick'): void;
+  (e: 'archiveClick'): void;
+  (e: 'deleteClick'): void;
+  (e: 'shareClick'): void;
 }>();
 </script>
 

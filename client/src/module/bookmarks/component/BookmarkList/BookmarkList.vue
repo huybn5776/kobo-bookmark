@@ -9,11 +9,11 @@
       :enabledActions="enabledActions"
       :disabled="disabled"
       :readonly="readonly"
-      @onColorChanged="emits('bookmarkColorChanged', bookmark, $event)"
-      @onCreateCardClick="emits('createBookmarkCardClick', bookmark)"
-      @onArchiveClick="emits('bookmarkArchive', bookmark)"
-      @onCancelArchiveClick="emits('bookmarkCancelArchive', bookmark)"
-      @onHighlightAnimationEnd="emits('focusToBookmarkEnd', bookmark)"
+      @colorChanged="emits('bookmarkColorChanged', bookmark, $event)"
+      @createCardClick="emits('createBookmarkCardClick', bookmark)"
+      @archiveClick="emits('bookmarkArchive', bookmark)"
+      @cancelArchiveClick="emits('bookmarkCancelArchive', bookmark)"
+      @highlightAnimationEnd="emits('focusToBookmarkEnd', bookmark)"
     />
   </div>
 </template>
