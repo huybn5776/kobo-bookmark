@@ -75,14 +75,16 @@ export const i18nEn = {
   page: {
     home: {
       title: 'Export your bookmarks in steps',
-      goto_page: 'Go to {0} page',
-      find_your_file: 'Find your {0} file under kobo reader storage at path {1} and drop it.',
-      find_your_file_note: `If you can't find it due to it is hidden folder, you can still drop entire storage folder there to let website find it for you.`,
-      website_resolve: `This website will resolve all highlight withing it, then try to find book's cover image from {0} and {1}.`,
-      connect_notion:
-        'If it looks ok at {0} page, connect your Notion account in {1} page and than go back to {0} page export it.',
     },
     data_import: {
+      instruction: 'Instruction',
+      instruction_steps: {
+        find_your_file: 'Find your {0} file under kobo reader storage at path {1} and drop it.',
+        find_your_file_note: `If you can't find it due to it is hidden folder, you can still drop entire storage folder there to let website find it for you.`,
+        website_resolve: `This website will resolve all highlight withing it, then try to find book's cover image from {0} and {1}.`,
+        connect_notion:
+          'If it looks ok at {0} page, connect your Notion account in {1} page and than go back to {0} page export it.',
+      },
       drop_file: 'Drop {0} file, entire kobo storage or exported books json file here',
       drop_reimport: 'Drop file to re-import',
       no_target_file: `No target sqlite or json file found in dropped files.`,

@@ -25,6 +25,7 @@
     >
       <i18n-t keypath="page.data_import.drop_reimport" />
     </FullPageFileDropZone>
+    <ImportDataInstruction v-if="!targetFileLoaded" />
   </div>
 </template>
 
@@ -42,6 +43,7 @@ import { useParseKoboBooksJson } from '@/composition/use-parse-kobo-books-json';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBookChanges, KoboBook, KoboBookmarkChanges, KoboBookmark, KoboBookmarkChangesType } from '@/dto/kobo-book';
 import DataImportResult from '@/module/data-import/component/DataImportResult/DataImportResult.vue';
+import ImportDataInstruction from '@/module/data-import/component/ImportDataInstruction/ImportDataInstruction.vue';
 import { useExportChanges } from '@/module/data-import/composition/use-export-changes';
 import { getAllBooksFromDb, upsertBook } from '@/services/bookmark/bookmark-manage.service';
 import { createBookmarkPositionSortFn } from '@/services/bookmark/kobo-book-sort.service';

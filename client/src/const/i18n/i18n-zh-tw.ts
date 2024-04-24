@@ -75,13 +75,16 @@ export const i18nZhTw = {
   page: {
     home: {
       title: '匯出書籤步驟',
-      goto_page: '移至 {0} 頁面',
-      find_your_file: '在 {1} 路徑下找到 {0} 檔，並拖放到頁面上',
-      find_your_file_note: `如果你找不到該檔案 (由於它是隱藏資料夾)，你可以選擇將整個閱讀器的磁碟拖放上來，讓網站自動幫你找`,
-      website_resolve: `網站會解析其中的所有劃線，並試著從 {0} 以及 {1} 找到這本書相對應的封面圖`,
-      connect_notion: '如果在 {0} 頁看起來一切看起來都很正常，可以在 {1} 頁面連結你的 Notion 帳號，並回到 {1} 頁來匯出',
     },
     data_import: {
+      instruction: '說明',
+      instruction_steps: {
+        find_your_file: '在 {1} 路徑下找到 {0} 檔，並拖放到頁面上',
+        find_your_file_note: `如果你找不到該檔案 (由於它是隱藏資料夾)，你可以選擇將整個閱讀器的磁碟拖放上來，讓網站自動幫你找`,
+        website_resolve: `網站會解析其中的所有劃線，並試著從 {0} 以及 {1} 找到這本書相對應的封面圖`,
+        connect_notion:
+          '如果在 {0} 頁看起來一切看起來都很正常，可以在 {1} 頁面連結你的 Notion 帳號，並回到 {1} 頁來匯出',
+      },
       drop_file: '將 {0} 檔案、整個裝置目錄或者已匯出的書本 json 檔拖放至此處',
       drop_reimport: '拖放檔案以重新匯入',
       no_target_file: `拖放的檔案中沒有目標的 sqlite 或者 json 檔`,
