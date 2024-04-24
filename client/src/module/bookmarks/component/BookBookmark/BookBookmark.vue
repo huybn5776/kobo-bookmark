@@ -1,79 +1,23 @@
 <template>
   <div ref="elementRef" class="book-bookmark" :class="{ 'book-selected': selected, 'book-expanded': expanded }">
-    <div class="book-header">
-      <BookCoverView :book="book" @onCoverImageUpdated="(v) => emits('onBookCoverImageUpdated', v)" />
-      <div class="book-section">
-        <h2 class="book-title">
-          <button
-            class="book-title-button"
-            :class="{ 'book-title-button-disabled': disableBookmarkExpand }"
-            @click="toggleExpanded"
-          >
-            {{ book.info.title }}
-          </button>
-        </h2>
-        <div class="book-info">
-          <p v-if="book.info.author" class="book-info-text book-author">{{ book.info.author }}</p>
-          <p v-if="book.info.publisher" class="book-info-text book-publisher">{{ book.info.publisher }}</p>
-          <p v-if="book.info.isbn" class="book-info-text book-isbn">{{ book.info.isbn }}</p>
-
-          <div class="book-info-bar">
-            <BookInfoItem i18nKey="page.bookmarks.bookmarks_count">
-              <BookmarkMultipleIcon class="book-info-item-icon" />
-              <span>{{ book.bookmarks.length }}</span>
-            </BookInfoItem>
-            <BookInfoItem v-if="timeSpanReadingHours" i18nKey="page.bookmarks.read_time">
-              <BookClockIcon class="book-info-item-icon" />
-              <span>{{ timeSpanReadingHours }}</span>
-            </BookInfoItem>
-          </div>
-        </div>
-      </div>
-      <div class="book-actions">
-        <ChevronArrow
-          class="bookmark-expand-handle"
-          :direction="expandedDirection"
-          :disabled="disableBookmarkExpand"
-          @update:direction="expanded = $event === 'up'"
-        />
-        <div class="book-checkbox-container">
-          <NCheckbox size="large" :checked="selected" @update:checked="(v) => emits('update:selected', v)" />
-        </div>
-        <div class="book-toolbar-container">
-          <div class="book-toolbar">
-            <template v-if="!book.isArchived">
-              <IconButton v-if="!readonly" i18nKey="common.archive" @click="emits('onBookArchiveClick', book)">
-                <ArchiveIcon class="icon-24" />
-              </IconButton>
-              <IconButton v-if="!readonly" i18nKey="page.bookmarks.share_dropbox" @click="emits('onShareClick', book)">
-                <DropboxShareIcon />
-              </IconButton>
-              <IconButton i18nKey="page.bookmarks.export_text" @click="emits('onTextExportClick', book)">
-                <TextIcon class="icon-24" />
-              </IconButton>
-              <IconButton i18nKey="page.bookmarks.export_markdown" @click="emits('onMarkdownExportClick', book)">
-                <i18n-t keypath="page.bookmarks.export_markdown" />
-                <MarkdownIcon class="icon-24" />
-              </IconButton>
-              <IconButton
-                i18nKey="page.bookmarks.export_notion"
-                :loading="exportNotionLoading"
-                @click="emits('onNotionExportClick', book)"
-              >
-                <NotionIcon class="icon-24" />
-              </IconButton>
-            </template>
-            <template v-if="book.isArchived">
-              <span class="book-state-text">(<i18n-t keypath="common.archived" />)</span>
-              <IconButton v-if="!readonly" i18nKey="common.cancel_archive" @click="emits('onBookCancelArchive', book)">
-                <ArchiveRefreshIcon class="icon-24" />
-              </IconButton>
-            </template>
-          </div>
-        </div>
-      </div>
-    </div>
-
+    <BookItem
+      selectable
+      :book="book"
+      :expanded="expanded"
+      :disableBookmarkExpand="disableBookmarkExpand"
+      :selected="selected"
+      :enabledActions="enabledActions"
+      :exportNotionLoading="exportNotionLoading"
+      @update:expanded="expanded = $event"
+      @update:selected="emits('update:selected', $event)"
+      @textExportClick="emits('textExportClick', $event)"
+      @markdownExportClick="emits('markdownExportClick', $event)"
+      @notionExportClick="emits('notionExportClick', $event)"
+      @bookCoverImageUpdated="emits('bookCoverImageUpdated', $event)"
+      @bookArchiveClick="emits('bookArchiveClick', $event)"
+      @shareClick="emits('shareClick', $event)"
+      @bookCancelArchive="emits('bookCancelArchive', $event)"
+    />
     <BookmarkList
       v-if="expanded && !disableBookmarkExpand"
       ref="bookmarkListRef"
@@ -82,11 +26,11 @@
       :disabled="!!book.isArchived"
       :readonly="readonly"
       class="book-bookmark-list"
-      @onCreateBookmarkCardClick="emits('onShareWithBookmarkClick', book, $event)"
-      @onBookmarkColorChanged="(bookmark, color) => emits('onBookmarkColorChanged', book, bookmark, color)"
-      @onBookmarkArchive="emits('onBookmarkArchiveClick', book, $event)"
-      @onBookmarkCancelArchive="emits('onBookmarkCancelArchiveClick', book, $event)"
-      @onFocusToBookmarkEnd="focusedBookmark = undefined"
+      @createBookmarkCardClick="emits('createBookmarkCardClick', book, $event)"
+      @bookmarkColorChanged="(bookmark, color) => emits('bookmarkColorChanged', book, bookmark, color)"
+      @bookmarkArchive="emits('bookmarkArchiveClick', book, $event)"
+      @bookmarkCancelArchive="emits('bookmarkCancelArchiveClick', book, $event)"
+      @focusToBookmarkEnd="focusedBookmark = undefined"
     />
   </div>
 </template>
@@ -94,26 +38,10 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
 
-import { NCheckbox } from 'naive-ui';
-import { useI18n } from 'vue-i18n';
-
-import ChevronArrow from '@/component/ChevronArrow/ChevronArrow.vue';
-import {
-  BookmarkMultipleIcon,
-  BookClockIcon,
-  ArchiveIcon,
-  DropboxShareIcon,
-  ArchiveRefreshIcon,
-  MarkdownIcon,
-  NotionIcon,
-  TextIcon,
-} from '@/component/icon';
-import IconButton from '@/component/IconButton/IconButton.vue';
-import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
+import { BookAction } from '@/enum/book-action';
 import { HighlightColor } from '@/enum/highlight-color';
-import BookCoverView from '@/module/bookmarks/component/BookCoverView/BookCoverView.vue';
-import BookInfoItem from '@/module/bookmarks/component/BookInfoItem/BookInfoItem.vue';
+import BookItem from '@/module/bookmarks/component/BookItem/BookItem.vue';
 import BookmarkList from '@/module/bookmarks/component/BookmarkList/BookmarkList.vue';
 
 const props = defineProps<{
@@ -125,20 +53,19 @@ const props = defineProps<{
 }>();
 const emits = defineEmits<{
   (e: 'update:selected', value: boolean): void;
-  (e: 'onTextExportClick', value: KoboBook): void;
-  (e: 'onMarkdownExportClick', value: KoboBook): void;
-  (e: 'onNotionExportClick', value: KoboBook): void;
-  (e: 'onBookCoverImageUpdated', value: string): void;
-  (e: 'onBookArchiveClick', value: KoboBook): void;
-  (e: 'onBookCancelArchive', value: KoboBook): void;
-  (e: 'onShareClick', value: KoboBook): void;
-  (e: 'onShareWithBookmarkClick', book: KoboBook, bookmark: KoboBookmark): void;
-  (e: 'onBookmarkColorChanged', book: KoboBook, bookmark: KoboBookmark, color: HighlightColor): void;
-  (e: 'onBookmarkArchiveClick', book: KoboBook, bookmark: KoboBookmark): void;
-  (e: 'onBookmarkCancelArchiveClick', book: KoboBook, bookmark: KoboBookmark): void;
+  (e: 'textExportClick', value: KoboBook): void;
+  (e: 'markdownExportClick', value: KoboBook): void;
+  (e: 'notionExportClick', value: KoboBook): void;
+  (e: 'bookCoverImageUpdated', value: string): void;
+  (e: 'bookArchiveClick', value: KoboBook): void;
+  (e: 'bookCancelArchive', value: KoboBook): void;
+  (e: 'shareClick', value: KoboBook): void;
+  (e: 'createBookmarkCardClick', book: KoboBook, bookmark: KoboBookmark): void;
+  (e: 'bookmarkColorChanged', book: KoboBook, bookmark: KoboBookmark, color: HighlightColor): void;
+  (e: 'bookmarkArchiveClick', book: KoboBook, bookmark: KoboBookmark): void;
+  (e: 'bookmarkCancelArchiveClick', book: KoboBook, bookmark: KoboBookmark): void;
 }>();
 
-const { t } = useI18n<[I18NMessageSchema]>();
 const elementRef = ref<HTMLElement>();
 
 const expanded = ref<boolean>(false);
@@ -146,26 +73,22 @@ const bookmarkListRef = ref<InstanceType<typeof BookmarkList>>();
 const focusedBookmark = ref<KoboBookmark>();
 defineExpose({ elementRef, scrollToBookmark });
 
-const timeSpanReadingHours = computed(() => {
-  if (!props.book?.info.timeSpentReading) {
-    return null;
+const enabledActions = computed<BookAction[]>(() => {
+  if (props.readonly) {
+    return [BookAction.ExportText, BookAction.ExportMarkdown, BookAction.ExportNotion];
   }
-  const seconds = props.book?.info.timeSpentReading ?? 0;
-  const minutes = seconds / 60;
-  const hours = minutes / 60;
-  if (hours >= 1) {
-    return t('common.number_hour', [hours.toFixed(1)], hours);
+  if (props.book.isArchived) {
+    return [BookAction.Archive];
   }
-  return t('common.number_minute', [minutes.toFixed(0)], minutes);
+  return [
+    BookAction.Archive,
+    BookAction.DropboxShare,
+    BookAction.ExportText,
+    BookAction.ExportMarkdown,
+    BookAction.ExportNotion,
+  ];
 });
 const disableBookmarkExpand = computed(() => !props.book.bookmarks.length);
-
-function toggleExpanded(): void {
-  if (disableBookmarkExpand.value) {
-    return;
-  }
-  expanded.value = !expanded.value;
-}
 
 function scrollToBookmark(bookmark: KoboBookmark): void {
   expanded.value = true;
