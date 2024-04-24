@@ -77,7 +77,7 @@
     <BookmarkList
       v-if="expanded && !disableBookmarkExpand"
       ref="bookmarkListRef"
-      :bookmarks="book.bookmarks"
+      :book="book"
       :focusBookmark="focusedBookmark"
       :disabled="!!book.isArchived"
       :readonly="readonly"
