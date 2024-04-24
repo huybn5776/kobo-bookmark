@@ -145,6 +145,7 @@ export const i18nZhTw = {
       books_deleted: '已刪除 {0} 本書',
       create_bookmark_card: '建立書籤圖卡',
       font_size: '字體大小',
+      shape: '形狀',
       download_image: '下載圖檔',
       change_highlight_color: '更改劃線顏色',
       exporting_books: '正在匯出 {0} 本書',

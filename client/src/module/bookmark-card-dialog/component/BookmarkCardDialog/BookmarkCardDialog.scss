@@ -26,6 +26,11 @@
   gap: 4px;
 }
 
+.bookmark-card-shape {
+  display: flex;
+  gap: 4px;
+}
+
 .bookmark-card-font-size {
   display: flex;
   gap: 4px;
@@ -39,8 +44,8 @@
 .bookmark-card-preview {
   position: relative;
   flex-shrink: 0;
-  width: 500px;
-  height: 300px;
+  width: var(--card-width);
+  height: var(--card-height);
   transform-origin: left top;
 }
 
@@ -48,8 +53,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 500px;
-  height: 300px;
+  width: var(--card-width);
+  height: var(--card-height);
   object-fit: cover;
   filter: contrast(.3);
 }
@@ -58,8 +63,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 500px;
-  height: 300px;
+  width: var(--card-width);
+  height: var(--card-height);
   opacity: .7;
 }
 
@@ -67,8 +72,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 500px;
-  height: 300px;
+  width: var(--card-width);
+  height: var(--card-height);
   background: linear-gradient(180deg, rgba(black, 0), rgba(black, .3));
 }
 

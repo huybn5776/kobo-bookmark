@@ -146,6 +146,7 @@ export const i18nEn = {
       books_deleted: `{0} @:common.book deleted`,
       create_bookmark_card: 'Create bookmark card',
       font_size: 'Font size',
+      shape: 'Shape',
       download_image: 'Download image',
       change_highlight_color: 'Change highlight color',
       exporting_books: 'Exporting {0} book | Exporting {0} books',

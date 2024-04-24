@@ -4,7 +4,12 @@
       <div
           ref="cardPreviewContainerRef"
           class="bookmark-card-preview-container"
-          :style="{ maxWidth: previewWidth, maxHeight: previewHeight }"
+          :style="{
+          maxWidth: previewWidth,
+          maxHeight: previewHeight,
+          '--card-width': `${bookmarkCardWidth}px`,
+          '--card-height': `${bookmarkCardHeight}px`,
+        }"
       >
         <div
             ref="cardPreviewRef"
@@ -49,6 +54,20 @@
 
         <div class="bookmark-card-setting-item">
           <p class="bookmark-card-setting-label">
+            <i18n-t keypath="page.bookmarks.shape" />
+          </p>
+          <div class="bookmark-card-shape">
+            <NButton circle :type="cardShape === 'rectangle' ? 'primary' : undefined" @click="cardShape = 'rectangle'">
+              <RectangleOutlineIcon class="icon-28" />
+            </NButton>
+            <NButton circle :type="cardShape === 'square' ? 'primary' : undefined" @click="cardShape = 'square'">
+              <SquareOutlineIcon class="icon-20" />
+            </NButton>
+          </div>
+        </div>
+
+        <div class="bookmark-card-setting-item">
+          <p class="bookmark-card-setting-label">
             <i18n-t keypath="page.bookmarks.font_size" />
           </p>
           <div class="bookmark-card-font-size">
@@ -78,13 +97,15 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 
 import { useEventListener } from '@vueuse/core';
 import { toJpeg } from 'html-to-image';
 import { NButton } from 'naive-ui';
 
 import {
+  RectangleOutlineIcon,
+  SquareOutlineIcon,
   FormatTextVariantIcon,
   FormatFontSizeDecreaseIcon,
   FormatFontSizeIncreaseIcon,
@@ -122,8 +143,10 @@ const cardThemes: { bg: string; fg: string }[] = [
 const minFontSize = 10;
 const maxFontSize = 36;
 const maxFileNameLength = 50;
-const bookmarkCardWidth = 500;
-const bookmarkCardHeight = 300;
+const bookmarkCardSize = {
+  rectangle: [500, 300],
+  square: [400, 400],
+};
 
 const dialogContentRef = ref<HTMLElement>();
 const cardPreviewContainerRef = ref<HTMLElement>();
@@ -131,32 +154,47 @@ const cardPreviewRef = ref<HTMLElement>();
 const cardTextRef = ref<HTMLElement>();
 const cardBackgroundColor = ref(cardThemes[0].bg);
 const cardFontColor = ref(cardThemes[0].fg);
-const fontSize = ref(36);
+const bookmarkCardWidth = ref(bookmarkCardSize.rectangle[0]);
+const bookmarkCardHeight = ref(bookmarkCardSize.rectangle[1]);
+const cardShape = ref<'rectangle' | 'square'>('rectangle');
+const fontSize = ref(maxFontSize);
 
 const bookmarkText = ref(props.bookmark.text);
 const bookTitle = ref(props.book.info.title);
 
 const previewScale = ref(1);
 const previewWidth = computed(() =>
-    previewScale.value === 1 ? `${bookmarkCardWidth}px` : `${bookmarkCardWidth * previewScale.value}px`,
+    previewScale.value === 1 ? `${bookmarkCardWidth.value}px` : `${bookmarkCardWidth.value * previewScale.value}px`,
 );
 const previewHeight = computed(() =>
-    previewScale.value === 1 ? `${bookmarkCardHeight}px` : `${bookmarkCardHeight * previewScale.value}px`,
+    previewScale.value === 1 ? `${bookmarkCardHeight.value}px` : `${bookmarkCardHeight.value * previewScale.value}px`,
 );
 
 onMounted(() => {
   autoPreviewSize();
-  autoFontSize();
+  autoFontSize('comfortable');
 });
 
 useEventListener(window, 'resize', () => autoPreviewSize());
+watch(
+    () => cardShape.value,
+    () => {
+      updateCardShape();
+      autoPreviewSize();
+      setTimeout(() => autoFontSize('comfortable'));
+    },
+);
+
+function updateCardShape(): void {
+  [bookmarkCardWidth.value, bookmarkCardHeight.value] = bookmarkCardSize[cardShape.value];
+}
 
 function autoPreviewSize(): void {
   const [dialogContentElement, containerElement] = [dialogContentRef.value, cardPreviewContainerRef.value];
   if (!dialogContentElement || !containerElement) {
     return;
   }
-  previewScale.value = Math.min(bookmarkCardWidth, dialogContentElement.offsetWidth) / bookmarkCardWidth;
+  previewScale.value = Math.min(bookmarkCardWidth.value, dialogContentElement.offsetWidth) / bookmarkCardWidth.value;
 }
 
 function onBookmarkTextChange(event: Event): void {
@@ -167,7 +205,7 @@ function onBookTitleChange(event: Event): void {
   bookTitle.value = (event.target as HTMLElement).innerText;
 }
 
-function autoFontSize(): void {
+function autoFontSize(type?: 'comfortable' | 'maximum'): void {
   const [cardElement, cardTextElement] = [cardPreviewRef.value, cardTextRef.value];
   if (!cardElement || !cardTextElement) {
     return;
@@ -181,7 +219,10 @@ function autoFontSize(): void {
 
   const maximumHeight = cardTextElement.offsetHeight;
   const comfortableHeight = maximumHeight * 0.7;
-  const targetHeight = textElementClone.scrollHeight > comfortableHeight ? comfortableHeight : maximumHeight;
+  let targetHeight = maximumHeight;
+  if (type === 'comfortable' || textElementClone.scrollHeight > comfortableHeight) {
+    targetHeight = comfortableHeight;
+  }
 
   while (currentFontSize > minFontSize) {
     textElementClone.style.fontSize = `${currentFontSize}px`;
