@@ -1,9 +1,8 @@
 <template>
   <div class="multi-book-action-bar">
     <span class="multi-book-action-text">
-      <i18n-t keypath="page.bookmarks.book_selected" :plural="selectedBooks.length">
-        <b>{{ selectedBooks.length }}</b>
-      </i18n-t>
+      <b>{{ selectedBooks.length }}</b
+      >&nbsp;<span class="multi-book-action-selected-text"><i18n-t keypath="common.selected" /></span>
     </span>
     <div class="multi-book-actions">
       <IconButton v-if="!readonly" i18nKey="common.archive_selected" @click="emits('onArchiveClick')">

@@ -7,6 +7,12 @@
   font-size: 18px;
 }
 
+@media (max-width: 500px) {
+  .multi-book-action-selected-text {
+    display: none;
+  }
+}
+
 .multi-book-actions {
   display: grid;
   grid-auto-columns: 32px;

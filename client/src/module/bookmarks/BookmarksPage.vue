@@ -19,14 +19,11 @@
         @onDeleteClick="deleteSelected"
         @onShareClick="openShareBooksWithDropboxDialog(selectedBooks)"
       />
-      <BookmarkSearch
-        v-if="!selectedBooks.length"
-        v-model:show="bookmarkSearchActive"
-        :books="booksToShow"
-        @selected="gotoBookmark"
-      />
-      <BookmarkFilterDropdown v-model:colors="highlightColorFilter" :disabled="!allBooks.length" />
-      <BookmarkSortingDropdown v-model:bookSorting="bookSorting" v-model:bookmarkSorting="bookmarkSorting" />
+      <div v-if="!showMultiSelectToolbar" class="bookmark-list-actions">
+        <BookmarkSearch v-model:show="bookmarkSearchActive" :books="booksToShow" @selected="gotoBookmark" />
+        <BookmarkFilterDropdown v-model:colors="highlightColorFilter" :disabled="!allBooks.length" />
+        <BookmarkSortingDropdown v-model:bookSorting="bookSorting" v-model:bookmarkSorting="bookmarkSorting" />
+      </div>
       <NCheckbox
         size="large"
         :checked="selectedBooksCheckState === CheckboxState.Checked"
