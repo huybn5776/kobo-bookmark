@@ -2,9 +2,9 @@
   <div class="bookmark-card-dialog">
     <div ref="dialogContentRef" class="bookmark-card-dialog-content">
       <div
-          ref="cardPreviewContainerRef"
-          class="bookmark-card-preview-container"
-          :style="{
+        ref="cardPreviewContainerRef"
+        class="bookmark-card-preview-container"
+        :style="{
           maxWidth: previewWidth,
           maxHeight: previewHeight,
           '--card-width': `${bookmarkCardWidth}px`,
@@ -12,22 +12,22 @@
         }"
       >
         <div
-            ref="cardPreviewRef"
-            class="bookmark-card-preview"
-            :style="{ color: cardFontColor, transform: `scale(${previewScale})` }"
+          ref="cardPreviewRef"
+          class="bookmark-card-preview"
+          :style="{ color: cardFontColor, transform: `scale(${previewScale})` }"
         >
-          <img class="bookmark-card-background-image" :src="book.coverImageUrl" :alt="book.info.title" />
+          <img class="bookmark-card-background-image" :src="coverImageUrl" :alt="book.info.title" />
           <i class="bookmark-card-background-cover" :style="{ backgroundColor: cardBackgroundColor }" />
           <i class="bookmark-card-background-gradient" />
           <FormatQuoteOpenIcon class="bookmark-card-quote bookmark-card-quote-open" />
           <FormatQuoteCloseIcon class="bookmark-card-quote bookmark-card-quote-close" />
           <div class="bookmark-card-bookmark-content">
             <span
-                ref="cardTextRef"
-                contenteditable
-                class="bookmark-card-bookmark-text"
-                :style="{ fontSize: `${fontSize}px` }"
-                @input="onBookmarkTextChange"
+              ref="cardTextRef"
+              contenteditable
+              class="bookmark-card-bookmark-text"
+              :style="{ fontSize: `${fontSize}px` }"
+              @input="onBookmarkTextChange"
             >
               {{ bookmarkText }}
             </span>
@@ -40,12 +40,12 @@
         <div class="bookmark-card-setting-item">
           <div class="bookmark-card-theme">
             <NButton
-                v-for="theme of cardThemes"
-                :key="theme.bg + theme.fg"
-                class="bookmark-card-theme-button"
-                circle
-                :style="{ backgroundColor: theme.bg, color: theme.fg }"
-                @click="applyTheme(theme)"
+              v-for="theme of cardThemes"
+              :key="theme.bg + theme.fg"
+              class="bookmark-card-theme-button"
+              circle
+              :style="{ backgroundColor: theme.bg, color: theme.fg }"
+              @click="applyTheme(theme)"
             >
               <FormatTextVariantIcon class="icon-24" />
             </NButton>
@@ -114,6 +114,7 @@ import {
   FormatQuoteCloseIcon,
 } from '@/component/icon';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
+import { tryFetchUrl } from '@/services/bookmark/book-cover.service';
 import { downloadFile } from '@/util/file-utils';
 
 const props = defineProps<{ book: KoboBook; bookmark: KoboBookmark }>();
@@ -152,6 +153,7 @@ const dialogContentRef = ref<HTMLElement>();
 const cardPreviewContainerRef = ref<HTMLElement>();
 const cardPreviewRef = ref<HTMLElement>();
 const cardTextRef = ref<HTMLElement>();
+const coverImageUrl = ref(props.book.coverImageUrl);
 const cardBackgroundColor = ref(cardThemes[0].bg);
 const cardFontColor = ref(cardThemes[0].fg);
 const bookmarkCardWidth = ref(bookmarkCardSize.rectangle[0]);
@@ -164,26 +166,38 @@ const bookTitle = ref(props.book.info.title);
 
 const previewScale = ref(1);
 const previewWidth = computed(() =>
-    previewScale.value === 1 ? `${bookmarkCardWidth.value}px` : `${bookmarkCardWidth.value * previewScale.value}px`,
+  previewScale.value === 1 ? `${bookmarkCardWidth.value}px` : `${bookmarkCardWidth.value * previewScale.value}px`,
 );
 const previewHeight = computed(() =>
-    previewScale.value === 1 ? `${bookmarkCardHeight.value}px` : `${bookmarkCardHeight.value * previewScale.value}px`,
+  previewScale.value === 1 ? `${bookmarkCardHeight.value}px` : `${bookmarkCardHeight.value * previewScale.value}px`,
 );
 
 onMounted(() => {
+  proxyCoverImageIfNeed();
   autoPreviewSize();
   autoFontSize('comfortable');
 });
 
 useEventListener(window, 'resize', () => autoPreviewSize());
 watch(
-    () => cardShape.value,
-    () => {
-      updateCardShape();
-      autoPreviewSize();
-      setTimeout(() => autoFontSize('comfortable'));
-    },
+  () => cardShape.value,
+  () => {
+    updateCardShape();
+    autoPreviewSize();
+    setTimeout(() => autoFontSize('comfortable'));
+  },
 );
+
+async function proxyCoverImageIfNeed(): Promise<void> {
+  if (!coverImageUrl.value) {
+    return;
+  }
+  const response = await tryFetchUrl(coverImageUrl.value);
+  if (!response?.ok) {
+    return;
+  }
+  coverImageUrl.value = response.url;
+}
 
 function updateCardShape(): void {
   [bookmarkCardWidth.value, bookmarkCardHeight.value] = bookmarkCardSize[cardShape.value];

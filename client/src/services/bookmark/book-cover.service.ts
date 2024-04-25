@@ -34,7 +34,7 @@ export async function processImageUrl(url: string): Promise<E.Either<string, str
   return E.right(response.url);
 }
 
-async function tryFetchUrl(url: string): Promise<Response | null> {
+export async function tryFetchUrl(url: string): Promise<Response | null> {
   let response: Response | null = null;
   try {
     response = await fetch(url);
