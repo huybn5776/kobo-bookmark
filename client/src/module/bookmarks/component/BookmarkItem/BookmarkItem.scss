@@ -108,10 +108,10 @@
   height: 32px;
   margin-top: -4px;
   margin-right: 16px;
-  transition: opacity .2s;
+  transition: opacity .3s;
 
   .bookmark-item:not(:hover):not(:focus-within) & {
-    opacity: 0;
+    opacity: .3;
   }
 }
 
