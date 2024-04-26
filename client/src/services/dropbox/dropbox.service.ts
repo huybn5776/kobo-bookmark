@@ -144,7 +144,7 @@ export async function getBookmarksShareFromDropboxShareId(shareId: string): Prom
   } catch (e) {
     return E.left('page.bookmarks.dropbox_bookmark_share_invalid_share_link');
   }
-  const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(downloadUrl)}`;
+  const proxyUrl = `/api/dropbox-proxy/${downloadUrl}`;
   const response = await fetch(proxyUrl);
   if (response.headers.get('content-type')?.startsWith('text/html')) {
     return E.left('page.bookmarks.dropbox_bookmark_share_not_available');
@@ -178,5 +178,5 @@ export function dropboxShareIdToDownloadUrl(shareId: string): string | null {
   if (!fileId || !fileName || !rlKey) {
     return null;
   }
-  return `https://www.dropbox.com/scl/fi/${fileId}/${fileName}?rlkey=${rlKey}&dl=1`;
+  return `scl/fi/${fileId}/${fileName}?rlkey=${rlKey}&dl=1`;
 }
