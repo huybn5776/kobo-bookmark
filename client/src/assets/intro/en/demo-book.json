@@ -1,0 +1,56 @@
+{
+  "id": "atomic-habits",
+  "info": {
+    "title": "Atomic Habits: An Easy & Proven Way To Build Good Habits & Break Bad Ones",
+    "author": "James Clear",
+    "publisher": "Penguin Random House",
+    "timeSpentReading": 46940,
+    "isSideLoaded": true
+  },
+  "coverImageUrl": "https://books.google.com/books/content?id=fFCjDQAAQBAJ&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api",
+  "chapters": [],
+  "bookmarks": [
+    {
+      "id": "1",
+      "text": "set of rules we can use to build better habits. They are (1) make it obvious, (2) make it attractive, (3) make it easy, and (4) make it satisfying.",
+      "chapter": {
+        "titles": ["3: How to Build Better Habits in 4 Simple Steps"],
+        "relatedChapters": [
+          {
+            "title": "3: How to Build Better Habits in 4 Simple Steps",
+            "index": 9,
+            "parentChapter": { "title": "THE FUNDAMENTALS: Why Tiny Changes Make a Big Difference", "index": 6 }
+          }
+        ],
+        "parentChapters": [{ "title": "THE FUNDAMENTALS: Why Tiny Changes Make a Big Difference", "index": 6 }]
+      },
+      "chapterProgress": 1,
+      "startContainerPath": "",
+      "endContainerPath": "",
+      "color": "yellow",
+      "createdAt": "2000-01-01T00:00:00.000Z",
+      "updatedAt": "2000-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "2",
+      "text": "The amount of time you have been performing a habit is not as important as the number of times you have performed it.",
+      "chapter": {
+        "titles": ["11: Walk Slowly, but Never Backward"],
+        "relatedChapters": [
+          {
+            "title": "11: Walk Slowly, but Never Backward",
+            "index": 20,
+            "parentChapter": { "title": "THE 3RD LAW: Make It Easy", "index": 19 }
+          }
+        ],
+        "parentChapters": [{ "title": "THE 3RD LAW: Make It Easy", "index": 19 }]
+      },
+      "chapterProgress": 1,
+      "startContainerPath": "",
+      "endContainerPath": "",
+      "createdAt": "2000-01-01T00:00:00.000Z",
+      "updatedAt": "2000-01-01T00:00:00.000Z"
+    }
+  ],
+  "isArchived": 0
+}

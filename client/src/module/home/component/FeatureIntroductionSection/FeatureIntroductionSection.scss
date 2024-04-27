@@ -1,0 +1,52 @@
+.feature-introduction-section {
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+  background-color: rgba(white, .04);
+  border: 1px solid #444;
+  border-radius: 16px;
+}
+
+.introduction-text {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-self: center;
+  justify-content: center;
+  min-width: 200px;
+  height: min-content;
+  padding: 40px 32px;
+}
+
+.introduction-decoration-start {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 32px;
+  height: 32px;
+}
+
+.introduction-decoration-end {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  width: 32px;
+  height: 32px;
+}
+
+.introduction-title {
+  margin: 0;
+  font-size: 28px;
+}
+
+.introduction-description {
+  margin: 0;
+  font-size: 16px;
+}
+
+:deep(img) {
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+}

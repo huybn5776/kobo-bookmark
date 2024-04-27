@@ -74,7 +74,22 @@ export const i18nEn = {
   },
   page: {
     home: {
-      title: 'Export your bookmarks in steps',
+      heading_title: 'Import, Export, Share',
+      heading_description: `Extend kobo reader's bookmarks usage.`,
+      heading_try_now: 'Try now',
+      notion_export_title: 'Notion export',
+      notion_export_description: '"Freely" managing your highlight on Notion.',
+      bookmark_search_title: 'Search',
+      bookmark_search_description: 'Forgot about the source of some term? Find it out.',
+      highlight_color_title: 'Color',
+      highlight_color_description: 'Let exported highlight more colorful, without limit by monochrome reader.',
+      bookmark_card_title: 'Card',
+      bookmark_card_description: 'Easier to share your highlight with social media posts.',
+      bookmark_share_title: 'Sharing',
+      bookmark_share_description: `Share book's highlight with only a Dropbox connection needed.`,
+      confirm_changes_title: 'Confirm changes',
+      confirm_changes_description:
+        'Make sure all bookmark is still present in your reader without disappeared for no reason.',
     },
     data_import: {
       instruction: 'Instruction',

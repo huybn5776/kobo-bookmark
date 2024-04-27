@@ -74,7 +74,21 @@ export const i18nZhTw = {
   },
   page: {
     home: {
-      title: '匯出書籤步驟',
+      heading_title: '匯入、匯出、分享',
+      heading_description: '擴充 kobo 閱讀器劃線的更多可能性',
+      heading_try_now: '立即使用',
+      notion_export_title: '匯出至 Notion',
+      notion_export_description: '再也不需依賴付費的服務也能將劃線匯出至 Notion 管理',
+      bookmark_search_title: '搜尋',
+      bookmark_search_description: '快速找到某關鍵字出自於哪本讀過的書',
+      highlight_color_title: '上色',
+      highlight_color_description: '讓匯出的劃線顏色不被黑白的閱讀器所局限',
+      bookmark_card_title: '圖卡',
+      bookmark_card_description: '更方便將劃線分享為貼文',
+      bookmark_share_title: '分享',
+      bookmark_share_description: '隨時與大家分享書本的劃線，僅需要連動至 Dropbox 的帳號',
+      confirm_changes_title: '確認變更',
+      confirm_changes_description: '更能確保劃線都有保存得好好的，沒有無故被消失',
     },
     data_import: {
       instruction: '說明',

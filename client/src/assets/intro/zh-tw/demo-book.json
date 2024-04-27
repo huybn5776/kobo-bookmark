@@ -1,0 +1,44 @@
+{
+  "id": "atomic-habits",
+  "info": {
+    "title": "原子習慣：細微改變帶來巨大成就的實證法則",
+    "author": "詹姆斯．克利爾（James Clear）",
+    "publisher": "方智出版社股份有限公司",
+    "timeSpentReading": 46940,
+    "isSideLoaded": true
+  },
+  "coverImageUrl": "https://books.google.com/books/content?id=ST-ZDwAAQBAJ&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api",
+  "chapters": [],
+  "bookmarks": [
+    {
+      "id": "1",
+      "text": "幫助我們建立更好習慣的簡單規則：一，讓提示顯而易見；二，讓習慣有吸引力；三，讓行動輕而易舉；四，讓獎賞令人滿足。",
+      "chapter": {
+        "titles": ["3 四個簡單的步驟，讓你建立更好的習慣"],
+        "relatedChapters": [{ "title": "3 四個簡單的步驟，讓你建立更好的習慣", "index": 11 }],
+        "parentChapters": []
+      },
+      "chapterProgress": 0.9545454545454546,
+      "startContainerPath": "",
+      "endContainerPath": "",
+      "color": "yellow",
+      "createdAt": "2000-01-01T00:00:00.000Z",
+      "updatedAt": "2000-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "2",
+      "text": "執行一項習慣的時間長短，不如執行該習慣的次數多寡重要。",
+      "chapter": {
+        "titles": ["11 精通習慣由重複開始，而非完美"],
+        "relatedChapters": [{ "title": "11 精通習慣由重複開始，而非完美", "index": 22 }],
+        "parentChapters": []
+      },
+      "chapterProgress": 1,
+      "startContainerPath": "",
+      "endContainerPath": "",
+      "createdAt": "2000-01-01T00:00:00.000Z",
+      "updatedAt": "2000-01-01T00:00:00.000Z"
+    }
+  ],
+  "isArchived": 0
+}

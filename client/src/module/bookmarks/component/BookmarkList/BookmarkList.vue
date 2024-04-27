@@ -34,6 +34,7 @@ const props = defineProps<{
   focusBookmark?: KoboBookmark;
   disabled?: boolean;
   readonly?: boolean;
+  showAllBookmarks?: boolean;
 }>();
 const emits = defineEmits<{
   (e: 'bookmarkColorChanged', bookmark: KoboBookmark, color: HighlightColor): void;
@@ -46,9 +47,10 @@ const bookBookmarkRefs = ref<InstanceType<typeof BookmarkItem>[]>([]);
 
 const bookmarksToShow = computed<{ bookmark: KoboBookmark; enabledActions: BookmarkAction[] }[]>(() => {
   const { book } = props;
-  const bookmarks = getSettingFromStorage(SettingKey.ShowArchived)
-    ? book.bookmarks
-    : book.bookmarks.filter((bookmark) => bookmark.isArchived !== true);
+  const bookmarks =
+    props.showAllBookmarks || getSettingFromStorage(SettingKey.ShowArchived)
+      ? book.bookmarks
+      : book.bookmarks.filter((bookmark) => bookmark.isArchived !== true);
   return bookmarks.map((bookmark) => {
     return {
       bookmark,
