@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { SettingKey } from '@/enum/setting-key';
 import { getSettingFromStorage } from '@/services/setting.service';
+import { focusLastButtonOfDialog } from '@/util/dialog-utils';
 
 export function useCheckNotionToken(): {
   redirectToNotionIntegratePage: () => void;
@@ -35,6 +36,7 @@ export function useCheckNotionToken(): {
         redirectToNotionIntegratePage();
         return true;
       },
+      onAfterEnter: focusLastButtonOfDialog,
     });
     return false;
   }

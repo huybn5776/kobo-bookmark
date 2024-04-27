@@ -62,6 +62,7 @@ import {
   getSettingFromStorage,
   deleteAllSettingFromStorage,
 } from '@/services/setting.service';
+import { focusLastButtonOfDialog } from '@/util/dialog-utils';
 import { saveDataToJsonFile, selectFile } from '@/util/file-utils';
 import { isNotNilOrEmpty } from '@/util/object-utils';
 
@@ -130,6 +131,7 @@ function clearSettings(): void {
       applyLanguageSetting();
       message.success(t('page.settings.backup.all_settings_reset'));
     },
+    onAfterEnter: focusLastButtonOfDialog,
   });
 }
 
@@ -170,6 +172,7 @@ async function clearBooks(): Promise<void> {
       await deleteBookTable();
       message.success(t('page.settings.backup.all_books_cleared'));
     },
+    onAfterEnter: focusLastButtonOfDialog,
   });
 }
 

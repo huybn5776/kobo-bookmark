@@ -8,6 +8,7 @@ import { useRefreshDropboxToken } from '@/composition/use-refresh-dropbox-token'
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBook } from '@/dto/kobo-book';
 import BookmarkShareDialog from '@/module/bookmarks/component/BookmarkShareDialog/BookmarkShareDialog.vue';
+import { focusLastButtonOfDialog } from '@/util/dialog-utils';
 
 export function useShareBookDialog(): {
   openShareBooksWithDropboxDialog: (books: KoboBook[]) => Promise<void>;
@@ -37,6 +38,7 @@ export function useShareBookDialog(): {
             dialogReactive.title = t('page.bookmarks.share_link_created');
           },
         }),
+      onAfterEnter: focusLastButtonOfDialog,
     });
   }
 

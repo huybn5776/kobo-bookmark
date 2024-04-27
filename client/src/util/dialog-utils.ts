@@ -35,3 +35,9 @@ export function wrapOnDialogCloseEvents(dialogReactive: DialogReactive, callback
   };
   Object.assign(dialogReactive, newProps);
 }
+
+export const focusLastButtonOfDialog = ((element: HTMLElement) => {
+  const buttons = Array.from(element.querySelectorAll('button'));
+  const lastButton = buttons[buttons.length - 1] as HTMLButtonElement;
+  lastButton.focus();
+}) as () => void;

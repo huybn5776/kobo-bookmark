@@ -6,6 +6,7 @@ import { I18NMessageSchema } from '@/config/i18n-config';
 import { SettingKey } from '@/enum/setting-key';
 import { createDropboxAuthUrl } from '@/services/dropbox/dropbox.service';
 import { getSettingFromStorage } from '@/services/setting.service';
+import { focusLastButtonOfDialog } from '@/util/dialog-utils';
 
 export function useCheckDropboxToken(): {
   redirectToDropboxConnectPage: () => void;
@@ -27,6 +28,7 @@ export function useCheckDropboxToken(): {
       negativeText: t('common.cancel'),
       positiveText: t('common.yes'),
       onPositiveClick: () => redirectToDropboxConnectPage(),
+      onAfterEnter: focusLastButtonOfDialog,
     });
     return false;
   }

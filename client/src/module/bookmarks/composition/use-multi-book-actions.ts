@@ -11,6 +11,7 @@ import DeleteMultiBookDialogContent from '@/module/bookmarks/component/DeleteMul
 import { deleteBooksInDb, archiveBooksInDb, cancelArchiveBooksInDb } from '@/services/bookmark/bookmark-manage.service';
 import { bookmarkToText, bookmarkToMarkdown } from '@/services/export/bookmark-export.service';
 import { textToFileDownload } from '@/util/browser-utils';
+import { focusLastButtonOfDialog } from '@/util/dialog-utils';
 import { saveDataToJsonFile } from '@/util/file-utils';
 
 export function useMultiBookActions({
@@ -104,6 +105,7 @@ export function useMultiBookActions({
         selectedBooks.value = [];
         message.info(t('page.bookmarks.books_deleted', [booksCount], booksCount));
       },
+      onAfterEnter: focusLastButtonOfDialog,
     });
   }
 

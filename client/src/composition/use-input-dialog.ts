@@ -7,7 +7,7 @@ import { useI18n } from 'vue-i18n';
 import InputDialogContent from '@/component/InputDialogContent/InputDialogContent.vue';
 import { useHotkey } from '@/composition/use-hotkey';
 import { I18NMessageSchema } from '@/config/i18n-config';
-import { wrapOnDialogCloseEvents } from '@/util/dialog-utils';
+import { wrapOnDialogCloseEvents, focusLastButtonOfDialog } from '@/util/dialog-utils';
 
 export function useInputDialog(): {
   open: (
@@ -111,6 +111,7 @@ export function useInputDialog(): {
         negativeText: t('common.cancel'),
         positiveText: t('common.enter'),
         onPositiveClick: submit,
+        onAfterEnter: focusLastButtonOfDialog,
         ...options,
       });
       wrapOnDialogCloseEvents(dialogRef.value, unsubscribeHotkeys);

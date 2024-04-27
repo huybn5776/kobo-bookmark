@@ -6,6 +6,7 @@ import { useI18n } from 'vue-i18n';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import BookmarkCardDialog from '@/module/bookmark-card-dialog/component/BookmarkCardDialog/BookmarkCardDialog.vue';
+import { focusLastButtonOfDialog } from '@/util/dialog-utils';
 
 export function useBookmarkCardDialog(): {
   openBookmarkCardDialog: (book: KoboBook, bookmark: KoboBookmark) => void;
@@ -24,6 +25,7 @@ export function useBookmarkCardDialog(): {
           bookmark,
           onCloseClick: () => dialogReactive.destroy(),
         }),
+      onAfterEnter: focusLastButtonOfDialog,
     });
   }
 
