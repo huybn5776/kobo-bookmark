@@ -77,3 +77,36 @@
   max-width: 1000px;
   padding: 0 16px 16px 16px;
 }
+
+.home-page-footer {
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 32px;
+  padding: 16px 24px;
+  background-color: rgba(black, .2);
+  border-top: 1px solid rgba(white, .1);
+}
+
+.github-link {
+  align-self: center;
+  width: 36px;
+  height: 36px;
+  margin-top: auto;
+  padding: 8px;
+  font-size: 0;
+  line-height: 36px;
+  opacity: .4;
+  transition: opacity .2s, transform .5s;
+
+  &:hover {
+    transform: translateY(-1px);
+    opacity: 1;
+  }
+}
+
+.github-icon {
+  width: 36px;
+  height: 36px;
+}

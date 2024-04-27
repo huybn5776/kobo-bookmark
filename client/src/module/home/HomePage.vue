@@ -78,12 +78,20 @@
         </template>
       </FeatureIntroductionSection>
     </div>
+
+    <div class="home-page-footer">
+      <a class="github-link" href="https://github.com/huybn5776/kobo-bookmark" target="_blank">
+        <GithubIcon class="github-icon" />
+        GitHub
+      </a>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { NButton } from 'naive-ui';
 
+import { GithubIcon } from '@/component/icon';
 import { SettingKey } from '@/enum/setting-key';
 import DemoBookView from '@/module/home/component/DemoBookView/DemoBookView.vue';
 import FeatureIntroductionSection from '@/module/home/component/FeatureIntroductionSection/FeatureIntroductionSection.vue';
