@@ -1,16 +1,30 @@
 .nav-bar {
   display: flex;
+  gap: 8px;
   align-items: center;
 }
 
 .nav-bar-link {
+  position: relative;
   display: inline-block;
-  min-width: 60px;
+  box-sizing: border-box;
+  min-width: 48px;
   padding: 8px;
   text-align: center;
   border-radius: 4px;
   opacity: .7;
   transition: background-color .1s;
+
+  & + &:before {
+    position: absolute;
+    top: calc(50% - 6px);
+    left: -4px;
+    width: 1px;
+    height: 12px;
+    background-color: rgba(white, .4);
+    content: '';
+    pointer-events: none;
+  }
 
   &.router-link-active {
     font-weight: 500;
