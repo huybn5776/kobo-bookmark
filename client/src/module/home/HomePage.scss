@@ -25,6 +25,14 @@
   background-color: rgba(white, .1);
 }
 
+.home-page-heading-text-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: calc(100vw - 80px);
+}
+
 .home-page-heading-title {
   margin: 0;
   font-size: 48px;

@@ -2,12 +2,14 @@
   <div class="page-content home-page">
     <div class="home-page-heading-section">
       <div class="home-page-heading">
-        <h1 class="home-page-heading-title">
-          <i18n-t keypath="page.home.heading_title" />
-        </h1>
-        <p class="home-page-heading-description">
-          <i18n-t keypath="page.home.heading_description" />
-        </p>
+        <div class="home-page-heading-text-container">
+          <h1 ref="headingTitleRef" class="home-page-heading-title">
+            <i18n-t keypath="page.home.heading_title" />
+          </h1>
+          <p class="home-page-heading-description">
+            <i18n-t keypath="page.home.heading_description" />
+          </p>
+        </div>
         <router-link :to="{ name: 'import' }">
           <NButton class="home-page-heading-button" size="large" type="primary">
             <i18n-t keypath="page.home.heading_try_now" />
@@ -89,6 +91,9 @@
 </template>
 
 <script lang="ts" setup>
+import { ref, onMounted } from 'vue';
+
+import fitty from 'fitty';
 import { NButton } from 'naive-ui';
 
 import { GithubIcon } from '@/component/icon';
@@ -98,6 +103,13 @@ import FeatureIntroductionSection from '@/module/home/component/FeatureIntroduct
 import { getSettingFromStorage } from '@/services/setting.service';
 
 const languageType = (getSettingFromStorage(SettingKey.Language) || navigator.language).startsWith('zh') ? 'zh' : 'en';
+const headingTitleRef = ref<HTMLElement>();
+
+onMounted(() => {
+  if (headingTitleRef.value) {
+    fitty(headingTitleRef.value, { minSize: 22, maxSize: 56 });
+  }
+});
 </script>
 
 <style lang="scss" scoped>
