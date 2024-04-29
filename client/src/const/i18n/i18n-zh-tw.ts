@@ -76,6 +76,7 @@ export const i18nZhTw = {
     home: {
       heading_title: '匯入、匯出、分享',
       heading_description: '擴充 kobo 閱讀器劃線的更多可能性',
+      demo: '範例',
       heading_try_now: '立即使用',
       notion_export_title: '匯出至 Notion',
       notion_export_description: '再也不需依賴付費的服務也能將劃線匯出至 Notion 管理',

@@ -18,7 +18,10 @@
       </div>
 
       <div class="home-page-demo-view">
-        <DemoBookView />
+        <h2 class="home-page-demo-ribbon">
+          <i18n-t keypath="page.home.demo" />
+        </h2>
+        <DemoBookView class="home-page-demo-book" />
       </div>
     </div>
 

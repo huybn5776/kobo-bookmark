@@ -49,7 +49,31 @@
   font-size: 22px;
 }
 
+.home-page-demo-ribbon {
+  --f: 10px; /* control the folded part*/
+  --r: 15px; /* control the ribbon shape */
+
+  position: absolute;
+  top: 8px;
+  left: calc(-1 * var(--f));
+  z-index: 1;
+  color: #fff;
+  font-size: 20px;
+  line-height: 1.4;
+  background: #bd1550;
+  border-right: var(--r) solid #0000;
+  border-bottom: var(--f) solid #0005;
+  clip-path: polygon(100% 0, 0 0, 0 calc(100% - var(--f)),
+      var(--f) 100%,
+      var(--f) calc(100% - var(--f)),
+      100% calc(100% - var(--f)),
+      calc(100% - var(--r)) calc(50% - var(--f) / 2),
+  );
+  padding-inline: 10px;
+}
+
 .home-page-demo-view {
+  position: relative;
   box-sizing: border-box;
   width: calc(100vw - 48px);
   max-width: 1000px;

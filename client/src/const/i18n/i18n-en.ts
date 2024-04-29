@@ -76,6 +76,7 @@ export const i18nEn = {
     home: {
       heading_title: 'Import, Export, Share',
       heading_description: `Extend kobo reader's bookmarks usage.`,
+      demo: 'Demo',
       heading_try_now: 'Try now',
       notion_export_title: 'Notion export',
       notion_export_description: '"Freely" managing your highlight on Notion.',
