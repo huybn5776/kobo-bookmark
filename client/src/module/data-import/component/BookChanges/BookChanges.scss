@@ -1,25 +1,5 @@
-.book-changes {
-  & + & {
-    margin-top: 16px;
-  }
-}
-
-.book-changes-header {
-  display: flex;
-  gap: 8px;
-  align-items: baseline;
-}
-
-.book-changes-title {
-  margin: 0 0 8px;
-  overflow-x: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.book-changes-info {
-  color: lightgray;
-  white-space: nowrap;
+.book-change-content {
+  margin: 0 0 8px 24px;
 }
 
 .book-changes-bookmark-changes-container {

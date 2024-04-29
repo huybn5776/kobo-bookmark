@@ -15,7 +15,21 @@
       </div>
     </div>
 
-    <BookChanges v-for="bookChange of bookChangesToShow" :key="bookChange.book.id" :bookChange="bookChange" />
+    <div class="data-import-result-changes-container">
+      <NCollapse v-model:expandedNames="expandedBookChanges">
+        <NCollapseItem
+          v-for="bookChange of bookChangesToShow"
+          :key="bookChange.book.id"
+          class="book-changes-collapse"
+          :name="bookChange.book.id"
+        >
+          <template #header>
+            <BookChangesHeader :bookChange="bookChange" />
+          </template>
+          <BookChanges :bookChange="bookChange" />
+        </NCollapseItem>
+      </NCollapse>
+    </div>
 
     <div class="data-import-result-footer">
       <div class="data-import-result-info">
@@ -42,9 +56,9 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, h } from 'vue';
+import { computed, h, ref, onMounted } from 'vue';
 
-import { NButton, NDropdown, DropdownOption } from 'naive-ui';
+import { NButton, NDropdown, DropdownOption, NCollapseItem, NCollapse } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 
 import { TextIcon, MarkdownIcon } from '@/component/icon';
@@ -52,6 +66,7 @@ import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBookChanges } from '@/dto/kobo-book';
 import { SettingKey } from '@/enum/setting-key';
 import BookChanges from '@/module/data-import/component/BookChanges/BookChanges.vue';
+import BookChangesHeader from '@/module/data-import/component/BookChangesHeader/BookChangesHeader.vue';
 import { getSettingFromStorage } from '@/services/setting.service';
 
 const props = defineProps<{ bookChanges: KoboBookChanges[] }>();
@@ -70,6 +85,12 @@ const bookChangesToShow = computed(() => {
   return getSettingFromStorage(SettingKey.ShowRemovedBooksWhenImporting)
     ? props.bookChanges
     : props.bookChanges.filter((changes) => !changes.bookRemoved);
+});
+const expandedBookChanges = ref<string[]>([]);
+
+onMounted(() => {
+  const expandableChanges = props.bookChanges.filter((changes) => !changes.bookRemoved);
+  expandedBookChanges.value = expandableChanges.length === 1 ? [expandableChanges[0].book.id] : [];
 });
 
 const exportChangesOptions: DropdownOption[] = [

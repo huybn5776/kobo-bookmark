@@ -1,0 +1,18 @@
+.book-changes-header {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  overflow-x: hidden;
+}
+
+.book-changes-title {
+  margin: 0;
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.book-changes-info {
+  color: lightgray;
+  white-space: nowrap;
+}
