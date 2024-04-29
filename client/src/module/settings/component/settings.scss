@@ -23,10 +23,12 @@
   & + & {
     margin-top: 16px;
   }
+}
 
-  button + button {
-    margin-left: 8px;
-  }
+.setting-buttons-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .setting-label {

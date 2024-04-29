@@ -3,7 +3,7 @@
     <h3>
       <i18n-t keypath="page.settings.dropbox.dropbox_connect" />
     </h3>
-    <div class="setting-row setting-button-row">
+    <div class="setting-row">
       <DropboxConnectionState :dropboxToken="dropboxToken" :loading="dropboxTokenLoading" />
       <NButton v-if="!dropboxToken" @click="connectDropbox">
         <i18n-t keypath="page.settings.dropbox.connect_to_dropbox" />

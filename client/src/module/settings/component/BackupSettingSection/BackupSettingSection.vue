@@ -8,30 +8,34 @@
       <p class="setting-row-title">
         <i18n-t keypath="page.settings.backup.title_setting_value" />
       </p>
-      <NButton @click="exportAllSettings">
-        <i18n-t keypath="page.settings.backup.export_all_settings" />
-      </NButton>
-      <NButton @click="importSettings">
-        <i18n-t keypath="page.settings.backup.import_settings" />
-      </NButton>
-      <NButton @click="clearSettings">
-        <i18n-t keypath="page.settings.backup.reset_all_settings" />
-      </NButton>
+      <div class="setting-buttons-row">
+        <NButton @click="exportAllSettings">
+          <i18n-t keypath="page.settings.backup.export_all_settings" />
+        </NButton>
+        <NButton @click="importSettings">
+          <i18n-t keypath="page.settings.backup.import_settings" />
+        </NButton>
+        <NButton @click="clearSettings">
+          <i18n-t keypath="page.settings.backup.reset_all_settings" />
+        </NButton>
+      </div>
     </div>
 
     <div class="setting-row">
       <p class="setting-row-title">
         <i18n-t keypath="page.settings.backup.title_book_and_bookmarks" />
       </p>
-      <NButton @click="exportAllBooks">
-        <i18n-t keypath="page.settings.backup.export_all_books" />
-      </NButton>
-      <NButton @click="importBooks">
-        <i18n-t keypath="page.settings.backup.import_books" />
-      </NButton>
-      <NButton @click="clearBooks">
-        <i18n-t keypath="page.settings.backup.clear_all_books" />
-      </NButton>
+      <div class="setting-buttons-row">
+        <NButton @click="exportAllBooks">
+          <i18n-t keypath="page.settings.backup.export_all_books" />
+        </NButton>
+        <NButton @click="importBooks">
+          <i18n-t keypath="page.settings.backup.import_books" />
+        </NButton>
+        <NButton @click="clearBooks">
+          <i18n-t keypath="page.settings.backup.clear_all_books" />
+        </NButton>
+      </div>
     </div>
   </div>
 </template>
