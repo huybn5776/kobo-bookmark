@@ -10,6 +10,7 @@
             <i18n-t keypath="page.home.heading_description" />
           </p>
         </div>
+        <BookShapeGraph />
         <router-link :to="{ name: 'import' }">
           <NButton class="home-page-heading-button" size="large" type="primary">
             <i18n-t keypath="page.home.heading_try_now" />
@@ -101,6 +102,7 @@ import { NButton } from 'naive-ui';
 
 import { GithubIcon } from '@/component/icon';
 import { SettingKey } from '@/enum/setting-key';
+import BookShapeGraph from '@/module/home/component/BookShapeGraph/BookShapeGraph.vue';
 import DemoBookView from '@/module/home/component/DemoBookView/DemoBookView.vue';
 import FeatureIntroductionSection from '@/module/home/component/FeatureIntroductionSection/FeatureIntroductionSection.vue';
 import { getSettingFromStorage } from '@/services/setting.service';

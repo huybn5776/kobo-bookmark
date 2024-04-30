@@ -14,6 +14,7 @@
 }
 
 .home-page-heading {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -22,10 +23,10 @@
   box-sizing: border-box;
   width: 100%;
   padding: 136px 32px;
-  background-color: rgba(white, .1);
 }
 
 .home-page-heading-text-container {
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -44,6 +45,7 @@
 }
 
 .home-page-heading-button {
+  z-index: 1;
   margin-top: 8px;
   padding: 16px 24px;
   font-size: 22px;

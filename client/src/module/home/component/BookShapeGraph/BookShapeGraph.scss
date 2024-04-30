@@ -1,0 +1,43 @@
+.book-shape-graph {
+  position: absolute;
+  height: 100%;
+  background-color: #37383a;
+  inset: 0;
+}
+
+.book-shape {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  transform: rotate(180deg);
+}
+
+.book-shape-top {
+  top: 0;
+  background-color: var(--bg-dark);
+}
+
+.book-shape-bottom {
+  bottom: 0;
+}
+
+.book-shape svg {
+  width: 100%;
+  height: 40px;
+}
+
+.book-shape-top .shape-fill {
+  fill: #37383a;
+}
+
+.book-shape-bottom .shape-fill {
+  fill: var(--bg-dark);
+}
+
+.book-spine {
+  inset: 0;
+  opacity: .2;
+  fill: var(--bg-dark);
+}
