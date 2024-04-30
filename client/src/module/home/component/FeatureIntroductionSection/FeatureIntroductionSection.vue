@@ -1,5 +1,14 @@
 <template>
-  <div class="feature-introduction-section">
+  <div class="feature-introduction-section" :class="{ 'feature-introduction-section-flipped': flip }">
+    <div class="introduction-image-container">
+      <div class="introduction-image-background">
+        <slot name="image" />
+      </div>
+      <div class="introduction-image">
+        <slot name="image" />
+      </div>
+    </div>
+
     <div class="introduction-text">
       <FormatQuoteOpenIcon class="introduction-decoration-start" />
       <h1 class="introduction-title">
@@ -10,14 +19,13 @@
       </p>
       <FormatQuoteCloseIcon class="introduction-decoration-end" />
     </div>
-    <slot name="image" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { FormatQuoteOpenIcon, FormatQuoteCloseIcon } from '@/component/icon';
 
-defineProps<{ titleKey: string; descriptionKey: string }>();
+defineProps<{ titleKey: string; descriptionKey: string; flip?: boolean }>();
 </script>
 
 <style lang="scss" scoped>
