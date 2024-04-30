@@ -161,7 +161,7 @@ export const i18nZhTw = {
       delete_multi_books: '刪除 {0} 本書',
       with_bookmarks: `以及共 {0} 個@:{'common.bookmark'}?`,
       books_deleted: '已刪除 {0} 本書',
-      create_bookmark_card: '建立書籤圖卡',
+      create_bookmark_card: '以書籤圖卡分享',
       font_size: '字體大小',
       shape: '形狀',
       download_image: '下載圖檔',

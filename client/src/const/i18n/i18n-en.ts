@@ -161,7 +161,7 @@ export const i18nEn = {
       delete_book_with_bookmarks: `Delete book "{0}" with {1} @:{'common.bookmark'}?`,
       delete_multi_books: `Delete {0} @:common.book`,
       with_bookmarks: `with total {0} @:{'common.bookmark'}?`,
-      create_bookmark_card: 'Create bookmark card',
+      create_bookmark_card: 'Share with bookmark card',
       font_size: 'Font size',
       shape: 'Shape',
       download_image: 'Download image',

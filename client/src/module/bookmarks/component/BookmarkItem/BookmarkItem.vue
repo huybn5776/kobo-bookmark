@@ -46,7 +46,7 @@
         i18nKey="page.bookmarks.create_bookmark_card"
         @click="emits('createCardClick')"
       >
-        <CardTextIcon class="bookmark-action-icon" />
+        <ShareVariantIcon class="bookmark-action-icon" />
       </IconButton>
       <HighlightColorDropdown
         v-if="actions['change-color']"
@@ -67,7 +67,7 @@
 <script lang="ts" setup>
 import { ref, watch, onMounted, computed } from 'vue';
 
-import { ArchiveIcon, ArchiveRefreshIcon, CardTextIcon } from '@/component/icon';
+import { ArchiveIcon, ArchiveRefreshIcon, ShareVariantIcon } from '@/component/icon';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { KoboBookmark } from '@/dto/kobo-book';
 import { BookmarkAction } from '@/enum/bookmark-action';
