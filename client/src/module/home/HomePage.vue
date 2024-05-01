@@ -95,19 +95,21 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 
 import fitty from 'fitty';
 import { NButton } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 
 import { GithubIcon } from '@/component/icon';
-import { SettingKey } from '@/enum/setting-key';
+import { I18NMessageSchema } from '@/config/i18n-config';
 import BookShapeGraph from '@/module/home/component/BookShapeGraph/BookShapeGraph.vue';
 import DemoBookView from '@/module/home/component/DemoBookView/DemoBookView.vue';
 import FeatureIntroductionSection from '@/module/home/component/FeatureIntroductionSection/FeatureIntroductionSection.vue';
-import { getSettingFromStorage } from '@/services/setting.service';
 
-const languageType = (getSettingFromStorage(SettingKey.Language) || navigator.language).startsWith('zh') ? 'zh' : 'en';
+const { locale } = useI18n<[I18NMessageSchema]>();
+
+const languageType = computed(() => (locale.value.startsWith('zh') ? 'zh' : 'en'));
 const headingTitleRef = ref<HTMLElement>();
 
 onMounted(() => {
