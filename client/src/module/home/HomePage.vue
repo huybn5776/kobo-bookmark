@@ -7,7 +7,9 @@
             <i18n-t keypath="page.home.heading_title" />
           </h1>
           <p class="home-page-heading-description">
-            <i18n-t keypath="page.home.heading_description" />
+            <i18n-t keypath="page.home.heading_description">
+              <a href="https://www.kobo.com/ww/ereaders" target="_blank">kobo</a>
+            </i18n-t>
           </p>
         </div>
         <BookShapeGraph />

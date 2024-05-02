@@ -79,7 +79,7 @@ export const i18nZhTw = {
   page: {
     home: {
       heading_title: '匯入、匯出、分享',
-      heading_description: '擴充 kobo 閱讀器劃線的更多可能性',
+      heading_description: '擴充 {0} 閱讀器劃線之更多可能性',
       demo: '範例',
       heading_try_now: '立即使用',
       notion_export_title: '匯出至 Notion',

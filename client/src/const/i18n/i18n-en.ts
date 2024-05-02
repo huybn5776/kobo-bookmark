@@ -79,7 +79,7 @@ export const i18nEn = {
   page: {
     home: {
       heading_title: 'Import, Export, Share',
-      heading_description: `Extend kobo reader's bookmarks usage.`,
+      heading_description: `Extend {0} reader's bookmarks usage.`,
       demo: 'Demo',
       heading_try_now: 'Try now',
       notion_export_title: 'Notion export',
