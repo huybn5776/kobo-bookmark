@@ -23,6 +23,7 @@ export const i18nZhTw = {
     title: '標題',
     description: '描述',
     optional: '可選',
+    more: '更多',
     selected: '已選取',
     clear_selection: '清除選取',
     book: '書',
@@ -66,6 +67,9 @@ export const i18nZhTw = {
       '10': '超神的！！！',
       '11': '比神還強！！！！',
     },
+  },
+  page_menu: {
+    language: '語系',
   },
   page_name: {
     import: '匯入',

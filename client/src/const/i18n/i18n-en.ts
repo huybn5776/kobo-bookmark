@@ -23,6 +23,7 @@ export const i18nEn = {
     title: 'Title',
     description: 'Description',
     optional: 'Optional',
+    more: 'More',
     selected: 'Selected',
     clear_selection: 'Clear selection',
     book: 'book | books',
@@ -66,6 +67,9 @@ export const i18nEn = {
       '10': 'GODLIKE!!!',
       '11': 'BEYOND GODLIKE!!!!',
     },
+  },
+  page_menu: {
+    language: 'Language',
   },
   page_name: {
     import: 'Import',
