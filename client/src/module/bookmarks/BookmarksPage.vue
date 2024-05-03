@@ -91,7 +91,7 @@
 import { ref, computed, watchEffect } from 'vue';
 
 import * as E from 'fp-ts/Either';
-import { useNotification, NCheckbox } from 'naive-ui';
+import { useNotification, NCheckbox, useLoadingBar } from 'naive-ui';
 import { isNil } from 'ramda';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
@@ -133,6 +133,7 @@ const { t } = useI18n<[I18NMessageSchema]>();
 
 const route = useRoute();
 const notification = useNotification();
+const loadingBar = useLoadingBar();
 
 const bookmarkShare = ref<BookmarkShare>();
 const loadingBooks = ref<boolean>(false);
@@ -219,7 +220,9 @@ watchEffect(() => {
 async function loadBooks(): Promise<void> {
   const shareId = route.params.shareId as string;
   if (shareId) {
+    loadingBar.start();
     await loadBooksFromShareId(shareId);
+    loadingBar.finish();
   } else {
     allBooks.value = await getBooksFromDb();
   }
