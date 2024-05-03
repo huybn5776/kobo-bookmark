@@ -5,7 +5,7 @@
       filterable
       multiple
       :clearFilterAfterSelect="false"
-      :placeholder="t('common.search')"
+      :placeholder="placeholder"
       :options="options"
       :value="selectedValue"
       :show="showModel"
@@ -16,8 +16,9 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, computed, Ref } from 'vue';
+import { ref, computed, Ref } from 'vue';
 
+import { useEventListener } from '@vueuse/core';
 import { NSelect } from 'naive-ui';
 import type { SelectGroupOption } from 'naive-ui/es/select/src/interface';
 import { SelectBaseOption } from 'naive-ui/es/select/src/interface';
@@ -55,8 +56,18 @@ const options: Ref<SelectGroupOption[]> = computed(() => {
   });
 });
 
-onMounted(() => {
-  selectRef.value?.focusInput();
+const placeholder = computed(() => {
+  const searchText = t('common.search');
+  const hotkey = navigator.userAgent.includes('Mac') ? '⌘K' : 'CtrlK';
+  return `${searchText} (${hotkey})`;
+});
+
+useEventListener(document, 'keydown', (event: KeyboardEvent) => {
+  if ((event.ctrlKey || event.metaKey) && !event.shiftKey && !event.altKey && event.code === 'KeyK') {
+    showModel.value = true;
+    event.preventDefault();
+    setTimeout(() => selectRef.value?.focusInput());
+  }
 });
 
 function onSelect(_: string, selectedOptions: (SelectBaseOption & { book: KoboBook; bookmark: KoboBookmark })[]): void {
