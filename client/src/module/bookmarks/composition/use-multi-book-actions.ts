@@ -53,7 +53,7 @@ export function useMultiBookActions({
   function handleMasterCheckboxClick(): void {
     switch (selectedBooksCheckState.value) {
       case CheckboxState.Unchecked:
-        selectedBooks.value = allBooks.value;
+        selectedBooks.value = [...allBooks.value];
         break;
       case CheckboxState.Checked:
       case CheckboxState.Indeterminate:

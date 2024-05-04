@@ -162,6 +162,22 @@ const toolbarPinned = useSyncSetting(SettingKey.BookmarksToolbarPinned);
 const highlightColorFilter = ref<HighlightColor[]>([]);
 const pendingExportRequest = ref<Promise<void>>();
 const bookExportTasks = ref<BookExportTask[]>([]);
+const lastTaskId = ref<number>(0);
+
+const sortedBooks = computed(() => {
+  if (!allBooks.value) {
+    return [];
+  }
+  let books = sortKoboBooks(allBooks.value, bookSorting.value ? [bookSorting.value] : []);
+  books = books.map((book) => {
+    return {
+      ...book,
+      bookmarks: bookmarkProcess(book),
+    };
+  });
+  return books;
+});
+
 const { archiveBook, cancelArchiveBook, archiveBookmark, cancelArchiveBookmark } = useBookBookmarkArchive({
   reloadBooks,
 });
@@ -179,7 +195,7 @@ const {
   exportSelectedAsFile,
   archiveSelected,
   deleteSelected,
-} = useMultiBookActions({ allBooks, reloadBooks });
+} = useMultiBookActions({ allBooks: sortedBooks, reloadBooks });
 useBookBookmarkArchive({ reloadBooks });
 const { checkIsNotionReady } = useCheckNotionToken();
 
@@ -204,19 +220,6 @@ watchEffect(async () => {
 watchEffect(() => (bookmarkSearchActive.value ? (selectedBooks.value = []) : undefined));
 watchEffect(() => (selectedBooks.value.length ? (bookmarkSearchActive.value = false) : undefined));
 
-const sortedBooks = computed(() => {
-  if (!allBooks.value) {
-    return [];
-  }
-  let books = sortKoboBooks(allBooks.value, bookSorting.value ? [bookSorting.value] : []);
-  books = books.map((book) => {
-    return {
-      ...book,
-      bookmarks: bookmarkProcess(book),
-    };
-  });
-  return books;
-});
 const booksToShow = computed(() => {
   const colors = highlightColorFilter.value;
   if (!colors.length) {
@@ -300,7 +303,7 @@ async function exportBookmarkToNotion(book: KoboBook): Promise<void> {
   if (!checkIsNotionReady()) {
     return;
   }
-  const task: BookExportTask = { id: Date.now(), book, state: BookExportState.Pending };
+  const task: BookExportTask = { id: (lastTaskId.value += 1), book, state: BookExportState.Pending };
   bookExportTasks.value.push(task);
 
   if (pendingExportRequest.value) {
