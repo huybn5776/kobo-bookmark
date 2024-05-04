@@ -35,6 +35,8 @@ export { default as ImportIcon } from '@/assets/svg/import.svg';
 export { default as MarkdownIcon } from '@/assets/svg/markdown.svg';
 export { default as NotionIcon } from '@/assets/svg/notion.svg';
 export { default as PencilIcon } from '@/assets/svg/pencil.svg';
+export { default as PinIcon } from '@/assets/svg/pin.svg';
+export { default as PinOffIcon } from '@/assets/svg/pin-off.svg';
 export { default as RectangleOutlineIcon } from '@/assets/svg/rectangle-outline.svg';
 export { default as ShareVariantIcon } from '@/assets/svg/share-variant.svg';
 export { default as SortIcon } from '@/assets/svg/sort.svg';

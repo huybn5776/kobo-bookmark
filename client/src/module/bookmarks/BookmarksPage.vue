@@ -5,7 +5,7 @@
     <div
       v-if="allBooks.length"
       class="bookmark-page-tools"
-      :class="{ 'bookmark-page-tools-sticky': showMultiSelectToolbar || bookmarkSearchActive }"
+      :class="{ 'bookmark-page-tools-sticky': showMultiSelectToolbar || bookmarkSearchActive || toolbarPinned }"
     >
       <MultiBookActionBar
         v-if="showMultiSelectToolbar"
@@ -21,6 +21,7 @@
       />
       <div v-if="!showMultiSelectToolbar" class="bookmark-list-actions">
         <BookmarkSearch v-model:show="bookmarkSearchActive" :books="booksToShow" @selected="gotoBookmark" />
+        <ToolbarPinToggle v-model:pin="toolbarPinned" />
         <BookmarkFilterDropdown v-model:colors="highlightColorFilter" :disabled="!allBooks.length" />
         <BookmarkSortingDropdown v-model:bookSorting="bookSorting" v-model:bookmarkSorting="bookmarkSorting" />
       </div>
@@ -116,6 +117,7 @@ import BookmarkSearch from '@/module/bookmarks/component/BookmarkSearch/Bookmark
 import BookmarkShareView from '@/module/bookmarks/component/BookmarkShareView/BookmarkShareView.vue';
 import BookmarkSortingDropdown from '@/module/bookmarks/component/BookmarkSortingDropdown/BookmarkSortingDropdown.vue';
 import MultiBookActionBar from '@/module/bookmarks/component/MultiBookActionBar/MultiBookActionBar.vue';
+import ToolbarPinToggle from '@/module/bookmarks/component/ToolbarPinToggle/ToolbarPinToggle.vue';
 import { useBookBookmarkArchive } from '@/module/bookmarks/composition/use-book-bookmark-archive';
 import { useMultiBookActions } from '@/module/bookmarks/composition/use-multi-book-actions';
 import { useShareBookDialog } from '@/module/bookmarks/composition/use-share-book-dialog';
@@ -144,6 +146,7 @@ const bookSorting = useSyncSetting(SettingKey.BookSorting, BookSortingKey.LastBo
 const bookmarkSorting = useSyncSetting(SettingKey.BookmarkSorting, BookmarkSortingKey.Position);
 const bookBookmarkRefs = ref<InstanceType<typeof BookBookmark>[]>([]);
 const bookmarkSearchActive = ref<boolean>(false);
+const toolbarPinned = useSyncSetting(SettingKey.BookmarksToolbarPinned);
 const highlightColorFilter = ref<HighlightColor[]>([]);
 const pendingExportRequest = ref<Promise<void>>();
 const bookExportTasks = ref<BookExportTask[]>([]);

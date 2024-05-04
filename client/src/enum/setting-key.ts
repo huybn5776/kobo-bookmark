@@ -9,6 +9,7 @@ import { DropboxTokenInfo } from '@/interface/dropbox-token-info';
 
 export enum SettingKey {
   ImportDataInstructionCollapsed = 'import-data-instruction-collapsed',
+  BookmarksToolbarPinned = 'bookmarks-toolbar-pinned',
   BookSorting = 'book-sorting',
   BookmarkSorting = 'bookmark-sorting',
   // eslint-disable-next-line @typescript-eslint/no-shadow
@@ -29,6 +30,7 @@ export enum SettingKey {
 
 export type SettingValueType = {
   [SettingKey.ImportDataInstructionCollapsed]: boolean;
+  [SettingKey.BookmarksToolbarPinned]: boolean;
   [SettingKey.BookSorting]: BookSortingKey;
   [SettingKey.BookmarkSorting]: BookmarkSortingKey;
   [SettingKey.TextExportMode]: TextExportMode;

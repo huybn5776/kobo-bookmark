@@ -26,6 +26,8 @@ export const i18nZhTw = {
     more: '更多',
     selected: '已選取',
     clear_selection: '清除選取',
+    pin: '置頂',
+    unpin: '取消置頂',
     book: '書',
     books: '書本',
     bookmark: '書籤',

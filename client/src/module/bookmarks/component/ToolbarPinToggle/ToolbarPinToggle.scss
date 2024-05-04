@@ -1,0 +1,5 @@
+.toolbar-pin-toggle {
+  &:not(.toolbar-pin-toggle-pinned):not(:hover):not(:focus-within) {
+    opacity: .4;
+  }
+}

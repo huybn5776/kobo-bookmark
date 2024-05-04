@@ -26,6 +26,8 @@ export const i18nEn = {
     more: 'More',
     selected: 'Selected',
     clear_selection: 'Clear selection',
+    pin: 'Pin',
+    unpin: 'Unpin',
     book: 'book | books',
     books: 'books',
     bookmark: 'bookmark | bookmarks',
