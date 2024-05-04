@@ -25,6 +25,11 @@
   display: grid;
   grid-template-columns: 1fr repeat(3, auto);
   gap: 8px;
+
+  &.bookmark-list-actions-expanded {
+    grid-template-columns: 1fr;
+    margin-right: 8px;
+  }
 }
 
 .empty-bookmarks-message-container {

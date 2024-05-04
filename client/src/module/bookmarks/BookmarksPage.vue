@@ -19,11 +19,23 @@
         @deleteClick="deleteSelected"
         @shareClick="openShareBooksWithDropboxDialog(selectedBooks)"
       />
-      <div v-if="!showMultiSelectToolbar" class="bookmark-list-actions">
+      <div
+        v-if="!showMultiSelectToolbar"
+        class="bookmark-list-actions"
+        :class="{ 'bookmark-list-actions-expanded': bookmarkSearchActive }"
+      >
         <BookmarkSearch v-model:show="bookmarkSearchActive" :books="booksToShow" @selected="gotoBookmark" />
-        <ToolbarPinToggle v-model:pin="toolbarPinned" />
-        <BookmarkFilterDropdown v-model:colors="highlightColorFilter" :disabled="!allBooks.length" />
-        <BookmarkSortingDropdown v-model:bookSorting="bookSorting" v-model:bookmarkSorting="bookmarkSorting" />
+        <ToolbarPinToggle v-if="!bookmarkSearchActive" v-model:pin="toolbarPinned" />
+        <BookmarkFilterDropdown
+          v-if="!bookmarkSearchActive"
+          v-model:colors="highlightColorFilter"
+          :disabled="!allBooks.length"
+        />
+        <BookmarkSortingDropdown
+          v-if="!bookmarkSearchActive"
+          v-model:bookSorting="bookSorting"
+          v-model:bookmarkSorting="bookmarkSorting"
+        />
       </div>
       <NCheckbox
         size="large"
