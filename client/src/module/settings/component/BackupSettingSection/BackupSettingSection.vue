@@ -147,7 +147,7 @@ async function exportAllBooks(): Promise<void> {
 async function importBooks(): Promise<void> {
   notification.destroyAll();
 
-  const files = await selectFile({ fileType: 'json' });
+  const files = await selectFile({ fileTypes: ['json'] });
   if (!Object.entries(files).length) {
     return;
   }
@@ -188,7 +188,7 @@ function zodErrorToMessages(zodError: ZodError, obj: unknown): string[] {
 }
 
 async function getFirstSelectedJsonFileContent(): Promise<object | null> {
-  const files = await selectFile({ fileType: 'json' });
+  const files = await selectFile({ fileTypes: ['json'] });
   if (!Object.entries(files).length) {
     return null;
   }

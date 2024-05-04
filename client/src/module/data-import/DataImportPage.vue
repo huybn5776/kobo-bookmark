@@ -1,6 +1,12 @@
 <template>
   <div ref="dropTargetRef" class="page-content data-import-page">
-    <FileDropZone v-if="!targetFileLoaded" class="file-dropzone" :targetPath="targetFlePath" @fileDropped="onFile">
+    <FileDropZone
+      v-if="!targetFileLoaded"
+      class="file-dropzone"
+      :targetPath="targetFlePath"
+      @fileDropped="onFile"
+      @click="selectFileToImport"
+    >
       <span>
         <i18n-t keypath="page.data_import.drop_file">
           <code>KoboReader.sqlite</code>
@@ -50,6 +56,7 @@ import { createBookmarkPositionSortFn } from '@/services/bookmark/kobo-book-sort
 import { calcUpdatesOfBooks } from '@/services/bookmark/kobo-bookmark-compare.service';
 import { getBooksFromSqliteFile } from '@/services/bookmark/kobo-bookmark.service';
 import { readBlobAsText } from '@/util/browser-utils';
+import { selectFile } from '@/util/file-utils';
 import { deepToRaw } from '@/util/vue-utils';
 
 const targetFlePath = '.kobo/KoboReader.sqlite';
@@ -72,6 +79,10 @@ const {
   exportChangeAsMarkdownClipboard,
 } = useExportChanges({ bookChanges });
 const { parseBooksJson } = useParseKoboBooksJson();
+
+function selectFileToImport(): void {
+  selectFile({ fileTypes: ['sqlite', 'json'] }).then(onFile);
+}
 
 async function onFile(files: Record<string, File>): Promise<void> {
   targetFileLoaded.value = false;

@@ -115,14 +115,14 @@ export function downloadFile(url: string, fileName: string): void {
 }
 
 export function selectFile(config?: {
-  fileType?: string;
+  fileTypes?: string[];
   multiple?: boolean;
   directory?: boolean;
 }): Promise<Record<string, File>> {
   return new Promise((resolve) => {
     const input = document.createElement('input');
     input.type = 'file';
-    input.accept = config?.fileType ? `.${config.fileType}` : '';
+    input.accept = config?.fileTypes ? config.fileTypes.map((fileType) => `.${fileType}`).join(',') : '';
     input.multiple = config?.multiple || input.multiple;
     input.webkitdirectory = config?.directory || input.webkitdirectory;
     input.onchange = () => {
