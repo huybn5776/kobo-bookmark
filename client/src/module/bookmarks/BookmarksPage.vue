@@ -24,7 +24,12 @@
         class="bookmark-list-actions"
         :class="{ 'bookmark-list-actions-expanded': bookmarkSearchActive }"
       >
-        <BookmarkSearch v-model:show="bookmarkSearchActive" :books="booksToShow" @selected="gotoBookmark" />
+        <BookmarkSearch
+          v-model:show="bookmarkSearchActive"
+          v-model:search="bookmarkSearch"
+          :books="booksToShow"
+          @selected="gotoBookmark"
+        />
         <ToolbarPinToggle v-if="!bookmarkSearchActive" v-model:pin="toolbarPinned" />
         <BookmarkFilterDropdown
           v-if="!bookmarkSearchActive"
@@ -53,6 +58,7 @@
         :book="book"
         :default-expanded="booksToShow?.length === 1"
         :selected="selectedBookIds.includes(book.id)"
+        :search="(bookmarkSearchActive && bookmarkSearch) || ''"
         :readonly="!!bookmarkShare"
         :exportNotionLoading="exportingBookIds.includes(book.id)"
         @update:selected="(v) => onBookSelectChanges(book, v)"
@@ -158,6 +164,7 @@ const bookSorting = useSyncSetting(SettingKey.BookSorting, BookSortingKey.LastBo
 const bookmarkSorting = useSyncSetting(SettingKey.BookmarkSorting, BookmarkSortingKey.Position);
 const bookBookmarkRefs = ref<InstanceType<typeof BookBookmark>[]>([]);
 const bookmarkSearchActive = ref<boolean>(false);
+const bookmarkSearch = ref<string>();
 const toolbarPinned = useSyncSetting(SettingKey.BookmarksToolbarPinned);
 const highlightColorFilter = ref<HighlightColor[]>([]);
 const pendingExportRequest = ref<Promise<void>>();

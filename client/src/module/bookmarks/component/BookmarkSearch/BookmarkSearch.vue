@@ -1,6 +1,13 @@
 <template>
   <div ref="elementRef" class="bookmark-search">
-    <NInput ref="inputRef" v-model:value="searchValue" clearable :placeholder="placeholder" @focus="showModel = true" />
+    <NInput
+      ref="inputRef"
+      v-model:value="searchModel"
+      clearable
+      :placeholder="placeholder"
+      @focus="showModel = true"
+      @keydown="showModel = true"
+    />
     <div v-if="showModel" class="bookmark-search-dropdown-container">
       <NVirtualList ref="virtualListRef" :itemSize="34" :items="filteredOptions" class="bookmark-search-dropdown">
         <!--suppress VueUnrecognizedSlot -->
@@ -18,7 +25,9 @@
                 @click="onSelect(option)"
                 @mouseover="onOptionHover(option)"
               >
-                <span class="bookmark-search-option-text bookmark-search-child-option-text">{{ option.label }}</span>
+                <span class="bookmark-search-option-text bookmark-search-child-option-text">
+                  <HighlightText :text="option.label" :search="searchModel" />
+                </span>
               </div>
             </template>
           </div>
@@ -40,6 +49,7 @@ import { NInput, SelectGroupOption, NVirtualList } from 'naive-ui';
 import { SelectBaseOption } from 'naive-ui/es/select/src/interface';
 import { useI18n } from 'vue-i18n';
 
+import HighlightText from '@/component/HighlightText/HighlightText.vue';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 
@@ -48,11 +58,11 @@ const emits = defineEmits<{
   (e: 'selected', book: KoboBook, bookmark: KoboBookmark): void;
 }>();
 const showModel = defineModel<boolean>('show', { default: false });
+const searchModel = defineModel<string>('search');
 
 type BookmarkSearchOption = SelectBaseOption & { book: KoboBook; bookmark: KoboBookmark };
 
 const { t } = useI18n<[I18NMessageSchema]>();
-const searchValue = ref<string>();
 const elementRef = ref<HTMLElement>();
 const pendingOption = ref<BookmarkSearchOption>();
 const inputRef = ref<InstanceType<typeof NInput>>();
@@ -77,7 +87,7 @@ const options: Ref<SelectGroupOption[]> = computed(() => {
   });
 });
 const filteredOptions = computed<(SelectGroupOption | BookmarkSearchOption)[]>(() => {
-  const text = searchValue.value;
+  const text = searchModel.value;
   if (!text) {
     return options.value.flatMap((groupOption) => [
       groupOption as SelectGroupOption,

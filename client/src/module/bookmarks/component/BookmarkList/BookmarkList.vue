@@ -6,6 +6,7 @@
       :key="bookmark.id"
       :bookmark="bookmark"
       :focused="bookmark === focusBookmark"
+      :search="search"
       :enabledActions="enabledActions"
       :disabled="disabled"
       :readonly="readonly"
@@ -32,6 +33,7 @@ import { scrollToElementIfNotInView } from '@/util/dom-utils';
 const props = defineProps<{
   book: KoboBook;
   focusBookmark?: KoboBookmark;
+  search?: string;
   disabled?: boolean;
   readonly?: boolean;
   showAllBookmarks?: boolean;

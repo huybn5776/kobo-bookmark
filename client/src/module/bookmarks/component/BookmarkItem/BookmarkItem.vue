@@ -26,7 +26,7 @@
           'bookmark-text-purple': bookmark.color === HighlightColor.Purple,
         }"
       >
-        {{ bookmark.text }}
+        <HighlightText :text="bookmark.text" :search="search" />
       </span>
     </p>
     <blockquote v-if="bookmark.annotation" class="bookmark-annotation">
@@ -67,6 +67,7 @@
 <script lang="ts" setup>
 import { ref, watch, onMounted, computed } from 'vue';
 
+import HighlightText from '@/component/HighlightText/HighlightText.vue';
 import { ArchiveIcon, ArchiveRefreshIcon, ShareVariantIcon } from '@/component/icon';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { KoboBookmark } from '@/dto/kobo-book';
@@ -74,7 +75,12 @@ import { BookmarkAction } from '@/enum/bookmark-action';
 import { HighlightColor } from '@/enum/highlight-color';
 import HighlightColorDropdown from '@/module/bookmarks/component/HighlightColorDropdown/HighlightColorDropdown.vue';
 
-const props = defineProps<{ bookmark: KoboBookmark; focused?: boolean; enabledActions?: BookmarkAction[] }>();
+const props = defineProps<{
+  bookmark: KoboBookmark;
+  focused?: boolean;
+  search?: string;
+  enabledActions?: BookmarkAction[];
+}>();
 const emits = defineEmits<{
   (e: 'colorChanged', value: HighlightColor): void;
   (e: 'createCardClick'): void;

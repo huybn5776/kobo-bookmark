@@ -23,6 +23,7 @@
       ref="bookmarkListRef"
       :book="book"
       :focusBookmark="focusedBookmark"
+      :search="search"
       :disabled="!!book.isArchived"
       :readonly="readonly"
       class="book-bookmark-list"
@@ -48,6 +49,7 @@ const props = defineProps<{
   book: KoboBook;
   defaultExpanded: boolean;
   selected: boolean;
+  search?: string;
   readonly?: boolean;
   exportNotionLoading?: boolean;
 }>();
