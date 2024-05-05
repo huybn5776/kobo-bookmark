@@ -42,6 +42,7 @@ export const i18nEn = {
     connected: 'Connected',
     not_connected: 'Not connected',
     expired: 'Expired',
+    no_matched: 'Not matched',
     notion_required: 'Notion settings required',
     notion_required_set_notice: 'This operation require Notion to be set, set it up now?',
     dropbox_required: 'Dropbox settings required',

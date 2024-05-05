@@ -1,3 +1,68 @@
 .bookmark-search {
+  position: relative;
   width: 100%;
+}
+
+.bookmark-search-dropdown-container {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  left: 0;
+  padding: 4px;
+  background-color: #48484e;
+  border-radius: 4px;
+}
+
+.bookmark-search-dropdown {
+  max-height: 35vh;
+}
+
+.bookmark-search-option-container {
+  height: 34px;
+}
+
+.bookmark-search-option {
+  display: flex;
+  align-items: center;
+  height: 34px;
+}
+
+.bookmark-search-option-text {
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.bookmark-search-group-option {
+  padding: 0 6px;
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  border-radius: 2px;
+}
+
+.bookmark-search-group-option-text {
+  color: #aaa;
+}
+
+.bookmark-search-child-option {
+  padding: 0 12px;
+  border-radius: 2px;
+  transition: background-color 0.1s;
+
+  &.bookmark-search-child-option-pending {
+    background-color: rgba(white, 0.08);
+  }
+}
+
+.bookmark-search-child-option-text {
+  color: white;
+}
+
+.bookmark-search-empty-option {
+  padding: 0 6px;
+}
+
+.bookmark-search-empty-option-text {
+  color: #aaa;
 }

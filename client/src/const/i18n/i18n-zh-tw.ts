@@ -42,6 +42,7 @@ export const i18nZhTw = {
     connected: '已連線',
     not_connected: '未連線',
     expired: '已過期',
+    no_matched: '沒有符合的項目',
     notion_required: '需要 Notion 的設定',
     notion_required_set_notice: '需要設定過 Notion 才能執行這個動作，要現在設定嗎?',
     dropbox_required: '需要 Dropbox 的設定',
