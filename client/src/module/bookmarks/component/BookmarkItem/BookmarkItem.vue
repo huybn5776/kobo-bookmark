@@ -5,16 +5,7 @@
     :class="{ 'bookmark-item-focused': focused && readyToRunHighlight }"
     @animationend="emits('highlightAnimationEnd')"
   >
-    <p class="bookmark-chapter" :class="{ 'bookmark-chapter-archived': bookmark.isArchived }">
-      <span
-        v-for="chapter in bookmark.chapter.parentChapters"
-        :key="chapter.index"
-        class="bookmark-parent-chapter-title"
-      >
-        {{ chapter.title }}
-      </span>
-      <span v-for="title in bookmark.chapter.titles" :key="title" class="bookmark-chapter-title">{{ title }}</span>
-    </p>
+    <BookmarkChapterView :chapter="bookmark.chapter" :archived="bookmark.isArchived" />
     <p class="bookmark-text" :class="{ 'bookmark-text-archived': bookmark.isArchived }">
       <span
         :class="{
@@ -73,6 +64,7 @@ import IconButton from '@/component/IconButton/IconButton.vue';
 import { KoboBookmark } from '@/dto/kobo-book';
 import { BookmarkAction } from '@/enum/bookmark-action';
 import { HighlightColor } from '@/enum/highlight-color';
+import BookmarkChapterView from '@/module/bookmarks/component/BookmarkChapterView/BookmarkChapterView.vue';
 import HighlightColorDropdown from '@/module/bookmarks/component/HighlightColorDropdown/HighlightColorDropdown.vue';
 
 const props = defineProps<{
