@@ -5,6 +5,13 @@
       "@/*": ["client/src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue",
-    "vite.config.mts", "api/**/*.ts"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "vite.config.mts",
+    "api/**/*.ts",
+    "tests/**/*.ts"
+  ]
 }
