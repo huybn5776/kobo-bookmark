@@ -1,21 +1,28 @@
 <template>
   <div class="bookmark-list">
-    <BookmarkItem
-      v-for="{ bookmark, enabledActions } in bookmarksToShow"
-      ref="bookBookmarkRefs"
-      :key="bookmark.id"
-      :bookmark="bookmark"
-      :focused="bookmark === focusBookmark"
-      :search="search"
-      :enabledActions="enabledActions"
-      :disabled="disabled"
-      :readonly="readonly"
-      @colorChanged="emits('bookmarkColorChanged', bookmark, $event)"
-      @createCardClick="emits('createBookmarkCardClick', bookmark)"
-      @archiveClick="emits('bookmarkArchive', bookmark)"
-      @cancelArchiveClick="emits('bookmarkCancelArchive', bookmark)"
-      @highlightAnimationEnd="emits('focusToBookmarkEnd', bookmark)"
-    />
+    <template v-for="{ bookmark, enabledActions } in bookmarksToShow" :key="bookmark.id">
+      <BookmarkItem
+        v-if="bookmark.id !== editingBookmarkId"
+        ref="bookBookmarkRefs"
+        :bookmark="bookmark"
+        :focused="bookmark === focusBookmark"
+        :search="search"
+        :enabledActions="enabledActions"
+        :disabled="disabled"
+        :readonly="readonly"
+        @editClick="editingBookmarkId = bookmark.id"
+        @createCardClick="emits('createBookmarkCardClick', bookmark)"
+        @archiveClick="emits('bookmarkArchive', bookmark)"
+        @cancelArchiveClick="emits('bookmarkCancelArchive', bookmark)"
+        @highlightAnimationEnd="emits('focusToBookmarkEnd', bookmark)"
+      />
+      <BookmarkEditItem
+        v-if="bookmark.id === editingBookmarkId"
+        :bookmark="bookmark"
+        @cancel="cancelBookmarkEdit"
+        @save="saveBookmark"
+      />
+    </template>
   </div>
 </template>
 
@@ -24,8 +31,8 @@ import { computed, ref, watch, onMounted } from 'vue';
 
 import { KoboBookmark, KoboBook } from '@/dto/kobo-book';
 import { BookmarkAction } from '@/enum/bookmark-action';
-import { HighlightColor } from '@/enum/highlight-color';
 import { SettingKey } from '@/enum/setting-key';
+import BookmarkEditItem from '@/module/bookmarks/component/BookmarkEditItem/BookmarkEditItem.vue';
 import BookmarkItem from '@/module/bookmarks/component/BookmarkItem/BookmarkItem.vue';
 import { getSettingFromStorage } from '@/services/setting.service';
 import { scrollToElementIfNotInView } from '@/util/dom-utils';
@@ -39,13 +46,15 @@ const props = defineProps<{
   showAllBookmarks?: boolean;
 }>();
 const emits = defineEmits<{
-  (e: 'bookmarkColorChanged', bookmark: KoboBookmark, color: HighlightColor): void;
+  (e: 'bookmarkEditClick', bookmark: KoboBookmark): void;
+  (e: 'bookmarkUpdated', bookmarkId: string, bookmarkPatch: Partial<KoboBookmark>): void;
   (e: 'createBookmarkCardClick', bookmark: KoboBookmark): void;
   (e: 'bookmarkArchive', value: KoboBookmark): void;
   (e: 'bookmarkCancelArchive', value: KoboBookmark): void;
   (e: 'focusToBookmarkEnd', value: KoboBookmark): void;
 }>();
 const bookBookmarkRefs = ref<InstanceType<typeof BookmarkItem>[]>([]);
+const editingBookmarkId = ref<string>();
 
 const bookmarksToShow = computed<{ bookmark: KoboBookmark; enabledActions: BookmarkAction[] }[]>(() => {
   const { book } = props;
@@ -77,7 +86,16 @@ function calcBookmarkActions(book: KoboBook, bookmark: KoboBookmark): BookmarkAc
   if (props.readonly) {
     return [BookmarkAction.CreateCard];
   }
-  return [BookmarkAction.Archive, BookmarkAction.CreateCard, BookmarkAction.ChangeColor];
+  return [BookmarkAction.Archive, BookmarkAction.CreateCard, BookmarkAction.Edit];
+}
+
+function cancelBookmarkEdit(): void {
+  editingBookmarkId.value = undefined;
+}
+
+function saveBookmark(bookmarkId: string, bookmarkPatch: Partial<KoboBookmark>): void {
+  emits('bookmarkUpdated', bookmarkId, bookmarkPatch);
+  editingBookmarkId.value = undefined;
 }
 
 function focusToBookmark(bookmark: KoboBookmark | undefined): void {

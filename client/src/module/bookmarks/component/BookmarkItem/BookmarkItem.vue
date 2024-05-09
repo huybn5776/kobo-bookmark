@@ -39,11 +39,9 @@
       >
         <ShareVariantIcon class="bookmark-action-icon" />
       </IconButton>
-      <HighlightColorDropdown
-        v-if="actions['change-color']"
-        :color="bookmark.color"
-        @update:color="(v) => emits('colorChanged', v)"
-      />
+      <IconButton v-if="actions['edit']" i18nKey="common.edit" @click="emits('editClick')">
+        <PencilIcon class="bookmark-action-icon" />
+      </IconButton>
 
       <template v-if="bookmark.isArchived">
         <span class="bookmark-state-text">(<i18n-t keypath="common.archived" />)</span>
@@ -59,13 +57,12 @@
 import { ref, watch, onMounted, computed } from 'vue';
 
 import HighlightText from '@/component/HighlightText/HighlightText.vue';
-import { ArchiveIcon, ArchiveRefreshIcon, ShareVariantIcon } from '@/component/icon';
+import { ArchiveIcon, ArchiveRefreshIcon, ShareVariantIcon, PencilIcon } from '@/component/icon';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { KoboBookmark } from '@/dto/kobo-book';
 import { BookmarkAction } from '@/enum/bookmark-action';
 import { HighlightColor } from '@/enum/highlight-color';
 import BookmarkChapterView from '@/module/bookmarks/component/BookmarkChapterView/BookmarkChapterView.vue';
-import HighlightColorDropdown from '@/module/bookmarks/component/HighlightColorDropdown/HighlightColorDropdown.vue';
 
 const props = defineProps<{
   bookmark: KoboBookmark;
@@ -74,7 +71,7 @@ const props = defineProps<{
   enabledActions?: BookmarkAction[];
 }>();
 const emits = defineEmits<{
-  (e: 'colorChanged', value: HighlightColor): void;
+  (e: 'editClick'): void;
   (e: 'createCardClick'): void;
   (e: 'archiveClick'): void;
   (e: 'cancelArchiveClick'): void;

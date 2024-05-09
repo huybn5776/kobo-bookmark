@@ -13,7 +13,7 @@
         v-if="expanded"
         showAllBookmarks
         :book="book"
-        @bookmarkColorChanged="(bookmark, color) => updateBookmarkColor(book, bookmark, color)"
+        @bookmarkUpdated="(bookmarkId, bookmarkPatch) => updateByPatch(book, bookmarkId, bookmarkPatch)"
         @bookmarkArchive="archiveBookmark(book, $event)"
         @bookmarkCancelArchive="cancelArchiveBookmark(book, $event)"
         @createBookmarkCardClick="openBookmarkCardDialog(book, $event)"
@@ -30,11 +30,11 @@ import { useI18n } from 'vue-i18n';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import { BookAction } from '@/enum/book-action';
-import { HighlightColor } from '@/enum/highlight-color';
 import { useBookmarkCardDialog } from '@/module/bookmark-card-dialog/composition/use-bookmark-card-dialog';
 import BookItem from '@/module/bookmarks/component/BookItem/BookItem.vue';
 import BookmarkList from '@/module/bookmarks/component/BookmarkList/BookmarkList.vue';
 import { koboBookSchema } from '@/schema/kobo-book-schema';
+import { updateBookmarkByPatch } from '@/services/bookmark/bookmark-manage.service';
 import { bookmarkToText, bookmarkToMarkdown } from '@/services/export/bookmark-export.service';
 import { textToFileDownload } from '@/util/browser-utils';
 
@@ -75,8 +75,8 @@ async function updateBookCoverImage(book: KoboBook, coverImageUrl: string): Prom
   allBooks.value[indexToUpdate] = { ...allBooks.value[indexToUpdate], coverImageUrl };
 }
 
-async function updateBookmarkColor(book: KoboBook, bookmark: KoboBookmark, color: HighlightColor): Promise<void> {
-  updateBookmark(book.id, bookmark.id, (b) => ({ ...b, color }));
+function updateByPatch(book: KoboBook, bookmarkId: string, bookmarkPatch: Partial<KoboBookmark>): void {
+  updateBookmark(book.id, bookmarkId, (b) => updateBookmarkByPatch(b, bookmarkPatch));
 }
 
 function archiveBookmark(book: KoboBook, bookmark: KoboBookmark): void {

@@ -1,9 +1,20 @@
 <template>
   <NDropdown :value="dropdownValue" trigger="click" :options="highlightOptions" @select="onColorSelect">
-    <div>
+    <div class="highlight-color-dropdown">
       <IconButton i18nKey="page.bookmarks.change_highlight_color">
         <FormatColorHighlightIcon class="bookmark-action-icon" />
       </IconButton>
+      <i
+        class="highlight-color-indicator"
+        :class="{
+          'highlight-color-indicator-yellow': color === HighlightColor.Yellow,
+          'highlight-color-indicator-red': color === HighlightColor.Red,
+          'highlight-color-indicator-green': color === HighlightColor.Green,
+          'highlight-color-indicator-blue': color === HighlightColor.Blue,
+          'highlight-color-indicator-pink': color === HighlightColor.Pink,
+          'highlight-color-indicator-purple': color === HighlightColor.Purple,
+        }"
+      />
     </div>
   </NDropdown>
 </template>
@@ -40,3 +51,7 @@ function onColorSelect(value?: HighlightColor): void {
   colorModel.value = value === HighlightColor.Default ? undefined : value;
 }
 </script>
+
+<style lang="scss" scoped>
+@import './HighlightColorDropdown';
+</style>

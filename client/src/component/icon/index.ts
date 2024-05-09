@@ -38,6 +38,7 @@ export { default as PencilIcon } from '@/assets/svg/pencil.svg';
 export { default as PinIcon } from '@/assets/svg/pin.svg';
 export { default as PinOffIcon } from '@/assets/svg/pin-off.svg';
 export { default as RectangleOutlineIcon } from '@/assets/svg/rectangle-outline.svg';
+export { default as RestoreIcon } from '@/assets/svg/restore.svg';
 export { default as ShareVariantIcon } from '@/assets/svg/share-variant.svg';
 export { default as SortIcon } from '@/assets/svg/sort.svg';
 export { default as SquareOutlineIcon } from '@/assets/svg/square-outline.svg';

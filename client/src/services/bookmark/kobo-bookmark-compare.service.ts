@@ -1,7 +1,7 @@
 import equal from 'fast-deep-equal';
 import { indexBy } from 'ramda';
 
-import { KoboBook, KoboBookChanges, KoboBookmarkChanges, KoboBookmarkChangesType } from '@/dto/kobo-book';
+import { KoboBook, KoboBookmark, KoboBookChanges, KoboBookmarkChanges, KoboBookmarkChangesType } from '@/dto/kobo-book';
 
 export function calcUpdatesOfBooks(originalBooks: KoboBook[], currentBooks: KoboBook[]): KoboBookChanges[] {
   const originalBooksIndex = indexBy((book) => book.id, originalBooks);
@@ -44,7 +44,7 @@ export function findUpdatedBookmarksOfBook(originalBook: KoboBook, currentBook: 
     const originalBookmark = originalBookmarksIndex[bookmark.id];
     if (!originalBookmark) {
       changes.push({ id: bookmark.id, type: KoboBookmarkChangesType.Added, current: bookmark });
-    } else if (originalBookmark.updatedAt.getTime() !== bookmark.updatedAt.getTime()) {
+    } else if (isBookmarkUpdated(originalBookmark, bookmark)) {
       changes.push({
         id: bookmark.id,
         type: KoboBookmarkChangesType.Updated,
@@ -73,5 +73,26 @@ export function isSameBookFile(book1: KoboBook, book2: KoboBook): boolean {
     info1.fileSize === info2.fileSize &&
     equal(info1.createdAt, info2.createdAt) &&
     equal(book1.chapters, book2.chapters)
+  );
+}
+
+export function isBookmarkUpdated(originalBookmark: KoboBookmark, currentBookmark: KoboBookmark): boolean {
+  let textChanged;
+  if (originalBookmark.originalText && !currentBookmark.originalText) {
+    textChanged = originalBookmark.originalText !== currentBookmark.text;
+  } else if (
+    originalBookmark.originalText &&
+    currentBookmark.originalText &&
+    originalBookmark.originalText !== currentBookmark.originalText
+  ) {
+    textChanged = true;
+  } else {
+    textChanged = originalBookmark.text !== currentBookmark.text;
+  }
+
+  return (
+    originalBookmark.updatedAt.getTime() !== currentBookmark.updatedAt.getTime() ||
+    textChanged ||
+    originalBookmark.annotation !== currentBookmark.annotation
   );
 }

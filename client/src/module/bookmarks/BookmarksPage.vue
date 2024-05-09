@@ -69,7 +69,7 @@
         @bookArchiveClick="archiveBook"
         @shareClick="openShareBooksWithDropboxDialog([book])"
         @bookCancelArchive="cancelArchiveBook"
-        @bookmarkColorChanged="updateBookmarkColor"
+        @bookmarkUpdated="updateBookmark"
         @createBookmarkCardClick="openBookmarkCardDialog"
         @bookmarkArchiveClick="archiveBookmark"
         @bookmarkCancelArchiveClick="cancelArchiveBookmark"
@@ -140,7 +140,7 @@ import { useBookBookmarkArchive } from '@/module/bookmarks/composition/use-book-
 import { useMultiBookActions } from '@/module/bookmarks/composition/use-multi-book-actions';
 import { useShareBookDialog } from '@/module/bookmarks/composition/use-share-book-dialog';
 import { findCoverImageForBook } from '@/services/bookmark/book-cover.service';
-import { getBooksFromDb, putBooksToDb } from '@/services/bookmark/bookmark-manage.service';
+import { getBooksFromDb, putBooksToDb, updateBookmarkByPatch } from '@/services/bookmark/bookmark-manage.service';
 import { sortKoboBooks, sortKoboBookmarks } from '@/services/bookmark/kobo-book-sort.service';
 import { getBookmarksShareFromDropboxShareId } from '@/services/dropbox/dropbox.service';
 import { bookmarkToText, bookmarkToMarkdown } from '@/services/export/bookmark-export.service';
@@ -408,14 +408,20 @@ async function reloadBooks(): Promise<void> {
   allBooks.value = await getBooksFromDb();
 }
 
-async function updateBookmarkColor(book: KoboBook, bookmark: KoboBookmark, color: HighlightColor): Promise<void> {
-  const targetBookmarkIndex = book.bookmarks.indexOf(bookmark);
+async function updateBookmark(book: KoboBook, bookmarkId: string, bookmarkPatch: Partial<KoboBookmark>): Promise<void> {
+  const targetBookmarkIndex = book.bookmarks.findIndex((b) => b.id === bookmarkId);
   if (targetBookmarkIndex === -1) {
     return;
   }
   const bookmarks = [...book.bookmarks];
-  bookmarks[targetBookmarkIndex] = { ...bookmarks[targetBookmarkIndex], color };
+  const bookmarkToUpdate = deepToRaw(bookmarks[targetBookmarkIndex]);
+  bookmarks[targetBookmarkIndex] = updateBookmarkByPatch(bookmarkToUpdate, bookmarkPatch);
   const updatedBook: KoboBook = { ...book, bookmarks };
+
+  const targetBookIndex = allBooks.value.findIndex((b) => b.id === book.id);
+  if (targetBookIndex !== -1) {
+    allBooks.value[targetBookIndex] = updatedBook;
+  }
   await putBooksToDb([deepToRaw(updatedBook)]);
   allBooks.value = await getBooksFromDb();
 }

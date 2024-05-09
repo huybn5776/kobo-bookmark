@@ -41,6 +41,7 @@ export const koboBookmarkChapterSchema = z.object({
 export const koboBookmarkSchema = z.object({
   id: z.string(),
   text: z.string(),
+  originalText: z.string().optional().nullable(),
   annotation: z.string().optional().nullable(),
   chapter: koboBookmarkChapterSchema,
   chapterProgress: z.number(),
@@ -49,6 +50,7 @@ export const koboBookmarkSchema = z.object({
   color: z.nativeEnum(HighlightColor).optional().nullable(),
   createdAt: z.string().pipe(z.coerce.date()),
   updatedAt: z.string().pipe(z.coerce.date()),
+  editedAt: z.string().pipe(z.coerce.date()).optional().nullable(),
 });
 
 export const koboBookSchema = z.object({

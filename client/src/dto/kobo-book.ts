@@ -30,6 +30,7 @@ export interface KoboBookInfo {
 export interface KoboBookmark {
   id: string;
   text: string;
+  originalText?: string;
   annotation?: string;
   chapter: KoboBookmarkChapter;
   chapterProgress: number;
@@ -39,6 +40,7 @@ export interface KoboBookmark {
   isArchived?: boolean;
   createdAt: Date;
   updatedAt: Date;
+  editedAt?: Date;
 }
 
 export interface KoboBookmarkChapter {

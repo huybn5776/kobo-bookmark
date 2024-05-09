@@ -1,0 +1,31 @@
+.highlight-color-indicator {
+  display: block;
+  width: 24px;
+  height: 2px;
+  margin-top: -7px;
+  margin-left: 4px;
+
+  &.highlight-color-indicator-yellow {
+    background-color: yellow;
+  }
+
+  &.highlight-color-indicator-red {
+    background-color: red;
+  }
+
+  &.highlight-color-indicator-green {
+    background-color: green;
+  }
+
+  &.highlight-color-indicator-blue {
+    background-color: blue;
+  }
+
+  &.highlight-color-indicator-pink {
+    background-color: pink;
+  }
+
+  &.highlight-color-indicator-purple {
+    background-color: purple;
+  }
+}

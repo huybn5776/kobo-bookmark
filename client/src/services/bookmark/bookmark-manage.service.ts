@@ -3,6 +3,7 @@ import { indexBy } from 'ramda';
 
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import { SettingKey } from '@/enum/setting-key';
+import { isBookmarkUpdated } from '@/services/bookmark/kobo-bookmark-compare.service';
 import { getSettingFromStorage } from '@/services/setting.service';
 import { deepToRaw } from '@/util/vue-utils';
 
@@ -72,10 +73,26 @@ export async function upsertBook(book: KoboBook): Promise<void> {
 }
 
 function updateExistingBookmark(originalBookmark: KoboBookmark, currentBookmark: KoboBookmark): KoboBookmark {
+  if (!isBookmarkUpdated(originalBookmark, currentBookmark)) {
+    return originalBookmark;
+  }
+
   const updatedBookmark: KoboBookmark = { ...originalBookmark, ...currentBookmark };
-  if (originalBookmark.updatedAt !== currentBookmark.updatedAt && updatedBookmark.isArchived) {
+  if (updatedBookmark.isArchived) {
     updatedBookmark.isArchived = false;
   }
+  if (originalBookmark.originalText && !currentBookmark.originalText) {
+    if (originalBookmark.originalText === currentBookmark.text) {
+      updatedBookmark.text = originalBookmark.text;
+    } else {
+      updatedBookmark.text = currentBookmark.text;
+      delete updatedBookmark.originalText;
+    }
+  }
+  if (!currentBookmark.annotation && originalBookmark.annotation) {
+    delete updatedBookmark.annotation;
+  }
+
   return updatedBookmark;
 }
 
@@ -124,6 +141,22 @@ export async function deleteBookTable(): Promise<void> {
   (await getDbInstance()).close();
   dbInstance = undefined;
   return deleteDB(dbName);
+}
+
+export function updateBookmarkByPatch(bookmark: KoboBookmark, patch: Partial<KoboBookmark>): KoboBookmark {
+  if (!Object.keys(patch).length) {
+    return bookmark;
+  }
+
+  const updatedBookmark = { ...bookmark };
+  Object.assign(updatedBookmark, patch);
+  if (bookmark.originalText === updatedBookmark.text) {
+    delete updatedBookmark.originalText;
+  } else if (!bookmark.originalText && patch.text) {
+    updatedBookmark.originalText = bookmark.text;
+  }
+  updatedBookmark.editedAt = new Date();
+  return updatedBookmark;
 }
 
 function openDb(): Promise<IDBPDatabase<BookDb>> {

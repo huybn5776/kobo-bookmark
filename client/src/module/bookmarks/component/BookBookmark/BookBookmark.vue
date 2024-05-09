@@ -28,7 +28,7 @@
       :readonly="readonly"
       class="book-bookmark-list"
       @createBookmarkCardClick="emits('createBookmarkCardClick', book, $event)"
-      @bookmarkColorChanged="(bookmark, color) => emits('bookmarkColorChanged', book, bookmark, color)"
+      @bookmarkUpdated="(bookmarkId, bookmarkPatch) => emits('bookmarkUpdated', book, bookmarkId, bookmarkPatch)"
       @bookmarkArchive="emits('bookmarkArchiveClick', book, $event)"
       @bookmarkCancelArchive="emits('bookmarkCancelArchiveClick', book, $event)"
       @focusToBookmarkEnd="focusedBookmark = undefined"
@@ -41,7 +41,6 @@ import { ref, computed } from 'vue';
 
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import { BookAction } from '@/enum/book-action';
-import { HighlightColor } from '@/enum/highlight-color';
 import BookItem from '@/module/bookmarks/component/BookItem/BookItem.vue';
 import BookmarkList from '@/module/bookmarks/component/BookmarkList/BookmarkList.vue';
 
@@ -63,7 +62,7 @@ const emits = defineEmits<{
   (e: 'bookCancelArchive', value: KoboBook): void;
   (e: 'shareClick', value: KoboBook): void;
   (e: 'createBookmarkCardClick', book: KoboBook, bookmark: KoboBookmark): void;
-  (e: 'bookmarkColorChanged', book: KoboBook, bookmark: KoboBookmark, color: HighlightColor): void;
+  (e: 'bookmarkUpdated', book: KoboBook, bookmarkId: string, bookmarkPatch: Partial<KoboBookmark>): void;
   (e: 'bookmarkArchiveClick', book: KoboBook, bookmark: KoboBookmark): void;
   (e: 'bookmarkCancelArchiveClick', book: KoboBook, bookmark: KoboBookmark): void;
 }>();

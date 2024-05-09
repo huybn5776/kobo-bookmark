@@ -7,6 +7,7 @@
         v-bind="$attrs"
         class="icon-button"
         :class="{ 'icon-button-loading': loading }"
+        :disabled="disabled"
         :loading="loading"
         @click="onClick"
       >
@@ -25,7 +26,7 @@ import { ref } from 'vue';
 
 import { NButton, NPopover } from 'naive-ui';
 
-defineProps<{ i18nKey: string; loading?: boolean }>();
+defineProps<{ i18nKey: string; disabled?: boolean; loading?: boolean }>();
 const emits = defineEmits<{ (e: 'click'): void }>();
 
 const waitForMouseLeave = ref<boolean>(false);
