@@ -18,8 +18,17 @@ export async function getCoverImageFromGoogleByTitleAndAuthor(title: string, aut
 }
 
 function getCoverImageUrlFromGoogleBook(book: GoogleBook): string | null {
-  const url = book.volumeInfo?.imageLinks?.thumbnail;
-  return url && url.startsWith('http://') ? `https${url.substring(4)}` : url || null;
+  const thumbnail = book.volumeInfo?.imageLinks?.thumbnail;
+  if (!thumbnail || !thumbnail.startsWith('http://')) {
+    return null;
+  }
+  const url = new URL(thumbnail);
+  if (url.searchParams.has('zoom')) {
+    url.searchParams.set('zoom', '2');
+  }
+  url.searchParams.delete('edge');
+  url.protocol = 'https:';
+  return url.toString();
 }
 
 async function queryGoogleBooks(paramsString: string): Promise<GoogleBook[]> {
