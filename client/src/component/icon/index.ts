@@ -13,6 +13,8 @@ export { default as CheckIcon } from '@/assets/svg/check.svg';
 export { default as ChevronRightIcon } from '@/assets/svg/chevron-right.svg';
 export { default as CloseIcon } from '@/assets/svg/close.svg';
 export { default as CloseCircleIcon } from '@/assets/svg/close-circle.svg';
+export { default as CloudArrowDown } from '@/assets/svg/cloud-arrow-down.svg';
+export { default as CloudArrowUp } from '@/assets/svg/cloud-arrow-up.svg';
 export { default as CogIcon } from '@/assets/svg/cog.svg';
 export { default as ContentCopyIcon } from '@/assets/svg/content-copy.svg';
 export { default as DeleteIcon } from '@/assets/svg/delete.svg';

@@ -8,7 +8,7 @@ import { DropboxApiError } from '@/interface/dropbox-api-error';
 import { DropboxTokenInfo } from '@/interface/dropbox-token-info';
 import { bookmarkShareSchema } from '@/schema/bookmark-share-schema';
 import { saveSettingToStorage, getSettingFromStorage } from '@/services/setting.service';
-import { readBlobAsJson } from '@/util/browser-utils';
+import { readBlobAsJson, readBlobAsText } from '@/util/browser-utils';
 
 export type DropboxFile = DropboxFiles.FileMetadata & { fileBlob: Blob };
 
@@ -110,6 +110,18 @@ export async function getJsonFromDropbox<T>(filename: string): Promise<T | null>
     throw error;
   });
   return file ? readBlobAsJson<T>(file.fileBlob) : null;
+}
+
+export async function getTextFromDropbox(filename: string): Promise<string | null> {
+  const file = await getFileFromDropbox(filename).catch((e) => {
+    const error = e as DropboxApiError;
+    const errorTag = error.error.error['.tag'];
+    if (errorTag === 'path') {
+      return null;
+    }
+    throw error;
+  });
+  return file ? readBlobAsText(file.fileBlob) : null;
 }
 
 export async function saveJsonToDropbox(filename: string, contents: object): Promise<DropboxFiles.FileMetadata> {

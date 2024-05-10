@@ -18,6 +18,18 @@
         <NButton @click="clearSettings">
           <i18n-t keypath="page.settings.backup.reset_all_settings" />
         </NButton>
+        <NButton :loading="uploadSettingsToDropboxLoading" @click="processUploadSettingsToDropbox">
+          <template #icon>
+            <CloudArrowUp class="icon-24" />
+          </template>
+          <i18n-t keypath="page.settings.backup.upload_to_dropbox" />
+        </NButton>
+        <NButton :loading="loadSettingsFromDropboxLoading" @click="processLoadSettingsFromDropbox">
+          <template #icon>
+            <CloudArrowDown class="icon-24" />
+          </template>
+          <i18n-t keypath="page.settings.backup.import_from_dropbox" />
+        </NButton>
       </div>
     </div>
 
@@ -35,20 +47,34 @@
         <NButton @click="clearBooks">
           <i18n-t keypath="page.settings.backup.clear_all_books" />
         </NButton>
+        <NButton :loading="uploadBooksToDropboxLoading" @click="processUploadBooksToDropbox">
+          <template #icon>
+            <CloudArrowUp class="icon-24" />
+          </template>
+          <i18n-t keypath="page.settings.backup.upload_to_dropbox" />
+        </NButton>
+        <NButton :loading="downloadBooksFromDropboxLoading" @click="processDownloadBooksFromDropbox">
+          <template #icon>
+            <CloudArrowDown class="icon-24" />
+          </template>
+          <i18n-t keypath="page.settings.backup.import_from_dropbox" />
+        </NButton>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { h } from 'vue';
+import { h, ref } from 'vue';
 
 import { NButton, useMessage, useNotification, useDialog } from 'naive-ui';
 import { path, isNil } from 'ramda';
 import { useI18n } from 'vue-i18n';
 import { ZodError } from 'zod';
 
+import { CloudArrowUp, CloudArrowDown } from '@/component/icon';
 import MultiLineText from '@/component/MultiLineText/MultiLineText.vue';
+import { useCheckDropboxToken } from '@/composition/use-check-dropbox-token';
 import { useParseKoboBooksJson } from '@/composition/use-parse-kobo-books-json';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { SettingEventType } from '@/enum/setting-event-type';
@@ -60,6 +86,12 @@ import {
   deleteBookTable,
   countAllBooksFromDb,
 } from '@/services/bookmark/bookmark-manage.service';
+import {
+  uploadBooksToDropbox,
+  downloadBooksFromDropbox,
+  uploadSettingsToDropbox,
+  downloadSettingsFromDropbox,
+} from '@/services/dropbox/dropbox-backup.service';
 import {
   saveSettingToStorage,
   getSettingValues,
@@ -76,7 +108,13 @@ const message = useMessage();
 const notification = useNotification();
 const dialog = useDialog();
 
+const uploadSettingsToDropboxLoading = ref<boolean>(false);
+const loadSettingsFromDropboxLoading = ref<boolean>(false);
+const uploadBooksToDropboxLoading = ref<boolean>(false);
+const downloadBooksFromDropboxLoading = ref<boolean>(false);
+
 const { parseBooksJson } = useParseKoboBooksJson();
+const { checkIsDropboxReady } = useCheckDropboxToken();
 
 function exportAllSettings(): void {
   const settings = getSettingValues();
@@ -90,19 +128,27 @@ async function importSettings(): Promise<void> {
   if (!jsonObject) {
     return;
   }
+  const success = loadSettings(jsonObject);
+  if (success) {
+    message.success(t('page.settings.backup.setting_applied'));
+  }
+}
+
+function loadSettings(jsonObject: unknown): boolean {
   if (Array.isArray(jsonObject)) {
     notification.error({
       title: t('page.settings.backup.fail_to_import_settings'),
       content: t('page.settings.backup.data_structure_error'),
     });
-    return;
+    return false;
   }
+
   let settingValues: SettingValueType;
   try {
     settingValues = settingValueSchema.parse(jsonObject) as SettingValueType;
   } catch (e) {
     handleSettingSchemaParseError(e as ZodError, jsonObject as SettingValueType);
-    return;
+    return false;
   }
 
   for (const key of Object.values(SettingKey)) {
@@ -113,7 +159,7 @@ async function importSettings(): Promise<void> {
   }
   applyLanguageSetting();
 
-  message.success(t('page.settings.backup.setting_applied'));
+  return true;
 }
 
 function handleSettingSchemaParseError(zodError: ZodError, settingValue: SettingValueType): void {
@@ -178,6 +224,62 @@ async function clearBooks(): Promise<void> {
     },
     onAfterEnter: focusLastButtonOfDialog,
   });
+}
+
+async function processUploadSettingsToDropbox(): Promise<void> {
+  if (!checkIsDropboxReady()) {
+    return;
+  }
+  uploadSettingsToDropboxLoading.value = true;
+  const settingValues = getSettingValues();
+  await uploadSettingsToDropbox(settingValues);
+  uploadSettingsToDropboxLoading.value = false;
+  message.success(t('page.settings.backup.settings_uploaded'));
+}
+
+async function processLoadSettingsFromDropbox(): Promise<void> {
+  if (!checkIsDropboxReady()) {
+    return;
+  }
+  loadSettingsFromDropboxLoading.value = true;
+  const jsonObject = await downloadSettingsFromDropbox();
+  const success = loadSettings(jsonObject);
+  if (success) {
+    message.success(t('page.settings.backup.settings_loaded'));
+  }
+  loadSettingsFromDropboxLoading.value = false;
+}
+
+async function processUploadBooksToDropbox(): Promise<void> {
+  if (!checkIsDropboxReady()) {
+    return;
+  }
+  uploadBooksToDropboxLoading.value = true;
+  const books = await getAllBooksFromDb();
+  await uploadBooksToDropbox(books);
+  uploadBooksToDropboxLoading.value = false;
+  message.success(t('page.settings.backup.books_uploaded', [books.length], books.length));
+}
+
+async function processDownloadBooksFromDropbox(): Promise<void> {
+  if (!checkIsDropboxReady()) {
+    return;
+  }
+  downloadBooksFromDropboxLoading.value = true;
+  await (async () => {
+    const jsonContent = await downloadBooksFromDropbox();
+    const books = jsonContent ? await parseBooksJson(jsonContent) : null;
+    if (!books) {
+      return;
+    }
+    if (!books.length) {
+      message.warning(t('page.settings.backup.no_backed_up_books_on_dropbox'));
+      return;
+    }
+    await putBooksToDb(books);
+    message.success(t('page.settings.backup.book_imported', [books.length], books.length));
+  })();
+  downloadBooksFromDropboxLoading.value = false;
 }
 
 function zodErrorToMessages(zodError: ZodError, obj: unknown): string[] {
