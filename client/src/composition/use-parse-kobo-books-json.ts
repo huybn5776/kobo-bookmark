@@ -48,7 +48,7 @@ export function useParseKoboBooksJson(): { parseBooksJson: (json: string) => Pro
   }
 
   function handleBookSchemaParseError(book: KoboBook, zodError: ZodError): void {
-    if (!book.info.title) {
+    if (!book?.info?.title) {
       notification.error({
         title: t('page.settings.backup.fail_to_import_books'),
         content: t('page.settings.backup.data_structure_error'),
