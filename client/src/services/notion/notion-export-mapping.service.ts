@@ -5,9 +5,11 @@ import type {
 } from '@notionhq/client/build/src/api-endpoints';
 import { maxBy } from 'ramda';
 
+import { highlightSyntax } from '@/const/consts';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import { HighlightColor } from '@/enum/highlight-color';
 import { chapterTitleToText } from '@/services/bookmark/bookmark-format.service';
+import { toSyntaxSegment } from '@/util/text-syntax-utils';
 
 type BlockItem = Pick<Extract<BlockObjectRequest, { paragraph: unknown }>, 'paragraph'>;
 type BulletedListItem = Pick<Extract<BlockObjectRequest, { bulleted_list_item: unknown }>, 'bulleted_list_item'>;
@@ -77,6 +79,8 @@ export function bookmarksToNotionPageBookDetail(book: KoboBook): BlockObjectRequ
   return [toggleBlock, divider];
 }
 
+type RichTextItemRequest = BlockItem['paragraph']['rich_text'][0];
+
 export function bookmarksToNotionBlocks(bookmarks: KoboBookmark[]): BlockObjectRequest[] {
   const divider: BlockObjectRequest = { object: 'block', type: 'divider', divider: {} };
   return bookmarks.flatMap((bookmark, index) => {
@@ -87,16 +91,15 @@ export function bookmarksToNotionBlocks(bookmarks: KoboBookmark[]): BlockObjectR
         color: 'gray_background',
       },
     };
-    const textBlock: BlockObjectRequest = {
-      paragraph: {
-        rich_text: [
-          {
-            text: { content: bookmark.text },
-            annotations: { color: highlightColorToNotionTextColor(bookmark.color) },
-          },
-        ],
-      },
-    };
+    const richTexts: RichTextItemRequest[] = toSyntaxSegment(bookmark.text, highlightSyntax).map((segment) => {
+      return {
+        text: { content: segment.text },
+        annotations: segment.inSyntax
+          ? { bold: true, underline: true, color: 'orange_background' }
+          : { color: highlightColorToNotionTextColor(bookmark.color) },
+      };
+    });
+    const textBlock: BlockObjectRequest = { paragraph: { rich_text: richTexts } };
     const blocks: BlockObjectRequest[] = [chapterBlock, textBlock];
     if (bookmark.annotation) {
       blocks.push({

@@ -1,4 +1,4 @@
 export interface SyntaxSegment {
-  text?: string;
+  text: string;
   inSyntax?: boolean;
 }
