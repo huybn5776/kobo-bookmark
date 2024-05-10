@@ -11,6 +11,7 @@
     />
 
     <div class="bookmark-edit-toolbar">
+      <BookmarkEditInstructionButton />
       <IconButton
         i18nKey="page.bookmarks.revert_highlight"
         :disabled="!canRestoreBookmarkText"
@@ -40,6 +41,7 @@ import IconButton from '@/component/IconButton/IconButton.vue';
 import { highlightSyntax } from '@/const/consts';
 import { KoboBookmark } from '@/dto/kobo-book';
 import BookmarkChapterView from '@/module/bookmarks/component/BookmarkChapterView/BookmarkChapterView.vue';
+import BookmarkEditInstructionButton from '@/module/bookmarks/component/BookmarkEditInstructionButton/BookmarkEditInstructionButton.vue';
 import HighlightColorDropdown from '@/module/bookmarks/component/HighlightColorDropdown/HighlightColorDropdown.vue';
 import { toggleSyntax } from '@/util/text-syntax-utils';
 
@@ -75,6 +77,7 @@ function onInputKeyDown(event: KeyboardEvent): void {
     const selection = getSelection();
     event.preventDefault();
     text.value = toggleSyntax(text.value, highlightSyntax, selection.start, selection.end);
+    setTimeout(() => setSelection(selection.start));
   }
 }
 
@@ -82,6 +85,12 @@ function getSelection(): { start: number; end: number } {
   const textareaElement = inputRef.value?.textareaElRef as HTMLTextAreaElement;
   const { selectionStart, selectionEnd } = textareaElement;
   return { start: selectionStart, end: selectionEnd };
+}
+
+function setSelection(start: number, end?: number): void {
+  const textareaElement = inputRef.value?.textareaElRef as HTMLTextAreaElement;
+  textareaElement.selectionStart = start;
+  textareaElement.selectionEnd = start ?? end;
 }
 
 function revertBookmarkText(): void {

@@ -32,6 +32,7 @@ export { default as FormatTextVariantIcon } from '@/assets/svg/format-text-varia
 export { default as GithubIcon } from '@/assets/svg/github.svg';
 export { default as ImageEditIcon } from '@/assets/svg/image-edit.svg';
 export { default as ImportIcon } from '@/assets/svg/import.svg';
+export { default as InformationOutlineIcon } from '@/assets/svg/information-outline.svg';
 export { default as MarkdownIcon } from '@/assets/svg/markdown.svg';
 export { default as NotionIcon } from '@/assets/svg/notion.svg';
 export { default as PencilIcon } from '@/assets/svg/pencil.svg';
