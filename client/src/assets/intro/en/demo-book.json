@@ -33,7 +33,7 @@
     },
     {
       "id": "2",
-      "text": "The amount of time you have been performing a habit is not as important as the number of times you have performed it.",
+      "text": "The amount of time you have been performing a habit is not as important as the __number of times you have performed__ it.",
       "chapter": {
         "titles": ["11: Walk Slowly, but Never Backward"],
         "relatedChapters": [

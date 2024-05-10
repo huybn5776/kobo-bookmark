@@ -50,12 +50,12 @@
         </template>
       </FeatureIntroductionSection>
       <FeatureIntroductionSection
-        titleKey="page.home.highlight_color_title"
-        descriptionKey="page.home.highlight_color_description"
+        titleKey="page.home.bookmark_editing_title"
+        descriptionKey="page.home.bookmark_editing_description"
       >
         <template #image>
-          <img v-if="languageType === 'en'" src="/src/assets/intro/en/highlight-color.jpg" alt="Changes" />
-          <img v-if="languageType === 'zh'" src="/src/assets/intro/zh-tw/highlight-color.jpg" alt="Changes" />
+          <img v-if="languageType === 'en'" src="/src/assets/intro/en/bookmark-editing.jpg" alt="Changes" />
+          <img v-if="languageType === 'zh'" src="/src/assets/intro/zh-tw/bookmark-editing.jpg" alt="Changes" />
         </template>
       </FeatureIntroductionSection>
       <FeatureIntroductionSection
