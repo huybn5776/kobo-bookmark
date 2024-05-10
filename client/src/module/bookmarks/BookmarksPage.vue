@@ -322,6 +322,9 @@ async function exportBookmarkToNotion(book: KoboBook): Promise<void> {
 }
 
 function exportSelectedToNotion(): void {
+  if (!checkIsNotionReady()) {
+    return;
+  }
   selectedBooks.value.forEach((book) => exportBookmarkToNotion(book));
 }
 
