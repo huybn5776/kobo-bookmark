@@ -15,7 +15,7 @@ import { toSyntaxSegment } from '@/util/text-syntax-utils';
 
 const props = defineProps<{ text?: string; search?: string }>();
 
-const readableText = computed(() => props.text?.split(highlightSyntax).join('') || '');
+const readableText = computed(() => props.text?.replaceAll(highlightSyntax, '') || '');
 
 const textSegments = computed<SyntaxSegment[]>(() => {
   if (readableText.value && props.search) {
@@ -28,10 +28,24 @@ const textSegments = computed<SyntaxSegment[]>(() => {
 });
 
 function processBySearch(originalText: string, search: string): SyntaxSegment[] {
-  return originalText
-    .split(search)
-    .flatMap((text) => [{ text }, { text: search, inSyntax: true }])
-    .slice(0, -1);
+  let processingText = originalText;
+
+  const regexp = new RegExp(search, 'i');
+  const results: SyntaxSegment[] = [];
+  while (processingText) {
+    const nextIndex = processingText.search(regexp);
+    if (nextIndex === -1) {
+      break;
+    }
+    results.push({ text: processingText.slice(0, nextIndex) });
+    results.push({ text: processingText.slice(nextIndex, nextIndex + search.length), inSyntax: true });
+    processingText = processingText.slice(nextIndex + search.length);
+  }
+  if (processingText) {
+    results.push({ text: processingText });
+  }
+
+  return results;
 }
 </script>
 

@@ -51,6 +51,7 @@ import { useI18n } from 'vue-i18n';
 
 import HighlightText from '@/component/HighlightText/HighlightText.vue';
 import { I18NMessageSchema } from '@/config/i18n-config';
+import { highlightSyntax } from '@/const/consts';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 
 const props = defineProps<{ books: KoboBook[] }>();
@@ -77,7 +78,7 @@ const options: Ref<SelectGroupOption[]> = computed(() => {
         const option: SelectBaseOption = {
           key: bookmark.id,
           value: bookmark.id,
-          label: bookmark.text,
+          label: bookmark.text.replaceAll(highlightSyntax, ''),
           book,
           bookmark,
         };
@@ -87,7 +88,7 @@ const options: Ref<SelectGroupOption[]> = computed(() => {
   });
 });
 const filteredOptions = computed<(SelectGroupOption | BookmarkSearchOption)[]>(() => {
-  const text = searchModel.value;
+  const text = searchModel.value?.toLowerCase();
   if (!text) {
     return options.value.flatMap((groupOption) => [
       groupOption as SelectGroupOption,
@@ -96,7 +97,7 @@ const filteredOptions = computed<(SelectGroupOption | BookmarkSearchOption)[]>((
   }
   return options.value.flatMap((groupOption) => {
     const children = (groupOption.children || []).filter((option) =>
-      (option.label as string).includes(text),
+      (option.label as string).toLowerCase().includes(text),
     ) as BookmarkSearchOption[];
     if (!children.length) {
       return [] as BookmarkSearchOption[];
