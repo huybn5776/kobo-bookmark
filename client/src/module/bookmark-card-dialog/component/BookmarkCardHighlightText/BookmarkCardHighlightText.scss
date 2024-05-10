@@ -1,0 +1,19 @@
+.highlight-style-background {
+  background-color: var(--card-highlight-text-bg);
+}
+
+.highlight-style-background-inverse {
+  background-color: var(--card-highlight-inverse-bg);
+}
+
+.highlight-style-background-all-inverse {
+  color: var(--card-highlight-text-fg);
+  background-color: var(--card-highlight-text-bg);
+  filter: invert(1);
+}
+
+.highlight-style-underline-wavy {
+  text-decoration-style: wavy;
+  text-decoration-line: underline;
+  text-decoration-color: var(--card-highlight-inverse-bg);
+}

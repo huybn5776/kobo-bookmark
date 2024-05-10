@@ -29,7 +29,12 @@
               :style="{ fontSize: `${fontSize}px` }"
               @input="onBookmarkTextChange"
             >
-              {{ bookmarkText }}
+              <BookmarkCardHighlightText
+                :text="bookmarkText"
+                :bg="cardBackgroundColor"
+                :fg="cardFontColor"
+                :highlightStyle="highlightStyle"
+              />
             </span>
             <span contenteditable class="bookmark-card-book-name" @input="onBookTitleChange">{{ bookTitle }}</span>
           </div>
@@ -114,32 +119,36 @@ import {
   FormatQuoteCloseIcon,
 } from '@/component/icon';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
+import { HighlightStyle } from '@/enum/highlight-style';
+import BookmarkCardHighlightText from '@/module/bookmark-card-dialog/component/BookmarkCardHighlightText/BookmarkCardHighlightText.vue';
 import { tryFetchUrl } from '@/services/bookmark/book-cover.service';
 import { downloadFile } from '@/util/file-utils';
 
 const props = defineProps<{ book: KoboBook; bookmark: KoboBookmark }>();
 const emits = defineEmits<{ (e: 'closeClick'): void }>();
 
-const cardThemes: { bg: string; fg: string }[] = [
-  { bg: '#ffffff', fg: '#2d2d2d' },
-  { bg: '#333333', fg: '#ffffff' },
-  { bg: '#e83828', fg: '#ffffff' },
-  { bg: '#e61673', fg: '#ffffff' },
-  { bg: '#ff9676', fg: '#3e4959' },
-  { bg: '#e56db1', fg: '#000000' },
-  { bg: '#be84a3', fg: '#000000' },
-  { bg: '#ffc845', fg: '#000000' },
-  { bg: '#dae000', fg: '#ffffff' },
-  { bg: '#aa9187', fg: '#efefef' },
-  { bg: '#94a596', fg: '#000000' },
-  { bg: '#003b49', fg: '#ffc845' },
-  { bg: '#003b49', fg: '#d0d3d4' },
-  { bg: '#1b365d', fg: '#d0d3d4' },
-  { bg: '#f7f3e7', fg: '#514a46' },
-  { bg: '#00bfb2', fg: '#000000' },
-  { bg: '#d6d2c4', fg: '#000000' },
-  { bg: '#41b6e6', fg: '#000000' },
-  { bg: '#7da1c4', fg: '#000000' },
+type BookmarkCardTheme = { bg: string; fg: string; highlightStyle: HighlightStyle };
+
+const cardThemes: BookmarkCardTheme[] = [
+  { bg: '#ffffff', fg: '#2d2d2d', highlightStyle: HighlightStyle.BackgroundAllInverse },
+  { bg: '#333333', fg: '#ffffff', highlightStyle: HighlightStyle.BackgroundAllInverse },
+  { bg: '#e83828', fg: '#ffffff', highlightStyle: HighlightStyle.UnderlineWavy },
+  { bg: '#e61673', fg: '#ffffff', highlightStyle: HighlightStyle.UnderlineWavy },
+  { bg: '#ff9676', fg: '#3e4959', highlightStyle: HighlightStyle.Background },
+  { bg: '#e56db1', fg: '#ffffff', highlightStyle: HighlightStyle.UnderlineWavy },
+  { bg: '#be84a3', fg: '#ffffff', highlightStyle: HighlightStyle.BackgroundInverse },
+  { bg: '#ffc845', fg: '#000000', highlightStyle: HighlightStyle.Background },
+  { bg: '#dae000', fg: '#ffffff', highlightStyle: HighlightStyle.UnderlineWavy },
+  { bg: '#aa9187', fg: '#efefef', highlightStyle: HighlightStyle.BackgroundInverse },
+  { bg: '#94a596', fg: '#ffffff', highlightStyle: HighlightStyle.BackgroundInverse },
+  { bg: '#003b49', fg: '#ffc845', highlightStyle: HighlightStyle.UnderlineWavy },
+  { bg: '#003b49', fg: '#d0d3d4', highlightStyle: HighlightStyle.BackgroundAllInverse },
+  { bg: '#1b365d', fg: '#d0d3d4', highlightStyle: HighlightStyle.BackgroundAllInverse },
+  { bg: '#f7f3e7', fg: '#514a46', highlightStyle: HighlightStyle.UnderlineWavy },
+  { bg: '#00bfb2', fg: '#000000', highlightStyle: HighlightStyle.UnderlineWavy },
+  { bg: '#d6d2c4', fg: '#000000', highlightStyle: HighlightStyle.BackgroundAllInverse },
+  { bg: '#41b6e6', fg: '#000000', highlightStyle: HighlightStyle.UnderlineWavy },
+  { bg: '#7da1c4', fg: '#000000', highlightStyle: HighlightStyle.BackgroundAllInverse },
 ];
 const minFontSize = 10;
 const maxFontSize = 36;
@@ -156,6 +165,7 @@ const cardTextRef = ref<HTMLElement>();
 const coverImageUrl = ref(props.book.coverImageUrl);
 const cardBackgroundColor = ref(cardThemes[0].bg);
 const cardFontColor = ref(cardThemes[0].fg);
+const highlightStyle = ref(cardThemes[0].highlightStyle);
 const bookmarkCardWidth = ref(bookmarkCardSize.rectangle[0]);
 const bookmarkCardHeight = ref(bookmarkCardSize.rectangle[1]);
 const cardShape = ref<'rectangle' | 'square'>('rectangle');
@@ -251,9 +261,10 @@ function autoFontSize(type?: 'comfortable' | 'maximum'): void {
   fontSize.value = currentFontSize;
 }
 
-function applyTheme(theme: { bg: string; fg: string }): void {
+function applyTheme(theme: BookmarkCardTheme): void {
   cardBackgroundColor.value = theme.bg;
   cardFontColor.value = theme.fg;
+  highlightStyle.value = theme.highlightStyle;
 }
 
 function adjustFontSize(offset: number): void {
