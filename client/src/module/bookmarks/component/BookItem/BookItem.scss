@@ -101,6 +101,12 @@
   }
 }
 
+@media (max-width: 600px) {
+  .book-info {
+    padding-bottom: 40px;
+  }
+}
+
 .book-info-text {
   margin: 0;
   font-size: 16px;
