@@ -4,6 +4,7 @@ import { indexBy } from 'ramda';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import { SettingKey } from '@/enum/setting-key';
 import { isBookmarkUpdated } from '@/services/bookmark/kobo-bookmark-compare.service';
+import { migrateBooksIfNeeds } from '@/services/bookmark/migrate/book-migrate.service';
 import { getSettingFromStorage } from '@/services/setting.service';
 import { deepToRaw } from '@/util/vue-utils';
 
@@ -20,14 +21,17 @@ export async function getBooksFromDb(): Promise<KoboBook[]> {
 
 export async function getAllBooksFromDb(): Promise<KoboBook[]> {
   const db = await getDbInstance();
-  return db.getAll(booksStore);
+  const books = await db.getAll(booksStore);
+  return migrateBooksIfNeeds(books);
 }
 
 export async function getNotArchivedBooksFromDb(): Promise<KoboBook[]> {
   const db = await getDbInstance();
   const index = db.transaction(booksStore, 'readonly').objectStore(booksStore).index('isArchived');
   const cursor = await index.openCursor(IDBKeyRange.only(0));
-  return readAllFromCursor(cursor);
+  let books = await readAllFromCursor(cursor);
+  books = migrateBooksIfNeeds(books);
+  return books;
 }
 
 export async function countAllBooksFromDb(): Promise<number> {

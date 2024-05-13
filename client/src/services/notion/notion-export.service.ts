@@ -116,7 +116,7 @@ async function exportBookmarksToNewPage(
     ...bookToNotionUpdatePageParams(book),
   };
   const detailBlock = bookmarksToNotionPageBookDetail(book);
-  const allBlocks = [...detailBlock, ...bookmarksToNotionBlocks(book.bookmarks)];
+  const allBlocks = [...detailBlock, ...bookmarksToNotionBlocks(book)];
   return createPageAndBlocks(pageParams, allBlocks, (update) => progressCallback((task = update(task))));
 }
 
@@ -146,7 +146,7 @@ async function exportBookmarksToDatabasePage(
     ...bookToNotionUpdatePageParams(book),
     properties: bookToNotionDatabasePageProperties(book),
   };
-  const allBlocks = bookmarksToNotionBlocks(book.bookmarks);
+  const allBlocks = bookmarksToNotionBlocks(book);
   return createPageAndBlocks(pageParams, allBlocks, (update) => progressCallback((task = update(task))));
 }
 
@@ -217,7 +217,7 @@ export async function appendBookmarkToPage(
   progressCallback?: (percentage: number) => void,
 ): Promise<void> {
   const detailBlock = bookmarksToNotionPageBookDetail(book);
-  const allBlocks = [...detailBlock, ...bookmarksToNotionBlocks(book.bookmarks)];
+  const allBlocks = [...detailBlock, ...bookmarksToNotionBlocks(book)];
   const windowedBlocks = splitEvery(100, allBlocks);
   progressCallback?.(0);
   let completedCount = 0;

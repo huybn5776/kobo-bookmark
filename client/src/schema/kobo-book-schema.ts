@@ -23,7 +23,7 @@ export const koboBookChapterSchema: z.ZodSchema<unknown> = z.lazy(() =>
   z.object({
     title: z.string(),
     index: z.number(),
-    parentChapter: koboBookChapterSchema.optional().nullable(),
+    children: z.array(koboBookChapterSchema).optional().nullable(),
   }),
 );
 
@@ -33,9 +33,8 @@ export const notionExportStateSchema = z.object({
 });
 
 export const koboBookmarkChapterSchema = z.object({
-  titles: z.array(z.string()),
-  relatedChapters: z.array(koboBookChapterSchema),
-  parentChapters: z.array(koboBookChapterSchema),
+  relatedChapterIndexes: z.array(z.number()),
+  parentChapterIndexes: z.array(z.number()).optional(),
 });
 
 export const koboBookmarkSchema = z.object({
@@ -60,4 +59,6 @@ export const koboBookSchema = z.object({
   chapters: z.array(koboBookChapterSchema),
   bookmarks: z.array(koboBookmarkSchema),
   notion: notionExportStateSchema.optional().nullable(),
+  version: z.number(),
+  isArchived: z.number(),
 });

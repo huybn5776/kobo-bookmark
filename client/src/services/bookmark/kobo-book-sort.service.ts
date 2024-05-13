@@ -1,4 +1,4 @@
-import { descend, ascend, sortWith } from 'ramda';
+import { descend, ascend, sortWith, isNotNil, isNil } from 'ramda';
 
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import { BookSortingKey } from '@/enum/book-sorting-key';
@@ -47,23 +47,29 @@ export function createBookmarkPositionSortFn<T>(
 }
 
 export function compareChapters(bookmark1: KoboBookmark, bookmark2: KoboBookmark): number {
-  const chapters1 = [...(bookmark1.chapter.parentChapters || []), ...(bookmark1.chapter.relatedChapters || [])];
-  const chapters2 = [...(bookmark2.chapter.parentChapters || []), ...(bookmark2.chapter.relatedChapters || [])];
-  const maxChaptersLength = Math.max(chapters1.length, chapters2.length);
+  const chapterIndexes1 = [
+    ...(bookmark1.chapter.parentChapterIndexes || []),
+    ...(bookmark1.chapter.relatedChapterIndexes || []),
+  ];
+  const chapterIndexes2 = [
+    ...(bookmark2.chapter.parentChapterIndexes || []),
+    ...(bookmark2.chapter.relatedChapterIndexes || []),
+  ];
+  const maxChaptersLength = Math.max(chapterIndexes1.length, chapterIndexes2.length);
 
   for (let i = 0; i < maxChaptersLength; i += 1) {
-    const chapter1 = chapters1[i];
-    const chapter2 = chapters2[i];
-    if (chapter1 && !chapter2) {
+    const chapterIndex1 = chapterIndexes1[i];
+    const chapterIndex2 = chapterIndexes2[i];
+    if (isNotNil(chapterIndex1) && isNil(chapterIndex2)) {
       return 1;
     }
-    if (!chapter1 && chapter2) {
+    if (isNil(chapterIndex1) && isNotNil(chapterIndex2)) {
       return -1;
     }
-    if (chapter1.index === chapter2.index) {
+    if (chapterIndex1 === chapterIndex2) {
       continue;
     }
-    return chapter1.index > chapter2.index ? 1 : -1;
+    return chapterIndex1 > chapterIndex2 ? 1 : -1;
   }
 
   return 0;

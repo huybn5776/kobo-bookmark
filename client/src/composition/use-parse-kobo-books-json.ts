@@ -9,6 +9,7 @@ import MultiLineText from '@/component/MultiLineText/MultiLineText.vue';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBook } from '@/dto/kobo-book';
 import { koboBookSchema } from '@/schema/kobo-book-schema';
+import { migrateBookIfNeeds } from '@/services/bookmark/migrate/book-migrate.service';
 
 export function useParseKoboBooksJson(): { parseBooksJson: (json: string) => Promise<KoboBook[] | null> } {
   const { t } = useI18n<[I18NMessageSchema]>();
@@ -36,7 +37,8 @@ export function useParseKoboBooksJson(): { parseBooksJson: (json: string) => Pro
     const books: KoboBook[] = [];
     for (const jsonObject of jsonArray) {
       try {
-        const book = koboBookSchema.parse(jsonObject) as KoboBook;
+        let book = migrateBookIfNeeds(jsonObject);
+        book = koboBookSchema.parse(book) as KoboBook;
         book.isArchived = 0;
         books.push(book);
       } catch (e) {

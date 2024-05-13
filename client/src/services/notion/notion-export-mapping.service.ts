@@ -6,9 +6,10 @@ import type {
 import { maxBy } from 'ramda';
 
 import { highlightSyntax } from '@/const/consts';
-import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
+import { KoboBook } from '@/dto/kobo-book';
 import { HighlightColor } from '@/enum/highlight-color';
 import { chapterTitleToText } from '@/services/bookmark/bookmark-format.service';
+import { getChapterIndexMap } from '@/services/bookmark/kobo-bookmark.service';
 import { toSyntaxSegment } from '@/util/text-syntax-utils';
 
 type BlockItem = Pick<Extract<BlockObjectRequest, { paragraph: unknown }>, 'paragraph'>;
@@ -81,10 +82,12 @@ export function bookmarksToNotionPageBookDetail(book: KoboBook): BlockObjectRequ
 
 type RichTextItemRequest = BlockItem['paragraph']['rich_text'][0];
 
-export function bookmarksToNotionBlocks(bookmarks: KoboBookmark[]): BlockObjectRequest[] {
+export function bookmarksToNotionBlocks(book: KoboBook): BlockObjectRequest[] {
+  const { bookmarks } = book;
   const divider: BlockObjectRequest = { object: 'block', type: 'divider', divider: {} };
   return bookmarks.flatMap((bookmark, index) => {
-    const chapterText = chapterTitleToText(bookmark.chapter);
+    const chapterIndexMap = getChapterIndexMap(book.chapters);
+    const chapterText = chapterTitleToText(chapterIndexMap, bookmark.chapter);
     const chapterBlock: BlockObjectRequest = {
       paragraph: {
         rich_text: [{ text: { content: chapterText } }],

@@ -5,7 +5,11 @@
     :class="{ 'bookmark-item-focused': focused && readyToRunHighlight }"
     @animationend="emits('highlightAnimationEnd')"
   >
-    <BookmarkChapterView :chapter="bookmark.chapter" :archived="bookmark.isArchived" />
+    <BookmarkChapterView
+      :chapterIndexMap="chapterIndexMap"
+      :chapter="bookmark.chapter"
+      :archived="bookmark.isArchived"
+    />
     <p class="bookmark-text" :class="{ 'bookmark-text-archived': bookmark.isArchived }">
       <span
         :class="{
@@ -59,12 +63,13 @@ import { ref, watch, onMounted, computed } from 'vue';
 import HighlightText from '@/component/HighlightText/HighlightText.vue';
 import { ArchiveIcon, ArchiveRefreshIcon, ShareVariantIcon, PencilIcon } from '@/component/icon';
 import IconButton from '@/component/IconButton/IconButton.vue';
-import { KoboBookmark } from '@/dto/kobo-book';
+import { KoboBookmark, KoboBookChapter } from '@/dto/kobo-book';
 import { BookmarkAction } from '@/enum/bookmark-action';
 import { HighlightColor } from '@/enum/highlight-color';
 import BookmarkChapterView from '@/module/bookmarks/component/BookmarkChapterView/BookmarkChapterView.vue';
 
 const props = defineProps<{
+  chapterIndexMap: Record<number, KoboBookChapter>;
   bookmark: KoboBookmark;
   focused?: boolean;
   search?: string;

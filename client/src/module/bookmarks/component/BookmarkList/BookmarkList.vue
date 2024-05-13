@@ -4,6 +4,7 @@
       <BookmarkItem
         v-if="bookmark.id !== editingBookmarkId"
         ref="bookBookmarkRefs"
+        :chapterIndexMap="chapterIndexMap"
         :bookmark="bookmark"
         :focused="bookmark === focusBookmark"
         :search="search"
@@ -18,6 +19,7 @@
       />
       <BookmarkEditItem
         v-if="bookmark.id === editingBookmarkId"
+        :chapterIndexMap="chapterIndexMap"
         :bookmark="bookmark"
         @cancel="cancelBookmarkEdit"
         @save="saveBookmark"
@@ -34,6 +36,7 @@ import { BookmarkAction } from '@/enum/bookmark-action';
 import { SettingKey } from '@/enum/setting-key';
 import BookmarkEditItem from '@/module/bookmarks/component/BookmarkEditItem/BookmarkEditItem.vue';
 import BookmarkItem from '@/module/bookmarks/component/BookmarkItem/BookmarkItem.vue';
+import { getChapterIndexMap } from '@/services/bookmark/kobo-bookmark.service';
 import { getSettingFromStorage } from '@/services/setting.service';
 import { scrollToElementIfNotInView } from '@/util/dom-utils';
 
@@ -69,6 +72,8 @@ const bookmarksToShow = computed<{ bookmark: KoboBookmark; enabledActions: Bookm
     };
   });
 });
+
+const chapterIndexMap = computed(() => getChapterIndexMap(props.book.chapters));
 
 onMounted(() => focusToBookmark(props.focusBookmark));
 watch(

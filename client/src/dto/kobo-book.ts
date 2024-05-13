@@ -7,6 +7,7 @@ export interface KoboBook {
   chapters: KoboBookChapter[];
   bookmarks: KoboBookmark[];
   notion?: NotionExportState;
+  version: number;
   isArchived: number;
 }
 
@@ -44,14 +45,19 @@ export interface KoboBookmark {
 }
 
 export interface KoboBookmarkChapter {
-  titles: string[];
-  relatedChapters: KoboBookChapter[];
-  parentChapters: KoboBookChapter[];
+  relatedChapterIndexes: number[];
+  parentChapterIndexes?: number[];
+  /** @deprecated */
+  relatedChapters?: KoboBookChapter[];
+  /** @deprecated */
+  parentChapters?: KoboBookChapter[];
 }
 
 export interface KoboBookChapter {
   title: string;
   index: number;
+  children?: KoboBookChapter[];
+  /** @deprecated */
   parentChapter?: KoboBookChapter;
 }
 

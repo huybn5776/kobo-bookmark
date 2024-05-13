@@ -1,6 +1,6 @@
 <template>
   <div class="bookmark-edit-item">
-    <BookmarkChapterView :chapter="bookmark.chapter" />
+    <BookmarkChapterView :chapterIndexMap="chapterIndexMap" :chapter="bookmark.chapter" />
     <NInput
       ref="inputRef"
       v-model:value="text"
@@ -39,13 +39,16 @@ import { NInput } from 'naive-ui';
 import { RestoreIcon, CloseIcon, CheckIcon } from '@/component/icon';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { highlightSyntax } from '@/const/consts';
-import { KoboBookmark } from '@/dto/kobo-book';
+import { KoboBookmark, KoboBookChapter } from '@/dto/kobo-book';
 import BookmarkChapterView from '@/module/bookmarks/component/BookmarkChapterView/BookmarkChapterView.vue';
 import BookmarkEditInstructionButton from '@/module/bookmarks/component/BookmarkEditInstructionButton/BookmarkEditInstructionButton.vue';
 import HighlightColorDropdown from '@/module/bookmarks/component/HighlightColorDropdown/HighlightColorDropdown.vue';
 import { toggleSyntax } from '@/util/text-syntax-utils';
 
-const props = defineProps<{ bookmark: KoboBookmark }>();
+const props = defineProps<{
+  chapterIndexMap: Record<number, KoboBookChapter>;
+  bookmark: KoboBookmark;
+}>();
 const emits = defineEmits<{
   (e: 'revert'): void;
   (e: 'cancel'): void;

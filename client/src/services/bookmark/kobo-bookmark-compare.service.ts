@@ -1,5 +1,5 @@
 import equal from 'fast-deep-equal';
-import { indexBy } from 'ramda';
+import { indexBy, equals } from 'ramda';
 
 import { KoboBook, KoboBookmark, KoboBookChanges, KoboBookmarkChanges, KoboBookmarkChangesType } from '@/dto/kobo-book';
 
@@ -93,6 +93,7 @@ export function isBookmarkUpdated(originalBookmark: KoboBookmark, currentBookmar
   return (
     originalBookmark.updatedAt.getTime() !== currentBookmark.updatedAt.getTime() ||
     textChanged ||
-    originalBookmark.annotation !== currentBookmark.annotation
+    originalBookmark.annotation !== currentBookmark.annotation ||
+    !equals(originalBookmark.chapter, currentBookmark.chapter)
   );
 }

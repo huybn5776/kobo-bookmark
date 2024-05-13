@@ -8,15 +8,58 @@
     "isSideLoaded": true
   },
   "coverImageUrl": "https://books.google.com/books/content?id=ST-ZDwAAQBAJ&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api",
-  "chapters": [],
+  "chapters": [
+    { "title": "書封", "index": 0 },
+    { "title": "目錄", "index": 1 },
+    { "title": "作者簡介", "index": 2 },
+    { "title": "譯者簡介", "index": 3 },
+    { "title": "〈推薦序〉一本可以實際運用的習慣改變指南　　艾爾文", "index": 4 },
+    { "title": "〈推薦序〉別挑戰人性，培養好習慣不靠「意志力」　　溫美玉", "index": 5 },
+    { "title": "〈推薦序〉原子習慣威力無窮　　謝文憲", "index": 6 },
+    { "title": "〈前言〉原子習慣改變了我的人生", "index": 7 },
+    { "title": "︱基本原理︱為何細微改變會帶來巨大差異？", "index": 8 },
+    { "title": "1 原子習慣的驚人力量", "index": 9 },
+    { "title": "2 改變習慣最有效的方法，是改變身分認同", "index": 10 },
+    { "title": "3 四個簡單的步驟，讓你建立更好的習慣", "index": 11 },
+    { "title": "︱法則1︱讓提示顯而易見", "index": 12 },
+    { "title": "4 行為改變的過程始於覺察", "index": 13 },
+    { "title": "5 開始一個新習慣最好的方法", "index": 14 },
+    { "title": "6 激勵被高估了，環境往往更重要", "index": 15 },
+    { "title": "7 自制力的祕密", "index": 16 },
+    { "title": "︱法則2︱讓習慣有吸引力", "index": 17 },
+    { "title": "8 如何讓習慣變得難以抗拒", "index": 18 },
+    { "title": "9 家人與朋友如何形塑你的習慣", "index": 19 },
+    { "title": "10 如何找出並解決壞習慣的成因", "index": 20 },
+    { "title": "︱法則3︱讓行動輕而易舉", "index": 21 },
+    { "title": "11 精通習慣由重複開始，而非完美", "index": 22 },
+    { "title": "12 最小努力原則", "index": 23 },
+    { "title": "13 如何運用「兩分鐘法則」停止拖延", "index": 24 },
+    { "title": "14 如何讓好習慣變得無可避免，讓壞習慣不可能發生", "index": 25 },
+    { "title": "︱法則4︱讓獎賞令人滿足", "index": 26 },
+    { "title": "15 行為改變的基本原則", "index": 27 },
+    { "title": "16 如何每天堅持好習慣", "index": 28 },
+    { "title": "17 問責夥伴作用大", "index": 29 },
+    { "title": "︱進階策略︱如何從「A」到「A+」", "index": 30 },
+    { "title": "18 基因如何影響習慣的養成", "index": 31 },
+    { "title": "19 金髮女孩原則：如何在生活與工作中維持動力", "index": 32 },
+    { "title": "20 建立好習慣的壞處", "index": 33 },
+    { "title": "〈結語〉讓成果永續的祕訣", "index": 34 },
+    { "title": "〈附錄〉來自行為改變四法則的一些啟示", "index": 35 },
+    { "title": "〈範例〉1. 習慣計分卡", "index": 36 },
+    { "title": "〈範例〉2. 執行意向", "index": 37 },
+    { "title": "〈範例〉3. 習慣堆疊", "index": 38 },
+    { "title": "〈範例〉4. 習慣追蹤", "index": 39 },
+    { "title": "〈範例〉5. 習慣契約", "index": 40 },
+    { "title": "原子習慣的商業運用手冊", "index": 41 },
+    { "title": "原子習慣的教養運用手冊", "index": 42 },
+    { "title": "版權頁", "index": 43 }
+  ],
   "bookmarks": [
     {
       "id": "1",
       "text": "幫助我們建立更好習慣的簡單規則：一，讓提示顯而易見；二，讓習慣有吸引力；三，讓行動輕而易舉；四，讓獎賞令人滿足。",
       "chapter": {
-        "titles": ["3 四個簡單的步驟，讓你建立更好的習慣"],
-        "relatedChapters": [{ "title": "3 四個簡單的步驟，讓你建立更好的習慣", "index": 11 }],
-        "parentChapters": []
+        "relatedChapterIndexes": [11]
       },
       "chapterProgress": 0.9545454545454546,
       "startContainerPath": "",
@@ -29,9 +72,7 @@
       "id": "2",
       "text": "執行一項習慣的時間長短，不如__執行該習慣的次數__多寡重要。",
       "chapter": {
-        "titles": ["11 精通習慣由重複開始，而非完美"],
-        "relatedChapters": [{ "title": "11 精通習慣由重複開始，而非完美", "index": 22 }],
-        "parentChapters": []
+        "relatedChapterIndexes": [22]
       },
       "chapterProgress": 1,
       "startContainerPath": "",
@@ -40,5 +81,6 @@
       "updatedAt": "2000-01-01T00:00:00.000Z"
     }
   ],
+  "version": 1,
   "isArchived": 0
 }

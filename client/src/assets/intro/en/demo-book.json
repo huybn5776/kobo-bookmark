@@ -8,21 +8,92 @@
     "isSideLoaded": true
   },
   "coverImageUrl": "https://books.google.com/books/content?id=fFCjDQAAQBAJ&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api",
-  "chapters": [],
+  "chapters": [
+    { "title": "Cover", "index": 0 },
+    { "title": "Title Page", "index": 1 },
+    { "title": "Copyright", "index": 2 },
+    { "title": "Epigraph", "index": 3 },
+    { "title": "Contents", "index": 4 },
+    { "title": "Introduction: My Story", "index": 5 },
+    {
+      "title": "THE FUNDAMENTALS: Why Tiny Changes Make a Big Difference",
+      "index": 6,
+      "children": [
+        { "title": "1: The Surprising Power of Atomic Habits", "index": 7 },
+        { "title": "2: How Your Habits Shape Your Identity (and Vice Versa)", "index": 8 },
+        { "title": "3: How to Build Better Habits in 4 Simple Steps", "index": 9 }
+      ]
+    },
+    {
+      "title": "THE 1ST LAW: Make It Obvious",
+      "index": 10,
+      "children": [
+        { "title": "4: The Man Who Didn’t Look Right", "index": 11 },
+        { "title": "5: The Best Way to Start a New Habit", "index": 12 },
+        { "title": "6: Motivation Is Overrated; Environment Often Matters More", "index": 13 },
+        { "title": "7: The Secret to Self-Control", "index": 14 }
+      ]
+    },
+    {
+      "title": "THE 2ND LAW: Make It Attractive",
+      "index": 15,
+      "children": [
+        { "title": "8: How to Make a Habit Irresistible", "index": 16 },
+        { "title": "9: The Role of Family and Friends in Shaping Your Habits", "index": 17 },
+        { "title": "10: How to Find and Fix the Causes of Your Bad Habits", "index": 18 }
+      ]
+    },
+    {
+      "title": "THE 3RD LAW: Make It Easy",
+      "index": 19,
+      "children": [
+        { "title": "11: Walk Slowly, but Never Backward", "index": 20 },
+        { "title": "12: The Law of Least Effort", "index": 21 },
+        { "title": "13: How to Stop Procrastinating by Using the Two-Minute Rule", "index": 22 },
+        { "title": "14: How to Make Good Habits Inevitable and Bad Habits Impossible", "index": 23 }
+      ]
+    },
+    {
+      "title": "THE 4TH LAW: Make It Satisfying",
+      "index": 24,
+      "children": [
+        { "title": "15: The Cardinal Rule of Behavior Change", "index": 25 },
+        { "title": "16: How to Stick with Good Habits Every Day", "index": 26 },
+        { "title": "17: How an Accountability Partner Can Change Everything", "index": 27 }
+      ]
+    },
+    {
+      "title": "ADVANCED TACTICS: How to Go from Being Merely Good to Being Truly Great",
+      "index": 28,
+      "children": [
+        { "title": "18: The Truth About Talent (When Genes Matter and When They Don’t)", "index": 29 },
+        { "title": "19: The Goldilocks Rule: How to Stay Motivated in Life and Work", "index": 30 },
+        { "title": "20: The Downside of Creating Good Habits", "index": 31 },
+        { "title": "Conclusion: The Secret to Results That Last", "index": 32 }
+      ]
+    },
+    {
+      "title": "Appendix",
+      "index": 33,
+      "children": [
+        { "title": "What Should You Read Next?", "index": 34 },
+        { "title": "Little Lessons from the Four Laws", "index": 35 },
+        { "title": "How to Apply These Ideas to Business", "index": 36 },
+        { "title": "How to Apply These Ideas to Parenting", "index": 37 }
+      ]
+    },
+    { "title": "Acknowledgments", "index": 38 },
+    { "title": "Notes", "index": 39 },
+    { "title": "Index", "index": 40 },
+    { "title": "About the Author", "index": 41 }
+  ],
   "bookmarks": [
     {
       "id": "1",
       "text": "set of rules we can use to build better habits. They are (1) make it obvious, (2) make it attractive, (3) make it easy, and (4) make it satisfying.",
       "chapter": {
-        "titles": ["3: How to Build Better Habits in 4 Simple Steps"],
-        "relatedChapters": [
-          {
-            "title": "3: How to Build Better Habits in 4 Simple Steps",
-            "index": 9,
-            "parentChapter": { "title": "THE FUNDAMENTALS: Why Tiny Changes Make a Big Difference", "index": 6 }
-          }
-        ],
-        "parentChapters": [{ "title": "THE FUNDAMENTALS: Why Tiny Changes Make a Big Difference", "index": 6 }]
+        "relatedChapterIndexes": [9],
+        "parentChapterIndexes": [6]
       },
       "chapterProgress": 1,
       "startContainerPath": "",
@@ -36,14 +107,8 @@
       "text": "The amount of time you have been performing a habit is not as important as the __number of times you have performed__ it.",
       "chapter": {
         "titles": ["11: Walk Slowly, but Never Backward"],
-        "relatedChapters": [
-          {
-            "title": "11: Walk Slowly, but Never Backward",
-            "index": 20,
-            "parentChapter": { "title": "THE 3RD LAW: Make It Easy", "index": 19 }
-          }
-        ],
-        "parentChapters": [{ "title": "THE 3RD LAW: Make It Easy", "index": 19 }]
+        "relatedChapterIndexes": [20],
+        "parentChapterIndexes": [19]
       },
       "chapterProgress": 1,
       "startContainerPath": "",
@@ -52,5 +117,6 @@
       "updatedAt": "2000-01-01T00:00:00.000Z"
     }
   ],
+  "version": 1,
   "isArchived": 0
 }
