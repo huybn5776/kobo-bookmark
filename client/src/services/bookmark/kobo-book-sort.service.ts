@@ -2,6 +2,7 @@ import { descend, ascend, sortWith, isNotNil, isNil } from 'ramda';
 
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import { BookSortingKey } from '@/enum/book-sorting-key';
+import { BookSortingPriorityKey } from '@/enum/book-sorting-priority-key';
 import { BookmarkSortingKey } from '@/enum/bookmark-sorting-key';
 
 export function sortKoboBooks(books: KoboBook[], sorting: BookSortingKey[]): KoboBook[] {
@@ -12,6 +13,16 @@ export function sortKoboBooks(books: KoboBook[], sorting: BookSortingKey[]): Kob
     sorting.includes(BookSortingKey.BookName) ? [ascend((book) => book.info.title ?? '')] : [],
     sorting.includes(BookSortingKey.Author) ? [ascend((book) => book.info.author ?? '')] : [],
     sorting.includes(BookSortingKey.Series) ? [ascend((book) => book.info.series ?? '')] : [],
+  ];
+  return sortWith(
+    sortFns.flatMap((s) => s),
+    books,
+  );
+}
+
+export function sortKoboBooksByTag(books: KoboBook[], priorityKey: BookSortingPriorityKey | undefined): KoboBook[] {
+  const sortFns: ((a: KoboBook, b: KoboBook) => number)[][] = [
+    priorityKey === BookSortingPriorityKey.Stared ? [descend((book) => book.tags?.star ?? 0)] : [],
   ];
   return sortWith(
     sortFns.flatMap((s) => s),

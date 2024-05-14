@@ -17,17 +17,42 @@ import { useI18n } from 'vue-i18n';
 import { SortIcon } from '@/component/icon';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { BookSortingKey } from '@/enum/book-sorting-key';
+import { BookSortingPriorityKey } from '@/enum/book-sorting-priority-key';
 import { BookmarkSortingKey } from '@/enum/bookmark-sorting-key';
 
 defineProps<{ disabled?: boolean }>();
+const bookSortingPriorityModel = defineModel<BookSortingPriorityKey>('bookSortingPriority');
 const bookSortingModel = defineModel<BookSortingKey>('bookSorting');
 const bookmarkSortingModel = defineModel<BookmarkSortingKey>('bookmarkSorting');
 
-const selectValue = computed(() => [`book-${bookSortingModel.value}`, `bookmark-${bookmarkSortingModel.value}`]);
+const selectValue = computed(() => [
+  `book-priority-${bookSortingPriorityModel.value}`,
+  `book-${bookSortingModel.value}`,
+  `bookmark-${bookmarkSortingModel.value}`,
+]);
 
 const { t } = useI18n<[I18NMessageSchema]>();
 
-const options: SelectGroupOption[] = [
+const options = computed<SelectGroupOption[]>(() => [
+  {
+    key: 'book-priority',
+    type: 'group',
+    label: t('page.bookmarks.book_priority'),
+    children: [
+      {
+        parent: 'book-priority',
+        label: t('page.bookmarks.book_priority_none'),
+        value: `book-priority-${BookSortingPriorityKey.None}`,
+        sort: BookSortingPriorityKey.None,
+      },
+      {
+        parent: 'book-priority',
+        label: t('page.bookmarks.book_priority_started'),
+        value: `book-priority-${BookSortingPriorityKey.Stared}`,
+        sort: BookSortingPriorityKey.Stared,
+      },
+    ],
+  },
   {
     key: 'book',
     type: 'group',
@@ -90,17 +115,27 @@ const options: SelectGroupOption[] = [
       },
     ],
   },
-];
+]);
 function onSelect(
   _: string,
-  selectedOptions: (SelectOption & { parent: 'book' | 'bookmark'; sort: BookSortingKey | BookmarkSortingKey })[],
+  selectedOptions: (SelectOption & {
+    parent: 'book-priority' | 'book' | 'bookmark';
+    sort: BookSortingPriorityKey | BookSortingKey | BookmarkSortingKey;
+  })[],
 ): void {
   for (const option of selectedOptions) {
-    const { parent, sort } = option;
-    if (parent === 'book') {
-      bookSortingModel.value = sort as BookSortingKey;
-    } else if (parent === 'bookmark') {
-      bookmarkSortingModel.value = sort as BookmarkSortingKey;
+    switch (option.parent) {
+      case 'book-priority':
+        bookSortingPriorityModel.value = option.sort as BookSortingPriorityKey;
+        break;
+      case 'book':
+        bookSortingModel.value = option.sort as BookSortingKey;
+        break;
+      case 'bookmark':
+        bookmarkSortingModel.value = option.sort as BookmarkSortingKey;
+        break;
+      default:
+        break;
     }
   }
 }

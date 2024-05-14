@@ -38,6 +38,7 @@
         />
         <BookmarkSortingDropdown
           v-if="!bookmarkSearchActive"
+          v-model:bookSortingPriority="bookSortingPriority"
           v-model:bookSorting="bookSorting"
           v-model:bookmarkSorting="bookmarkSorting"
         />
@@ -65,6 +66,7 @@
         @textExportClick="exportBookmarkToText"
         @markdownExportClick="exportBookmarkToMarkdown"
         @notionExportClick="exportBookmarkToNotion"
+        @bookStarClick="toggleBookStar"
         @bookCoverImageUpdated="(v) => updateBookCoverImage(book, v)"
         @bookArchiveClick="archiveBook"
         @shareClick="openShareBooksWithDropboxDialog([book])"
@@ -121,8 +123,6 @@ import { useSyncSetting } from '@/composition/use-sync-setting';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { BookmarkShare } from '@/dto/bookmark-share';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
-import { BookSortingKey } from '@/enum/book-sorting-key';
-import { BookmarkSortingKey } from '@/enum/bookmark-sorting-key';
 import { CheckboxState } from '@/enum/checkbox-state';
 import { HighlightColor } from '@/enum/highlight-color';
 import { SettingKey } from '@/enum/setting-key';
@@ -137,11 +137,12 @@ import BookmarkSortingDropdown from '@/module/bookmarks/component/BookmarkSortin
 import MultiBookActionBar from '@/module/bookmarks/component/MultiBookActionBar/MultiBookActionBar.vue';
 import ToolbarPinToggle from '@/module/bookmarks/component/ToolbarPinToggle/ToolbarPinToggle.vue';
 import { useBookBookmarkArchive } from '@/module/bookmarks/composition/use-book-bookmark-archive';
+import { useBookSorting } from '@/module/bookmarks/composition/use-book-sorting';
 import { useMultiBookActions } from '@/module/bookmarks/composition/use-multi-book-actions';
 import { useShareBookDialog } from '@/module/bookmarks/composition/use-share-book-dialog';
+import { useUpdateBook } from '@/module/bookmarks/composition/use-update-book';
 import { findCoverImageForBook } from '@/services/bookmark/book-cover.service';
 import { getBooksFromDb, putBooksToDb, updateBookmarkByPatch } from '@/services/bookmark/bookmark-manage.service';
-import { sortKoboBooks, sortKoboBookmarks } from '@/services/bookmark/kobo-book-sort.service';
 import { getBookmarksShareFromDropboxShareId } from '@/services/dropbox/dropbox.service';
 import { bookmarkToText, bookmarkToMarkdown } from '@/services/export/bookmark-export.service';
 import { handleNotionApiError } from '@/services/notion/notion-api-error-handing.service';
@@ -160,8 +161,6 @@ const loadingBooks = ref<boolean>(false);
 const pageResultMessage = ref<string>();
 
 const allBooks = ref<KoboBook[]>([]);
-const bookSorting = useSyncSetting(SettingKey.BookSorting, BookSortingKey.LastBookmark);
-const bookmarkSorting = useSyncSetting(SettingKey.BookmarkSorting, BookmarkSortingKey.Position);
 const bookBookmarkRefs = ref<InstanceType<typeof BookBookmark>[]>([]);
 const bookmarkSearchActive = ref<boolean>(false);
 const bookmarkSearch = ref<string>();
@@ -171,23 +170,13 @@ const pendingExportRequest = ref<Promise<void>>();
 const bookExportTasks = ref<BookExportTask[]>([]);
 const lastTaskId = ref<number>(0);
 
-const sortedBooks = computed(() => {
-  if (!allBooks.value) {
-    return [];
-  }
-  let books = sortKoboBooks(allBooks.value, bookSorting.value ? [bookSorting.value] : []);
-  books = books.map((book) => {
-    return {
-      ...book,
-      bookmarks: bookmarkProcess(book),
-    };
-  });
-  return books;
+const { bookSortingPriority, bookSorting, bookmarkSorting, sortedBooks, keepSortingOnce } = useBookSorting({
+  allBooks,
 });
-
 const { archiveBook, cancelArchiveBook, archiveBookmark, cancelArchiveBookmark } = useBookBookmarkArchive({
   reloadBooks,
 });
+const { updateBookById, toggleBookStar, updateBookCoverImage } = useUpdateBook({ allBooks, keepSortingOnce });
 const { openShareBooksWithDropboxDialog } = useShareBookDialog();
 const { openBookmarkCardDialog } = useBookmarkCardDialog();
 const {
@@ -263,10 +252,6 @@ async function loadBooksFromShareId(shareId: string): Promise<void> {
   allBooks.value = bookmarkShare.value?.books;
 }
 
-function bookmarkProcess(book: KoboBook): KoboBookmark[] {
-  return sortKoboBookmarks(book.bookmarks, bookmarkSorting.value ? [bookmarkSorting.value] : []);
-}
-
 async function fetchMissingBookCoverImageUrl(): Promise<void> {
   if (!allBooks.value?.length) {
     return;
@@ -281,19 +266,6 @@ async function fetchMissingBookCoverImageUrl(): Promise<void> {
       return Promise.resolve();
     }),
   );
-}
-
-function updateBookById(bookId: string, updater: (book: KoboBook) => KoboBook): void {
-  const currentBooks = allBooks.value || [];
-  const indexOfBookToUpdate = currentBooks.findIndex((b) => b.id === bookId);
-  if (indexOfBookToUpdate === -1) {
-    return;
-  }
-  let targetBook = currentBooks[indexOfBookToUpdate];
-  targetBook = updater(targetBook);
-  currentBooks[indexOfBookToUpdate] = targetBook;
-  allBooks.value = currentBooks;
-  putBooksToDb([deepToRaw(targetBook)]);
 }
 
 function exportBookmarkToText(book: KoboBook): void {
@@ -400,11 +372,6 @@ function gotoBookmark(book: KoboBook, bookmark: KoboBookmark): void {
   const bookIndex = booksToShow.value.findIndex((b) => b.id === book.id);
   const bookComponent = bookBookmarkRefs.value[bookIndex];
   bookComponent?.scrollToBookmark(bookmark);
-}
-
-async function updateBookCoverImage(book: KoboBook, coverImageUrl: string): Promise<void> {
-  updateBookById(book.id, (b) => ({ ...b, coverImageUrl }));
-  allBooks.value = await getBooksFromDb();
 }
 
 async function reloadBooks(): Promise<void> {

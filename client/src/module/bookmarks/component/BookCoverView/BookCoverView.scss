@@ -29,16 +29,52 @@
   overflow: hidden;
 }
 
-:deep(.book-cover-edit-button) {
+.book-cover-view-toolbar {
   position: absolute;
   top: 4px;
-  right: 4px;
+  left: 4px;
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  padding: 2px;
+  background-color: rgba(#222, .5);
+  border-radius: 16px;
+  transition: background-color .3s;
+
+  .book-cover-view:not(:hover) & {
+    background-color: transparent;
+  }
+}
+
+.book-cover-star-button {
+  width: 30px;
+  height: 30px;
   padding: 4px;
-  background-color: rgba(#222, .6);
+  transition: all .3s;
+
+  &, &:active, &:focus {
+    background-color: rgba(#222, .7);
+  }
 
   &:hover {
-    background-color: rgba(#222, .9);
+    background-color: #222;
   }
+
+  .book-cover-view:not(:hover) &:not(.book-cover-star-button-started) {
+    opacity: 0;
+  }
+
+  &.book-cover-star-button-started {
+    color: #fff2ac;
+    background-color: rgba(#222, .8);
+    opacity: .8;
+  }
+}
+
+:deep(.book-cover-edit-button) {
+  width: 28px;
+  height: 28px;
+  padding: 4px;
 
   .book-cover-view:not(:hover) & {
     opacity: 0;

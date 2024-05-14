@@ -52,6 +52,10 @@ export const koboBookmarkSchema = z.object({
   editedAt: z.string().pipe(z.coerce.date()).optional().nullable(),
 });
 
+export const koboBookTagsSchema = z.object({
+  star: z.boolean().optional().nullable(),
+});
+
 export const koboBookSchema = z.object({
   id: z.string(),
   info: koboBookInfoSchema,
@@ -59,6 +63,7 @@ export const koboBookSchema = z.object({
   chapters: z.array(koboBookChapterSchema),
   bookmarks: z.array(koboBookmarkSchema),
   notion: notionExportStateSchema.optional().nullable(),
+  tags: koboBookTagsSchema.optional().nullable(),
   version: z.number(),
   isArchived: z.number(),
 });

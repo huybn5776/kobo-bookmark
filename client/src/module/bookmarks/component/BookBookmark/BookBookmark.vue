@@ -13,6 +13,7 @@
       @textExportClick="emits('textExportClick', $event)"
       @markdownExportClick="emits('markdownExportClick', $event)"
       @notionExportClick="emits('notionExportClick', $event)"
+      @bookStarClick="emits('bookStarClick', $event)"
       @bookCoverImageUpdated="emits('bookCoverImageUpdated', $event)"
       @bookArchiveClick="emits('bookArchiveClick', $event)"
       @shareClick="emits('shareClick', $event)"
@@ -57,6 +58,7 @@ const emits = defineEmits<{
   (e: 'textExportClick', value: KoboBook): void;
   (e: 'markdownExportClick', value: KoboBook): void;
   (e: 'notionExportClick', value: KoboBook): void;
+  (e: 'bookStarClick', value: KoboBook): void;
   (e: 'bookCoverImageUpdated', value: string): void;
   (e: 'bookArchiveClick', value: KoboBook): void;
   (e: 'bookCancelArchive', value: KoboBook): void;

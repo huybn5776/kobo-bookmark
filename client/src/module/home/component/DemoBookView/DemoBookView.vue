@@ -7,6 +7,7 @@
         :enabledActions="enabledBookActions"
         @textExportClick="exportBookmarkToText"
         @markdownExportClick="exportBookmarkToMarkdown"
+        @bookStarClick="toggleBookStar(book)"
         @bookCoverImageUpdated="updateBookCoverImage(book, $event)"
       />
       <BookmarkList
@@ -65,6 +66,15 @@ function exportBookmarkToText(book: KoboBook): void {
 function exportBookmarkToMarkdown(book: KoboBook): void {
   const content = bookmarkToMarkdown([book]);
   textToFileDownload(content, `${book.info.title}.md`, 'text/markdown');
+}
+
+async function toggleBookStar(book: KoboBook): Promise<void> {
+  const indexToUpdate = allBooks.value.findIndex((b) => b.id === book.id);
+  if (indexToUpdate === -1) {
+    return;
+  }
+  const bookToUpdate = allBooks.value[indexToUpdate];
+  allBooks.value[indexToUpdate] = { ...bookToUpdate, tags: { star: !bookToUpdate.tags?.star } };
 }
 
 async function updateBookCoverImage(book: KoboBook, coverImageUrl: string): Promise<void> {

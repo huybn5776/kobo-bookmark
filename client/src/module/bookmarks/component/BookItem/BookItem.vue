@@ -1,6 +1,10 @@
 <template>
   <div class="book-header">
-    <BookCoverView :book="book" @coverImageUpdated="(v) => emits('bookCoverImageUpdated', v)" />
+    <BookCoverView
+      :book="book"
+      @starClick="emits('bookStarClick', book)"
+      @coverImageUpdated="(v) => emits('bookCoverImageUpdated', v)"
+    />
     <div class="book-section">
       <h2 class="book-title">
         <button
@@ -131,6 +135,7 @@ const emits = defineEmits<{
   (e: 'textExportClick', value: KoboBook): void;
   (e: 'markdownExportClick', value: KoboBook): void;
   (e: 'notionExportClick', value: KoboBook): void;
+  (e: 'bookStarClick', value: KoboBook): void;
   (e: 'bookCoverImageUpdated', value: string): void;
   (e: 'bookArchiveClick', value: KoboBook): void;
   (e: 'bookCancelArchive', value: KoboBook): void;

@@ -7,18 +7,34 @@
       </span>
     </div>
 
-    <IconButton class="book-cover-edit-button" i18n-key="common.change_image" @click="showChangeCoverImageDialog">
-      <ImageEditIcon class="book-cover-edit-icon" />
-    </IconButton>
+    <div class="book-cover-view-toolbar">
+      <NButton
+        class="book-cover-toolbar-button book-cover-star-button"
+        :class="{ 'book-cover-star-button-started': book.tags?.star }"
+        secondary
+        round
+        @click="emits('starClick')"
+      >
+        <StarIcon v-if="book.tags?.star" class="icon-24" />
+        <StarOutlineIcon v-if="!book.tags?.star" class="icon-24" />
+      </NButton>
+      <IconButton
+        class="book-cover-toolbar-button book-cover-edit-button"
+        i18nKey="common.change_image"
+        @click="showChangeCoverImageDialog"
+      >
+        <ImageEditIcon class="book-cover-edit-icon" />
+      </IconButton>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import * as E from 'fp-ts/Either';
-import { NImage, useMessage } from 'naive-ui';
+import { NImage, useMessage, NButton } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 
-import { ImageEditIcon } from '@/component/icon';
+import { StarIcon, StarOutlineIcon, ImageEditIcon } from '@/component/icon';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { useInputDialog } from '@/composition/use-input-dialog';
 import { I18NMessageSchema } from '@/config/i18n-config';
@@ -26,7 +42,7 @@ import { KoboBook } from '@/dto/kobo-book';
 import { processImageUrl } from '@/services/bookmark/book-cover.service';
 
 const props = defineProps<{ book: KoboBook }>();
-const emits = defineEmits<{ (e: 'coverImageUpdated', value: string): void }>();
+const emits = defineEmits<{ (e: 'starClick'): void; (e: 'coverImageUpdated', value: string): void }>();
 
 const { t } = useI18n<[I18NMessageSchema]>();
 

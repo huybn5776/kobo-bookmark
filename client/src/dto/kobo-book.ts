@@ -7,6 +7,7 @@ export interface KoboBook {
   chapters: KoboBookChapter[];
   bookmarks: KoboBookmark[];
   notion?: NotionExportState;
+  tags?: KoboBookTag;
   version: number;
   isArchived: number;
 }
@@ -64,6 +65,10 @@ export interface KoboBookChapter {
 export interface NotionExportState {
   lastPageId?: string;
   lastDatabasePageId?: string;
+}
+
+export interface KoboBookTag {
+  star?: boolean;
 }
 
 export interface KoboBookChanges {
