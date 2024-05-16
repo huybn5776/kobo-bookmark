@@ -33,8 +33,11 @@
         <ToolbarPinToggle v-if="!bookmarkSearchActive" v-model:pin="toolbarPinned" />
         <BookmarkFilterDropdown
           v-if="!bookmarkSearchActive"
+          v-model:collection="bookCollectionIdFilter"
           v-model:colors="highlightColorFilter"
           :disabled="!allBooks.length"
+          @createCollectionClick="handleCreateCollection"
+          @editCollectionClick="handleEditCollection"
         />
         <BookmarkSortingDropdown
           v-if="!bookmarkSearchActive"
@@ -124,7 +127,6 @@ import { I18NMessageSchema } from '@/config/i18n-config';
 import { BookmarkShare } from '@/dto/bookmark-share';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import { CheckboxState } from '@/enum/checkbox-state';
-import { HighlightColor } from '@/enum/highlight-color';
 import { SettingKey } from '@/enum/setting-key';
 import { BookExportTask, BookExportState } from '@/interface/book-export-task';
 import { useBookmarkCardDialog } from '@/module/bookmark-card-dialog/composition/use-bookmark-card-dialog';
@@ -137,7 +139,9 @@ import BookmarkSortingDropdown from '@/module/bookmarks/component/BookmarkSortin
 import MultiBookActionBar from '@/module/bookmarks/component/MultiBookActionBar/MultiBookActionBar.vue';
 import ToolbarPinToggle from '@/module/bookmarks/component/ToolbarPinToggle/ToolbarPinToggle.vue';
 import { useBookBookmarkArchive } from '@/module/bookmarks/composition/use-book-bookmark-archive';
+import { useBookFilter } from '@/module/bookmarks/composition/use-book-filter';
 import { useBookSorting } from '@/module/bookmarks/composition/use-book-sorting';
+import { useManageBookCollection } from '@/module/bookmarks/composition/use-manage-book-collection';
 import { useMultiBookActions } from '@/module/bookmarks/composition/use-multi-book-actions';
 import { useShareBookDialog } from '@/module/bookmarks/composition/use-share-book-dialog';
 import { useUpdateBook } from '@/module/bookmarks/composition/use-update-book';
@@ -165,13 +169,15 @@ const bookBookmarkRefs = ref<InstanceType<typeof BookBookmark>[]>([]);
 const bookmarkSearchActive = ref<boolean>(false);
 const bookmarkSearch = ref<string>();
 const toolbarPinned = useSyncSetting(SettingKey.BookmarksToolbarPinned);
-const highlightColorFilter = ref<HighlightColor[]>([]);
 const pendingExportRequest = ref<Promise<void>>();
 const bookExportTasks = ref<BookExportTask[]>([]);
 const lastTaskId = ref<number>(0);
 
 const { bookSortingPriority, bookSorting, bookmarkSorting, sortedBooks, keepSortingOnce } = useBookSorting({
   allBooks,
+});
+const { bookCollectionIdFilter, highlightColorFilter, booksToShow } = useBookFilter({
+  books: sortedBooks,
 });
 const { archiveBook, cancelArchiveBook, archiveBookmark, cancelArchiveBookmark } = useBookBookmarkArchive({
   reloadBooks,
@@ -192,6 +198,7 @@ const {
   archiveSelected,
   deleteSelected,
 } = useMultiBookActions({ allBooks: sortedBooks, reloadBooks });
+const { handleCreateCollection, handleEditCollection } = useManageBookCollection({ allBooks });
 useBookBookmarkArchive({ reloadBooks });
 const { checkIsNotionReady } = useCheckNotionToken();
 
@@ -216,19 +223,20 @@ watchEffect(async () => {
 watchEffect(() => (bookmarkSearchActive.value ? (selectedBooks.value = []) : undefined));
 watchEffect(() => (selectedBooks.value.length ? (bookmarkSearchActive.value = false) : undefined));
 
-const booksToShow = computed(() => {
-  const colors = highlightColorFilter.value;
-  if (!colors.length) {
-    return sortedBooks.value;
-  }
-  return sortedBooks.value.flatMap((book) => {
-    const bookmarks = book.bookmarks.filter((bookmark) => bookmark.color && colors.includes(bookmark.color));
-    return bookmarks.length ? [{ ...book, bookmarks }] : [];
-  });
-});
 watchEffect(() => {
-  pageResultMessage.value =
-    allBooks.value.length && !booksToShow.value.length ? t('page.bookmarks.no_matching_bookmarks') : undefined;
+  let message: string | undefined;
+  if (allBooks.value.length && !booksToShow.value.length) {
+    if (highlightColorFilter.value.length) {
+      message = t('page.bookmarks.no_matching_bookmarks');
+    } else if (bookCollectionIdFilter.value) {
+      message = t('page.bookmarks.no_books_in_selected_book_collection');
+    } else {
+      message = t('page.bookmarks.no_matching_bookmarks');
+    }
+  } else {
+    message = undefined;
+  }
+  pageResultMessage.value = message;
 });
 
 async function loadBooks(): Promise<void> {

@@ -16,6 +16,17 @@ const notionOauthResponseSchema = z.object({
   duplicated_template_id: z.string().optional().nullable(),
 });
 
+const bookCollectionSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  bookIds: z.array(z.string()),
+  updatedAt: z.string().pipe(z.coerce.date()).optional().nullable(),
+});
+const bookCollectionsSchema = z.object({
+  collections: z.array(bookCollectionSchema),
+  updatedAt: z.string().pipe(z.coerce.date()).optional().nullable(),
+});
+
 const dropboxTokenSchema = z.object({
   accessToken: z.string(),
   accountId: z.string(),
@@ -29,6 +40,7 @@ const dropboxTokenSchema = z.object({
 export const settingValueSchema = z.object({
   [SettingKey.ImportDataInstructionCollapsed]: z.boolean().optional().nullable(),
   [SettingKey.BookmarksToolbarPinned]: z.boolean().optional().nullable(),
+  [SettingKey.BookCollection]: bookCollectionsSchema.optional().nullable(),
   [SettingKey.BookSortingPriority]: z.nativeEnum(BookSortingPriorityKey).optional().nullable(),
   [SettingKey.BookSorting]: z.nativeEnum(BookSortingKey).optional().nullable(),
   [SettingKey.BookmarkSorting]: z.nativeEnum(BookmarkSortingKey).optional().nullable(),

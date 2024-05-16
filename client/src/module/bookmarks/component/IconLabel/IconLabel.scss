@@ -1,0 +1,22 @@
+.icon-label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.icon-label-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  margin: 2px 0;
+  border-radius: 50%;
+  transition: background-color .2s;
+
+  &.icon-label-clickable {
+    &:hover {
+      background-color: rgba(white, .2);
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import type { OauthTokenResponse } from '@notionhq/client/build/src/api-endpoints';
 
+import { BookCollections } from '@/dto/book-collection';
 import { BookSortingKey } from '@/enum/book-sorting-key';
 import { BookSortingPriorityKey } from '@/enum/book-sorting-priority-key';
 import { BookmarkSortingKey } from '@/enum/bookmark-sorting-key';
@@ -11,6 +12,7 @@ import { DropboxTokenInfo } from '@/interface/dropbox-token-info';
 export enum SettingKey {
   ImportDataInstructionCollapsed = 'import-data-instruction-collapsed',
   BookmarksToolbarPinned = 'bookmarks-toolbar-pinned',
+  BookCollection = 'book-collection',
   BookSortingPriority = `book-sorting-priority`,
   BookSorting = 'book-sorting',
   BookmarkSorting = 'bookmark-sorting',
@@ -33,6 +35,7 @@ export enum SettingKey {
 export type SettingValueType = {
   [SettingKey.ImportDataInstructionCollapsed]: boolean;
   [SettingKey.BookmarksToolbarPinned]: boolean;
+  [SettingKey.BookCollection]: BookCollections;
   [SettingKey.BookSortingPriority]: BookSortingPriorityKey;
   [SettingKey.BookSorting]: BookSortingKey;
   [SettingKey.BookmarkSorting]: BookmarkSortingKey;

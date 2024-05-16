@@ -1,0 +1,42 @@
+.edit-book-collection-dialog-row {
+  display: block;
+  font-size: 15px;
+
+  & + & {
+    margin-top: 16px;
+  }
+}
+
+.book-collection-container {
+  margin-top: 8px;
+}
+
+.book-collection-placeholder {
+  margin-left: 4px;
+  color: gray;
+}
+
+.book-collection-name {
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.edit-book-collection-dialog-message {
+  display: flex;
+  align-items: end;
+  justify-content: end;
+  height: 30px;
+  margin: 8px 0 4px 0;
+  color: #e88080;
+}
+
+.edit-book-collection-dialog-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: end;
+}
+
+.edit-book-collection-dialog-delete-button {
+  margin-right: auto;
+}
