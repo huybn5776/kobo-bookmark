@@ -1,4 +1,4 @@
-import { ref, computed, Ref, ComputedRef, h } from 'vue';
+import { ref, computed, Ref, ComputedRef, h, watch } from 'vue';
 
 import { useMessage, useDialog } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
@@ -49,6 +49,14 @@ export function useMultiBookActions({
     return CheckboxState.Indeterminate;
   });
   const showMultiSelectToolbar = computed(() => !!selectedBooks.value.length);
+
+  watch(
+    () => allBooks.value,
+    () => {
+      const allBookIds = new Set(allBooks.value.map((b) => b.id));
+      return (selectedBooks.value = selectedBooks.value.filter((book) => allBookIds.has(book.id)));
+    },
+  );
 
   function handleMasterCheckboxClick(): void {
     switch (selectedBooksCheckState.value) {

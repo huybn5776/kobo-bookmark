@@ -43,7 +43,7 @@
         size="small"
         type="error"
         secondary
-        @click="emits('deleteClick')"
+        @click="emits('deleteClick', bookCollection)"
       >
         <i18n-t keypath="common.delete" />
       </NButton>
@@ -75,9 +75,9 @@ import { sortByList } from '@/util/array-urils';
 import { generateUuid } from '@/util/id-utils';
 import { deepToRaw } from '@/util/vue-utils';
 
-const props = defineProps<{ allBooks: KoboBook[]; collectionId?: string }>();
+const props = defineProps<{ allBooks: KoboBook[]; collectionId?: string; presetBookIds?: string[] }>();
 const emits = defineEmits<{
-  (e: 'deleteClick'): void;
+  (e: 'deleteClick', value: BookCollection): void;
   (e: 'closeClick'): void;
   (e: 'saveClick', value: BookCollection): void;
 }>();
@@ -88,7 +88,7 @@ const bookCollection = ref<BookCollection>(
   getSettingFromStorage(SettingKey.BookCollection)?.collections.find((c) => c.id === props.collectionId) ?? {
     id: generateUuid(),
     name: '',
-    bookIds: [],
+    bookIds: props.presetBookIds || [],
     updatedAt: new Date(),
   },
 );

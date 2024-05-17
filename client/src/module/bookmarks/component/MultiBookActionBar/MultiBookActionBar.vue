@@ -11,6 +11,20 @@
       <IconButton v-if="!readonly" i18nKey="common.delete_selected" @click="emits('deleteClick')">
         <DeleteIcon class="icon-24" />
       </IconButton>
+      <IconButton
+        v-if="!readonly && !collectionFilterEnabled"
+        i18nKey="page.bookmarks.add_to_book_collection"
+        @click="emits('addToCollectionClick')"
+      >
+        <PlaylistPlusIcon class="icon-24" />
+      </IconButton>
+      <IconButton
+        v-if="!readonly && collectionFilterEnabled"
+        i18nKey="page.bookmarks.remove_from_book_collection"
+        @click="emits('removeFromCollectionClick')"
+      >
+        <PlaylistMinusIcon class="icon-24" />
+      </IconButton>
       <IconButton i18nKey="common.export_selected" @click="emits('exportBookFileClick')">
         <ExportIcon class="icon-24" />
       </IconButton>
@@ -32,6 +46,8 @@
 
 <script lang="ts" setup>
 import {
+  PlaylistPlusIcon,
+  PlaylistMinusIcon,
   ArchiveIcon,
   DeleteIcon,
   ExportIcon,
@@ -43,12 +59,19 @@ import {
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { KoboBook } from '@/dto/kobo-book';
 
-defineProps<{ selectedBooks: KoboBook[]; readonly?: boolean; exportNotionLoading?: boolean }>();
+defineProps<{
+  selectedBooks: KoboBook[];
+  readonly?: boolean;
+  collectionFilterEnabled?: boolean;
+  exportNotionLoading?: boolean;
+}>();
 const emits = defineEmits<{
   (e: 'textExportClick'): void;
   (e: 'markdownExportClick'): void;
   (e: 'notionExportClick'): void;
   (e: 'exportBookFileClick'): void;
+  (e: 'addToCollectionClick'): void;
+  (e: 'removeFromCollectionClick'): void;
   (e: 'archiveClick'): void;
   (e: 'deleteClick'): void;
   (e: 'shareClick'): void;

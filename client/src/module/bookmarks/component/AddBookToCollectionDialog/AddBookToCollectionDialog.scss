@@ -1,0 +1,28 @@
+.book-collection-list {
+  padding: 8px 0;
+}
+
+.book-collection {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 8px;
+  font-size: 16px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(white, .1);
+  }
+
+  &.disabled-book-collection {
+    cursor: not-allowed;
+    opacity: .6;
+  }
+}
+
+.add-book-to-collection-dialog-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: end;
+  margin-top: 16px;
+}

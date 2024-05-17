@@ -40,6 +40,8 @@ export { default as NotionIcon } from '@/assets/svg/notion.svg';
 export { default as PencilIcon } from '@/assets/svg/pencil.svg';
 export { default as PinIcon } from '@/assets/svg/pin.svg';
 export { default as PinOffIcon } from '@/assets/svg/pin-off.svg';
+export { default as PlaylistMinusIcon } from '@/assets/svg/playlist-minus.svg';
+export { default as PlaylistPlusIcon } from '@/assets/svg/playlist-plus.svg';
 export { default as PlusIcon } from '@/assets/svg/plus.svg';
 export { default as RectangleOutlineIcon } from '@/assets/svg/rectangle-outline.svg';
 export { default as RestoreIcon } from '@/assets/svg/restore.svg';

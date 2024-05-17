@@ -1,19 +1,30 @@
 import { h, Ref } from 'vue';
 
-import { useDialog , useMessage} from 'naive-ui';
+import { useDialog, useMessage } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 
+import ActionMessage from '@/component/ActionMessage/ActionMessage.vue';
 import { useSyncSetting } from '@/composition/use-sync-setting';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { BookCollection } from '@/dto/book-collection';
 import { KoboBook } from '@/dto/kobo-book';
 import { SettingKey } from '@/enum/setting-key';
+import AddBookToCollectionDialog from '@/module/bookmarks/component/AddBookToCollectionDialog/AddBookToCollectionDialog.vue';
 import EditBookCollectionDialog from '@/module/bookmarks/component/EditBookCollectionDialog/EditBookCollectionDialog.vue';
-import { focusLastButtonOfDialog } from '@/util/dialog-utils';
 
-export function useManageBookCollection({ allBooks }: { allBooks: Ref<KoboBook[]> }): {
+export function useManageBookCollection({
+  allBooks,
+  selectedBookIds,
+  bookCollectionIdFilter,
+}: {
+  allBooks: Ref<KoboBook[]>;
+  selectedBookIds: Ref<string[]>;
+  bookCollectionIdFilter: Ref<string | undefined>;
+}): {
   handleCreateCollection: () => void;
   handleEditCollection: (collectionId: string) => void;
+  removeSelectionFromCollection: () => void;
+  addSelectionToCollection: () => void;
 } {
   const { t } = useI18n<[I18NMessageSchema]>();
   const dialog = useDialog();
@@ -21,7 +32,7 @@ export function useManageBookCollection({ allBooks }: { allBooks: Ref<KoboBook[]
 
   const bookCollections = useSyncSetting(SettingKey.BookCollection);
 
-  function handleCreateCollection(): void {
+  function handleCreateCollection(presetBookIds?: string[]): void {
     const dialogReactive = dialog.create({
       showIcon: false,
       title: t('page.bookmarks.create_collection'),
@@ -29,6 +40,7 @@ export function useManageBookCollection({ allBooks }: { allBooks: Ref<KoboBook[]
       content: () =>
         h(EditBookCollectionDialog, {
           allBooks: allBooks.value,
+          presetBookIds,
           onCloseClick: () => dialogReactive.destroy(),
           onSaveClick: (collection) => {
             upsertBookCollection(collection);
@@ -36,7 +48,6 @@ export function useManageBookCollection({ allBooks }: { allBooks: Ref<KoboBook[]
             dialogReactive.destroy();
           },
         }),
-      onAfterEnter: focusLastButtonOfDialog,
     });
   }
 
@@ -90,5 +101,89 @@ export function useManageBookCollection({ allBooks }: { allBooks: Ref<KoboBook[]
     bookCollections.value = { collections, updatedAt: new Date() };
   }
 
-  return { handleCreateCollection, handleEditCollection };
+  function addSelectionToCollection(): void {
+    const bookIdsToAdd = selectedBookIds.value;
+
+    const dialogReactive = dialog.create({
+      showIcon: false,
+      title: t('page.bookmarks.add_to_book_collection'),
+      style: { width: '600px', maxWidth: '90vw' },
+      content: () =>
+        h(AddBookToCollectionDialog, {
+          bookIds: bookIdsToAdd,
+          bookCollections: bookCollections.value?.collections || [],
+          onCreateCollectionClick: () => {
+            handleCreateCollection(bookIdsToAdd);
+            dialogReactive.destroy();
+          },
+          onCancelClick: () => dialogReactive.destroy(),
+          onCollectionClick: (collection) => {
+            const addedBookIds = addBooksToCollection(bookIdsToAdd, collection.id);
+            message.success(
+              t(
+                'page.bookmarks.books_added_to_collection',
+                [addedBookIds.length, collection.name],
+                addedBookIds.length,
+              ),
+            );
+            dialogReactive.destroy();
+          },
+        }),
+    });
+  }
+
+  function removeSelectionFromCollection(): void {
+    if (!bookCollectionIdFilter.value) {
+      return;
+    }
+    const collection = getCollectionById(bookCollectionIdFilter.value);
+    if (!collection) {
+      return;
+    }
+    const bookIdsToRemove = selectedBookIds.value;
+    removeBooksFromCollection(bookIdsToRemove, bookCollectionIdFilter.value);
+    const messageReactive = message.success(() =>
+      h(ActionMessage, {
+        content: t(
+          'page.bookmarks.books_removed_from_collection',
+          [bookIdsToRemove.length, collection.name],
+          bookIdsToRemove.length,
+        ),
+        action: t('common.undo'),
+        onClick: () => {
+          upsertBookCollection(collection);
+          messageReactive.destroy();
+        },
+      }),
+    );
+  }
+
+  function addBooksToCollection(bookIds: string[], collectionId: string): string[] {
+    const targetCollection = getCollectionById(collectionId);
+    if (!targetCollection) {
+      return [];
+    }
+    const bookIdsToAdd = bookIds.filter((bookId) => !targetCollection.bookIds.includes(bookId));
+    const updatedCollection = { ...targetCollection };
+    updatedCollection.bookIds.push(...bookIdsToAdd);
+    upsertBookCollection(updatedCollection);
+    return bookIdsToAdd;
+  }
+
+  function removeBooksFromCollection(bookIds: string[], collectionId: string): void {
+    const targetCollection = getCollectionById(collectionId);
+    if (!targetCollection) {
+      return;
+    }
+    const updatedCollection = { ...targetCollection };
+    updatedCollection.bookIds = updatedCollection.bookIds.filter((bookId) => !bookIds.includes(bookId));
+    upsertBookCollection(updatedCollection);
+  }
+
+  function getCollectionById(id: string): BookCollection | undefined {
+    const collections: BookCollection[] = bookCollections.value?.collections || [];
+    return collections.find((c) => c.id === id);
+  }
+
+  return { handleCreateCollection, handleEditCollection, addSelectionToCollection, removeSelectionFromCollection };
 }

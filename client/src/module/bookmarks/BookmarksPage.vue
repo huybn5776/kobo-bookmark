@@ -10,11 +10,14 @@
       <MultiBookActionBar
         v-if="showMultiSelectToolbar"
         :readonly="!!bookmarkShare"
+        :collectionFilterEnabled="!!bookCollectionIdFilter"
         :selectedBooks="selectedBooks"
         @textExportClick="exportSelectedAsText"
         @markdownExportClick="exportSelectedAsMarkdown"
         @notionExportClick="exportSelectedToNotion"
         @exportBookFileClick="exportSelectedAsFile"
+        @addToCollectionClick="addSelectionToCollection"
+        @removeFromCollectionClick="removeSelectionFromCollection"
         @archiveClick="archiveSelected"
         @deleteClick="deleteSelected"
         @shareClick="openShareBooksWithDropboxDialog(selectedBooks)"
@@ -197,8 +200,9 @@ const {
   exportSelectedAsFile,
   archiveSelected,
   deleteSelected,
-} = useMultiBookActions({ allBooks: sortedBooks, reloadBooks });
-const { handleCreateCollection, handleEditCollection } = useManageBookCollection({ allBooks });
+} = useMultiBookActions({ allBooks: booksToShow, reloadBooks });
+const { handleCreateCollection, handleEditCollection, addSelectionToCollection, removeSelectionFromCollection } =
+  useManageBookCollection({ allBooks, selectedBookIds, bookCollectionIdFilter });
 useBookBookmarkArchive({ reloadBooks });
 const { checkIsNotionReady } = useCheckNotionToken();
 
