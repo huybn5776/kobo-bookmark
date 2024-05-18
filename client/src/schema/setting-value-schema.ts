@@ -55,5 +55,7 @@ export const settingValueSchema = z.object({
   [SettingKey.DropboxToken]: dropboxTokenSchema,
   [SettingKey.ShowRemovedBooksWhenImporting]: z.boolean().optional().nullable(),
   [SettingKey.ShowArchived]: z.boolean().optional().nullable(),
+  [SettingKey.KeepLastSelectedBookCollection]: z.boolean().optional().nullable(),
+  [SettingKey.LastSelectedBookCollectionId]: z.string().optional().nullable(),
   [SettingKey.Language]: z.string().optional().nullable(),
 });

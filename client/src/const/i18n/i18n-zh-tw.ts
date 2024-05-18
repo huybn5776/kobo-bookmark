@@ -265,6 +265,7 @@ export const i18nZhTw = {
         title: '雜項',
         show_removed_book_when_importing: '從資料庫匯入書本資料時，於比較清單中顯示未存在於匯入檔中的書',
         show_archived: '顯示已封存的書本以及書籤',
+        keep_the_last_selected_book_collection_when_opening_bookmarks_page: '開啟書籤頁面時，保持最後選取的書本收藏',
         language: '語言',
         language_auto: '瀏覽器預設',
       },

@@ -14,8 +14,12 @@ export function useBookFilter({ books: allBooks }: { books: Ref<KoboBook[]> }): 
   highlightColorFilter: Ref<HighlightColor[]>;
 } {
   const bookCollections = useSyncSetting(SettingKey.BookCollection);
+  const keepLastSelectedBookCollection = useSyncSetting(SettingKey.KeepLastSelectedBookCollection);
+  const lastSelectedBookCollectionId = useSyncSetting(SettingKey.LastSelectedBookCollectionId);
 
-  const bookCollectionIdFilter = ref<string>();
+  const bookCollectionIdFilter = ref<string | undefined>(
+    keepLastSelectedBookCollection.value ? lastSelectedBookCollectionId.value : undefined,
+  );
   const highlightColorFilter = ref<HighlightColor[]>([]);
 
   const booksToShow = computed(() => {
@@ -34,6 +38,14 @@ export function useBookFilter({ books: allBooks }: { books: Ref<KoboBook[]> }): 
       ) {
         bookCollectionIdFilter.value = undefined;
       }
+    },
+  );
+  watch(
+    () => bookCollectionIdFilter.value,
+    () => {
+      lastSelectedBookCollectionId.value = keepLastSelectedBookCollection.value
+        ? bookCollectionIdFilter.value
+        : undefined;
     },
   );
 

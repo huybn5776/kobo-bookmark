@@ -265,6 +265,7 @@ export const i18nEn = {
         title: 'Misc',
         show_removed_book_when_importing: 'Show absent books on change list when importing from database file',
         show_archived: 'Show archived books and bookmarks',
+        keep_the_last_selected_book_collection_when_opening_bookmarks_page: 'Keep the last selected book collection when opening bookmarks page',
         language: 'Language',
         language_auto: 'Browser default',
       },

@@ -29,6 +29,8 @@ export enum SettingKey {
   DropboxToken = 'dropbox-token',
   ShowRemovedBooksWhenImporting = 'show-removed-books-when-importing',
   ShowArchived = 'show-archived',
+  KeepLastSelectedBookCollection = 'keep-last-selected-book-collection',
+  LastSelectedBookCollectionId = 'last-selected-book-collection-id',
   Language = 'language',
 }
 
@@ -50,5 +52,7 @@ export type SettingValueType = {
   [SettingKey.DropboxToken]: DropboxTokenInfo;
   [SettingKey.ShowRemovedBooksWhenImporting]: boolean;
   [SettingKey.ShowArchived]: boolean;
+  [SettingKey.KeepLastSelectedBookCollection]: boolean;
+  [SettingKey.LastSelectedBookCollectionId]: string;
   [SettingKey.Language]: string;
 };
