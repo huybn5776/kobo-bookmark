@@ -1,0 +1,23 @@
+.active-book-collection {
+  margin: 8px 0 0 16px;
+}
+
+.active-book-collection-name {
+  display: flex;
+  align-items: center;
+  margin: 0;
+
+  :deep(.deactivate-book-collection-button) {
+    margin-left: 4px;
+    transition: opacity .2s;
+  }
+
+  &:not(:hover):deep(.deactivate-book-collection-button){
+    opacity: .2;
+  }
+}
+
+.active-book-collection-subtitle {
+  margin: -4px 0 0 0;
+  color: #999;
+}

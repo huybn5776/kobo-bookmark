@@ -175,6 +175,7 @@ export const i18nZhTw = {
       books_added_to_collection: '已新增 {0} 本書至收藏 "{1}"',
       remove_from_book_collection: '從收藏中移除',
       books_removed_from_collection: '已從收藏 "{1}" 中移除 {0} 本書',
+      selected_book_collection: '已選取的收藏，{0} 本書',
       share_dropbox: '以 Dropbox 建立分享連結',
       export_text: '以文字匯出',
       export_all_text: '以文字匯出所有',

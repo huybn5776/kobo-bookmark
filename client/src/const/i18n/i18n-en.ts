@@ -176,6 +176,7 @@ export const i18nEn = {
       books_added_to_collection: `{0} @:{'common.book'} added to collection "{1}"`,
       remove_from_book_collection: 'Remove from collection',
       books_removed_from_collection: `{0} @:{'common.book'} removed from collection "{1}"`,
+      selected_book_collection: `Selected book collection, {0} @:{'common.book'}`,
       share_dropbox: 'Create share link with Dropbox',
       export_text: 'Export as text',
       export_all_text: 'Export all as text',
@@ -265,7 +266,8 @@ export const i18nEn = {
         title: 'Misc',
         show_removed_book_when_importing: 'Show absent books on change list when importing from database file',
         show_archived: 'Show archived books and bookmarks',
-        keep_the_last_selected_book_collection_when_opening_bookmarks_page: 'Keep the last selected book collection when opening bookmarks page',
+        keep_the_last_selected_book_collection_when_opening_bookmarks_page:
+          'Keep the last selected book collection when opening bookmarks page',
         language: 'Language',
         language_auto: 'Browser default',
       },

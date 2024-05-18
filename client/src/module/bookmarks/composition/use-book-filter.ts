@@ -3,6 +3,7 @@ import { ref, Ref, computed, ComputedRef, watch } from 'vue';
 import { prop } from 'ramda';
 
 import { useSyncSetting } from '@/composition/use-sync-setting';
+import { BookCollection } from '@/dto/book-collection';
 import { KoboBook } from '@/dto/kobo-book';
 import { HighlightColor } from '@/enum/highlight-color';
 import { SettingKey } from '@/enum/setting-key';
@@ -12,6 +13,7 @@ export function useBookFilter({ books: allBooks }: { books: Ref<KoboBook[]> }): 
   booksToShow: ComputedRef<KoboBook[]>;
   bookCollectionIdFilter: Ref<string | undefined>;
   highlightColorFilter: Ref<HighlightColor[]>;
+  activeBookCollection: ComputedRef<BookCollection | undefined>;
 } {
   const bookCollections = useSyncSetting(SettingKey.BookCollection);
   const keepLastSelectedBookCollection = useSyncSetting(SettingKey.KeepLastSelectedBookCollection);
@@ -27,6 +29,11 @@ export function useBookFilter({ books: allBooks }: { books: Ref<KoboBook[]> }): 
     books = filterByBookIds(books);
     books = filterByHighlightColors(books);
     return books;
+  });
+  const activeBookCollection = computed<BookCollection | undefined>(() => {
+    return bookCollectionIdFilter.value
+      ? (bookCollections.value?.collections || []).find((c) => c.id === bookCollectionIdFilter.value)
+      : undefined;
   });
 
   watch(
@@ -50,13 +57,10 @@ export function useBookFilter({ books: allBooks }: { books: Ref<KoboBook[]> }): 
   );
 
   function filterByBookIds(books: KoboBook[]): KoboBook[] {
-    if (!bookCollectionIdFilter.value) {
+    if (!activeBookCollection.value) {
       return books;
     }
-    const collection = (bookCollections.value?.collections || []).find((c) => c.id === bookCollectionIdFilter.value);
-    if (!collection) {
-      return books;
-    }
+    const collection = activeBookCollection.value;
     const filteredBooks = books.filter((book) => collection.bookIds.includes(book.id));
     return sortByList(collection.bookIds, filteredBooks, prop('id'));
   }
@@ -72,5 +76,5 @@ export function useBookFilter({ books: allBooks }: { books: Ref<KoboBook[]> }): 
     });
   }
 
-  return { bookCollectionIdFilter, highlightColorFilter, booksToShow };
+  return { bookCollectionIdFilter, highlightColorFilter, booksToShow, activeBookCollection };
 }

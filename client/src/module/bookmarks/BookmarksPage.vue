@@ -57,6 +57,8 @@
       />
     </div>
 
+    <ActiveBookCollectionView :bookCollection="activeBookCollection" @closeClick="bookCollectionIdFilter = undefined" />
+
     <div v-if="allBooks.length" class="books-container">
       <BookBookmark
         v-for="book in booksToShow"
@@ -133,6 +135,7 @@ import { CheckboxState } from '@/enum/checkbox-state';
 import { SettingKey } from '@/enum/setting-key';
 import { BookExportTask, BookExportState } from '@/interface/book-export-task';
 import { useBookmarkCardDialog } from '@/module/bookmark-card-dialog/composition/use-bookmark-card-dialog';
+import ActiveBookCollectionView from '@/module/bookmarks/component/ActiveBookCollectionView/ActiveBookCollectionView.vue';
 import BookBookmark from '@/module/bookmarks/component/BookBookmark/BookBookmark.vue';
 import BookExportProgressModal from '@/module/bookmarks/component/BookExportProgressModal/BookExportProgressModal.vue';
 import BookmarkFilterDropdown from '@/module/bookmarks/component/BookmarkFilterDropdown/BookmarkFilterDropdown.vue';
@@ -179,7 +182,7 @@ const lastTaskId = ref<number>(0);
 const { bookSortingPriority, bookSorting, bookmarkSorting, sortedBooks, keepSortingOnce } = useBookSorting({
   allBooks,
 });
-const { bookCollectionIdFilter, highlightColorFilter, booksToShow } = useBookFilter({
+const { bookCollectionIdFilter, highlightColorFilter, booksToShow, activeBookCollection } = useBookFilter({
   books: sortedBooks,
 });
 const { archiveBook, cancelArchiveBook, archiveBookmark, cancelArchiveBookmark } = useBookBookmarkArchive({
