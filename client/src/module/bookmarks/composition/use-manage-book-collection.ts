@@ -11,6 +11,7 @@ import { KoboBook } from '@/dto/kobo-book';
 import { SettingKey } from '@/enum/setting-key';
 import AddBookToCollectionDialog from '@/module/bookmarks/component/AddBookToCollectionDialog/AddBookToCollectionDialog.vue';
 import EditBookCollectionDialog from '@/module/bookmarks/component/EditBookCollectionDialog/EditBookCollectionDialog.vue';
+import { focusFirstInputOfDialog } from '@/util/dialog-utils';
 
 export function useManageBookCollection({
   allBooks,
@@ -48,6 +49,7 @@ export function useManageBookCollection({
             dialogReactive.destroy();
           },
         }),
+      onAfterEnter: focusFirstInputOfDialog,
     });
   }
 

@@ -41,3 +41,9 @@ export const focusLastButtonOfDialog = ((element: HTMLElement) => {
   const lastButton = buttons[buttons.length - 1] as HTMLButtonElement;
   lastButton.focus();
 }) as () => void;
+
+export const focusFirstInputOfDialog = ((element: HTMLElement) => {
+  const inputElements = Array.from(element.querySelectorAll('input'));
+  const firstInput = inputElements[0] as HTMLElement;
+  firstInput.focus();
+}) as () => void;
