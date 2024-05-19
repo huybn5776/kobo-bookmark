@@ -16,10 +16,36 @@
   color: gray;
 }
 
-.book-collection-name {
-  overflow-x: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+.book-collection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 8px;
+
+
+  .book-collection-name {
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .book-delete-button {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    font-size: 0;
+    background: transparent;
+    opacity: .4;
+    transition: opacity .1s;
+
+    &:not(:hover) {
+      background: transparent;
+    }
+  }
+
+  &:hover .book-delete-button {
+    opacity: 1;
+  }
 }
 
 .edit-book-collection-dialog-message {
