@@ -1,0 +1,37 @@
+.manage-book-collection-empty-view {
+  color: #999;
+  font-size: 15px;
+}
+
+.book-collection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  padding-right: 8px;
+
+  .book-collection-delete-button {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    font-size: 0;
+    background: transparent;
+    opacity: .4;
+    transition: opacity .2s;
+
+    &:deep(.n-button__icon) {
+      margin: 0;
+    }
+  }
+
+  &:hover .book-collection-delete-button {
+    opacity: 1;
+  }
+}
+
+.manage-book-collection-dialog-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: end;
+  margin-top: 8px;
+}

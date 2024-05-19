@@ -11,7 +11,8 @@ import { KoboBook } from '@/dto/kobo-book';
 import { SettingKey } from '@/enum/setting-key';
 import AddBookToCollectionDialog from '@/module/bookmarks/component/AddBookToCollectionDialog/AddBookToCollectionDialog.vue';
 import EditBookCollectionDialog from '@/module/bookmarks/component/EditBookCollectionDialog/EditBookCollectionDialog.vue';
-import { focusFirstInputOfDialog } from '@/util/dialog-utils';
+import ManageBookCollectionDialog from '@/module/bookmarks/component/ManageBookCollectionDialog/ManageBookCollectionDialog.vue';
+import { focusLastButtonOfDialog, focusFirstInputOfDialog } from '@/util/dialog-utils';
 
 export function useManageBookCollection({
   allBooks,
@@ -43,6 +44,10 @@ export function useManageBookCollection({
           allBooks: allBooks.value,
           presetBookIds,
           onCloseClick: () => dialogReactive.destroy(),
+          onManageCollectionsClick: () => {
+            openManageBookCollectionDialog();
+            dialogReactive.destroy();
+          },
           onSaveClick: (collection) => {
             upsertBookCollection(collection);
             message.success(t('page.bookmarks.collection_created', [collection.name]));
@@ -74,6 +79,10 @@ export function useManageBookCollection({
                 },
               }),
             );
+            dialogReactive.destroy();
+          },
+          onManageCollectionsClick: () => {
+            openManageBookCollectionDialog();
             dialogReactive.destroy();
           },
           onCloseClick: () => dialogReactive.destroy(),
@@ -158,6 +167,25 @@ export function useManageBookCollection({
         },
       }),
     );
+  }
+
+  function openManageBookCollectionDialog(): void {
+    const dialogReactive = dialog.create({
+      showIcon: false,
+      title: t('page.bookmarks.manage_book_collections'),
+      style: { width: '600px', maxWidth: '90vw' },
+      content: () =>
+        h(ManageBookCollectionDialog, {
+          collections: bookCollections.value?.collections || [],
+          onCloseClick: () => dialogReactive.destroy(),
+          onSaveClick: (collections) => {
+            bookCollections.value = { collections, updatedAt: new Date() };
+            message.success(t('page.bookmarks.collections_updated'));
+            dialogReactive.destroy();
+          },
+        }),
+      onAfterEnter: focusLastButtonOfDialog,
+    });
   }
 
   function addBooksToCollection(bookIds: string[], collectionId: string): string[] {

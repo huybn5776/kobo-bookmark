@@ -50,6 +50,9 @@
       <NButton size="small" @click="emits('closeClick')">
         <i18n-t keypath="common.close" />
       </NButton>
+      <NButton size="small" @click="emits('manageCollectionsClick')">
+        <i18n-t keypath="page.bookmarks.manage_book_collections" />
+      </NButton>
       <NButton size="small" type="primary" @click="save">
         <i18n-t keypath="common.save" />
       </NButton>
@@ -79,6 +82,7 @@ const props = defineProps<{ allBooks: KoboBook[]; collectionId?: string; presetB
 const emits = defineEmits<{
   (e: 'deleteClick', value: BookCollection): void;
   (e: 'closeClick'): void;
+  (e: 'manageCollectionsClick'): void;
   (e: 'saveClick', value: BookCollection): void;
 }>();
 
