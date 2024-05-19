@@ -95,6 +95,8 @@ export const i18nEn = {
       bookmark_search_description: 'Forgot about the source of some term? Find it out.',
       bookmark_editing_title: 'Editing',
       bookmark_editing_description: 'Highlight some keyword of highlight.',
+      book_collection_title: 'Collection',
+      book_collection_description: `Organize and review the same type of book's highlights`,
       bookmark_card_title: 'Card',
       bookmark_card_description: 'Easier to share your highlight with social media posts.',
       bookmark_share_title: 'Sharing',

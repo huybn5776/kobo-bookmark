@@ -95,6 +95,8 @@ export const i18nZhTw = {
       bookmark_search_description: '快速找到某關鍵字出自於哪本讀過的書',
       bookmark_editing_title: '編輯',
       bookmark_editing_description: '強調劃線中的關鍵字',
+      book_collection_title: '收藏集',
+      book_collection_description: '整理並回顧同類型書本的劃線',
       bookmark_card_title: '圖卡',
       bookmark_card_description: '更方便將劃線分享為貼文',
       bookmark_share_title: '分享',

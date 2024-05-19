@@ -59,6 +59,15 @@
         </template>
       </FeatureIntroductionSection>
       <FeatureIntroductionSection
+        titleKey="page.home.book_collection_title"
+        descriptionKey="page.home.book_collection_description"
+      >
+        <template #image>
+          <img v-if="languageType === 'en'" src="/src/assets/intro/en/book-collection.jpg" alt="Changes" />
+          <img v-if="languageType === 'zh'" src="/src/assets/intro/zh-tw/book-collection.jpg" alt="Changes" />
+        </template>
+      </FeatureIntroductionSection>
+      <FeatureIntroductionSection
         titleKey="page.home.bookmark_card_title"
         descriptionKey="page.home.bookmark_card_description"
       >
