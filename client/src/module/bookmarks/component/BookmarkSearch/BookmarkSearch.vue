@@ -120,7 +120,12 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
     showModel.value = true;
     event.preventDefault();
     setTimeout(() => inputRef.value?.focus());
-  } else if (!event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey && event.code === 'Escape') {
+    return;
+  }
+  if (!showModel.value) {
+    return;
+  }
+  if (!event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey && event.code === 'Escape') {
     closeModal();
   } else if (!event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey && event.code === 'ArrowDown') {
     movePendingOption(1);
