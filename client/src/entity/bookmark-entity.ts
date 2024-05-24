@@ -7,6 +7,7 @@ export interface BookmarkEntity {
   chapterProgress: number;
   startContainerPath: string;
   endContainerPath: string;
+  color?: number;
   hidden: boolean;
   createdAt: Date;
   updatedAt: Date;

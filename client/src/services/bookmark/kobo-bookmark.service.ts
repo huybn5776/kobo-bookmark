@@ -3,6 +3,7 @@ import { groupBy, prop, indexBy, maxBy } from 'ramda';
 import { KoboBook, KoboBookmark, KoboBookChapter, KoboBookmarkChapter, KoboBookInfo } from '@/dto/kobo-book';
 import { BookmarkEntity, ChapterEntity } from '@/entity';
 import { BookInfoEntity } from '@/entity/book-info-entity';
+import { HighlightColor } from '@/enum/highlight-color';
 import { openDb, getBookmarks, getBookChapters, getBooksInfo } from '@/repository/book.repository';
 
 export async function getBooksFromSqliteFile(file: Blob, bookIds?: string[]): Promise<KoboBook[]> {
@@ -56,6 +57,7 @@ function bookmarkEntityToKoboBookmark(
       chapterProgress: bookmark.chapterProgress,
       startContainerPath: bookmark.startContainerPath,
       endContainerPath: bookmark.endContainerPath,
+      color: bookmarkColorEntityValueToHighlightColor(bookmark.color),
       createdAt: bookmark.createdAt,
       updatedAt: bookmark.updatedAt,
     };
@@ -147,6 +149,19 @@ function chapterEntityToKoboChapters(chapters: ChapterEntity[]): KoboBookChapter
   }
 
   return topLevelChapters;
+}
+
+function bookmarkColorEntityValueToHighlightColor(value: number | undefined): HighlightColor | undefined {
+  switch (value) {
+    case 1:
+      return HighlightColor.Red;
+    case 2:
+      return HighlightColor.Blue;
+    case 3:
+      return HighlightColor.Green;
+    default:
+      return undefined;
+  }
 }
 
 function bookInfoEntityToKoboBookInfo(

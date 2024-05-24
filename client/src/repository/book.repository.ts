@@ -11,8 +11,10 @@ export async function openDb(data?: ArrayLike<number> | Buffer | null): Promise<
 }
 
 export function getBookmarks(db: Database, bookIds?: string[]): BookmarkEntity[] {
+  const hasColor = isBookmarksTableHasColorColumn(db);
   const sql = `
 select BookmarkID, VolumeID, ContentId, Text, Annotation, ChapterProgress, StartContainerPath, EndContainerPath, Hidden, DateCreated, DateModified
+${hasColor ? ', Color' : ''}
 from Bookmark
 where Type = 'highlight' or type = 'note'
 `;
@@ -33,11 +35,18 @@ where Type = 'highlight' or type = 'note'
       chapterProgress: values[5] as number,
       startContainerPath: values[6] as string,
       endContainerPath: values[7] as string,
+      color: (values[11] as number) || undefined,
       hidden: (values[8] as string) === 'true',
       createdAt: new Date(values[9] as string),
       updatedAt: new Date(values[10] as string),
     };
   });
+}
+
+function isBookmarksTableHasColorColumn(db: Database): boolean {
+  const sql = `select count(*) as count from pragma_table_info('Bookmark') where name = 'Color';`;
+  const results = db.exec(sql);
+  return results[0].values[0][0] === 1;
 }
 
 export function getBookChapters(db: Database, bookIds: string[]): ChapterEntity[] {
