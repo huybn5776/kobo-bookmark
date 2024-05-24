@@ -22,10 +22,11 @@ export function useUpdateBook({
     if (indexOfBookToUpdate === -1) {
       return;
     }
-    let targetBook = currentBooks[indexOfBookToUpdate];
+    const updatedBooks = [...currentBooks];
+    let targetBook = updatedBooks[indexOfBookToUpdate];
     targetBook = updater(targetBook);
-    currentBooks[indexOfBookToUpdate] = targetBook;
-    allBooks.value = currentBooks;
+    updatedBooks[indexOfBookToUpdate] = targetBook;
+    allBooks.value = updatedBooks;
     putBooksToDb([deepToRaw(targetBook)]);
   }
 
