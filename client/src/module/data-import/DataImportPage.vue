@@ -9,7 +9,7 @@
     >
       <span>
         <i18n-t keypath="page.data_import.drop_file">
-          <code>KoboReader.sqlite</code>
+          <code>KoboReader.sqlite/Kobo.sqlite</code>
         </i18n-t>
       </span>
     </FileDropZone>

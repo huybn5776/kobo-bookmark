@@ -86,7 +86,7 @@ export const i18nEn = {
   page: {
     home: {
       heading_title: 'Import, Export, Share',
-      heading_description: `Extend {0} reader's bookmarks usage.`,
+      heading_description: `Extend {0} bookmarks usage.`,
       demo: 'Demo',
       heading_try_now: 'Try now',
       notion_export_title: 'Notion export',
@@ -108,8 +108,15 @@ export const i18nEn = {
     data_import: {
       instruction: 'Instruction',
       instruction_steps: {
-        find_your_file: 'Find your {0} file under kobo reader storage at path {1} and drop it.',
-        find_your_file_note: `If you can't find it due to it is hidden folder, you can still drop entire storage folder there to let website find it for you.`,
+        find_your_file: 'Find your {0} file',
+        find_your_file_kobo_reader_title: 'Kobo reader',
+        find_your_file_kobo_reader:
+          'Connect your kobo reader to computer as storage device, find {0} file under storage path {1} and drop it here.',
+        find_your_file_kobo_reader_note: `If you can't find it due to it is hidden folder, you can still drop entire storage folder to let website find it for you.`,
+        find_your_file_kobo_desktop:
+          'The books that come from Kobo can be sync with Kobo Desktop application and sync bookmarks from every platforms. Please make sure you have loaded that book in Kobo Desktop before finding {0} file.',
+        find_your_file_kobo_desktop_windows: `C:\\Users\\{'{username}'}\\AppData\\Local\\Kobo\\Kobo Desktop Edition\\Kobo.sqlite`,
+        find_your_file_kobo_desktop_macos: `/Users/{'{username}'}/Library/Application Support/Kobo/Kobo Desktop Edition/Kobo.sqlite`,
         website_resolve: `This website will resolve all highlight withing it, then try to find book's cover image from {0} and {1}.`,
         connect_notion:
           'If it looks ok at {0} page, connect your Notion account in {1} page and than go back to {0} page export it.',

@@ -10,11 +10,39 @@
         <li>
           <i18n-t keypath="page.data_import.instruction_steps.find_your_file">
             <code>KoboReader.sqlite</code>
-            <code>/.kobo/KoboReader.sqlite</code>
           </i18n-t>
         </li>
         <li class="data-import-step-level-2">
-          <i18n-t keypath="page.data_import.instruction_steps.find_your_file_note" />
+          <i18n-t keypath="page.data_import.instruction_steps.find_your_file_kobo_reader_title" />
+        </li>
+        <li class="data-import-step-level-3">
+          <i18n-t keypath="page.data_import.instruction_steps.find_your_file_kobo_reader">
+            <code>KoboReader.sqlite</code>
+            <code>/.kobo/KoboReader.sqlite</code>
+          </i18n-t>
+        </li>
+        <li class="data-import-step-level-3">
+          <i18n-t keypath="page.data_import.instruction_steps.find_your_file_kobo_reader_note" />
+        </li>
+        <li class="data-import-step-level-2">
+          <a href="https://help.kobo.com/hc/articles/360020121953" target="_blank">Kobo desktop</a>
+        </li>
+        <li class="data-import-step-level-3">
+          <i18n-t keypath="page.data_import.instruction_steps.find_your_file_kobo_desktop">
+            <code>Kobo.sqlite</code>
+          </i18n-t>
+        </li>
+        <li class="data-import-step-level-3">
+          Windows:
+          <code>
+            <i18n-t keypath="page.data_import.instruction_steps.find_your_file_kobo_desktop_windows" />
+          </code>
+        </li>
+        <li class="data-import-step-level-3">
+          MacOS:
+          <code>
+            <i18n-t keypath="page.data_import.instruction_steps.find_your_file_kobo_desktop_macos" />
+          </code>
         </li>
         <li>
           <i18n-t keypath="page.data_import.instruction_steps.website_resolve">

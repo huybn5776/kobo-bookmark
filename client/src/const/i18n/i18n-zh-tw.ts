@@ -86,7 +86,7 @@ export const i18nZhTw = {
   page: {
     home: {
       heading_title: '匯入、匯出、分享',
-      heading_description: '擴充 {0} 閱讀器劃線之更多可能性',
+      heading_description: '擴充 {0} 劃線之更多可能性',
       demo: '範例',
       heading_try_now: '立即使用',
       notion_export_title: '匯出至 Notion',
@@ -107,11 +107,17 @@ export const i18nZhTw = {
     data_import: {
       instruction: '說明',
       instruction_steps: {
-        find_your_file: '在 {1} 路徑下找到 {0} 檔，並拖放到頁面上',
-        find_your_file_note: `如果你找不到該檔案 (由於它是隱藏資料夾)，你可以選擇將整個閱讀器的磁碟拖放上來，讓網站自動幫你找`,
+        find_your_file: '找到你的 {0} 檔案',
+        find_your_file_kobo_reader_title: 'Kobo 閱讀器',
+        find_your_file_kobo_reader: '將 Kobo 閱讀器接上電腦作為儲存裝置，並在 {1} 路徑下找到 {0} 檔，並拖放到頁面上',
+        find_your_file_kobo_reader_note: `如果你找不到該檔案 (由於它是隱藏資料夾)，你可以選擇將整個閱讀器的磁碟拖放上來，讓網站自動幫你找`,
+        find_your_file_kobo_desktop:
+          '在 Kobo 平台上擁有的書，可以在 Kobo Desktop 中閱讀並同步各平台的劃線。請先確保那本書已經在 Kobo Desktop 中載入過，再來尋找 {0} 檔案',
+        find_your_file_kobo_desktop_windows: `C:\\Users\\{'{使用者名}'}\\AppData\\Local\\Kobo\\Kobo Desktop Edition\\Kobo.sqlite`,
+        find_your_file_kobo_desktop_macos: `/Users/{'{使用者名}'}/Library/Application Support/Kobo/Kobo Desktop Edition/Kobo.sqlite`,
         website_resolve: `網站會解析其中的所有劃線，並試著從 {0} 以及 {1} 找到這本書相對應的封面圖`,
         connect_notion:
-          '如果在 {0} 頁看起來一切看起來都很正常，可以在 {1} 頁面連結你的 Notion 帳號，並回到 {1} 頁來匯出',
+          '如果在 {0} 頁看起來一切看起來都很正常，可以在 {1} 頁面連結你的 Notion 帳號，並回到 {0} 頁來匯出',
       },
       drop_file: '將 {0} 檔案、整個裝置目錄或者已匯出的書本 json 檔拖放至此處',
       drop_reimport: '拖放檔案以重新匯入',
