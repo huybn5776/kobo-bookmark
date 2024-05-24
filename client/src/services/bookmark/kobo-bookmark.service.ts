@@ -45,7 +45,8 @@ function bookmarkEntityToKoboBookmark(
 
   return bookmarks.map((bookmark) => {
     const relatedChapterEntities = findBookmarkChapters(bookmark, chapterEntities);
-    const relatedChapters = relatedChapterEntities.map((chapter) => chapterIndexMap[chapter.index]);
+    let relatedChapters = relatedChapterEntities.map((chapter) => chapterIndexMap[chapter.index]);
+    relatedChapters = combineRelatedChaptersToParent(chapterParentsMap, relatedChapters);
     const koboBookChapter = buildChapterInfoForBookmark(chapterParentsMap, relatedChapters);
     const koboBook: KoboBookmark = {
       id: bookmark.id,
@@ -73,6 +74,31 @@ function findBookmarkChapters(bookmark: BookmarkEntity, chapterEntities: Chapter
     });
   }
   return relatedChapters;
+}
+
+function combineRelatedChaptersToParent(
+  chapterParentsMap: Record<number, KoboBookChapter[]>,
+  relatedChapters: KoboBookChapter[],
+): KoboBookChapter[] {
+  if (relatedChapters.length <= 1) {
+    return relatedChapters;
+  }
+  const parentChapters = chapterParentsMap[relatedChapters[0].index];
+  if (!parentChapters?.length) {
+    return [relatedChapters[0]];
+  }
+  const parentChapterKey = parentChapters.join();
+  for (let i = 1; i < relatedChapters.length; i += 1) {
+    const currentParentChapters = chapterParentsMap[relatedChapters[i].index];
+    if (!currentParentChapters?.length) {
+      return relatedChapters;
+    }
+    const currentParentChaptersKey = currentParentChapters.join();
+    if (currentParentChaptersKey !== parentChapterKey) {
+      return relatedChapters;
+    }
+  }
+  return parentChapters;
 }
 
 function buildChapterInfoForBookmark(
