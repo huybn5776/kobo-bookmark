@@ -105,6 +105,9 @@ function buildChapterInfoForBookmark(
   chapterParentsMap: Record<number, KoboBookChapter[]>,
   relatedChapters: KoboBookChapter[],
 ): KoboBookmarkChapter {
+  if (!relatedChapters.length) {
+    return { relatedChapterIndexes: [] };
+  }
   const parentChapters = chapterParentsMap[relatedChapters[0].index];
   const bookmarkChapter: KoboBookmarkChapter = {
     relatedChapterIndexes: relatedChapters.map((chapter) => chapter.index),
