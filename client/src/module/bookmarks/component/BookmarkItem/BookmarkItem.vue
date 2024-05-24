@@ -2,10 +2,14 @@
   <div
     ref="elementRef"
     class="bookmark-item"
-    :class="{ 'bookmark-item-focused': focused && readyToRunHighlight }"
+    :class="{
+      'bookmark-item-focused': focused && readyToRunHighlight,
+      'bookmark-item-no-chapter': !bookmark.chapter.relatedChapterIndexes.length,
+    }"
     @animationend="emits('highlightAnimationEnd')"
   >
     <BookmarkChapterView
+      v-if="bookmark.chapter.relatedChapterIndexes.length"
       :chapterIndexMap="chapterIndexMap"
       :chapter="bookmark.chapter"
       :archived="bookmark.isArchived"

@@ -15,6 +15,14 @@
   &.bookmark-item-focused {
     animation: highlight-bookmark 1s;
   }
+
+  &.bookmark-item-no-chapter {
+    padding-top: 16px;
+  }
+
+  & + .bookmark-item-no-chapter {
+    border-top: 1px solid rgba(white, .1);
+  }
 }
 
 @keyframes highlight-bookmark {

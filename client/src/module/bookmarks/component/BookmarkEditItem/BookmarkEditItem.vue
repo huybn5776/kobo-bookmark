@@ -1,6 +1,13 @@
 <template>
-  <div class="bookmark-edit-item">
-    <BookmarkChapterView :chapterIndexMap="chapterIndexMap" :chapter="bookmark.chapter" />
+  <div
+    class="bookmark-edit-item"
+    :class="{ 'bookmark-edit-item-no-chapter': !bookmark.chapter.relatedChapterIndexes.length }"
+  >
+    <BookmarkChapterView
+      v-if="bookmark.chapter.relatedChapterIndexes.length"
+      :chapterIndexMap="chapterIndexMap"
+      :chapter="bookmark.chapter"
+    />
     <NInput
       ref="inputRef"
       v-model:value="text"
