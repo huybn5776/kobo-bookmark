@@ -77,23 +77,38 @@ export function isSameBookFile(book1: KoboBook, book2: KoboBook): boolean {
 }
 
 export function isBookmarkUpdated(originalBookmark: KoboBookmark, currentBookmark: KoboBookmark): boolean {
-  let textChanged;
+  return (
+    originalBookmark.updatedAt.getTime() !== currentBookmark.updatedAt.getTime() ||
+    isBookmarkChapterUpdated(originalBookmark, currentBookmark) ||
+    isBookmarkTextUpdated(originalBookmark, currentBookmark) ||
+    originalBookmark.annotation !== currentBookmark.annotation
+  );
+}
+
+function isBookmarkChapterUpdated(originalBookmark: KoboBookmark, currentBookmark: KoboBookmark): boolean {
+  if (originalBookmark.originalChapter && !currentBookmark.originalChapter) {
+    return !equals(originalBookmark.originalChapter, currentBookmark.chapter);
+  }
+  if (
+    originalBookmark.originalChapter &&
+    currentBookmark.originalChapter &&
+    !equal(originalBookmark.originalChapter, currentBookmark.originalChapter)
+  ) {
+    return true;
+  }
+  return !equals(originalBookmark.chapter, currentBookmark.chapter);
+}
+
+function isBookmarkTextUpdated(originalBookmark: KoboBookmark, currentBookmark: KoboBookmark): boolean {
   if (originalBookmark.originalText && !currentBookmark.originalText) {
-    textChanged = originalBookmark.originalText !== currentBookmark.text;
-  } else if (
+    return originalBookmark.originalText !== currentBookmark.text;
+  }
+  if (
     originalBookmark.originalText &&
     currentBookmark.originalText &&
     originalBookmark.originalText !== currentBookmark.originalText
   ) {
-    textChanged = true;
-  } else {
-    textChanged = originalBookmark.text !== currentBookmark.text;
+    return true;
   }
-
-  return (
-    originalBookmark.updatedAt.getTime() !== currentBookmark.updatedAt.getTime() ||
-    textChanged ||
-    originalBookmark.annotation !== currentBookmark.annotation ||
-    !equals(originalBookmark.chapter, currentBookmark.chapter)
-  );
+  return originalBookmark.text !== currentBookmark.text;
 }

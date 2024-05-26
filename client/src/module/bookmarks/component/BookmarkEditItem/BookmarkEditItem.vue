@@ -3,11 +3,7 @@
     class="bookmark-edit-item"
     :class="{ 'bookmark-edit-item-no-chapter': !bookmark.chapter.relatedChapterIndexes.length }"
   >
-    <BookmarkChapterView
-      v-if="bookmark.chapter.relatedChapterIndexes.length"
-      :chapterIndexMap="chapterIndexMap"
-      :chapter="bookmark.chapter"
-    />
+    <BookmarkChapterEdit v-model:chapter="chapter" :allChapters="book.chapters" :chapterIndexMap="chapterIndexMap" />
     <NInput
       ref="inputRef"
       v-model:value="text"
@@ -46,13 +42,14 @@ import { NInput } from 'naive-ui';
 import { RestoreIcon, CloseIcon, CheckIcon } from '@/component/icon';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { highlightSyntax } from '@/const/consts';
-import { KoboBookmark, KoboBookChapter } from '@/dto/kobo-book';
-import BookmarkChapterView from '@/module/bookmarks/component/BookmarkChapterView/BookmarkChapterView.vue';
+import { KoboBookmark, KoboBookChapter, KoboBook } from '@/dto/kobo-book';
+import BookmarkChapterEdit from '@/module/bookmarks/component/BookmarkChapterEdit/BookmarkChapterEdit.vue';
 import BookmarkEditInstructionButton from '@/module/bookmarks/component/BookmarkEditInstructionButton/BookmarkEditInstructionButton.vue';
 import HighlightColorDropdown from '@/module/bookmarks/component/HighlightColorDropdown/HighlightColorDropdown.vue';
 import { toggleSyntax } from '@/util/text-syntax-utils';
 
 const props = defineProps<{
+  book: KoboBook;
   chapterIndexMap: Record<number, KoboBookChapter>;
   bookmark: KoboBookmark;
 }>();
@@ -64,12 +61,15 @@ const emits = defineEmits<{
 
 useEventListener(document, 'keydown', onDocumentKeyDown);
 
+const chapter = ref(props.bookmark.chapter);
 const inputRef = ref<InstanceType<typeof NInput>>();
 const text = ref(props.bookmark.text);
 const color = ref(props.bookmark.color);
 
 const canRestoreBookmarkText = computed(
   () =>
+    (props.bookmark.originalChapter && chapter.value !== props.bookmark.originalChapter) ||
+    (!props.bookmark.originalChapter && chapter.value !== props.bookmark.chapter) ||
     (props.bookmark.originalText && text.value !== props.bookmark.originalText) ||
     (!props.bookmark.originalText && text.value !== props.bookmark.text),
 );
@@ -104,11 +104,15 @@ function setSelection(start: number, end?: number): void {
 }
 
 function revertBookmarkText(): void {
+  chapter.value = props.bookmark.originalChapter || props.bookmark.chapter;
   text.value = props.bookmark.originalText || props.bookmark.text;
 }
 
 function completeEditing(): void {
   const changes: Partial<KoboBookmark> = {};
+  if (chapter.value !== props.bookmark.chapter) {
+    changes.chapter = chapter.value;
+  }
   if (text.value !== props.bookmark.text) {
     changes.text = text.value;
   }

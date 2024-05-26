@@ -73,3 +73,11 @@ a {
   height: 100%;
   object-fit: contain;
 }
+
+.n-tree .n-tree-node-wrapper {
+  --n-node-wrapper-padding: 0;
+
+  .n-tree-node {
+    height: 30px;
+  }
+}

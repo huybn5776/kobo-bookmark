@@ -43,6 +43,7 @@ export const koboBookmarkSchema = z.object({
   originalText: z.string().optional().nullable(),
   annotation: z.string().optional().nullable(),
   chapter: koboBookmarkChapterSchema,
+  originalChapter: koboBookmarkChapterSchema.optional().nullable(),
   chapterProgress: z.number(),
   startContainerPath: z.string(),
   endContainerPath: z.string(),

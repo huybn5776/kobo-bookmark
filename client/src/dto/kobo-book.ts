@@ -35,6 +35,7 @@ export interface KoboBookmark {
   originalText?: string;
   annotation?: string;
   chapter: KoboBookmarkChapter;
+  originalChapter?: KoboBookmarkChapter;
   chapterProgress: number;
   startContainerPath: string;
   endContainerPath: string;

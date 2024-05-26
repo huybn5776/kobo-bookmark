@@ -1,3 +1,4 @@
+import equal from 'fast-deep-equal';
 import { openDB, deleteDB, DBSchema, IDBPDatabase, StoreNames, IDBPCursorWithValue } from 'idb';
 import { indexBy } from 'ramda';
 
@@ -85,6 +86,9 @@ function updateExistingBookmark(originalBookmark: KoboBookmark, currentBookmark:
   if (updatedBookmark.isArchived) {
     updatedBookmark.isArchived = false;
   }
+  if (originalBookmark.originalChapter && !currentBookmark.originalChapter) {
+    updatedBookmark.chapter = originalBookmark.chapter;
+  }
   if (originalBookmark.originalText && !currentBookmark.originalText) {
     if (originalBookmark.originalText === currentBookmark.text) {
       updatedBookmark.text = originalBookmark.text;
@@ -154,6 +158,11 @@ export function updateBookmarkByPatch(bookmark: KoboBookmark, patch: Partial<Kob
 
   const updatedBookmark = { ...bookmark };
   Object.assign(updatedBookmark, patch);
+  if (equal(bookmark.originalChapter, updatedBookmark.chapter)) {
+    delete updatedBookmark.originalChapter;
+  } else if (!bookmark.originalChapter && patch.chapter) {
+    updatedBookmark.originalChapter = bookmark.chapter;
+  }
   if (bookmark.originalText === updatedBookmark.text) {
     delete updatedBookmark.originalText;
   } else if (!bookmark.originalText && patch.text) {

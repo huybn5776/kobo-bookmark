@@ -48,7 +48,7 @@ function bookmarkEntityToKoboBookmark(
     const relatedChapterEntities = findBookmarkChapters(bookmark, chapterEntities);
     let relatedChapters = relatedChapterEntities.map((chapter) => chapterIndexMap[chapter.index]);
     relatedChapters = combineRelatedChaptersToParent(chapterParentsMap, relatedChapters);
-    const koboBookChapter = buildChapterInfoForBookmark(chapterParentsMap, relatedChapters);
+    const koboBookChapter = buildBookmarkChapter(chapterParentsMap, relatedChapters);
     const koboBook: KoboBookmark = {
       id: bookmark.id,
       text: prettifyBookmarkText(bookmark),
@@ -103,7 +103,7 @@ function combineRelatedChaptersToParent(
   return parentChapters;
 }
 
-function buildChapterInfoForBookmark(
+export function buildBookmarkChapter(
   chapterParentsMap: Record<number, KoboBookChapter[]>,
   relatedChapters: KoboBookChapter[],
 ): KoboBookmarkChapter {
@@ -194,7 +194,7 @@ function flattenChapter(chapter: KoboBookChapter): KoboBookChapter[] {
   return [chapter, ...(chapter.children?.flatMap(flattenChapter) || [])];
 }
 
-function getChaptersParentIndexesMap(
+export function getChaptersParentIndexesMap(
   chapters: KoboBookChapter[],
   parentChapters: KoboBookChapter[] = [],
 ): Record<number, KoboBookChapter[]> {

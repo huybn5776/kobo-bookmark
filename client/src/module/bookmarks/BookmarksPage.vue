@@ -405,7 +405,9 @@ async function updateBookmark(book: KoboBook, bookmarkId: string, bookmarkPatch:
 
   const targetBookIndex = allBooks.value.findIndex((b) => b.id === book.id);
   if (targetBookIndex !== -1) {
-    allBooks.value[targetBookIndex] = updatedBook;
+    const updatedAllBooks = [...allBooks.value];
+    updatedAllBooks[targetBookIndex] = updatedBook;
+    allBooks.value = updatedAllBooks;
   }
   await putBooksToDb([deepToRaw(updatedBook)]);
   allBooks.value = await getBooksFromDb();

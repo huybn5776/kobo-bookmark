@@ -19,6 +19,7 @@
       />
       <BookmarkEditItem
         v-if="bookmark.id === editingBookmarkId"
+        :book="book"
         :chapterIndexMap="chapterIndexMap"
         :bookmark="bookmark"
         @cancel="cancelBookmarkEdit"
