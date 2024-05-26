@@ -1,0 +1,25 @@
+.bookmark-chapter-view-content {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  font-size: 16px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: opacity .2s;
+}
+
+.bookmark-parent-chapter-title {
+  &:after {
+    margin: 0 8px;
+    color: gray;
+    content: '>';
+  }
+}
+
+.bookmark-chapter-title {
+  & + &:before {
+    margin: 0 4px;
+    color: gray;
+    content: '-';
+  }
+}
