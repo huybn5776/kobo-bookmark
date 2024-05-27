@@ -34,7 +34,11 @@ export function sortKoboBookmarks(bookmarks: KoboBookmark[], sorting: BookmarkSo
   const sortFns: ((a: KoboBookmark, b: KoboBookmark) => number)[][] = [
     sorting.includes(BookmarkSortingKey.LastUpdate) ? [descend((bookmark) => bookmark.updatedAt ?? 0)] : [],
     sorting.includes(BookmarkSortingKey.Position)
-      ? [compareChapters, ascend((bookmark) => bookmark.chapterProgress)]
+      ? [
+          compareChapters,
+          ascend((bookmark) => bookmark.chapterProgress),
+          ascend((bookmark) => bookmark.startContainerPath),
+        ]
       : [],
   ];
   return sortWith(
