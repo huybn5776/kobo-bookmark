@@ -65,11 +65,13 @@
         :key="book.id"
         ref="bookBookmarkRefs"
         :book="book"
-        :default-expanded="booksToShow?.length === 1"
+        :expanded="expandedBookId === book.id"
+        :defaultExpanded="booksToShow?.length === 1"
         :selected="selectedBookIds.includes(book.id)"
         :search="(bookmarkSearchActive && bookmarkSearch) || ''"
         :readonly="!!bookmarkShare"
         :exportNotionLoading="exportingBookIds.includes(book.id)"
+        @update:expanded="onExpandedBookUpdated(book, $event)"
         @update:selected="(v) => onBookSelectChanges(book, v)"
         @textExportClick="exportBookmarkToText"
         @markdownExportClick="exportBookmarkToMarkdown"
@@ -108,7 +110,7 @@
     <Teleport v-if="!!bookExportTasksToShow.length" to="#app">
       <BookExportProgressModal
         :tasks="bookExportTasksToShow"
-        @taskClick="gotoBook"
+        @taskClick="gotoBook($event.book.id)"
         @cancelTask="cancelTask"
         @discardAllTasks="discardAllTasks"
       />
@@ -147,6 +149,7 @@ import ToolbarPinToggle from '@/module/bookmarks/component/ToolbarPinToggle/Tool
 import { useBookBookmarkArchive } from '@/module/bookmarks/composition/use-book-bookmark-archive';
 import { useBookFilter } from '@/module/bookmarks/composition/use-book-filter';
 import { useBookSorting } from '@/module/bookmarks/composition/use-book-sorting';
+import { useExpandedBook } from '@/module/bookmarks/composition/use-expanded-book';
 import { useManageBookCollection } from '@/module/bookmarks/composition/use-manage-book-collection';
 import { useMultiBookActions } from '@/module/bookmarks/composition/use-multi-book-actions';
 import { useShareBookDialog } from '@/module/bookmarks/composition/use-share-book-dialog';
@@ -182,9 +185,17 @@ const lastTaskId = ref<number>(0);
 const { bookSortingPriority, bookSorting, bookmarkSorting, sortedBooks, keepSortingOnce } = useBookSorting({
   allBooks,
 });
-const { bookCollectionIdFilter, highlightColorFilter, booksToShow, activeBookCollection } = useBookFilter({
-  books: sortedBooks,
-});
+const {
+  bookCollectionIdFilter,
+  highlightColorFilter,
+  books: filteredBooks,
+  activeBookCollection,
+} = useBookFilter({ books: sortedBooks });
+const {
+  books: booksToShow,
+  expandedBookId,
+  onExpandedBookUpdated,
+} = useExpandedBook({ books: filteredBooks, gotoBook });
 const { archiveBook, cancelArchiveBook, archiveBookmark, cancelArchiveBookmark } = useBookBookmarkArchive({
   reloadBooks,
 });
@@ -377,10 +388,11 @@ function discardAllTasks(): void {
   }
 }
 
-function gotoBook(task: BookExportTask): void {
-  const bookIndex = booksToShow.value.findIndex((book) => book.id === task.book.id);
-  const bookComponent = bookBookmarkRefs.value[bookIndex];
-  bookComponent?.elementRef?.scrollIntoView({ behavior: 'smooth' });
+function gotoBook(bookId: string, options?: ScrollIntoViewOptions): void {
+  const bookComponent = bookBookmarkRefs.value.find((bookBookmarkRef) => bookBookmarkRef.book.id === bookId);
+  if (bookComponent) {
+    bookComponent?.elementRef?.scrollIntoView(options || { behavior: 'smooth' });
+  }
 }
 
 function gotoBookmark(book: KoboBook, bookmark: KoboBookmark): void {

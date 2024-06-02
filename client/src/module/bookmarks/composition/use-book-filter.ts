@@ -10,7 +10,7 @@ import { SettingKey } from '@/enum/setting-key';
 import { sortByList } from '@/util/array-urils';
 
 export function useBookFilter({ books: allBooks }: { books: Ref<KoboBook[]> }): {
-  booksToShow: ComputedRef<KoboBook[]>;
+  books: ComputedRef<KoboBook[]>;
   bookCollectionIdFilter: Ref<string | undefined>;
   highlightColorFilter: Ref<HighlightColor[]>;
   activeBookCollection: ComputedRef<BookCollection | undefined>;
@@ -76,5 +76,5 @@ export function useBookFilter({ books: allBooks }: { books: Ref<KoboBook[]> }): 
     });
   }
 
-  return { bookCollectionIdFilter, highlightColorFilter, booksToShow, activeBookCollection };
+  return { bookCollectionIdFilter, highlightColorFilter, books: booksToShow, activeBookCollection };
 }

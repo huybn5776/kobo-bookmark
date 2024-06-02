@@ -8,7 +8,7 @@
       :selected="selected"
       :enabledActions="enabledActions"
       :exportNotionLoading="exportNotionLoading"
-      @update:expanded="expanded = $event"
+      @update:expanded="emits('update:expanded', $event)"
       @update:selected="emits('update:selected', $event)"
       @textExportClick="emits('textExportClick', $event)"
       @markdownExportClick="emits('markdownExportClick', $event)"
@@ -47,6 +47,7 @@ import BookmarkList from '@/module/bookmarks/component/BookmarkList/BookmarkList
 
 const props = defineProps<{
   book: KoboBook;
+  expanded: boolean;
   defaultExpanded: boolean;
   selected: boolean;
   search?: string;
@@ -55,6 +56,7 @@ const props = defineProps<{
 }>();
 const emits = defineEmits<{
   (e: 'update:selected', value: boolean): void;
+  (e: 'update:expanded', value: boolean): void;
   (e: 'textExportClick', value: KoboBook): void;
   (e: 'markdownExportClick', value: KoboBook): void;
   (e: 'notionExportClick', value: KoboBook): void;
@@ -71,10 +73,9 @@ const emits = defineEmits<{
 
 const elementRef = ref<HTMLElement>();
 
-const expanded = ref<boolean>(false);
 const bookmarkListRef = ref<InstanceType<typeof BookmarkList>>();
 const focusedBookmark = ref<KoboBookmark>();
-defineExpose({ elementRef, scrollToBookmark });
+defineExpose({ book: props.book, elementRef, scrollToBookmark });
 
 const enabledActions = computed<BookAction[]>(() => {
   if (props.readonly) {
@@ -94,7 +95,7 @@ const enabledActions = computed<BookAction[]>(() => {
 const disableBookmarkExpand = computed(() => !props.book.bookmarks.length);
 
 function scrollToBookmark(bookmark: KoboBookmark): void {
-  expanded.value = true;
+  emits('update:expanded', true);
   focusedBookmark.value = bookmark;
 }
 </script>
