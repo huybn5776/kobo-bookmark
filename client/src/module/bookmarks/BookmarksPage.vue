@@ -30,7 +30,7 @@
         <BookmarkSearch
           v-model:show="bookmarkSearchActive"
           v-model:search="bookmarkSearch"
-          :books="booksToShow"
+          :books="filteredBooks"
           @selected="gotoBookmark"
         />
         <ToolbarPinToggle v-if="!bookmarkSearchActive" v-model:pin="toolbarPinned" />
@@ -60,32 +60,41 @@
     <ActiveBookCollectionView :bookCollection="activeBookCollection" @closeClick="bookCollectionIdFilter = undefined" />
 
     <div v-if="allBooks.length" class="books-container">
-      <BookBookmark
-        v-for="book in booksToShow"
-        :key="book.id"
-        ref="bookBookmarkRefs"
-        :book="book"
-        :expanded="expandedBookId === book.id"
-        :defaultExpanded="booksToShow?.length === 1"
-        :selected="selectedBookIds.includes(book.id)"
-        :search="(bookmarkSearchActive && bookmarkSearch) || ''"
-        :readonly="!!bookmarkShare"
-        :exportNotionLoading="exportingBookIds.includes(book.id)"
-        @update:expanded="onExpandedBookUpdated(book, $event)"
-        @update:selected="(v) => onBookSelectChanges(book, v)"
-        @textExportClick="exportBookmarkToText"
-        @markdownExportClick="exportBookmarkToMarkdown"
-        @notionExportClick="exportBookmarkToNotion"
-        @bookStarClick="toggleBookStar"
-        @bookCoverImageUpdated="(v) => updateBookCoverImage(book, v)"
-        @bookArchiveClick="archiveBook"
-        @shareClick="openShareBooksWithDropboxDialog([book])"
-        @bookCancelArchive="cancelArchiveBook"
-        @bookmarkUpdated="updateBookmark"
-        @createBookmarkCardClick="openBookmarkCardDialog"
-        @bookmarkArchiveClick="archiveBookmark"
-        @bookmarkCancelArchiveClick="cancelArchiveBookmark"
-      />
+      <VirtualList
+        ref="virtualListRef"
+        v-slot:default="{ item: book }"
+        :itemSize="213"
+        :items="booksToShow"
+        :keyField="'id'"
+        :scrollableElement="scrollableElement"
+        :focusItemKey="expandedBookId"
+        :enabled="!expandedBookId"
+      >
+        <BookBookmark
+          :ref="setBookBookmarkRef"
+          :book="book"
+          :expanded="expandedBookId === book.id"
+          :defaultExpanded="booksToShow?.length === 1"
+          :selected="selectedBookIds.includes(book.id)"
+          :search="(bookmarkSearchActive && bookmarkSearch) || ''"
+          :readonly="!!bookmarkShare"
+          :exportNotionLoading="exportingBookIds.includes(book.id)"
+          @update:expanded="onExpandedBookUpdated(book, $event)"
+          @update:selected="(v) => onBookSelectChanges(book, v)"
+          @textExportClick="exportBookmarkToText"
+          @markdownExportClick="exportBookmarkToMarkdown"
+          @notionExportClick="exportBookmarkToNotion"
+          @bookStarClick="toggleBookStar"
+          @bookCoverImageUpdated="(v) => updateBookCoverImage(book, v)"
+          @bookArchiveClick="archiveBook"
+          @shareClick="openShareBooksWithDropboxDialog([book])"
+          @bookCancelArchive="cancelArchiveBook"
+          @bookmarkUpdated="updateBookmark"
+          @createBookmarkCardClick="openBookmarkCardDialog"
+          @bookmarkArchiveClick="archiveBookmark"
+          @bookmarkCancelArchiveClick="cancelArchiveBookmark"
+        />
+      </VirtualList>
     </div>
 
     <PageResult v-if="loadingBooks || pageResultMessage" :state="loadingBooks ? 'loading' : 'warning'">
@@ -119,7 +128,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watchEffect } from 'vue';
+import { ref, computed, watchEffect, ComponentInstance, ComponentPublicInstance } from 'vue';
 
 import * as E from 'fp-ts/Either';
 import { useNotification, NCheckbox, useLoadingBar } from 'naive-ui';
@@ -128,6 +137,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
 import PageResult from '@/component/PageResult/PageResult.vue';
+import VirtualList from '@/component/VirtualList/VirtualList.vue';
 import { useCheckNotionToken } from '@/composition/use-check-notion-token';
 import { useSyncSetting } from '@/composition/use-sync-setting';
 import { I18NMessageSchema } from '@/config/i18n-config';
@@ -169,12 +179,15 @@ const route = useRoute();
 const notification = useNotification();
 const loadingBar = useLoadingBar();
 
+const scrollableElement = document.getElementsByClassName('app')[0] as HTMLElement;
+
+const virtualListRef = ref<ComponentInstance<typeof VirtualList<KoboBook, 'id'>>>();
 const bookmarkShare = ref<BookmarkShare>();
 const loadingBooks = ref<boolean>(false);
 const pageResultMessage = ref<string>();
 
 const allBooks = ref<KoboBook[]>([]);
-const bookBookmarkRefs = ref<InstanceType<typeof BookBookmark>[]>([]);
+const bookBookmarkRefs = ref<Record<string, InstanceType<typeof BookBookmark>>>({});
 const bookmarkSearchActive = ref<boolean>(false);
 const bookmarkSearch = ref<string>();
 const toolbarPinned = useSyncSetting(SettingKey.BookmarksToolbarPinned);
@@ -191,11 +204,7 @@ const {
   books: filteredBooks,
   activeBookCollection,
 } = useBookFilter({ books: sortedBooks });
-const {
-  books: booksToShow,
-  expandedBookId,
-  onExpandedBookUpdated,
-} = useExpandedBook({ books: filteredBooks, gotoBook });
+const { books: booksToShow, expandedBookId, onExpandedBookUpdated } = useExpandedBook({ books: filteredBooks });
 const { archiveBook, cancelArchiveBook, archiveBookmark, cancelArchiveBookmark } = useBookBookmarkArchive({
   reloadBooks,
 });
@@ -388,17 +397,29 @@ function discardAllTasks(): void {
   }
 }
 
-function gotoBook(bookId: string, options?: ScrollIntoViewOptions): void {
-  const bookComponent = bookBookmarkRefs.value.find((bookBookmarkRef) => bookBookmarkRef.book.id === bookId);
-  if (bookComponent) {
-    bookComponent?.elementRef?.scrollIntoView(options || { behavior: 'smooth' });
+function setBookBookmarkRef(nodeRef: Element | ComponentPublicInstance | null): void {
+  const bookBookmarkInstance = nodeRef as ComponentInstance<typeof BookBookmark> | undefined;
+  if (bookBookmarkInstance) {
+    bookBookmarkRefs.value[bookBookmarkInstance?.book.id] = bookBookmarkInstance;
+  }
+}
+
+function gotoBook(bookId: string): void {
+  if (virtualListRef.value) {
+    const bookIndex = booksToShow.value.findIndex((book) => book.id === bookId);
+    (virtualListRef.value as { scrollTo: (index: number) => void }).scrollTo(bookIndex);
   }
 }
 
 function gotoBookmark(book: KoboBook, bookmark: KoboBookmark): void {
-  const bookIndex = booksToShow.value.findIndex((b) => b.id === book.id);
-  const bookComponent = bookBookmarkRefs.value[bookIndex];
-  bookComponent?.scrollToBookmark(bookmark);
+  if (expandedBookId.value !== book.id) {
+    expandedBookId.value = book.id;
+    setTimeout(() => {
+      bookBookmarkRefs.value[book.id]?.scrollToBookmark(bookmark, { block: 'center' });
+    });
+  } else {
+    bookBookmarkRefs.value[book.id]?.scrollToBookmark(bookmark, { behavior: 'smooth', block: 'center' });
+  }
 }
 
 async function reloadBooks(): Promise<void> {

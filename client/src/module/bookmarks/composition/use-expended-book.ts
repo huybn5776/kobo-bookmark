@@ -2,13 +2,7 @@ import { ref, Ref, ComputedRef, computed } from 'vue';
 
 import { KoboBook } from '@/dto/kobo-book';
 
-export function useExpandedBook({
-  books: allBooks,
-  gotoBook,
-}: {
-  books: ComputedRef<KoboBook[]>;
-  gotoBook: (bookId: string, options?: ScrollIntoViewOptions) => void;
-}): {
+export function useExpandedBook({ books: allBooks }: { books: ComputedRef<KoboBook[]> }): {
   books: ComputedRef<KoboBook[]>;
   expandedBookId: Ref<string | undefined>;
   onExpandedBookUpdated: (book: KoboBook, expanded: boolean) => void;
@@ -25,9 +19,7 @@ export function useExpandedBook({
     if (expanded) {
       expandedBookId.value = book.id;
     } else if (expandedBookId.value) {
-      const bookToFocus = expandedBookId.value;
       expandedBookId.value = undefined;
-      setTimeout(() => gotoBook(bookToFocus, { block: 'center' }));
     }
   }
 

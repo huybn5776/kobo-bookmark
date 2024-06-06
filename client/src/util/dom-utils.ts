@@ -1,5 +1,5 @@
-export function scrollToElementIfNotInView(element: HTMLElement): void {
+export function scrollToElementIfNotInView(element: HTMLElement, options?: ScrollIntoViewOptions): void {
   if (element.getBoundingClientRect().bottom > window.innerHeight || element.getBoundingClientRect().top < 0) {
-    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    element.scrollIntoView(options);
   }
 }
