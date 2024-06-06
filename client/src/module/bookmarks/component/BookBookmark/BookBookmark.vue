@@ -23,7 +23,6 @@
       v-if="expanded && !disableBookmarkExpand"
       ref="bookmarkListRef"
       :book="book"
-      :focusBookmark="focusedBookmark"
       :search="search"
       :disabled="!!book.isArchived"
       :readonly="readonly"
@@ -32,13 +31,12 @@
       @bookmarkUpdated="(bookmarkId, bookmarkPatch) => emits('bookmarkUpdated', book, bookmarkId, bookmarkPatch)"
       @bookmarkArchive="emits('bookmarkArchiveClick', book, $event)"
       @bookmarkCancelArchive="emits('bookmarkCancelArchiveClick', book, $event)"
-      @focusToBookmarkEnd="focusedBookmark = undefined"
     />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
+import { ref, computed, ComponentInstance } from 'vue';
 
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import { BookAction } from '@/enum/book-action';
@@ -73,8 +71,7 @@ const emits = defineEmits<{
 
 const elementRef = ref<HTMLElement>();
 
-const bookmarkListRef = ref<InstanceType<typeof BookmarkList>>();
-const focusedBookmark = ref<KoboBookmark>();
+const bookmarkListRef = ref<ComponentInstance<typeof BookmarkList>>();
 defineExpose({ book: props.book, elementRef, scrollToBookmark });
 
 const enabledActions = computed<BookAction[]>(() => {
@@ -94,9 +91,9 @@ const enabledActions = computed<BookAction[]>(() => {
 });
 const disableBookmarkExpand = computed(() => !props.book.bookmarks.length);
 
-function scrollToBookmark(bookmark: KoboBookmark): void {
+function scrollToBookmark(bookmark: KoboBookmark, options?: ScrollIntoViewOptions): void {
   emits('update:expanded', true);
-  focusedBookmark.value = bookmark;
+  bookmarkListRef.value?.focusToBookmark(bookmark, options);
 }
 </script>
 

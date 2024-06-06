@@ -3,10 +3,10 @@
     ref="elementRef"
     class="bookmark-item"
     :class="{
-      'bookmark-item-focused': focused && readyToRunHighlight,
+      'bookmark-item-focused': highlightItem,
       'bookmark-item-no-chapter': !bookmark.chapter.relatedChapterIndexes.length,
     }"
-    @animationend="emits('highlightAnimationEnd')"
+    @animationend="highlightItem = false"
   >
     <BookmarkChapterView
       v-if="bookmark.chapter.relatedChapterIndexes.length"
@@ -62,7 +62,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onMounted, computed } from 'vue';
+import { ref, computed } from 'vue';
 
 import HighlightText from '@/component/HighlightText/HighlightText.vue';
 import { ArchiveIcon, ArchiveRefreshIcon, ShareVariantIcon, PencilIcon } from '@/component/icon';
@@ -75,7 +75,6 @@ import BookmarkChapterView from '@/module/bookmarks/component/BookmarkChapterVie
 const props = defineProps<{
   chapterIndexMap: Record<number, KoboBookChapter>;
   bookmark: KoboBookmark;
-  focused?: boolean;
   search?: string;
   enabledActions?: BookmarkAction[];
 }>();
@@ -87,9 +86,9 @@ const emits = defineEmits<{
   (e: 'highlightAnimationEnd'): void;
 }>();
 const elementRef = ref<HTMLElement>();
-defineExpose({ elementRef });
+defineExpose({ elementRef, runHighlightAnimationWhenVisible });
 
-const readyToRunHighlight = ref<boolean>(false);
+const highlightItem = ref<boolean>(false);
 
 const actions = computed<Partial<Record<BookmarkAction, boolean>>>(() => {
   const result: Partial<Record<BookmarkAction, boolean>> = {};
@@ -99,16 +98,10 @@ const actions = computed<Partial<Record<BookmarkAction, boolean>>>(() => {
   return result;
 });
 
-onMounted(() => highlightSelfIfNeed());
-watch(
-  () => props.focused,
-  () => highlightSelfIfNeed(),
-);
-
-function highlightSelfIfNeed(): void {
+function runHighlightAnimationWhenVisible(): void {
   const element = elementRef.value;
-  if (!props.focused || !element) {
-    readyToRunHighlight.value = false;
+  if (!element) {
+    highlightItem.value = false;
     return;
   }
 
@@ -116,7 +109,7 @@ function highlightSelfIfNeed(): void {
   function onIntersection(entries: IntersectionObserverEntry[]): void {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        readyToRunHighlight.value = true;
+        highlightItem.value = true;
         intersectionObserver.disconnect();
       }
     });

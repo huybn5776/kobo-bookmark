@@ -6,7 +6,6 @@
         ref="bookBookmarkRefs"
         :chapterIndexMap="chapterIndexMap"
         :bookmark="bookmark"
-        :focused="bookmark === focusBookmark"
         :search="search"
         :enabledActions="enabledActions"
         :disabled="disabled"
@@ -15,7 +14,6 @@
         @createCardClick="emits('createBookmarkCardClick', bookmark)"
         @archiveClick="emits('bookmarkArchive', bookmark)"
         @cancelArchiveClick="emits('bookmarkCancelArchive', bookmark)"
-        @highlightAnimationEnd="emits('focusToBookmarkEnd', bookmark)"
       />
       <BookmarkEditItem
         v-if="bookmark.id === editingBookmarkId"
@@ -30,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch, onMounted } from 'vue';
+import { computed, ref, ComponentInstance } from 'vue';
 
 import { KoboBookmark, KoboBook } from '@/dto/kobo-book';
 import { BookmarkAction } from '@/enum/bookmark-action';
@@ -43,7 +41,6 @@ import { scrollToElementIfNotInView } from '@/util/dom-utils';
 
 const props = defineProps<{
   book: KoboBook;
-  focusBookmark?: KoboBookmark;
   search?: string;
   disabled?: boolean;
   readonly?: boolean;
@@ -55,9 +52,10 @@ const emits = defineEmits<{
   (e: 'createBookmarkCardClick', bookmark: KoboBookmark): void;
   (e: 'bookmarkArchive', value: KoboBookmark): void;
   (e: 'bookmarkCancelArchive', value: KoboBookmark): void;
-  (e: 'focusToBookmarkEnd', value: KoboBookmark): void;
 }>();
-const bookBookmarkRefs = ref<InstanceType<typeof BookmarkItem>[]>([]);
+defineExpose({ focusToBookmark });
+
+const bookBookmarkRefs = ref<ComponentInstance<typeof BookmarkItem>[]>([]);
 const editingBookmarkId = ref<string>();
 
 const bookmarksToShow = computed<{ bookmark: KoboBookmark; enabledActions: BookmarkAction[] }[]>(() => {
@@ -75,12 +73,6 @@ const bookmarksToShow = computed<{ bookmark: KoboBookmark; enabledActions: Bookm
 });
 
 const chapterIndexMap = computed(() => getChapterIndexMap(props.book.chapters));
-
-onMounted(() => focusToBookmark(props.focusBookmark));
-watch(
-  () => props.focusBookmark?.id,
-  () => focusToBookmark(props.focusBookmark),
-);
 
 function calcBookmarkActions(book: KoboBook, bookmark: KoboBookmark): BookmarkAction[] {
   if (props.book.isArchived) {
@@ -104,16 +96,17 @@ function saveBookmark(bookmarkId: string, bookmarkPatch: Partial<KoboBookmark>):
   editingBookmarkId.value = undefined;
 }
 
-function focusToBookmark(bookmark: KoboBookmark | undefined): void {
+function focusToBookmark(bookmark: KoboBookmark | undefined, options?: ScrollIntoViewOptions): void {
   if (!bookmark) {
     return;
   }
   const index = props.book.bookmarks.indexOf(bookmark);
-  const element = bookBookmarkRefs.value[index]?.elementRef;
-  if (!element) {
+  const bookBookmarkRef = bookBookmarkRefs.value[index];
+  if (!bookBookmarkRef?.elementRef) {
     return;
   }
-  scrollToElementIfNotInView(element);
+  scrollToElementIfNotInView(bookBookmarkRef.elementRef, options);
+  bookBookmarkRef.runHighlightAnimationWhenVisible();
 }
 </script>
 
