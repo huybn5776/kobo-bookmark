@@ -6,7 +6,6 @@ export function removeUnnecessaryPropsFromBookForShare(book: KoboBook): KoboBook
   delete updatedBook.info.imageId;
   delete updatedBook.info.fileSize;
   delete updatedBook.info.createdAt;
-  updatedBook.chapters = [];
   updatedBook.bookmarks = updatedBook.bookmarks.map(removeUnnecessaryPropsFromBookmark);
   return updatedBook;
 }
