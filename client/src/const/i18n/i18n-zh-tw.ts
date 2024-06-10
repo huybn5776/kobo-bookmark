@@ -103,6 +103,9 @@ export const i18nZhTw = {
       bookmark_share_description: '隨時與大家分享書本的劃線，僅需要連動至 Dropbox 的帳號',
       confirm_changes_title: '確認變更',
       confirm_changes_description: '更能確保劃線都有保存得好好的，沒有無故被消失',
+      playground_title: '想先玩玩看功能嗎?',
+      playground_description: '您可以下載{0}並{1}',
+      playground_description_download: '這份範例資料集',
     },
     data_import: {
       instruction: '說明',

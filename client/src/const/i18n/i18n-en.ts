@@ -104,6 +104,9 @@ export const i18nEn = {
       confirm_changes_title: 'Confirm changes',
       confirm_changes_description:
         'Make sure all bookmark is still present in your reader without disappeared for no reason.',
+      playground_title: 'Wanna try is out now?',
+      playground_description: 'You can download {0} and {1}',
+      playground_description_download: 'This demo data',
     },
     data_import: {
       instruction: 'Instruction',

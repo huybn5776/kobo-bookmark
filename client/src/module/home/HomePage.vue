@@ -96,6 +96,8 @@
       </FeatureIntroductionSection>
     </div>
 
+    <PlaygroundDownloadSection :languageType="languageType" />
+
     <div class="home-page-footer">
       <a class="github-link" href="https://github.com/huybn5776/kobo-bookmark" target="_blank">
         <GithubIcon class="github-icon" />
@@ -117,6 +119,7 @@ import { I18NMessageSchema } from '@/config/i18n-config';
 import BookShapeGraph from '@/module/home/component/BookShapeGraph/BookShapeGraph.vue';
 import DemoBookView from '@/module/home/component/DemoBookView/DemoBookView.vue';
 import FeatureIntroductionSection from '@/module/home/component/FeatureIntroductionSection/FeatureIntroductionSection.vue';
+import PlaygroundDownloadSection from '@/module/home/component/PlaygroundDownloadSection/PlaygroundDownloadSection.vue';
 
 const { locale } = useI18n<[I18NMessageSchema]>();
 

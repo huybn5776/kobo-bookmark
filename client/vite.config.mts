@@ -18,6 +18,15 @@ function readAliasFromTsConfig(): Alias[] {
   }, [] as Alias[]);
 }
 
+function handleRenamePlaygroundJson(asset: PreRenderedAsset): string | null {
+  if (asset.name?.startsWith('playground-books_')) {
+    const [filename, localeAndExtName] = asset.name.split('_');
+    const [locale, extName] = localeAndExtName.split('.');
+    return `intro/${locale}/${filename}.${extName}`;
+  }
+  return null;
+}
+
 function handleRenameAsset(asset: PreRenderedAsset): string | null {
   switch (asset.name?.split('.').pop()) {
     case 'css':
@@ -51,7 +60,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         assetFileNames: (asset) => {
-          return handleRenameAsset(asset) || 'assets/[name]-[hash][extname]';
+          return handleRenamePlaygroundJson(asset) || handleRenameAsset(asset) || 'assets/[name]-[hash][extname]';
         },
       },
     },

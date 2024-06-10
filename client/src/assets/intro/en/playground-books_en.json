@@ -1,0 +1,201 @@
+[
+  {
+    "id": "building-a-second-brain",
+    "info": {
+      "title": "Building a Second Brain",
+      "author": "Tiago Forte",
+      "description": "<b>A revolutionary approach to enhancing productivity, creating flow, and vastly increasing your ability to capture, remember, and benefit from the unprecedented amount of information all around us.</b><BR>For the first time in history, we have instantaneous access to the world's knowledge. There has never been a better time to learn, to contribute, and to improve ourselves. Yet, rather than feeling empowered, we are often left feeling overwhelmed by this constant influx of information. The very knowledge that was supposed to set us free has instead led to the paralyzing stress of believing we'll never know or remember enough.<BR> <BR>Now, this eye-opening and accessible guide shows how you can easily create your own personal system for knowledge management, otherwise known as a Second Brain. As a trusted and organized digital repository of your most valued ideas, notes, and creative work synced across all your devices and platforms, a Second Brain gives you the confidence to...",
+      "publisher": "Atria Books",
+      "isbn": "9781982167387",
+      "timeSpentReading": 16800,
+      "isSideLoaded": true,
+      "lastReadAt": "2024-04-27T05:26:41.000Z",
+      "lastBookmarkAt": "2024-04-26T21:24:35.660Z",
+      "createdAt": "2024-04-27T13:11:12.000Z"
+    },
+    "coverImageUrl": "https://books.google.com/books/content?id=G5BOEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+    "chapters": [
+      { "title": "Cover", "index": 0 },
+      { "title": "Title Page", "index": 1 },
+      { "title": "Dedication", "index": 2 },
+      { "title": "Introduction: The Promise of a Second Brain", "index": 3 },
+      {
+        "title": "Part One: The Foundation: Understanding What’s Possible",
+        "index": 4,
+        "children": [
+          { "title": "Chapter 1: Where It All Started", "index": 5 },
+          { "title": "Chapter 2: What Is a Second Brain?", "index": 6 },
+          { "title": "Chapter 3: How a Second Brain Works", "index": 7 }
+        ]
+      },
+      {
+        "title": "Part Two: The Method: The Four Steps of CODE",
+        "index": 8,
+        "children": [
+          { "title": "Chapter 4: Capture—Keep What Resonates", "index": 9 },
+          { "title": "Chapter 5: Organize—Save for Actionability", "index": 10 },
+          { "title": "Chapter 6: Distill—Find the Essence", "index": 11 },
+          { "title": "Chapter 7: Express—Show Your Work", "index": 12 }
+        ]
+      },
+      {
+        "title": "Part Three: The Shift: Making Things Happen",
+        "index": 13,
+        "children": [
+          { "title": "Chapter 8: The Art of Creative Execution", "index": 14 },
+          { "title": "Chapter 9: The Essential Habits of Digital Organizers", "index": 15 },
+          { "title": "Chapter 10: The Path of Self-Expression", "index": 16 }
+        ]
+      },
+      { "title": "Bonus Chapter: How to Create a Tagging System That Works", "index": 17 },
+      { "title": "Additional Resources and Guidelines", "index": 18 },
+      { "title": "Acknowledgments", "index": 19 },
+      { "title": "About the Author", "index": 20 },
+      { "title": "Notes", "index": 21 },
+      { "title": "Index", "index": 22 },
+      { "title": "Copyright", "index": 23 }
+    ],
+    "bookmarks": [
+      {
+        "id": "52cb60e7-aa2f-4afc-8156-b33aa13f2df1",
+        "text": "How do you create a Hemingway Bridge? Instead of burning through every last ounce of energy at the end of a work session, reserve the last few minutes to write down some of the following kinds of things in your digital notes:\nWrite down ideas for next steps: At the end of a work session, write down what you think the next steps could be for the next one.\nWrite down the current status: This could include your current biggest challenge, most important open question, or future roadblocks you expect.\nWrite down any details you have in mind that are likely to be forgotten once you step away: Such as details about the characters in your story, the pitfalls of the event you’re planning, or the subtle considerations of the product you’re designing.\nWrite out your intention for the next work session: Set an intention for what you plan on tackling next, the problem you intend to solve, or a certain milestone you want to reach.",
+        "chapter": { "relatedChapterIndexes": [14], "parentChapterIndexes": [13] },
+        "chapterProgress": 0.5526315789473685,
+        "startContainerPath": "span#kobo\\.64\\.1",
+        "endContainerPath": "span#kobo\\.66\\.1",
+        "createdAt": "2024-04-26T21:24:35.660Z",
+        "updatedAt": "2024-04-27T05:24:35.000Z"
+      }
+    ],
+    "version": 1,
+    "isArchived": 0
+  },
+  {
+    "id": "atomic-habits",
+    "info": {
+      "title": "Atomic Habits: Tiny Changes, Remarkable Results",
+      "author": "James Clear",
+      "description": "<b><b><i>Tiny Changes, Remarkable Results</i></b></b><br>No matter your goals, <i>Atomic Habits</i> offers a proven framework for improving&#8212;every day. James Clear, one of the world's leading experts on habit formation, reveals practical strategies that will teach you exactly how to form good habits, break bad ones, and master the tiny behaviors that lead to remarkable results.<br>If you're having trouble changing your habits, the problem isn't you. The problem is your system. Bad habits repeat themselves again and again not because you don't want to change, but because you have the wrong system for change. You do not rise to the level of your goals. You fall to the level of your systems. Here, you'll get a proven system that can take you to new heights.<br>Clear is known for his ability to distill complex topics into simple behaviors that can be easily applied to daily life and work. Here, he draws on the most proven ideas from biology, psychology, and neuroscience to create...",
+      "publisher": "Penguin Publishing Group",
+      "timeSpentReading": 46940,
+      "isSideLoaded": true,
+      "lastReadAt": "2024-04-27T05:29:08.000Z",
+      "lastBookmarkAt": "2024-04-26T21:29:06.814Z",
+      "createdAt": "2024-04-27T13:11:12.000Z"
+    },
+    "coverImageUrl": "https://books.google.com/books/content?id=lFhbDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+    "chapters": [
+      { "title": "Cover", "index": 0 },
+      { "title": "Title Page", "index": 1 },
+      { "title": "Copyright", "index": 2 },
+      { "title": "Epigraph", "index": 3 },
+      { "title": "Contents", "index": 4 },
+      { "title": "Introduction: My Story", "index": 5 },
+      {
+        "title": "THE FUNDAMENTALS: Why Tiny Changes Make a Big Difference",
+        "index": 6,
+        "children": [
+          { "title": "1: The Surprising Power of Atomic Habits", "index": 7 },
+          { "title": "2: How Your Habits Shape Your Identity (and Vice Versa)", "index": 8 },
+          { "title": "3: How to Build Better Habits in 4 Simple Steps", "index": 9 }
+        ]
+      },
+      {
+        "title": "THE 1ST LAW: Make It Obvious",
+        "index": 10,
+        "children": [
+          { "title": "4: The Man Who Didn’t Look Right", "index": 11 },
+          { "title": "5: The Best Way to Start a New Habit", "index": 12 },
+          { "title": "6: Motivation Is Overrated; Environment Often Matters More", "index": 13 },
+          { "title": "7: The Secret to Self-Control", "index": 14 }
+        ]
+      },
+      {
+        "title": "THE 2ND LAW: Make It Attractive",
+        "index": 15,
+        "children": [
+          { "title": "8: How to Make a Habit Irresistible", "index": 16 },
+          { "title": "9: The Role of Family and Friends in Shaping Your Habits", "index": 17 },
+          { "title": "10: How to Find and Fix the Causes of Your Bad Habits", "index": 18 }
+        ]
+      },
+      {
+        "title": "THE 3RD LAW: Make It Easy",
+        "index": 19,
+        "children": [
+          { "title": "11: Walk Slowly, but Never Backward", "index": 20 },
+          { "title": "12: The Law of Least Effort", "index": 21 },
+          { "title": "13: How to Stop Procrastinating by Using the Two-Minute Rule", "index": 22 },
+          { "title": "14: How to Make Good Habits Inevitable and Bad Habits Impossible", "index": 23 }
+        ]
+      },
+      {
+        "title": "THE 4TH LAW: Make It Satisfying",
+        "index": 24,
+        "children": [
+          { "title": "15: The Cardinal Rule of Behavior Change", "index": 25 },
+          { "title": "16: How to Stick with Good Habits Every Day", "index": 26 },
+          { "title": "17: How an Accountability Partner Can Change Everything", "index": 27 }
+        ]
+      },
+      {
+        "title": "ADVANCED TACTICS: How to Go from Being Merely Good to Being Truly Great",
+        "index": 28,
+        "children": [
+          { "title": "18: The Truth About Talent (When Genes Matter and When They Don’t)", "index": 29 },
+          { "title": "19: The Goldilocks Rule: How to Stay Motivated in Life and Work", "index": 30 },
+          { "title": "20: The Downside of Creating Good Habits", "index": 31 },
+          { "title": "Conclusion: The Secret to Results That Last", "index": 32 }
+        ]
+      },
+      {
+        "title": "Appendix",
+        "index": 33,
+        "children": [
+          { "title": "What Should You Read Next?", "index": 34 },
+          { "title": "Little Lessons from the Four Laws", "index": 35 },
+          { "title": "How to Apply These Ideas to Business", "index": 36 },
+          { "title": "How to Apply These Ideas to Parenting", "index": 37 }
+        ]
+      },
+      { "title": "Acknowledgments", "index": 38 },
+      { "title": "Notes", "index": 39 },
+      { "title": "Index", "index": 40 },
+      { "title": "About the Author", "index": 41 }
+    ],
+    "bookmarks": [
+      {
+        "id": "05dff083-5397-4d75-8cdf-0d6cce620af5",
+        "text": "set of rules we can use to build better habits. They are (1) __make it obvious__, (2) make it attractive, (3) make it easy, and (4) make it satisfying.",
+        "chapter": { "relatedChapterIndexes": [9], "parentChapterIndexes": [6] },
+        "chapterProgress": 1,
+        "startContainerPath": "span#kobo\\.116\\.1",
+        "endContainerPath": "span#kobo\\.116\\.3",
+        "createdAt": "2024-04-26T21:27:47.600Z",
+        "updatedAt": "2024-04-27T05:27:47.000Z"
+      },
+      {
+        "id": "7e299160-d591-4bc3-9af7-ba9ab5b0a3cd",
+        "text": "“a person’s chances of becoming obese increased by 57 percent if he or she had a friend who became obese.” It works the other way, too.",
+        "chapter": { "relatedChapterIndexes": [17], "parentChapterIndexes": [15] },
+        "chapterProgress": 0.3888888888888889,
+        "startContainerPath": "span#kobo\\.28\\.3",
+        "endContainerPath": "span#kobo\\.28\\.5",
+        "createdAt": "2024-04-26T21:28:39.844Z",
+        "updatedAt": "2024-04-27T05:28:39.000Z"
+      },
+      {
+        "id": "f38e5952-361f-442c-88ae-a1c87e6d486f",
+        "text": "The amount of time you have been performing a habit is not as important as __the number of times you have performed__ it.",
+        "chapter": { "relatedChapterIndexes": [20], "parentChapterIndexes": [19] },
+        "chapterProgress": 1,
+        "startContainerPath": "span#kobo\\.40\\.1",
+        "endContainerPath": "span#kobo\\.40\\.2",
+        "createdAt": "2024-04-26T21:29:06.814Z",
+        "updatedAt": "2024-04-27T05:29:06.000Z"
+      }
+    ],
+    "version": 1,
+    "isArchived": 0
+  }
+]

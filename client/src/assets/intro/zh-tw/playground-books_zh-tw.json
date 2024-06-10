@@ -1,0 +1,169 @@
+[
+  {
+    "id": "building-a-second-brain",
+    "info": {
+      "title": "打造第二大腦：多一個數位大腦，資訊超載時代的高效能知識管理術",
+      "subtitle": "BUILDING A SECOND BRAIN：A Proven Method to Organize Your Digital Life and Unlock Your Creative Potential",
+      "author": "提亞戈．佛特 Tiago Forte, 陳文和",
+      "description": "<p><strong>矽谷強推的知識管理課終於成書！<br />教你最夯的「第二大腦」建構法</strong></p><p><strong>資訊超載時代，每天訊息收不完，大腦不夠用？<br />「第二大腦」幫你秒速思考、輕鬆歸納、高效輸出！</strong></p><p><strong>★他曾因大病腦傷，卻自創更強「第二大腦」——<br />數位知識管理一哥的高生產力秘訣大公開！</strong></p><p><strong>★《搞定》作者大衛．艾倫強推：<br />「一本寫得很棒、深具說服力又有用的手冊。」<br />子彈筆記發明者瑞德．卡洛、超速學習》作者史考特．楊，<br />劍橋學霸醫師YouTuber阿里．阿布達爾一致好評！</strong></p><p>●你花很多時間讀書、上課、學這學那，需要的時候卻腦袋當機，想不起來？<br />●桌機、手機、閱讀器，你都用，文章、圖片、影音，你都看，但總是記了這個、漏了那個？<br />●正在執行的專案，有太多資料要整理、太多資訊要分類，你找不到頭緒也抓不到重點？<br />→別擔心，建立你備用的「第二大...",
+      "publisher": "商業周刊",
+      "isbn": "9786267252116",
+      "timeSpentReading": 16800,
+      "isSideLoaded": true,
+      "lastReadAt": "2024-04-06T01:45:42.423Z",
+      "lastBookmarkAt": "2024-01-15T06:28:35.659Z",
+      "createdAt": "2023-02-08T21:00:00.000Z"
+    },
+    "coverImageUrl": "https://corsproxy.io/?https%3A%2F%2Fcdn.kobo.com%2Fbook-images%2Ff868ba07-cae3-4d8d-ba39-b750f15cc70e%2F-.jpg",
+    "chapters": [
+      { "title": "封面", "index": 0 },
+      { "title": "書名頁", "index": 1 },
+      { "title": "各界推薦", "index": 2 },
+      { "title": "推薦序　你也可以成為數位超人／張永錫", "index": 3 },
+      { "title": "推薦序　大腦是用來「創作內容」而非「儲存資訊」／薑餅資", "index": 4 },
+      { "title": "推薦序　為什麼我們需要「第二大腦」？／雷浩斯", "index": 5 },
+      { "title": "引言　第二大腦的前景", "index": 6 },
+      {
+        "title": "第1部：基礎——了解可能性",
+        "index": 7,
+        "children": [
+          { "title": "第1章　追本溯源", "index": 8 },
+          { "title": "第2章　第二大腦是什麼？", "index": 9 },
+          { "title": "第3章　第二大腦如何運作", "index": 10 }
+        ]
+      },
+      {
+        "title": "第2部：方法——CODE四大步驟",
+        "index": 11,
+        "children": [
+          { "title": "第4章　獲取——儲存引發共鳴的資訊", "index": 12 },
+          { "title": "第5章　組織——著眼於可操作性", "index": 13 },
+          { "title": "第6章　萃取——找出精髓", "index": 14 },
+          { "title": "第7章　表達——秀出你的成果", "index": 15 }
+        ]
+      },
+      {
+        "title": "第3部：改變——付諸實踐",
+        "index": 16,
+        "children": [
+          { "title": "第8章　創意執行的藝術", "index": 17 },
+          { "title": "第9章　數位組織者的基本習慣", "index": 18 },
+          { "title": "第10章　自我表達之道", "index": 19 },
+          { "title": "加值章節　創造有效標記系統的方法", "index": 20 }
+        ]
+      },
+      { "title": "附加的資源和指導方針", "index": 21 },
+      { "title": "致謝", "index": 22 },
+      { "title": "註解", "index": 23 },
+      { "title": "版權頁", "index": 24 }
+    ],
+    "bookmarks": [
+      {
+        "id": "6cbcdb85-ad79-48c7-9178-17c330c510ff",
+        "text": "我們當如何構築「海明威橋」？在每個工作時段，不要殫精竭慮，我們理應保留一些時間和精力，運用數位筆記軟體寫下接下來該做的事。\n記述關於後續步驟的構想：在結束一段工作之前，把你關於下個步驟的想法記錄下來。\n描述當前的狀態：這可以包含你當前最重大的挑戰、最重要的開放性問題，或是你預料到的未來發展上的阻礙。\n記下你離開工作後可能會遺忘的任何細節：比如說，故事中各角色相關細節、規畫中的活動可能遇上的一些陷阱，以及關於設計中的產品的精細考量。\n寫出你對下個工作時段的意圖：為接下來的工作、想解決的難題，或是有意達成的目標預做打算。",
+        "chapter": { "relatedChapterIndexes": [17], "parentChapterIndexes": [16] },
+        "chapterProgress": 0.5555555555555556,
+        "startContainerPath": "span#kobo\\.121\\.1",
+        "endContainerPath": "span#kobo\\.133\\.1",
+        "createdAt": "2024-01-15T06:28:35.659Z",
+        "updatedAt": "2024-01-15T14:28:35.000Z"
+      }
+    ],
+    "version": 1,
+    "isArchived": 0
+  },
+  {
+    "id": "atomic-habits",
+    "info": {
+      "title": "原子習慣：細微改變帶來巨大成就的實證法則",
+      "author": "作者：詹姆斯．克利爾（James Clear）",
+      "publisher": "方智出版社股份有限公司",
+      "timeSpentReading": 46940,
+      "isSideLoaded": true,
+      "lastReadAt": "2024-04-18T06:12:33.920Z",
+      "lastBookmarkAt": "2024-04-18T06:00:14.807Z",
+      "createdAt": "2024-03-06T23:24:06.000Z"
+    },
+    "coverImageUrl": "https://corsproxy.io/?https%3A%2F%2Fbooks.google.com%2Fbooks%2Fcontent%3Fid%3DST-ZDwAAQBAJ%26printsec%3Dfrontcover%26img%3D1%26zoom%3D2%26edge%3Dcurl",
+    "chapters": [
+      { "title": "書封", "index": 0 },
+      { "title": "目錄", "index": 1 },
+      { "title": "作者簡介", "index": 2 },
+      { "title": "譯者簡介", "index": 3 },
+      { "title": "〈推薦序〉一本可以實際運用的習慣改變指南　　艾爾文", "index": 4 },
+      { "title": "〈推薦序〉別挑戰人性，培養好習慣不靠「意志力」　　溫美玉", "index": 5 },
+      { "title": "〈推薦序〉原子習慣威力無窮　　謝文憲", "index": 6 },
+      { "title": "〈前言〉原子習慣改變了我的人生", "index": 7 },
+      { "title": "︱基本原理︱為何細微改變會帶來巨大差異？", "index": 8 },
+      { "title": "1 原子習慣的驚人力量", "index": 9 },
+      { "title": "2 改變習慣最有效的方法，是改變身分認同", "index": 10 },
+      { "title": "3 四個簡單的步驟，讓你建立更好的習慣", "index": 11 },
+      { "title": "︱法則1︱讓提示顯而易見", "index": 12 },
+      { "title": "4 行為改變的過程始於覺察", "index": 13 },
+      { "title": "5 開始一個新習慣最好的方法", "index": 14 },
+      { "title": "6 激勵被高估了，環境往往更重要", "index": 15 },
+      { "title": "7 自制力的祕密", "index": 16 },
+      { "title": "︱法則2︱讓習慣有吸引力", "index": 17 },
+      { "title": "8 如何讓習慣變得難以抗拒", "index": 18 },
+      { "title": "9 家人與朋友如何形塑你的習慣", "index": 19 },
+      { "title": "10 如何找出並解決壞習慣的成因", "index": 20 },
+      { "title": "︱法則3︱讓行動輕而易舉", "index": 21 },
+      { "title": "11 精通習慣由重複開始，而非完美", "index": 22 },
+      { "title": "12 最小努力原則", "index": 23 },
+      { "title": "13 如何運用「兩分鐘法則」停止拖延", "index": 24 },
+      { "title": "14 如何讓好習慣變得無可避免，讓壞習慣不可能發生", "index": 25 },
+      { "title": "︱法則4︱讓獎賞令人滿足", "index": 26 },
+      { "title": "15 行為改變的基本原則", "index": 27 },
+      { "title": "16 如何每天堅持好習慣", "index": 28 },
+      { "title": "17 問責夥伴作用大", "index": 29 },
+      { "title": "︱進階策略︱如何從「A」到「A+」", "index": 30 },
+      { "title": "18 基因如何影響習慣的養成", "index": 31 },
+      { "title": "19 金髮女孩原則：如何在生活與工作中維持動力", "index": 32 },
+      { "title": "20 建立好習慣的壞處", "index": 33 },
+      { "title": "〈結語〉讓成果永續的祕訣", "index": 34 },
+      { "title": "〈附錄〉來自行為改變四法則的一些啟示", "index": 35 },
+      { "title": "〈範例〉1. 習慣計分卡", "index": 36 },
+      { "title": "〈範例〉2. 執行意向", "index": 37 },
+      { "title": "〈範例〉3. 習慣堆疊", "index": 38 },
+      { "title": "〈範例〉4. 習慣追蹤", "index": 39 },
+      { "title": "〈範例〉5. 習慣契約", "index": 40 },
+      { "title": "原子習慣的商業運用手冊", "index": 41 },
+      { "title": "原子習慣的教養運用手冊", "index": 42 },
+      { "title": "版權頁", "index": 43 }
+    ],
+    "bookmarks": [
+      {
+        "id": "29b2c441-0f43-41fe-b8d8-09509a460929",
+        "text": "幫助我們建立更好習慣的簡單規則：一，__讓提示顯而易見__；二，讓習慣有吸引力；三，讓行動輕而易舉；四，讓獎賞令人滿足。",
+        "chapter": { "relatedChapterIndexes": [11] },
+        "chapterProgress": 0.9545454545454546,
+        "startContainerPath": "span#kobo\\.65\\.2",
+        "endContainerPath": "span#kobo\\.65\\.2",
+        "createdAt": "2024-04-18T05:54:50.376Z",
+        "updatedAt": "2024-04-18T13:54:50.000Z"
+      },
+      {
+        "id": "b4e2d3d1-2a6e-4f7e-8365-7a650ae5b169",
+        "text": "「若一個人身邊有個朋友變胖，那個人變得肥胖的機率會提高百分之五十七」；反之亦然",
+        "chapter": { "relatedChapterIndexes": [19] },
+        "chapterProgress": 0.4,
+        "startContainerPath": "span#kobo\\.26\\.1",
+        "endContainerPath": "span#kobo\\.26\\.1",
+        "createdAt": "2024-03-06T07:28:40.311Z",
+        "updatedAt": "2024-03-06T15:28:40.000Z"
+      },
+      {
+        "id": "190dd341-4e5e-41b2-860c-6320439bf3b0",
+        "text": "執行一項習慣的時間長短，不如__執行該習慣的次數__多寡重要。",
+        "chapter": { "relatedChapterIndexes": [22] },
+        "chapterProgress": 1,
+        "startContainerPath": "span#kobo\\.36\\.2",
+        "endContainerPath": "span#kobo\\.36\\.2",
+        "createdAt": "2024-04-18T05:57:48.952Z",
+        "updatedAt": "2024-04-18T13:57:48.000Z"
+      }
+    ],
+    "version": 1,
+    "isArchived": 0
+  }
+]
