@@ -60,6 +60,12 @@ const options = computed<SelectGroupOption[]>(() => [
     children: [
       {
         parent: 'book',
+        label: t('page.bookmarks.book_sorting_none'),
+        value: `book-${BookSortingKey.None}`,
+        sort: BookSortingKey.None,
+      },
+      {
+        parent: 'book',
         label: t('page.bookmarks.last_bookmarked_time'),
         value: `book-${BookSortingKey.LastBookmark}`,
         sort: BookSortingKey.LastBookmark,

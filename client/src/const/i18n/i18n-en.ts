@@ -174,6 +174,7 @@ export const i18nEn = {
       book_priority_started: 'Started',
       sort_books_by: 'Sort books by',
       sort_bookmarks_by: 'Sort bookmarks by',
+      book_sorting_none: 'None',
       last_bookmarked_time: 'Last bookmarked time',
       last_update: 'Last update',
       last_added: 'Last added',

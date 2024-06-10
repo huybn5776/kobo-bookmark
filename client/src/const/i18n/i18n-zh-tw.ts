@@ -172,6 +172,7 @@ export const i18nZhTw = {
       book_priority_started: '已加星號',
       sort_books_by: '書本排序',
       sort_bookmarks_by: '書籤排序',
+      book_sorting_none: '無',
       last_bookmarked_time: '最後加書籤時間',
       last_update: '最後更新',
       last_added: '最後新增',

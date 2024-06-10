@@ -1,4 +1,5 @@
 export enum BookSortingKey {
+  None = 'none',
   LastBookmark = 'last-bookmark',
   LastUpdate = 'last-update',
   LastAdded = 'last-added',
