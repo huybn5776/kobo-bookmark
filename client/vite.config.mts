@@ -3,6 +3,7 @@ import path from 'path';
 
 import svgLoader from 'vite-svg-loader';
 import vue from '@vitejs/plugin-vue';
+import { PreRenderedAsset } from 'rollup';
 import { defineConfig, Alias } from 'vite';
 
 import * as tsconfig from './tsconfig.json';
@@ -17,6 +18,20 @@ function readAliasFromTsConfig(): Alias[] {
   }, [] as Alias[]);
 }
 
+function handleRenameAsset(asset: PreRenderedAsset): string | null {
+  switch (asset.name?.split('.').pop()) {
+    case 'css':
+      return `css/[name]-[hash][extname]`;
+    case 'png':
+    case 'jpg':
+    case 'ico':
+    case 'svg':
+      return 'images/[name]-[hash][extname]';
+    default:
+      return null;
+  }
+}
+
 export default defineConfig({
   plugins: [vue(), svgLoader()],
   resolve: {
@@ -29,6 +44,15 @@ export default defineConfig({
         target: 'http://localhost:5000',
         changeOrigin: true,
         followRedirects: true,
+      },
+    },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        assetFileNames: (asset) => {
+          return handleRenameAsset(asset) || 'assets/[name]-[hash][extname]';
+        },
       },
     },
   },
