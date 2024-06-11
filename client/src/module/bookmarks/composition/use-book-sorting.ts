@@ -1,4 +1,4 @@
-import { ref, Ref, onMounted, watch } from 'vue';
+import { ref, Ref, watch } from 'vue';
 
 import { indexBy, prop } from 'ramda';
 
@@ -23,7 +23,6 @@ export function useBookSorting({ allBooks }: { allBooks: Ref<KoboBook[]> }): {
   const sortedBooks = ref<KoboBook[]>([]);
   const keepSortingOnceMark = ref<boolean>(false);
 
-  onMounted(sortBooks);
   watch(() => [allBooks.value, bookSortingPriority.value, bookSorting.value, bookmarkSorting.value], sortBooks);
 
   function sortBooks(): void {

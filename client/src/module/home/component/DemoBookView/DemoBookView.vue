@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch } from 'vue';
 
 import { useI18n } from 'vue-i18n';
 
@@ -48,8 +48,7 @@ const expanded = ref<boolean>(true);
 
 const { openBookmarkCardDialog } = useBookmarkCardDialog();
 
-onMounted(reloadAllBooks);
-watch(() => locale.value, reloadAllBooks);
+watch(() => locale.value, reloadAllBooks, { immediate: true });
 
 async function reloadAllBooks(): Promise<void> {
   const data = locale.value.startsWith('zh')

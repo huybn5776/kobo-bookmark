@@ -1,4 +1,4 @@
-import { ref, onMounted, Ref, UnwrapRef, watch } from 'vue';
+import { ref, Ref, UnwrapRef, watch } from 'vue';
 
 import { fromEvent, tap, exhaustMap, Observable, merge, filter, Subscription } from 'rxjs';
 
@@ -25,11 +25,7 @@ export function useDropArea(options: DropAreaOptions): UseDropArea {
   const fileDragEnter = ref(false);
   const subscriptions = ref<Subscription[]>([]);
 
-  watch(
-    () => dropOverlayRef.value,
-    () => initEvents(),
-  );
-  onMounted(() => initEvents());
+  watch(() => dropOverlayRef.value, initEvents);
 
   function initEvents(): void {
     subscriptions.value.forEach((s) => s.unsubscribe());
