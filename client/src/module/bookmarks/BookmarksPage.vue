@@ -128,7 +128,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watchEffect, ComponentInstance, ComponentPublicInstance } from 'vue';
+import { ref, computed, watchEffect, ComponentInstance, ComponentPublicInstance, nextTick } from 'vue';
 
 import * as E from 'fp-ts/Either';
 import { useNotification, NCheckbox, useLoadingBar } from 'naive-ui';
@@ -414,7 +414,7 @@ function gotoBook(bookId: string): void {
 function gotoBookmark(book: KoboBook, bookmark: KoboBookmark): void {
   if (expandedBookId.value !== book.id) {
     expandedBookId.value = book.id;
-    setTimeout(() => {
+    nextTick(() => {
       bookBookmarkRefs.value[book.id]?.scrollToBookmark(bookmark, { block: 'center' });
     });
   } else {

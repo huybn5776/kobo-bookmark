@@ -119,7 +119,7 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
   if ((event.ctrlKey || event.metaKey) && !event.shiftKey && !event.altKey && event.code === 'KeyK') {
     showModel.value = true;
     event.preventDefault();
-    setTimeout(() => inputRef.value?.focus());
+    inputRef.value?.focus();
     return;
   }
   if (!showModel.value) {

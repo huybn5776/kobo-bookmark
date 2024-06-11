@@ -102,7 +102,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, computed, watch, nextTick } from 'vue';
 
 import { useEventListener } from '@vueuse/core';
 import { toJpeg } from 'html-to-image';
@@ -194,7 +194,7 @@ watch(
   () => {
     updateCardShape();
     autoPreviewSize();
-    setTimeout(() => autoFontSize('comfortable'));
+    nextTick(() => autoFontSize('comfortable'));
   },
 );
 

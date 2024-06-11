@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
+import { ref, computed, nextTick } from 'vue';
 
 import { useEventListener } from '@vueuse/core';
 import { NInput } from 'naive-ui';
@@ -87,7 +87,7 @@ function onInputKeyDown(event: KeyboardEvent): void {
     const selection = getSelection();
     event.preventDefault();
     text.value = toggleSyntax(text.value, highlightSyntax, selection.start, selection.end);
-    setTimeout(() => setSelection(selection.start));
+    nextTick(() => setSelection(selection.start));
   }
 }
 
