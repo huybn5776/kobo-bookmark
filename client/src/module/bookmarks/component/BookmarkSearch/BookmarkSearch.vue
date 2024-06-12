@@ -137,7 +137,7 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
     onSelect(pendingOption.value);
   }
 });
-onClickOutside(elementRef, closeModal);
+onClickOutside(elementRef, () => setTimeout(closeModal));
 
 watch(
   () => filteredChildOptions.value,

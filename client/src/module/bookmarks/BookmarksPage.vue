@@ -50,11 +50,13 @@
         />
       </div>
       <NCheckbox
+        v-if="!bookmarkSearchActive"
         size="large"
         :checked="selectedBooksCheckState === CheckboxState.Checked"
         :indeterminate="selectedBooksCheckState === CheckboxState.Indeterminate"
         @click="handleMasterCheckboxClick"
       />
+      <BookSearchButton v-if="bookmarkSearchActive" @click="showBookSearchModal = true" />
     </div>
 
     <ActiveBookCollectionView :bookCollection="activeBookCollection" @closeClick="bookCollectionIdFilter = undefined" />
@@ -124,11 +126,19 @@
         @discardAllTasks="discardAllTasks"
       />
     </Teleport>
+    <Teleport v-if="showBookSearchModal" to="#app">
+      <BookSearchModal
+        :books="filteredBooks"
+        @select="onBookModalSelect"
+        @alterSelect="onBookModalAlterSelect"
+        @close="showBookSearchModal = false"
+      />
+    </Teleport>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watchEffect, ComponentInstance, ComponentPublicInstance, nextTick } from 'vue';
+import { ref, computed, watchEffect, watch, ComponentInstance, ComponentPublicInstance, nextTick } from 'vue';
 
 import * as E from 'fp-ts/Either';
 import { useNotification, NCheckbox, useLoadingBar } from 'naive-ui';
@@ -154,10 +164,13 @@ import BookmarkFilterDropdown from '@/module/bookmarks/component/BookmarkFilterD
 import BookmarkSearch from '@/module/bookmarks/component/BookmarkSearch/BookmarkSearch.vue';
 import BookmarkShareView from '@/module/bookmarks/component/BookmarkShareView/BookmarkShareView.vue';
 import BookmarkSortingDropdown from '@/module/bookmarks/component/BookmarkSortingDropdown/BookmarkSortingDropdown.vue';
+import BookSearchButton from '@/module/bookmarks/component/BookSearchButton/BookSearchButton.vue';
+import BookSearchModal from '@/module/bookmarks/component/BookSearchModal/BookSearchModal.vue';
 import MultiBookActionBar from '@/module/bookmarks/component/MultiBookActionBar/MultiBookActionBar.vue';
 import ToolbarPinToggle from '@/module/bookmarks/component/ToolbarPinToggle/ToolbarPinToggle.vue';
 import { useBookBookmarkArchive } from '@/module/bookmarks/composition/use-book-bookmark-archive';
 import { useBookFilter } from '@/module/bookmarks/composition/use-book-filter';
+import { useBookSearchModal } from '@/module/bookmarks/composition/use-book-search-modal';
 import { useBookSorting } from '@/module/bookmarks/composition/use-book-sorting';
 import { useExpandedBook } from '@/module/bookmarks/composition/use-expanded-book';
 import { useManageBookCollection } from '@/module/bookmarks/composition/use-manage-book-collection';
@@ -204,6 +217,10 @@ const {
   books: filteredBooks,
   activeBookCollection,
 } = useBookFilter({ books: sortedBooks });
+const { showBookSearchModal, onBookModalSelect, onBookModalAlterSelect } = useBookSearchModal({
+  gotoBook,
+  expandBook,
+});
 const { books: booksToShow, expandedBookId, onExpandedBookUpdated } = useExpandedBook({ books: filteredBooks });
 const { archiveBook, cancelArchiveBook, archiveBookmark, cancelArchiveBookmark } = useBookBookmarkArchive({
   reloadBooks,
@@ -265,6 +282,14 @@ watchEffect(() => {
   }
   pageResultMessage.value = message;
 });
+watch(
+  () => showBookSearchModal.value,
+  (show) => (bookmarkSearchActive.value = bookmarkSearchActive.value && !show),
+);
+watch(
+  () => bookmarkSearchActive.value,
+  (active) => (showBookSearchModal.value = showBookSearchModal.value && !active),
+);
 
 async function loadBooks(): Promise<void> {
   const shareId = route.params.shareId as string;
@@ -405,9 +430,17 @@ function setBookBookmarkRef(nodeRef: Element | ComponentPublicInstance | null): 
 }
 
 function gotoBook(bookId: string): void {
-  if (virtualListRef.value) {
-    const bookIndex = booksToShow.value.findIndex((book) => book.id === bookId);
-    (virtualListRef.value as { scrollTo: (index: number) => void }).scrollTo(bookIndex);
+  const virtualList = virtualListRef.value;
+  if (!virtualList) {
+    return;
+  }
+  const bookIndex = booksToShow.value.findIndex((book) => book.id === bookId);
+  const action = (): void => (virtualList as { scrollTo: (index: number) => void }).scrollTo(bookIndex);
+  if (expandedBookId.value === bookId) {
+    action();
+  } else {
+    expandedBookId.value = undefined;
+    nextTick(action);
   }
 }
 
@@ -420,6 +453,11 @@ function gotoBookmark(book: KoboBook, bookmark: KoboBookmark): void {
   } else {
     bookBookmarkRefs.value[book.id]?.scrollToBookmark(bookmark, { behavior: 'smooth', block: 'center' });
   }
+}
+
+function expandBook(bookId: string): void {
+  expandedBookId.value = bookId;
+  gotoBook(bookId);
 }
 
 async function reloadBooks(): Promise<void> {

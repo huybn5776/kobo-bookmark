@@ -5,6 +5,7 @@ export { default as ArrowExpandVerticalIcon } from '@/assets/svg/arrow-expand-ve
 export { default as ArrowLeftIcon } from '@/assets/svg/arrow-left.svg';
 export { default as BlueBookIcon } from '@/assets/svg/blue-book.svg';
 export { default as BookClockIcon } from '@/assets/svg/book-clock-outline.svg';
+export { default as BookSearch } from '@/assets/svg/book-search.svg';
 export { default as BookmarkMultipleIcon } from '@/assets/svg/bookmark-multiple.svg';
 export { default as BookmarksLineIcon } from '@/assets/svg/bookmarks-line.svg';
 export { default as CancelIcon } from '@/assets/svg/cancel.svg';

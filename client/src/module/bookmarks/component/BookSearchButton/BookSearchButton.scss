@@ -1,0 +1,7 @@
+.book-search-button {
+  transition: opacity .2s;
+
+  &:not(:hover):not(:focus-within) {
+    opacity: .4;
+  }
+}
