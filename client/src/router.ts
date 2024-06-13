@@ -12,7 +12,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/module/data-import/DataImportPage.vue'),
   },
   {
-    path: '/bookmarks',
+    path: '/bookmarks/:bookId?',
     name: 'bookmarks',
     component: () => import('@/module/bookmarks/BookmarksPage.vue'),
   },

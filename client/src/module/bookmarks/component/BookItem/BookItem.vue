@@ -6,14 +6,17 @@
       @coverImageUpdated="(v) => emits('bookCoverImageUpdated', v)"
     />
     <div class="book-section">
-      <h2 class="book-title">
-        <button
-          class="book-title-button"
-          :class="{ 'book-title-button-disabled': disableBookmarkExpand }"
-          @click="toggleExpanded"
-        >
+      <h2 class="book-title" :class="{ 'book-title-disabled': disableBookmarkExpand }">
+        <button v-if="expanded || !expandWithLink" class="book-title-button" @click="toggleExpanded">
           {{ book.info.title }}
         </button>
+        <router-link
+          v-if="!expanded && expandWithLink"
+          class="book-title-button"
+          :to="{ params: { bookId: encodeBookId(book.id) } }"
+        >
+          {{ book.info.title }}
+        </router-link>
       </h2>
       <div class="book-info">
         <p v-if="book.info.author" class="book-info-text book-author">{{ book.info.author }}</p>
@@ -119,10 +122,12 @@ import { KoboBook } from '@/dto/kobo-book';
 import { BookAction } from '@/enum/book-action';
 import BookCoverView from '@/module/bookmarks/component/BookCoverView/BookCoverView.vue';
 import BookInfoItem from '@/module/bookmarks/component/BookInfoItem/BookInfoItem.vue';
+import { encodeBookId } from '@/util/book-id-encode';
 
 const props = defineProps<{
   book: KoboBook;
   expanded?: boolean;
+  expandWithLink?: boolean;
   selectable?: boolean;
   disableBookmarkExpand?: boolean;
   selected?: boolean;

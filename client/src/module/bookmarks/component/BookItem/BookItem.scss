@@ -1,7 +1,7 @@
 .book-header {
   position: relative;
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   gap: 8px;
   padding: 16px;
 }
@@ -9,7 +9,6 @@
 .book-section {
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
 }
 
 .bookmark-export-button {
@@ -69,29 +68,36 @@
 }
 
 .book-title {
-  margin: 0;
-  font-size: 22px;
+  margin: 0 0 0 -4px;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: rgba(white, .1);
+  }
+
+  &.book-title-disabled {
+    pointer-events: none;
+  }
 }
 
 .book-title-button {
+  display: block;
+  box-sizing: border-box;
   width: 100%;
-  margin-left: -4px;
   padding: 4px;
   color: white;
+  font-weight: normal;
   font-size: 22px;
+  font-family: inherit;
+  line-height: 1.6;
   text-align: start;
   background: none;
   border: none;
-  border-radius: 4px;
   cursor: pointer;
   user-select: auto;
 
   &:hover {
-    background-color: rgba(white, 0.1);
-  }
-
-  &.book-title-button-disabled {
-    pointer-events: none;
+    text-decoration: none;
   }
 
   &:not(.book-expanded &) {

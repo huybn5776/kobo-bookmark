@@ -2,6 +2,7 @@
   <div ref="elementRef" class="book-bookmark" :class="{ 'book-selected': selected, 'book-expanded': expanded }">
     <BookItem
       selectable
+      expandWithLink
       :book="book"
       :expanded="expanded"
       :disableBookmarkExpand="disableBookmarkExpand"

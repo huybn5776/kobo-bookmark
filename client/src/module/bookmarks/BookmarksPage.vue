@@ -138,7 +138,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watchEffect, watch, ComponentInstance, ComponentPublicInstance, nextTick } from 'vue';
+import { ref, watchEffect, watch, onMounted, ComponentInstance, ComponentPublicInstance, nextTick } from 'vue';
 
 import * as E from 'fp-ts/Either';
 import { NCheckbox, useLoadingBar } from 'naive-ui';
@@ -246,7 +246,7 @@ const {
 } = useBookmarkExport({ selectedBooks, updateBookById });
 useBookBookmarkArchive({ reloadBooks });
 
-watchEffect(async () => {
+onMounted(async () => {
   allBooks.value = [];
   bookmarkShare.value = undefined;
   pageResultMessage.value = undefined;
