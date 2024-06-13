@@ -127,7 +127,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watchEffect, watch, onMounted, ComponentInstance, ComponentPublicInstance, nextTick } from 'vue';
+import { ref, watchEffect, watch, onMounted } from 'vue';
 
 import * as E from 'fp-ts/Either';
 import { NCheckbox, useLoadingBar } from 'naive-ui';
@@ -162,6 +162,7 @@ import { useBookSearchModal } from '@/module/bookmarks/composition/use-book-sear
 import { useBookSorting } from '@/module/bookmarks/composition/use-book-sorting';
 import { useBookmarkExport } from '@/module/bookmarks/composition/use-bookmark-export';
 import { useExpandedBook } from '@/module/bookmarks/composition/use-expanded-book';
+import { useGoToBook } from '@/module/bookmarks/composition/use-go-to-book';
 import { useManageBookCollection } from '@/module/bookmarks/composition/use-manage-book-collection';
 import { useMultiBookActions } from '@/module/bookmarks/composition/use-multi-book-actions';
 import { useShareBookDialog } from '@/module/bookmarks/composition/use-share-book-dialog';
@@ -178,13 +179,11 @@ const loadingBar = useLoadingBar();
 
 const scrollableElement = document.getElementsByClassName('app')[0] as HTMLElement;
 
-const virtualListRef = ref<ComponentInstance<typeof VirtualList<KoboBook, 'id'>>>();
 const bookmarkShare = ref<BookmarkShare>();
 const loadingBooks = ref<boolean>(false);
 const pageResultMessage = ref<string>();
 
 const allBooks = ref<KoboBook[]>([]);
-const bookBookmarkRefs = ref<Record<string, InstanceType<typeof BookBookmark>>>({});
 const bookmarkSearchActive = ref<boolean>(false);
 const bookmarkSearch = ref<string>();
 const toolbarPinned = useSyncSetting(SettingKey.BookmarksToolbarPinned);
@@ -198,11 +197,21 @@ const {
   books: filteredBooks,
   activeBookCollection,
 } = useBookFilter({ books: sortedBooks });
+const {
+  books: booksToShow,
+  expandedBookId,
+  updateExpandedBookId,
+  onExpandedBookUpdated,
+} = useExpandedBook({ books: filteredBooks });
+const { virtualListRef, setBookBookmarkRef, gotoBook, gotoBookmark } = useGoToBook({
+  booksToShow,
+  expandedBookId,
+  expandBook,
+});
 const { showBookSearchModal, onBookModalSelect, onBookModalAlterSelect } = useBookSearchModal({
   gotoBook,
   expandBook,
 });
-const { books: booksToShow, expandedBookId, onExpandedBookUpdated } = useExpandedBook({ books: filteredBooks });
 const { archiveBook, cancelArchiveBook, archiveBookmark, cancelArchiveBookmark } = useBookBookmarkArchive({
   reloadBooks,
 });
@@ -311,42 +320,11 @@ async function fetchMissingBookCoverImageUrl(): Promise<void> {
   );
 }
 
-function setBookBookmarkRef(nodeRef: Element | ComponentPublicInstance | null): void {
-  const bookBookmarkInstance = nodeRef as ComponentInstance<typeof BookBookmark> | undefined;
-  if (bookBookmarkInstance) {
-    bookBookmarkRefs.value[bookBookmarkInstance?.book.id] = bookBookmarkInstance;
+function expandBook(bookId: string | undefined): void {
+  updateExpandedBookId(bookId);
+  if (bookId) {
+    gotoBook(bookId);
   }
-}
-
-function gotoBook(bookId: string): void {
-  const virtualList = virtualListRef.value;
-  if (!virtualList) {
-    return;
-  }
-  const bookIndex = booksToShow.value.findIndex((book) => book.id === bookId);
-  const action = (): void => (virtualList as { scrollTo: (index: number) => void }).scrollTo(bookIndex);
-  if (expandedBookId.value === bookId) {
-    action();
-  } else {
-    expandedBookId.value = undefined;
-    nextTick(action);
-  }
-}
-
-function gotoBookmark(book: KoboBook, bookmark: KoboBookmark): void {
-  if (expandedBookId.value !== book.id) {
-    expandedBookId.value = book.id;
-    nextTick(() => {
-      bookBookmarkRefs.value[book.id]?.scrollToBookmark(bookmark, { block: 'center' });
-    });
-  } else {
-    bookBookmarkRefs.value[book.id]?.scrollToBookmark(bookmark, { behavior: 'smooth', block: 'center' });
-  }
-}
-
-function expandBook(bookId: string): void {
-  expandedBookId.value = bookId;
-  gotoBook(bookId);
 }
 
 async function reloadBooks(): Promise<void> {
