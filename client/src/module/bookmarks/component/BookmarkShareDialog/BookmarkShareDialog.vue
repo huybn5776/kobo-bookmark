@@ -119,7 +119,7 @@ async function uploadAndCreateShareLink(bookmarkShare: BookmarkShare, fileName: 
   const dropboxFileMeta = await saveJsonToDropbox(fileName, bookmarkShare);
   const dropboxLink = await createDropboxShareLink(`/${dropboxFileMeta.name}`);
   const shareId = calcShareIdOfDropboxLink(dropboxLink);
-  return `${location.value.origin}/bookmarks/${shareId}`;
+  return `${location.value.origin}/share/${shareId}`;
 }
 
 function createBookmarkShare(): BookmarkShare {
