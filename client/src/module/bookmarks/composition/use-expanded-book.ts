@@ -4,7 +4,7 @@ import { useRouterParam } from '@/composition/use-router-param';
 import { KoboBook } from '@/dto/kobo-book';
 import { decodeBookId, encodeBookId } from '@/util/book-id-encode';
 
-export function useExpandedBook({ books: allBooks }: { books: ComputedRef<KoboBook[]> }): {
+export function useExpandedBook({ books: allBooks }: { books: Ref<KoboBook[]> | ComputedRef<KoboBook[]> }): {
   books: ComputedRef<KoboBook[]>;
   expandedBookId: ComputedRef<string | undefined>;
   updateExpandedBookId: (id: string | undefined) => void;

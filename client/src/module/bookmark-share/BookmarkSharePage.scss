@@ -1,0 +1,38 @@
+.bookmark-share-page {
+  max-width: min(1000px, 100vw - 16px);
+}
+
+.bookmark-share-page-tools {
+  display: grid;
+  grid-template-columns: 1fr 32px;
+  gap: 8px;
+  align-items: center;
+  height: 36px;
+  padding: 0 8px 8px 16px;
+  box-shadow: 0 -8px 0 var(--bg-dark), 0 2px 2px -2px rgba(white, 0);
+  transition: box-shadow .2s;
+
+  &.bookmark-share-page-tools-sticky {
+    position: sticky;
+    top: 8px;
+    z-index: 1;
+    background-color: var(--bg-dark);
+    box-shadow: 0 -8px 0 var(--bg-dark), 0 2px 2px -2px rgba(white, .6);
+  }
+}
+
+.bookmark-share-page-list-actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+
+  &.bookmark-share-page-list-actions-expanded {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bookmark-share-books-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

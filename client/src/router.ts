@@ -17,9 +17,10 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/module/bookmarks/BookmarksPage.vue'),
   },
   {
-    path: '/share/:shareId',
+    path: '/share/:shareId/:bookId?',
     name: 'bookmarks-share',
-    component: () => import('@/module/bookmarks/BookmarksPage.vue'),
+    meta: { hideMainFunctions: true },
+    component: () => import('@/module/bookmark-share/BookmarkSharePage.vue'),
   },
   {
     path: '/settings',

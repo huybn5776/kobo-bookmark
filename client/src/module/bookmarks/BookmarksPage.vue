@@ -1,7 +1,5 @@
 <template>
   <div class="page-content bookmark-page">
-    <BookmarkShareView v-if="bookmarkShare" :bookmarkShare="bookmarkShare" />
-
     <div
       v-if="allBooks.length"
       class="bookmark-page-tools"
@@ -9,7 +7,6 @@
     >
       <MultiBookActionBar
         v-if="showMultiSelectToolbar"
-        :readonly="!!bookmarkShare"
         :collectionFilterEnabled="!!bookCollectionIdFilter"
         :selectedBooks="selectedBooks"
         @textExportClick="exportSelectedAsText"
@@ -80,7 +77,6 @@
           :defaultExpanded="booksToShow?.length === 1"
           :selected="selectedBookIds.includes(book.id)"
           :search="(bookmarkSearchActive && bookmarkSearch) || ''"
-          :readonly="!!bookmarkShare"
           :exportNotionLoading="exportingBookIds.includes(book.id)"
           @update:expanded="onExpandedBookUpdated(book, $event)"
           @update:selected="(v) => onBookSelectChanges(book, v)"
@@ -129,17 +125,14 @@
 <script lang="ts" setup>
 import { ref, watchEffect, watch, onMounted } from 'vue';
 
-import * as E from 'fp-ts/Either';
-import { NCheckbox, useLoadingBar } from 'naive-ui';
+import { NCheckbox } from 'naive-ui';
 import { isNil } from 'ramda';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
 
 import PageResult from '@/component/PageResult/PageResult.vue';
 import VirtualList from '@/component/VirtualList/VirtualList.vue';
 import { useSyncSetting } from '@/composition/use-sync-setting';
 import { I18NMessageSchema } from '@/config/i18n-config';
-import { BookmarkShare } from '@/dto/bookmark-share';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import { CheckboxState } from '@/enum/checkbox-state';
 import { SettingKey } from '@/enum/setting-key';
@@ -149,7 +142,6 @@ import BookBookmark from '@/module/bookmarks/component/BookBookmark/BookBookmark
 import BookExportProgressModal from '@/module/bookmarks/component/BookExportProgressModal/BookExportProgressModal.vue';
 import BookmarkFilterDropdown from '@/module/bookmarks/component/BookmarkFilterDropdown/BookmarkFilterDropdown.vue';
 import BookmarkSearch from '@/module/bookmarks/component/BookmarkSearch/BookmarkSearch.vue';
-import BookmarkShareView from '@/module/bookmarks/component/BookmarkShareView/BookmarkShareView.vue';
 import BookmarkSortingDropdown from '@/module/bookmarks/component/BookmarkSortingDropdown/BookmarkSortingDropdown.vue';
 import BookSearchButton from '@/module/bookmarks/component/BookSearchButton/BookSearchButton.vue';
 import BookSearchModal from '@/module/bookmarks/component/BookSearchModal/BookSearchModal.vue';
@@ -169,17 +161,12 @@ import { useShareBookDialog } from '@/module/bookmarks/composition/use-share-boo
 import { useUpdateBook } from '@/module/bookmarks/composition/use-update-book';
 import { findCoverImageForBook } from '@/services/bookmark/book-cover.service';
 import { getBooksFromDb, putBooksToDb, updateBookmarkByPatch } from '@/services/bookmark/bookmark-manage.service';
-import { getBookmarksShareFromDropboxShareId } from '@/services/dropbox/dropbox.service';
 import { deepToRaw } from '@/util/vue-utils';
 
 const { t } = useI18n<[I18NMessageSchema]>();
 
-const route = useRoute();
-const loadingBar = useLoadingBar();
-
 const scrollableElement = document.getElementsByClassName('app')[0] as HTMLElement;
 
-const bookmarkShare = ref<BookmarkShare>();
 const loadingBooks = ref<boolean>(false);
 const pageResultMessage = ref<string>();
 
@@ -247,11 +234,10 @@ useBookBookmarkArchive({ reloadBooks });
 
 onMounted(async () => {
   allBooks.value = [];
-  bookmarkShare.value = undefined;
   pageResultMessage.value = undefined;
 
   loadingBooks.value = true;
-  await loadBooks();
+  allBooks.value = await getBooksFromDb();
   loadingBooks.value = false;
   await fetchMissingBookCoverImageUrl();
 });
@@ -282,27 +268,6 @@ watch(
   () => bookmarkSearchActive.value,
   (active) => (showBookSearchModal.value = showBookSearchModal.value && !active),
 );
-
-async function loadBooks(): Promise<void> {
-  const shareId = route.params.shareId as string;
-  if (shareId) {
-    loadingBar.start();
-    await loadBooksFromShareId(shareId);
-    loadingBar.finish();
-  } else {
-    allBooks.value = await getBooksFromDb();
-  }
-}
-
-async function loadBooksFromShareId(shareId: string): Promise<void> {
-  const result = await getBookmarksShareFromDropboxShareId(shareId);
-  if (E.isLeft(result)) {
-    pageResultMessage.value = t(result.left);
-    return;
-  }
-  bookmarkShare.value = result.right;
-  allBooks.value = bookmarkShare.value?.books;
-}
 
 async function fetchMissingBookCoverImageUrl(): Promise<void> {
   if (!allBooks.value?.length) {

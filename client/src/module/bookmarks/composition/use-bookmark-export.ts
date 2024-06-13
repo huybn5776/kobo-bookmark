@@ -15,7 +15,7 @@ export function useBookmarkExport({
   updateBookById,
 }: {
   selectedBooks: Ref<KoboBook[]>;
-  updateBookById: (bookId: string, updater: (book: KoboBook) => KoboBook) => void;
+  updateBookById?: (bookId: string, updater: (book: KoboBook) => KoboBook) => void;
 }): {
   exportingBookIds: ComputedRef<string[]>;
   bookExportTasksToShow: ComputedRef<BookExportTask[]>;
@@ -83,7 +83,7 @@ export function useBookmarkExport({
         }
         updateTask(updatedTask);
       });
-      updateBookById(book.id, (b) => ({ ...b, notion: notionExportState }));
+      updateBookById?.(book.id, (b) => ({ ...b, notion: notionExportState }));
     } catch (e) {
       const currentTask = getTaskById(task);
       if (currentTask?.state !== BookExportState.Canceled) {
