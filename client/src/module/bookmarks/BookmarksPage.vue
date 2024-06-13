@@ -138,24 +138,22 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watchEffect, watch, ComponentInstance, ComponentPublicInstance, nextTick } from 'vue';
+import { ref, watchEffect, watch, ComponentInstance, ComponentPublicInstance, nextTick } from 'vue';
 
 import * as E from 'fp-ts/Either';
-import { useNotification, NCheckbox, useLoadingBar } from 'naive-ui';
+import { NCheckbox, useLoadingBar } from 'naive-ui';
 import { isNil } from 'ramda';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
 import PageResult from '@/component/PageResult/PageResult.vue';
 import VirtualList from '@/component/VirtualList/VirtualList.vue';
-import { useCheckNotionToken } from '@/composition/use-check-notion-token';
 import { useSyncSetting } from '@/composition/use-sync-setting';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { BookmarkShare } from '@/dto/bookmark-share';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import { CheckboxState } from '@/enum/checkbox-state';
 import { SettingKey } from '@/enum/setting-key';
-import { BookExportTask, BookExportState } from '@/interface/book-export-task';
 import { useBookmarkCardDialog } from '@/module/bookmark-card-dialog/composition/use-bookmark-card-dialog';
 import ActiveBookCollectionView from '@/module/bookmarks/component/ActiveBookCollectionView/ActiveBookCollectionView.vue';
 import BookBookmark from '@/module/bookmarks/component/BookBookmark/BookBookmark.vue';
@@ -172,6 +170,7 @@ import { useBookBookmarkArchive } from '@/module/bookmarks/composition/use-book-
 import { useBookFilter } from '@/module/bookmarks/composition/use-book-filter';
 import { useBookSearchModal } from '@/module/bookmarks/composition/use-book-search-modal';
 import { useBookSorting } from '@/module/bookmarks/composition/use-book-sorting';
+import { useBookmarkExport } from '@/module/bookmarks/composition/use-bookmark-export';
 import { useExpandedBook } from '@/module/bookmarks/composition/use-expanded-book';
 import { useManageBookCollection } from '@/module/bookmarks/composition/use-manage-book-collection';
 import { useMultiBookActions } from '@/module/bookmarks/composition/use-multi-book-actions';
@@ -180,16 +179,11 @@ import { useUpdateBook } from '@/module/bookmarks/composition/use-update-book';
 import { findCoverImageForBook } from '@/services/bookmark/book-cover.service';
 import { getBooksFromDb, putBooksToDb, updateBookmarkByPatch } from '@/services/bookmark/bookmark-manage.service';
 import { getBookmarksShareFromDropboxShareId } from '@/services/dropbox/dropbox.service';
-import { bookmarkToText, bookmarkToMarkdown } from '@/services/export/bookmark-export.service';
-import { handleNotionApiError } from '@/services/notion/notion-api-error-handing.service';
-import { exportBookBookmarks } from '@/services/notion/notion-export.service';
-import { textToFileDownload } from '@/util/browser-utils';
 import { deepToRaw } from '@/util/vue-utils';
 
 const { t } = useI18n<[I18NMessageSchema]>();
 
 const route = useRoute();
-const notification = useNotification();
 const loadingBar = useLoadingBar();
 
 const scrollableElement = document.getElementsByClassName('app')[0] as HTMLElement;
@@ -204,9 +198,6 @@ const bookBookmarkRefs = ref<Record<string, InstanceType<typeof BookBookmark>>>(
 const bookmarkSearchActive = ref<boolean>(false);
 const bookmarkSearch = ref<string>();
 const toolbarPinned = useSyncSetting(SettingKey.BookmarksToolbarPinned);
-const pendingExportRequest = ref<Promise<void>>();
-const bookExportTasks = ref<BookExportTask[]>([]);
-const lastTaskId = ref<number>(0);
 
 const { bookSortingPriority, bookSorting, bookmarkSorting, sortedBooks, keepSortingOnce } = useBookSorting({
   allBooks,
@@ -243,15 +234,17 @@ const {
 } = useMultiBookActions({ allBooks: booksToShow, reloadBooks });
 const { handleCreateCollection, handleEditCollection, addSelectionToCollection, removeSelectionFromCollection } =
   useManageBookCollection({ allBooks, selectedBookIds, bookCollectionIdFilter });
+const {
+  exportingBookIds,
+  bookExportTasksToShow,
+  exportSelectedToNotion,
+  exportBookmarkToText,
+  exportBookmarkToMarkdown,
+  exportBookmarkToNotion,
+  cancelTask,
+  discardAllTasks,
+} = useBookmarkExport({ selectedBooks, updateBookById });
 useBookBookmarkArchive({ reloadBooks });
-const { checkIsNotionReady } = useCheckNotionToken();
-
-const bookExportTasksToShow = computed(() => bookExportTasks.value.toReversed().filter((task) => task.hidden !== true));
-const exportingBookIds = computed(() => {
-  return bookExportTasks.value
-    .filter((task) => task.state === BookExportState.Pending || task.state === BookExportState.Running)
-    .map((task) => task.book.id);
-});
 
 watchEffect(async () => {
   allBooks.value = [];
@@ -326,100 +319,6 @@ async function fetchMissingBookCoverImageUrl(): Promise<void> {
       return Promise.resolve();
     }),
   );
-}
-
-function exportBookmarkToText(book: KoboBook): void {
-  const content = bookmarkToText([book]);
-  textToFileDownload(content, `${book.info.title}.txt`, 'text/plain');
-}
-
-function exportBookmarkToMarkdown(book: KoboBook): void {
-  const content = bookmarkToMarkdown([book]);
-  textToFileDownload(content, `${book.info.title}.md`, 'text/markdown');
-}
-
-async function exportBookmarkToNotion(book: KoboBook): Promise<void> {
-  if (!checkIsNotionReady()) {
-    return;
-  }
-  const task: BookExportTask = { id: (lastTaskId.value += 1), book, state: BookExportState.Pending };
-  bookExportTasks.value.push(task);
-
-  if (pendingExportRequest.value) {
-    return;
-  }
-  pendingExportRequest.value = tryExportBookmark(book, task);
-  await pendingExportRequest.value;
-  pendingExportRequest.value = undefined;
-}
-
-function exportSelectedToNotion(): void {
-  if (!checkIsNotionReady()) {
-    return;
-  }
-  selectedBooks.value.forEach((book) => exportBookmarkToNotion(book));
-}
-
-async function tryExportBookmark(book: KoboBook, task: BookExportTask): Promise<void> {
-  try {
-    const notionExportState = await exportBookBookmarks(book, task, (updatedTask) => {
-      const currentTask = getTaskById(task);
-      if (currentTask?.state === BookExportState.Canceled) {
-        throw new Error('Task canceled');
-      }
-      updateTask(updatedTask);
-    });
-    updateBookById(book.id, (b) => ({ ...b, notion: notionExportState }));
-  } catch (e) {
-    const currentTask = getTaskById(task);
-    if (currentTask?.state !== BookExportState.Canceled) {
-      console.error(e);
-      const errorMessage = handleNotionApiError(e as Error);
-      notification.destroyAll();
-      notification.error({ title: `Fail to export book to Notion: '${book.info.title}'`, content: errorMessage });
-    }
-  }
-  await runNextTask();
-}
-
-async function runNextTask(): Promise<void> {
-  const firstPendingTask = bookExportTasks.value.find((task) => task.state === BookExportState.Pending);
-  if (!firstPendingTask) {
-    return;
-  }
-  await tryExportBookmark(firstPendingTask.book, firstPendingTask);
-}
-
-function updateTask(exportTask: BookExportTask): void {
-  const taskIndex = bookExportTasks.value.findIndex((task) => task.id === exportTask.id);
-  if (taskIndex === -1) {
-    return;
-  }
-  bookExportTasks.value[taskIndex] = exportTask;
-}
-
-function getTaskById(exportTask: BookExportTask): BookExportTask | undefined {
-  return bookExportTasks.value.find((task) => task.id === exportTask.id);
-}
-
-function cancelTask(exportTask: BookExportTask): void {
-  const currentTask = bookExportTasks.value.find((task) => task.id === exportTask.id);
-  if (!currentTask) {
-    return;
-  }
-  updateTask({ ...currentTask, state: BookExportState.Canceled });
-}
-
-function discardAllTasks(): void {
-  for (let i = 0; i < bookExportTasks.value.length; i += 1) {
-    const task = bookExportTasks.value[i];
-    const updatedTask = { ...task };
-    if (task.state === BookExportState.Pending || task.state === BookExportState.Running) {
-      updatedTask.state = BookExportState.Canceled;
-    }
-    updatedTask.hidden = true;
-    bookExportTasks.value[i] = updatedTask;
-  }
 }
 
 function setBookBookmarkRef(nodeRef: Element | ComponentPublicInstance | null): void {
