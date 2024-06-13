@@ -105,19 +105,7 @@
       <template v-if="pageResultMessage">{{ pageResultMessage }}</template>
     </PageResult>
 
-    <div v-if="!loadingBooks && !pageResultMessage && !allBooks.length" class="empty-bookmarks-message-container">
-      <span class="empty-bookmarks-emoji">¯\_(ツ)_/¯</span>
-      <span class="empty-bookmarks-message">
-        <i18n-t keypath="page.bookmarks.empty_bookmarks1" />
-      </span>
-      <span class="empty-bookmarks-message">
-        <i18n-t keypath="page.bookmarks.empty_bookmarks2">
-          <router-link :to="{ name: 'import' }">
-            <i18n-t keypath="page_name.import" />
-          </router-link>
-        </i18n-t>
-      </span>
-    </div>
+    <EmptyBookmarksView v-if="!loadingBooks && !pageResultMessage && !allBooks.length" />
 
     <Teleport v-if="!!bookExportTasksToShow.length" to="#app">
       <BookExportProgressModal
@@ -165,6 +153,7 @@ import BookmarkShareView from '@/module/bookmarks/component/BookmarkShareView/Bo
 import BookmarkSortingDropdown from '@/module/bookmarks/component/BookmarkSortingDropdown/BookmarkSortingDropdown.vue';
 import BookSearchButton from '@/module/bookmarks/component/BookSearchButton/BookSearchButton.vue';
 import BookSearchModal from '@/module/bookmarks/component/BookSearchModal/BookSearchModal.vue';
+import EmptyBookmarksView from '@/module/bookmarks/component/EmptyBookmarksView/EmptyBookmarksView.vue';
 import MultiBookActionBar from '@/module/bookmarks/component/MultiBookActionBar/MultiBookActionBar.vue';
 import ToolbarPinToggle from '@/module/bookmarks/component/ToolbarPinToggle/ToolbarPinToggle.vue';
 import { useBookBookmarkArchive } from '@/module/bookmarks/composition/use-book-bookmark-archive';
