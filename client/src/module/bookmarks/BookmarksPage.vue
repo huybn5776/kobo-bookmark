@@ -47,6 +47,7 @@
           v-model:bookSortingPriority="bookSortingPriority"
           v-model:bookSorting="bookSorting"
           v-model:bookmarkSorting="bookmarkSorting"
+          :disabled="!!bookCollectionIdFilter"
         />
       </div>
       <NCheckbox
