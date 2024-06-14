@@ -252,6 +252,8 @@ watchEffect(() => {
       message = t('page.bookmarks.no_matching_bookmarks');
     } else if (bookCollectionIdFilter.value) {
       message = t('page.bookmarks.no_books_in_selected_book_collection');
+    } else if (route.params.bookId) {
+      message = t('page.bookmarks.book_not_found');
     } else {
       message = t('page.bookmarks.no_matching_bookmarks');
     }
@@ -314,6 +316,10 @@ async function updateBookmark(book: KoboBook, bookmarkId: string, bookmarkPatch:
   }
   await putBooksToDb([deepToRaw(updatedBook)]);
   allBooks.value = await getBooksFromDb();
+}
+
+function setMessage(message: string): void {
+  pageResultMessage.value = t(message);
 }
 </script>
 

@@ -137,7 +137,7 @@ const {
   expandedBookId,
   updateExpandedBookId,
   onExpandedBookUpdated,
-} = useExpandedBook({ books: allBooks });
+} = useExpandedBook({ books: allBooks, setMessage });
 const { virtualListRef, setBookBookmarkRef, gotoBook, gotoBookmark } = useGoToBook({
   booksToShow,
   expandedBookId,
@@ -212,6 +212,10 @@ function expandBook(bookId: string | undefined): void {
   if (bookId) {
     gotoBook(bookId);
   }
+}
+
+function setMessage(message: string): void {
+  pageResultMessage.value = t(message);
 }
 </script>
 

@@ -1,6 +1,7 @@
 import { ref, Ref, computed, ComputedRef, watch } from 'vue';
 
 import { prop } from 'ramda';
+import { useRouter, useRoute } from 'vue-router';
 
 import { useSyncSetting } from '@/composition/use-sync-setting';
 import { BookCollection } from '@/dto/book-collection';
@@ -15,13 +16,12 @@ export function useBookFilter({ books: allBooks }: { books: Ref<KoboBook[]> }): 
   highlightColorFilter: Ref<HighlightColor[]>;
   activeBookCollection: ComputedRef<BookCollection | undefined>;
 } {
-  const bookCollections = useSyncSetting(SettingKey.BookCollection);
-  const keepLastSelectedBookCollection = useSyncSetting(SettingKey.KeepLastSelectedBookCollection);
-  const lastSelectedBookCollectionId = useSyncSetting(SettingKey.LastSelectedBookCollectionId);
+  const route = useRoute();
+  const router = useRouter();
 
-  const bookCollectionIdFilter = ref<string | undefined>(
-    keepLastSelectedBookCollection.value ? lastSelectedBookCollectionId.value : undefined,
-  );
+  const bookCollections = useSyncSetting(SettingKey.BookCollection);
+
+  const bookCollectionIdFilter = ref<string | undefined>(route.params.collectionId as string);
   const highlightColorFilter = ref<HighlightColor[]>([]);
 
   const booksToShow = computed(() => {
@@ -37,6 +37,10 @@ export function useBookFilter({ books: allBooks }: { books: Ref<KoboBook[]> }): 
   });
 
   watch(
+    () => route.params.collectionId,
+    (collectionId) => (bookCollectionIdFilter.value = collectionId as string),
+  );
+  watch(
     () => bookCollections.value,
     () => {
       if (
@@ -50,13 +54,18 @@ export function useBookFilter({ books: allBooks }: { books: Ref<KoboBook[]> }): 
   watch(
     () => bookCollectionIdFilter.value,
     () => {
-      lastSelectedBookCollectionId.value = keepLastSelectedBookCollection.value
-        ? bookCollectionIdFilter.value
-        : undefined;
+      if (bookCollectionIdFilter.value) {
+        router.push({ name: 'collections', params: { collectionId: bookCollectionIdFilter.value } });
+      } else {
+        router.push({ name: 'bookmarks' });
+      }
     },
   );
 
   function filterByBookIds(books: KoboBook[]): KoboBook[] {
+    if (bookCollectionIdFilter.value && !activeBookCollection.value) {
+      return [];
+    }
     if (!activeBookCollection.value) {
       return books;
     }

@@ -17,6 +17,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/module/bookmarks/BookmarksPage.vue'),
   },
   {
+    path: '/collections/:collectionId/:bookId?',
+    name: 'collections',
+    component: () => import('@/module/bookmarks/BookmarksPage.vue'),
+  },
+  {
     path: '/share/:shareId/:bookId?',
     name: 'bookmarks-share',
     meta: { hideMainFunctions: true },

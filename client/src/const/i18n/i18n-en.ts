@@ -169,6 +169,7 @@ export const i18nEn = {
       highlight_color: 'Highlight color',
       no_matching_bookmarks: 'No matching bookmarks.',
       no_books_in_selected_book_collection: 'No books in selected book collection.',
+      collection_not_found: 'Collection not found',
       book_priority: 'Priority book',
       book_priority_none: 'None',
       book_priority_started: 'Started',
@@ -285,8 +286,6 @@ export const i18nEn = {
         title: 'Misc',
         show_removed_book_when_importing: 'Show absent books on change list when importing from database file',
         show_archived: 'Show archived books and bookmarks',
-        keep_the_last_selected_book_collection_when_opening_bookmarks_page:
-          'Keep the last selected book collection when opening bookmarks page',
         language: 'Language',
         language_auto: 'Browser default',
       },
