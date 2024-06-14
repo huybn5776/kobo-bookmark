@@ -166,6 +166,7 @@ export const i18nZhTw = {
       collections_updated: '已更新收藏',
       highlight_color: '劃線顏色',
       no_matching_bookmarks: '沒有符合的書籤',
+      book_not_found: '找不到這本書',
       no_books_in_selected_book_collection: '書本收藏中沒有任何書',
       collection_not_found: '找不到這個收藏',
       book_priority: '優先顯示書本',

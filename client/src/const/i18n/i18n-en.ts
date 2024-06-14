@@ -168,6 +168,7 @@ export const i18nEn = {
       no_selected_book: 'No selected book',
       highlight_color: 'Highlight color',
       no_matching_bookmarks: 'No matching bookmarks.',
+      book_not_found: 'Book not found',
       no_books_in_selected_book_collection: 'No books in selected book collection.',
       collection_not_found: 'Collection not found',
       book_priority: 'Priority book',

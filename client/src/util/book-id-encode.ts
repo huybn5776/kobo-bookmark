@@ -1,3 +1,5 @@
+import * as E from 'fp-ts/Either';
+
 import { isUuid } from '@/util/id-utils';
 
 const prefix = 'file:///mnt/onboard/';
@@ -12,12 +14,16 @@ export function encodeBookId(id: string): string {
   return `${pathPart}:${extNamePart}`;
 }
 
-export function decodeBookId(id: string): string {
+export function decodeBookId(id: string): E.Either<string, string> {
   if (isUuid(id)) {
-    return id;
+    return E.right(id);
   }
-  const lastSplitCharIndex = id.lastIndexOf(':');
-  const pathPart = id.slice(0, lastSplitCharIndex);
-  const extNamePart = id.slice(lastSplitCharIndex + 1);
-  return `${prefix}${pathPart}${decodeURIComponent(atob(extNamePart))}`;
+  try {
+    const lastSplitCharIndex = id.lastIndexOf(':');
+    const pathPart = id.slice(0, lastSplitCharIndex);
+    const extNamePart = id.slice(lastSplitCharIndex + 1);
+    return E.right(`${prefix}${pathPart}${decodeURIComponent(atob(extNamePart))}`);
+  } catch (e) {
+    return E.left('common.invalid_url');
+  }
 }

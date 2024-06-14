@@ -128,6 +128,7 @@ import { ref, watchEffect, watch, onMounted } from 'vue';
 import { NCheckbox } from 'naive-ui';
 import { isNil } from 'ramda';
 import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
 
 import PageResult from '@/component/PageResult/PageResult.vue';
 import VirtualList from '@/component/VirtualList/VirtualList.vue';
@@ -164,6 +165,7 @@ import { getBooksFromDb, putBooksToDb, updateBookmarkByPatch } from '@/services/
 import { deepToRaw } from '@/util/vue-utils';
 
 const { t } = useI18n<[I18NMessageSchema]>();
+const route = useRoute();
 
 const scrollableElement = document.getElementsByClassName('app')[0] as HTMLElement;
 
@@ -189,7 +191,7 @@ const {
   expandedBookId,
   updateExpandedBookId,
   onExpandedBookUpdated,
-} = useExpandedBook({ books: filteredBooks });
+} = useExpandedBook({ books: filteredBooks, setMessage });
 const { virtualListRef, setBookBookmarkRef, gotoBook, gotoBookmark } = useGoToBook({
   booksToShow,
   expandedBookId,
@@ -250,6 +252,8 @@ watchEffect(() => {
   if (allBooks.value.length && !booksToShow.value.length) {
     if (highlightColorFilter.value.length) {
       message = t('page.bookmarks.no_matching_bookmarks');
+    } else if (bookCollectionIdFilter.value && !activeBookCollection.value) {
+      message = t('page.bookmarks.collection_not_found');
     } else if (bookCollectionIdFilter.value) {
       message = t('page.bookmarks.no_books_in_selected_book_collection');
     } else if (route.params.bookId) {
