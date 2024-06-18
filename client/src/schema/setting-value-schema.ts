@@ -37,6 +37,11 @@ const dropboxTokenSchema = z.object({
   uid: z.string(),
 });
 
+const bookImportStatusSchema = z.object({
+  books: z.array(z.string()),
+  importedAt: z.number(),
+});
+
 export const settingValueSchema = z.object({
   [SettingKey.ImportDataInstructionCollapsed]: z.boolean().optional().nullable(),
   [SettingKey.BookmarksToolbarPinned]: z.boolean().optional().nullable(),
@@ -55,5 +60,6 @@ export const settingValueSchema = z.object({
   [SettingKey.DropboxToken]: dropboxTokenSchema,
   [SettingKey.ShowRemovedBooksWhenImporting]: z.boolean().optional().nullable(),
   [SettingKey.ShowArchived]: z.boolean().optional().nullable(),
+  [SettingKey.LastImportState]: bookImportStatusSchema.optional().nullable(),
   [SettingKey.Language]: z.string().optional().nullable(),
 });

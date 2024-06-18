@@ -1,5 +1,5 @@
 import equal from 'fast-deep-equal';
-import { indexBy, equals } from 'ramda';
+import { indexBy, equals, prop } from 'ramda';
 
 import { KoboBook, KoboBookmark, KoboBookChanges, KoboBookmarkChanges, KoboBookmarkChangesType } from '@/dto/kobo-book';
 
@@ -83,6 +83,33 @@ export function isBookmarkUpdated(originalBookmark: KoboBookmark, currentBookmar
     isBookmarkTextUpdated(originalBookmark, currentBookmark) ||
     originalBookmark.annotation !== currentBookmark.annotation
   );
+}
+
+export function updateImportedAtFromChanges(books: KoboBook[], changes: KoboBookChanges[]): KoboBook[] {
+  const now = new Date();
+
+  const bookIdMap = indexBy(prop('id'), books);
+  const updatedBooks = [...books];
+  for (const bookChange of changes) {
+    const book = bookIdMap[bookChange.book.id];
+    if (!book) {
+      continue;
+    }
+    const updatedBook: KoboBook = { ...book };
+    const bookmarkIdMap = indexBy(prop('id'), updatedBook.bookmarks);
+    for (const change of bookChange.changes) {
+      const bookmark = bookmarkIdMap[change.id];
+      if (!bookmark) {
+        continue;
+      }
+      const updatedBookmark = { ...bookmark };
+      updatedBookmark.importedAt = now;
+      updatedBook.bookmarks[updatedBook.bookmarks.indexOf(bookmark)] = updatedBookmark;
+    }
+    updatedBooks[updatedBooks.indexOf(book)] = updatedBook;
+  }
+
+  return updatedBooks;
 }
 
 function isBookmarkChapterUpdated(originalBookmark: KoboBookmark, currentBookmark: KoboBookmark): boolean {

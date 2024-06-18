@@ -1,6 +1,7 @@
 import type { OauthTokenResponse } from '@notionhq/client/build/src/api-endpoints';
 
 import { BookCollections } from '@/dto/book-collection';
+import { BookImportState } from '@/dto/book-import-state';
 import { BookSortingKey } from '@/enum/book-sorting-key';
 import { BookSortingPriorityKey } from '@/enum/book-sorting-priority-key';
 import { BookmarkSortingKey } from '@/enum/bookmark-sorting-key';
@@ -29,6 +30,7 @@ export enum SettingKey {
   DropboxToken = 'dropbox-token',
   ShowRemovedBooksWhenImporting = 'show-removed-books-when-importing',
   ShowArchived = 'show-archived',
+  LastImportState = 'last-import-state',
   Language = 'language',
 }
 
@@ -50,5 +52,6 @@ export type SettingValueType = {
   [SettingKey.DropboxToken]: DropboxTokenInfo;
   [SettingKey.ShowRemovedBooksWhenImporting]: boolean;
   [SettingKey.ShowArchived]: boolean;
+  [SettingKey.LastImportState]: BookImportState;
   [SettingKey.Language]: string;
 };

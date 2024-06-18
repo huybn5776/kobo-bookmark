@@ -190,6 +190,7 @@ export const i18nZhTw = {
       change_cover_image: '更換封面圖片',
       not_image_url: '這不是圖片的網址',
       cover_image_updated: '封面圖片已更新',
+      new_highlight_count: '{0} 個新劃線',
       add_to_book_collection: '加至收藏',
       book_collection_already_contained_books: '這個收藏已經包含了所有選取的書',
       books_added_to_collection: '已新增 {0} 本書至收藏 "{1}"',

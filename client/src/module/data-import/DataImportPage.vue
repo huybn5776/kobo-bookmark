@@ -48,13 +48,16 @@ import FullPageFileDropZone from '@/component/FullPageFileDropZone/FullPageFileD
 import { useParseKoboBooksJson } from '@/composition/use-parse-kobo-books-json';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBookChanges, KoboBook, KoboBookmarkChanges, KoboBookmark, KoboBookmarkChangesType } from '@/dto/kobo-book';
+import { SettingEventType } from '@/enum/setting-event-type';
+import { SettingKey } from '@/enum/setting-key';
 import DataImportResult from '@/module/data-import/component/DataImportResult/DataImportResult.vue';
 import ImportDataInstruction from '@/module/data-import/component/ImportDataInstruction/ImportDataInstruction.vue';
 import { useExportChanges } from '@/module/data-import/composition/use-export-changes';
 import { getAllBooksFromDb, upsertBook } from '@/services/bookmark/bookmark-manage.service';
 import { createBookmarkPositionSortFn } from '@/services/bookmark/kobo-book-sort.service';
-import { calcUpdatesOfBooks } from '@/services/bookmark/kobo-bookmark-compare.service';
+import { calcUpdatesOfBooks, updateImportedAtFromChanges } from '@/services/bookmark/kobo-bookmark-compare.service';
 import { getBooksFromSqliteFile } from '@/services/bookmark/kobo-bookmark.service';
+import { saveSettingToStorage } from '@/services/setting.service';
 import { readBlobAsText } from '@/util/browser-utils';
 import { selectFile } from '@/util/file-utils';
 import { deepToRaw } from '@/util/vue-utils';
@@ -142,10 +145,16 @@ async function saveChanges(): Promise<void> {
   if (!importedBooks.value) {
     return;
   }
-  const booksToSave = deepToRaw(importedBooks.value);
+  let booksToSave = deepToRaw(importedBooks.value);
+  booksToSave = updateImportedAtFromChanges(booksToSave, bookChanges.value);
   for (const book of booksToSave) {
     await upsertBook(deepToRaw(book));
   }
+  saveSettingToStorage(
+    SettingKey.LastImportState,
+    { books: bookChanges.value.map((c) => c.book.id), importedAt: Date.now() },
+    SettingEventType.User,
+  );
   await router.push('bookmarks');
 }
 

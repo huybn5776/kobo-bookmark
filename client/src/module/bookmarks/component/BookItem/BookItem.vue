@@ -1,10 +1,14 @@
 <template>
   <div class="book-header">
-    <BookCoverView
-      :book="book"
-      @starClick="emits('bookStarClick', book)"
-      @coverImageUpdated="(v) => emits('bookCoverImageUpdated', v)"
-    />
+    <div class="book-cover-container">
+      <BookCoverView
+        :book="book"
+        :countTag="newBookmarksCount"
+        @starClick="emits('bookStarClick', book)"
+        @coverImageUpdated="(v) => emits('bookCoverImageUpdated', v)"
+      />
+      <CountTag v-if="newBookmarksCount" keyPath="page.bookmarks.new_highlight_count" :count="newBookmarksCount" />
+    </div>
     <div class="book-section">
       <h2 class="book-title" :class="{ 'book-title-disabled': disableBookmarkExpand }">
         <button v-if="expanded || !expandWithLink" class="book-title-button" @click="toggleExpanded">
@@ -117,11 +121,15 @@ import {
   TextIcon,
 } from '@/component/icon';
 import IconButton from '@/component/IconButton/IconButton.vue';
+import { useSyncSetting } from '@/composition/use-sync-setting';
 import { I18NMessageSchema } from '@/config/i18n-config';
+import { newBookmarkTime } from '@/const/consts';
 import { KoboBook } from '@/dto/kobo-book';
 import { BookAction } from '@/enum/book-action';
+import { SettingKey } from '@/enum/setting-key';
 import BookCoverView from '@/module/bookmarks/component/BookCoverView/BookCoverView.vue';
 import BookInfoItem from '@/module/bookmarks/component/BookInfoItem/BookInfoItem.vue';
+import CountTag from '@/module/bookmarks/component/CountTag/CountTag.vue';
 import { encodeBookId } from '@/util/book-id-encode';
 
 const props = defineProps<{
@@ -149,6 +157,13 @@ const emits = defineEmits<{
 
 const { t } = useI18n<[I18NMessageSchema]>();
 
+const lastImportState = useSyncSetting(SettingKey.LastImportState);
+
+const newBookmarksCount = computed(() => {
+  const targetTime = (lastImportState.value?.importedAt || Date.now()) - newBookmarkTime;
+  return props.book.bookmarks.filter((bookmark) => bookmark.importedAt && bookmark.importedAt.getTime() > targetTime)
+    .length;
+});
 const expandedDirection = computed(() => (props.expanded ? 'up' : 'down'));
 const actions = computed<Partial<Record<BookAction, boolean>>>(() => {
   const result: Partial<Record<BookAction, boolean>> = {};

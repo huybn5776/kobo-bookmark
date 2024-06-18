@@ -192,6 +192,7 @@ export const i18nEn = {
       change_cover_image: 'Change cover image',
       not_image_url: 'This is not the url of image.',
       cover_image_updated: 'Cover image updated.',
+      new_highlight_count: '{0} new highlight | {0} new highlights',
       add_to_book_collection: 'Add to collection',
       book_collection_already_contained_books: 'This collection is already contained all the selected books',
       books_added_to_collection: `{0} @:{'common.book'} added to collection "{1}"`,

@@ -1,4 +1,5 @@
 .bookmark-item {
+  position: relative;
   scroll-margin-top: 36px;
   padding: 8px 0 8px 0;
   font-size: 16px;
@@ -36,14 +37,25 @@
 }
 
 .bookmark-text {
+  position: relative;
   margin: 0;
   padding: 0 16px;
   font-size: 18px;
+  line-height: 1.6;
   white-space: pre-wrap;
   transition: opacity .2s;
 
   .bookmark-item:not(:hover) &.bookmark-text-archived {
     opacity: .5;
+  }
+
+  &.bookmark-text-new:before {
+    position: absolute;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background-color: #d03a52;
+    content: '';
   }
 }
 

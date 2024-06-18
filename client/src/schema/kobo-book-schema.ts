@@ -50,6 +50,7 @@ export const koboBookmarkSchema = z.object({
   color: z.nativeEnum(HighlightColor).optional().nullable(),
   createdAt: z.string().pipe(z.coerce.date()),
   updatedAt: z.string().pipe(z.coerce.date()),
+  importedAt: z.string().pipe(z.coerce.date()).optional().nullable(),
   editedAt: z.string().pipe(z.coerce.date()).optional().nullable(),
 });
 

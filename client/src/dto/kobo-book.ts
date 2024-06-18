@@ -43,6 +43,7 @@ export interface KoboBookmark {
   isArchived?: boolean;
   createdAt: Date;
   updatedAt: Date;
+  importedAt?: Date;
   editedAt?: Date;
 }
 

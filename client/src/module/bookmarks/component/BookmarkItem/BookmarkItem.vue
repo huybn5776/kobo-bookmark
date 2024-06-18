@@ -14,7 +14,7 @@
       :chapter="bookmark.chapter"
       :archived="bookmark.isArchived"
     />
-    <p class="bookmark-text" :class="{ 'bookmark-text-archived': bookmark.isArchived }">
+    <p class="bookmark-text" :class="{ 'bookmark-text-new': isNew, 'bookmark-text-archived': bookmark.isArchived }">
       <span
         :class="{
           'bookmark-text-yellow': bookmark.color === HighlightColor.Yellow,
@@ -67,9 +67,12 @@ import { ref, computed } from 'vue';
 import HighlightText from '@/component/HighlightText/HighlightText.vue';
 import { ArchiveIcon, ArchiveRefreshIcon, ShareVariantIcon, PencilIcon } from '@/component/icon';
 import IconButton from '@/component/IconButton/IconButton.vue';
+import { useSyncSetting } from '@/composition/use-sync-setting';
+import { newBookmarkTime } from '@/const/consts';
 import { KoboBookmark, KoboBookChapter } from '@/dto/kobo-book';
 import { BookmarkAction } from '@/enum/bookmark-action';
 import { HighlightColor } from '@/enum/highlight-color';
+import { SettingKey } from '@/enum/setting-key';
 import BookmarkChapterView from '@/module/bookmarks/component/BookmarkChapterView/BookmarkChapterView.vue';
 
 const props = defineProps<{
@@ -88,8 +91,14 @@ const emits = defineEmits<{
 const elementRef = ref<HTMLElement>();
 defineExpose({ elementRef, runHighlightAnimationWhenVisible });
 
+const lastImportState = useSyncSetting(SettingKey.LastImportState);
+
 const highlightItem = ref<boolean>(false);
 
+const isNew = computed(() => {
+  const targetTime = (lastImportState.value?.importedAt || Date.now()) - newBookmarkTime;
+  return props.bookmark.importedAt && props.bookmark.importedAt?.getTime() > targetTime;
+});
 const actions = computed<Partial<Record<BookmarkAction, boolean>>>(() => {
   const result: Partial<Record<BookmarkAction, boolean>> = {};
   for (const action of Object.values(BookmarkAction)) {
