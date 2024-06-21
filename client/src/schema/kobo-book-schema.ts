@@ -4,6 +4,7 @@ import { HighlightColor } from '@/enum/highlight-color';
 
 export const koboBookInfoSchema = z.object({
   title: z.string(),
+  originalTitle: z.string().optional().nullable(),
   subtitle: z.string().optional().nullable(),
   author: z.string().optional().nullable(),
   description: z.string().optional().nullable(),

@@ -2,7 +2,7 @@ import equal from 'fast-deep-equal';
 import { openDB, deleteDB, DBSchema, IDBPDatabase, StoreNames, IDBPCursorWithValue } from 'idb';
 import { indexBy } from 'ramda';
 
-import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
+import { KoboBook, KoboBookmark, KoboBookInfo } from '@/dto/kobo-book';
 import { SettingKey } from '@/enum/setting-key';
 import { isBookmarkUpdated } from '@/services/bookmark/kobo-bookmark-compare.service';
 import { migrateBooksIfNeeds } from '@/services/bookmark/migrate/book-migrate.service';
@@ -67,14 +67,46 @@ export async function upsertBook(book: KoboBook): Promise<void> {
     return originalBookmark ? updateExistingBookmark(originalBookmark, bookmark) : bookmark;
   });
   const bookmarksChanged = JSON.stringify(originalBook.bookmarks) !== JSON.stringify(bookmarks);
+  const info: KoboBookInfo = mergeBookInfo(originalBook.info, book.info);
   const updatedBook: KoboBook = {
     ...originalBook,
     ...book,
+    info,
     bookmarks,
     isArchived: bookmarksChanged ? 0 : originalBook.isArchived || 0,
   };
 
   await putBooksToDb([updatedBook]);
+}
+
+export function updateBookTitle(book: KoboBook, title: string): KoboBook {
+  if (title === book.info.title) {
+    return book;
+  }
+  const updatedBook: KoboBook = { ...book };
+  const updatedBookInfo: KoboBookInfo = { ...book.info };
+  const originalTitle = updatedBookInfo.originalTitle || updatedBookInfo.title;
+  updatedBookInfo.title = title;
+  if (updatedBookInfo.title === updatedBookInfo.originalTitle) {
+    delete updatedBookInfo.originalTitle;
+  } else {
+    updatedBookInfo.originalTitle = originalTitle;
+  }
+  updatedBook.info = updatedBookInfo;
+  return updatedBook;
+}
+
+function mergeBookInfo(originalInfo: KoboBookInfo, currentInfo: KoboBookInfo): KoboBookInfo {
+  const updatedInfo: KoboBookInfo = { ...originalInfo, ...currentInfo };
+  if (originalInfo.originalTitle && !currentInfo.originalTitle) {
+    if (originalInfo.originalTitle === currentInfo.title) {
+      updatedInfo.title = originalInfo.title;
+    } else {
+      updatedInfo.title = currentInfo.title;
+      delete updatedInfo.originalTitle;
+    }
+  }
+  return updatedInfo;
 }
 
 function updateExistingBookmark(originalBookmark: KoboBookmark, currentBookmark: KoboBookmark): KoboBookmark {

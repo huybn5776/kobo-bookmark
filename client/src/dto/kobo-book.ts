@@ -14,6 +14,7 @@ export interface KoboBook {
 
 export interface KoboBookInfo {
   title?: string;
+  originalTitle?: string;
   subtitle?: string;
   author?: string;
   description?: string;

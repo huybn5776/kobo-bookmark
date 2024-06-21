@@ -25,6 +25,16 @@
   color: white;
   font-size: 18px;
   text-align: center;
+
+  :deep(.book-information-title-edit-button) {
+    width: 28px;
+    height: 28px;
+    transition: opacity .2s;
+  }
+
+  &:not(:hover):not(:focus-within) :deep(.book-information-title-edit-button) {
+    opacity: 0;
+  }
 }
 
 .book-information-title-input {

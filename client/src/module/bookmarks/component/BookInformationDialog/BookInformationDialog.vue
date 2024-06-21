@@ -2,7 +2,25 @@
   <div class="book-information-dialog">
     <div class="book-information-dialog-content">
       <div class="book-information-title">
-        <span>{{ props.book.info.title }}</span>
+        <template v-if="!editingTitle">
+          <span>{{ props.book.info.title }}</span>
+          <IconButton
+            class="book-information-title-edit-button"
+            i18nKey="common.edit"
+            @click="editingTitle = !editingTitle"
+          >
+            <PencilIcon class="icon-20" />
+          </IconButton>
+        </template>
+        <template v-if="editingTitle">
+          <NInput v-model:value="bookTitle" class="book-information-title-input" @keydown="onTitleKeydown" />
+          <IconButton class="book-information-title-edit-button" i18nKey="common.cancel" @click="cancelEditTitle">
+            <CloseIcon class="icon-20" />
+          </IconButton>
+          <IconButton class="book-information-title-edit-button" i18nKey="common.edit" @click="saveTitle">
+            <CheckIcon class="icon-20" />
+          </IconButton>
+        </template>
       </div>
 
       <template v-if="book.info.originalTitle">
@@ -74,10 +92,12 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
-import { NButton } from 'naive-ui';
+import { NButton, NInput } from 'naive-ui';
 
+import { PencilIcon, CloseIcon, CheckIcon } from '@/component/icon';
+import IconButton from '@/component/IconButton/IconButton.vue';
 import { KoboBook } from '@/dto/kobo-book';
 
 const props = defineProps<{ book: KoboBook }>();
@@ -85,6 +105,9 @@ const emits = defineEmits<{
   (e: 'titleUpdated', title: string): void;
   (e: 'closeClick'): void;
 }>();
+
+const bookTitle = ref(props.book.info.title);
+const editingTitle = ref<boolean>(false);
 
 const lastReadAt = computed(() => props.book.info.lastReadAt?.toLocaleString());
 const publicationDate = computed(() => {
@@ -101,6 +124,27 @@ const firstBookmarkAt = computed(() =>
 const lastBookmarkAt = computed(() =>
   new Date(Math.max(...props.book.bookmarks.map((b) => b.updatedAt.getTime()))).toLocaleString(),
 );
+
+function onTitleKeydown(event: KeyboardEvent): void {
+  if (event.key === 'Enter') {
+    saveTitle();
+  } else if (event.key === 'Escape') {
+    cancelEditTitle();
+    event.stopPropagation();
+  }
+}
+
+function cancelEditTitle(): void {
+  editingTitle.value = false;
+  bookTitle.value = props.book.info.title;
+}
+
+function saveTitle(): void {
+  editingTitle.value = false;
+  if (bookTitle.value && bookTitle.value !== props.book.info.title) {
+    emits('titleUpdated', bookTitle.value);
+  }
+}
 </script>
 
 <style lang="scss" scoped>
