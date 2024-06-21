@@ -19,6 +19,7 @@
       @bookArchiveClick="emits('bookArchiveClick', $event)"
       @shareClick="emits('shareClick', $event)"
       @bookCancelArchive="emits('bookCancelArchive', $event)"
+      @bookInformationClick="emits('bookInformationClick', $event)"
     />
     <BookmarkList
       v-if="expanded && !disableBookmarkExpand"
@@ -68,6 +69,7 @@ const emits = defineEmits<{
   (e: 'bookmarkUpdated', book: KoboBook, bookmarkId: string, bookmarkPatch: Partial<KoboBookmark>): void;
   (e: 'bookmarkArchiveClick', book: KoboBook, bookmark: KoboBookmark): void;
   (e: 'bookmarkCancelArchiveClick', book: KoboBook, bookmark: KoboBookmark): void;
+  (e: 'bookInformationClick', book: KoboBook): void;
 }>();
 
 const elementRef = ref<HTMLElement>();

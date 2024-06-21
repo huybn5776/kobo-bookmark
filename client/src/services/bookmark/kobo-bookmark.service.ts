@@ -174,6 +174,7 @@ function bookInfoEntityToKoboBookInfo(
     author: book?.author,
     description: book?.description,
     publisher: book?.publisher,
+    publicationDate: toPublicationDateIfValid(book?.createdAt),
     series: book?.series,
     isbn: book?.isbn,
     timeSpentReading: book?.timeSpentReading,
@@ -183,6 +184,10 @@ function bookInfoEntityToKoboBookInfo(
     lastReadAt: book?.lastReadAt,
     createdAt: book?.createdAt,
   };
+}
+
+function toPublicationDateIfValid(createdAt: Date | undefined): Date | undefined {
+  return createdAt && !createdAt.getMinutes() && !createdAt.getSeconds() ? createdAt : undefined;
 }
 
 export function getChapterIndexMap(chapters: KoboBookChapter[]): Record<number, KoboBookChapter> {

@@ -92,6 +92,7 @@
           @createBookmarkCardClick="openBookmarkCardDialog"
           @bookmarkArchiveClick="archiveBookmark"
           @bookmarkCancelArchiveClick="cancelArchiveBookmark"
+          @bookInformationClick="openBookInformationDialog"
         />
       </VirtualList>
     </div>
@@ -151,6 +152,7 @@ import MultiBookActionBar from '@/module/bookmarks/component/MultiBookActionBar/
 import ToolbarPinToggle from '@/module/bookmarks/component/ToolbarPinToggle/ToolbarPinToggle.vue';
 import { useBookBookmarkArchive } from '@/module/bookmarks/composition/use-book-bookmark-archive';
 import { useBookFilter } from '@/module/bookmarks/composition/use-book-filter';
+import { useBookInformationDialog } from '@/module/bookmarks/composition/use-book-information-dialog';
 import { useBookSearchModal } from '@/module/bookmarks/composition/use-book-search-modal';
 import { useBookSorting } from '@/module/bookmarks/composition/use-book-sorting';
 import { useBookmarkExport } from '@/module/bookmarks/composition/use-bookmark-export';
@@ -207,6 +209,7 @@ const { archiveBook, cancelArchiveBook, archiveBookmark, cancelArchiveBookmark }
 const { updateBookById, toggleBookStar, updateBookCoverImage } = useUpdateBook({ allBooks, keepSortingOnce });
 const { openShareBooksWithDropboxDialog } = useShareBookDialog();
 const { openBookmarkCardDialog } = useBookmarkCardDialog();
+const { openBookInformationDialog } = useBookInformationDialog({ updateBookById });
 const {
   selectedBooks,
   selectedBookIds,

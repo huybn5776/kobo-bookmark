@@ -8,6 +8,7 @@ export const koboBookInfoSchema = z.object({
   author: z.string().optional().nullable(),
   description: z.string().optional().nullable(),
   publisher: z.string().optional().nullable(),
+  publicationDate: z.string().pipe(z.coerce.date()).optional().nullable(),
   series: z.string().optional().nullable(),
   isbn: z.string().optional().nullable(),
   timeSpentReading: z.number().optional().nullable(),

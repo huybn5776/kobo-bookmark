@@ -97,6 +97,9 @@
           >
             <ArchiveRefreshIcon class="icon-24" />
           </IconButton>
+          <IconButton i18nKey="page.bookmarks.book_information" @click="emits('bookInformationClick', book)">
+            <InformationOutlineIcon class="icon-24" />
+          </IconButton>
         </div>
       </div>
     </div>
@@ -119,6 +122,7 @@ import {
   ArchiveIcon,
   ArchiveRefreshIcon,
   TextIcon,
+  InformationOutlineIcon,
 } from '@/component/icon';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { useSyncSetting } from '@/composition/use-sync-setting';
@@ -153,6 +157,7 @@ const emits = defineEmits<{
   (e: 'bookArchiveClick', value: KoboBook): void;
   (e: 'bookCancelArchive', value: KoboBook): void;
   (e: 'shareClick', value: KoboBook): void;
+  (e: 'bookInformationClick', value: KoboBook): void;
 }>();
 
 const { t } = useI18n<[I18NMessageSchema]>();

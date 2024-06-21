@@ -18,6 +18,7 @@ export interface KoboBookInfo {
   author?: string;
   description?: string;
   publisher?: string;
+  publicationDate?: Date;
   series?: string;
   isbn?: string;
   timeSpentReading?: number;
