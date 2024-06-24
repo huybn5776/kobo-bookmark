@@ -36,8 +36,8 @@
         descriptionKey="page.home.notion_export_description"
       >
         <template #image>
-          <img v-if="languageType === 'en'" src="/src/assets/intro/en/notion-export.jpg" alt="Notion" />
-          <img v-if="languageType === 'zh'" src="/src/assets/intro/zh-tw/notion-export.jpg" alt="Notion" />
+          <img v-if="languageType === 'en'" src="/src/assets/intro/en/notion-export.webp" alt="Notion" />
+          <img v-if="languageType === 'zh'" src="/src/assets/intro/zh-tw/notion-export.webp" alt="Notion" />
         </template>
       </FeatureIntroductionSection>
       <FeatureIntroductionSection
@@ -45,8 +45,8 @@
         descriptionKey="page.home.bookmark_search_description"
       >
         <template #image>
-          <img v-if="languageType === 'en'" src="/src/assets/intro/en/bookmark-search.jpg" alt="Search" />
-          <img v-if="languageType === 'zh'" src="/src/assets/intro/zh-tw/bookmark-search.jpg" alt="Search" />
+          <img v-if="languageType === 'en'" src="/src/assets/intro/en/bookmark-search.webp" alt="Search" />
+          <img v-if="languageType === 'zh'" src="/src/assets/intro/zh-tw/bookmark-search.webp" alt="Search" />
         </template>
       </FeatureIntroductionSection>
       <FeatureIntroductionSection
@@ -54,8 +54,8 @@
         descriptionKey="page.home.bookmark_editing_description"
       >
         <template #image>
-          <img v-if="languageType === 'en'" src="/src/assets/intro/en/bookmark-editing.jpg" alt="Changes" />
-          <img v-if="languageType === 'zh'" src="/src/assets/intro/zh-tw/bookmark-editing.jpg" alt="Changes" />
+          <img v-if="languageType === 'en'" src="/src/assets/intro/en/bookmark-editing.webp" alt="Editing" />
+          <img v-if="languageType === 'zh'" src="/src/assets/intro/zh-tw/bookmark-editing.webp" alt="Editing" />
         </template>
       </FeatureIntroductionSection>
       <FeatureIntroductionSection
@@ -63,8 +63,8 @@
         descriptionKey="page.home.book_collection_description"
       >
         <template #image>
-          <img v-if="languageType === 'en'" src="/src/assets/intro/en/book-collection.jpg" alt="Changes" />
-          <img v-if="languageType === 'zh'" src="/src/assets/intro/zh-tw/book-collection.jpg" alt="Changes" />
+          <img v-if="languageType === 'en'" src="/src/assets/intro/en/book-collection.webp" alt="Collection" />
+          <img v-if="languageType === 'zh'" src="/src/assets/intro/zh-tw/book-collection.webp" alt="Collection" />
         </template>
       </FeatureIntroductionSection>
       <FeatureIntroductionSection
@@ -72,8 +72,8 @@
         descriptionKey="page.home.bookmark_card_description"
       >
         <template #image>
-          <img v-if="languageType === 'en'" src="/src/assets/intro/en/bookmark-card.jpg" alt="Changes" />
-          <img v-if="languageType === 'zh'" src="/src/assets/intro/zh-tw/bookmark-card.jpg" alt="Changes" />
+          <img v-if="languageType === 'en'" src="/src/assets/intro/en/bookmark-card.webp" alt="Bookmark card" />
+          <img v-if="languageType === 'zh'" src="/src/assets/intro/zh-tw/bookmark-card.webp" alt="Bookmark card" />
         </template>
       </FeatureIntroductionSection>
       <FeatureIntroductionSection
@@ -81,8 +81,8 @@
         descriptionKey="page.home.bookmark_share_description"
       >
         <template #image>
-          <img v-if="languageType === 'en'" src="/src/assets/intro/en/bookmark-share.jpg" alt="Changes" />
-          <img v-if="languageType === 'zh'" src="/src/assets/intro/zh-tw/bookmark-share.jpg" alt="Changes" />
+          <img v-if="languageType === 'en'" src="/src/assets/intro/en/bookmark-share.webp" alt="Bookmark share" />
+          <img v-if="languageType === 'zh'" src="/src/assets/intro/zh-tw/bookmark-share.webp" alt="Bookmark share" />
         </template>
       </FeatureIntroductionSection>
       <FeatureIntroductionSection
@@ -90,8 +90,8 @@
         descriptionKey="page.home.confirm_changes_description"
       >
         <template #image>
-          <img v-if="languageType === 'en'" src="/src/assets/intro/en/confirm-changes.jpg" alt="Changes" />
-          <img v-if="languageType === 'zh'" src="/src/assets/intro/zh-tw/confirm-changes.jpg" alt="Changes" />
+          <img v-if="languageType === 'en'" src="/src/assets/intro/en/confirm-changes.webp" alt="Changes" />
+          <img v-if="languageType === 'zh'" src="/src/assets/intro/zh-tw/confirm-changes.webp" alt="Changes" />
         </template>
       </FeatureIntroductionSection>
     </div>
