@@ -14,7 +14,7 @@
   }
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (width >= 768px) {
   .feature-introduction-section {
     grid-template-areas: "text image";
     grid-template-columns:  1fr  1.5fr;
@@ -27,7 +27,7 @@
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (width < 768px) {
   .feature-introduction-section {
     grid-template-areas:
         "text"
