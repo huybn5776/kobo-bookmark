@@ -3,6 +3,7 @@
     <span class="multi-book-action-text">
       <b>{{ selectedBooks.length }}</b
       >&nbsp;<span class="multi-book-action-selected-text"><i18n-t keypath="common.selected" /></span>
+      <i class="multi-book-action-scrollable-shadow-left" />
     </span>
     <div class="multi-book-actions">
       <IconButton v-if="!readonly" i18nKey="common.archive_selected" @click="emits('archiveClick')">
@@ -41,6 +42,7 @@
         <NotionIcon class="icon-24" />
       </IconButton>
     </div>
+    <i class="multi-book-action-scrollable-shadow-right" />
   </div>
 </template>
 

@@ -7,7 +7,6 @@
   grid-template-columns: 1fr 32px;
   gap: 8px;
   align-items: center;
-  height: 36px;
   padding: 0 8px 8px 16px;
   box-shadow: 0 -8px 0 var(--bg-dark), 0 2px 2px -2px rgba(white, 0);
   transition: box-shadow .2s;
@@ -35,4 +34,11 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.bookmark-page-all-checkbox {
+  display: flex;
+  align-items: center;
+  align-self: start;
+  height: 32px;
 }
