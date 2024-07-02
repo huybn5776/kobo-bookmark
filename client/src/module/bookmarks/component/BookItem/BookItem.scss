@@ -67,6 +67,12 @@
   }
 }
 
+:deep(.book-toolbar-secondary-button) {
+  @media (max-width: 500px) {
+    display: none;
+  }
+}
+
 .book-export-notion-icon {
   color: lightgray;
 }

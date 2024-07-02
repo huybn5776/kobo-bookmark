@@ -54,6 +54,7 @@
           <IconButton
             v-if="!book.isArchived && actions.archive"
             i18nKey="common.archive"
+            class="book-toolbar-secondary-button"
             @click="emits('bookArchiveClick', book)"
           >
             <ArchiveIcon class="icon-24" />
@@ -61,6 +62,7 @@
           <IconButton
             v-if="actions['dropbox-share']"
             i18nKey="page.bookmarks.share_dropbox"
+            class="book-toolbar-secondary-button"
             @click="emits('shareClick', book)"
           >
             <DropboxShareIcon />
@@ -68,6 +70,7 @@
           <IconButton
             v-if="actions['export-text']"
             i18nKey="page.bookmarks.export_text"
+            class="book-toolbar-secondary-button"
             @click="emits('textExportClick', book)"
           >
             <TextIcon class="icon-24" />
@@ -75,6 +78,7 @@
           <IconButton
             v-if="actions['export-markdown']"
             i18nKey="page.bookmarks.export_markdown"
+            class="book-toolbar-secondary-button"
             @click="emits('markdownExportClick', book)"
           >
             <i18n-t keypath="page.bookmarks.export_markdown" />
@@ -83,6 +87,7 @@
           <IconButton
             v-if="actions['export-notion']"
             i18nKey="page.bookmarks.export_notion"
+            class="book-toolbar-secondary-button"
             :loading="exportNotionLoading"
             @click="emits('notionExportClick', book)"
           >
@@ -93,6 +98,7 @@
           <IconButton
             v-if="book.isArchived && actions.archive"
             i18nKey="common.cancel_archive"
+            class="book-toolbar-secondary-button"
             @click="emits('bookCancelArchive', book)"
           >
             <ArchiveRefreshIcon class="icon-24" />
