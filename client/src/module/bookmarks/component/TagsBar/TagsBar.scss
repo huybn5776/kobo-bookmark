@@ -1,0 +1,21 @@
+.tags-bar {
+  position: relative;
+  box-sizing: border-box;
+  min-height: 36px;
+  margin-top: 4px;
+  margin-left: -6px;
+  padding: 2px 6px;
+  font-size: 14px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.tab-bar-editing {
+  border: 1px solid #63e2b7;
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 6px;
+}

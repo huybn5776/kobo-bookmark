@@ -1,4 +1,4 @@
-import { toRaw, isRef, isReactive, isProxy } from 'vue';
+import { toRaw, isRef, isReactive, isProxy, InjectionKey, inject } from 'vue';
 
 export function deepToRaw<T extends object>(sourceObj: T): T {
   const objectIterator = (value: unknown): unknown => {
@@ -18,4 +18,12 @@ export function deepToRaw<T extends object>(sourceObj: T): T {
   };
 
   return objectIterator(sourceObj) as T;
+}
+
+export function injectStrict<T>(key: InjectionKey<T>): T {
+  const resolved = inject(key, undefined);
+  if (!resolved) {
+    throw new Error(`Could not resolve ${key.description}`);
+  }
+  return resolved;
 }

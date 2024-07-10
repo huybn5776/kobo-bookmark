@@ -90,13 +90,20 @@
   border-left: solid 4px lightgray;
 }
 
+.bookmark-footer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+}
+
 .bookmark-toolbar {
   display: flex;
   gap: 8px;
+  align-items: center;
   justify-content: end;
-  height: 32px;
-  margin-top: -4px;
-  margin-right: 16px;
+  height: 36px;
   transition: opacity .3s;
 
   .bookmark-item:not(:hover):not(:focus-within) & {

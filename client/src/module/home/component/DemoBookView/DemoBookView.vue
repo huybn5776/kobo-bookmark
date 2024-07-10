@@ -28,6 +28,7 @@ import { ref, watch } from 'vue';
 
 import { useI18n } from 'vue-i18n';
 
+import { useProvideAllBookmarkTags } from '@/composition/use-provide-all-bookmark-tags';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import { BookAction } from '@/enum/book-action';
@@ -47,6 +48,7 @@ const allBooks = ref<KoboBook[]>([]);
 const expanded = ref<boolean>(true);
 
 const { openBookmarkCardDialog } = useBookmarkCardDialog();
+useProvideAllBookmarkTags({ allBooks });
 
 watch(() => locale.value, reloadAllBooks, { immediate: true });
 

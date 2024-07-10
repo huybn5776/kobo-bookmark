@@ -1,8 +1,10 @@
 export const i18nEn = {
   common: {
     delete: 'Delete',
+    remove: 'Remove',
     delete_selected: 'Delete selected',
     export_selected: 'Export selected as json file',
+    tag: 'Tag',
     archive: 'Archive',
     archive_selected: 'Archive selected',
     cancel_archive: 'Cancel archive',
@@ -47,6 +49,7 @@ export const i18nEn = {
     not_connected: 'Not connected',
     expired: 'Expired',
     no_matched: 'Not matched',
+    exists: 'Exists',
     notion_required: 'Notion settings required',
     notion_required_set_notice: 'This operation require Notion to be set, set it up now?',
     dropbox_required: 'Dropbox settings required',
@@ -154,6 +157,7 @@ export const i18nEn = {
       loading_books: 'Loading books…',
       empty_bookmarks1: `There is no bookmark here yet,`,
       empty_bookmarks2: `try to {0} some?`,
+      create_tag: 'Create "{0}"',
       collection: 'Collection',
       create_collection: 'Create collection',
       edit_collection: 'Edit collection',

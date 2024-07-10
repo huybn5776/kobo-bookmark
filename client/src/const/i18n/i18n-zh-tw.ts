@@ -1,8 +1,10 @@
 export const i18nZhTw = {
   common: {
     delete: '刪除',
+    remove: '移除',
     delete_selected: '刪除選取',
     export_selected: '匯出選取的書本為 json 檔',
+    tag: '標籤',
     archive: '封存',
     archive_selected: '封存選取',
     cancel_archive: '取消封存',
@@ -47,6 +49,7 @@ export const i18nZhTw = {
     not_connected: '未連線',
     expired: '已過期',
     no_matched: '沒有符合的項目',
+    exists: '已存在',
     notion_required: '需要 Notion 的設定',
     notion_required_set_notice: '需要設定過 Notion 才能執行這個動作，要現在設定嗎?',
     dropbox_required: '需要 Dropbox 的設定',
@@ -152,6 +155,7 @@ export const i18nZhTw = {
       loading_books: '書本載入中…',
       empty_bookmarks1: `這裡目前沒有任何書籤`,
       empty_bookmarks2: `試著 {0} 一些看看?`,
+      create_tag: '建立 "{0}"',
       collection: '收藏',
       create_collection: '建立收藏',
       edit_collection: '編輯收藏',

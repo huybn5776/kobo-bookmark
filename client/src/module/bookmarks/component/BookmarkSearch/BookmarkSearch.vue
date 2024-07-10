@@ -133,7 +133,7 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
   } else if (!event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey && event.code === 'ArrowUp') {
     movePendingOption(-1);
     event.preventDefault();
-  } else if (!event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey && event.code === 'Enter') {
+  } else if (!event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey && event.key === 'Enter') {
     onSelect(pendingOption.value);
   }
 });

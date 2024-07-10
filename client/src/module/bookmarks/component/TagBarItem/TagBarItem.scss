@@ -1,0 +1,34 @@
+.tag-bar-item {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  height: min-content;
+  padding: 2px 8px;
+  overflow-x: hidden;
+  border: 1px solid rgba(white, .24);
+  border-radius: 2px;
+}
+
+.tag-bar-item-text {
+  overflow-x: hidden;
+  white-space: pre;
+  text-overflow: ellipsis;
+}
+
+.tag-bar-item-remove-button {
+  width: 22px;
+  height: 22px;
+  margin-right: -4px;
+  padding: 0;
+  color: rgba(white, .52);
+  font-size: 0;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background .2s;
+
+  &:hover {
+    background: rgba(white, .12);
+  }
+}

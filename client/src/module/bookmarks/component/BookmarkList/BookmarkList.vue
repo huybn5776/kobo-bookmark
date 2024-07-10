@@ -7,6 +7,7 @@
         :chapterIndexMap="chapterIndexMap"
         :bookmark="bookmark"
         :search="search"
+        :editingTag="editingTagBookmarkId === bookmark.id"
         :enabledActions="enabledActions"
         :disabled="disabled"
         :readonly="readonly"
@@ -14,6 +15,9 @@
         @createCardClick="emits('createBookmarkCardClick', bookmark)"
         @archiveClick="emits('bookmarkArchive', bookmark)"
         @cancelArchiveClick="emits('bookmarkCancelArchive', bookmark)"
+        @tagEditClick="toggleEditingTagBookmark(bookmark)"
+        @finishEditingTag="editingTagBookmarkId = undefined"
+        @tagUpdated="updateBookmarkTag(bookmark, $event)"
       />
       <BookmarkEditItem
         v-if="bookmark.id === editingBookmarkId"
@@ -30,7 +34,9 @@
 <script lang="ts" setup>
 import { computed, ref, ComponentInstance } from 'vue';
 
-import { KoboBookmark, KoboBook } from '@/dto/kobo-book';
+import { useEventListener } from '@vueuse/core';
+
+import { KoboBookmark, KoboBook, KoboBookmarkTag } from '@/dto/kobo-book';
 import { BookmarkAction } from '@/enum/bookmark-action';
 import { SettingKey } from '@/enum/setting-key';
 import BookmarkEditItem from '@/module/bookmarks/component/BookmarkEditItem/BookmarkEditItem.vue';
@@ -57,6 +63,7 @@ defineExpose({ focusToBookmark });
 
 const bookBookmarkRefs = ref<ComponentInstance<typeof BookmarkItem>[]>([]);
 const editingBookmarkId = ref<string>();
+const editingTagBookmarkId = ref<string>();
 
 const bookmarksToShow = computed<{ bookmark: KoboBookmark; enabledActions: BookmarkAction[] }[]>(() => {
   const { book } = props;
@@ -73,6 +80,15 @@ const bookmarksToShow = computed<{ bookmark: KoboBookmark; enabledActions: Bookm
 });
 
 const chapterIndexMap = computed(() => getChapterIndexMap(props.book.chapters));
+
+useEventListener(document, 'keydown', (event: KeyboardEvent) => {
+  if (!editingTagBookmarkId.value) {
+    return;
+  }
+  if (!event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey && event.code === 'Escape') {
+    editingTagBookmarkId.value = undefined;
+  }
+});
 
 function calcBookmarkActions(book: KoboBook, bookmark: KoboBookmark): BookmarkAction[] {
   if (props.book.isArchived) {
@@ -107,6 +123,21 @@ function focusToBookmark(bookmark: KoboBookmark | undefined, options?: ScrollInt
   }
   scrollToElementIfNotInView(bookBookmarkRef.elementRef, options);
   bookBookmarkRef.runHighlightAnimationWhenVisible();
+}
+
+function toggleEditingTagBookmark(bookmark: KoboBookmark): void {
+  if (editingTagBookmarkId.value === bookmark.id) {
+    editingTagBookmarkId.value = undefined;
+  } else {
+    editingTagBookmarkId.value = bookmark.id;
+  }
+}
+
+function updateBookmarkTag(bookmark: KoboBookmark, tags: KoboBookmarkTag[]): void {
+  const updatedBookmark: KoboBookmark = { ...bookmark };
+  updatedBookmark.tags = tags;
+  emits('bookmarkUpdated', updatedBookmark.id, updatedBookmark);
+  editingTagBookmarkId.value = undefined;
 }
 </script>
 

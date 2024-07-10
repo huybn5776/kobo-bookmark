@@ -134,6 +134,7 @@ import { useRoute } from 'vue-router';
 
 import PageResult from '@/component/PageResult/PageResult.vue';
 import VirtualList from '@/component/VirtualList/VirtualList.vue';
+import { useProvideAllBookmarkTags } from '@/composition/use-provide-all-bookmark-tags';
 import { useSyncSetting } from '@/composition/use-sync-setting';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
@@ -237,6 +238,7 @@ const {
   discardAllTasks,
 } = useBookmarkExport({ selectedBooks, updateBookById });
 useBookBookmarkArchive({ reloadBooks });
+useProvideAllBookmarkTags({ allBooks });
 
 onMounted(async () => {
   allBooks.value = [];

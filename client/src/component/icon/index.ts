@@ -51,5 +51,6 @@ export { default as SortIcon } from '@/assets/svg/sort.svg';
 export { default as SquareOutlineIcon } from '@/assets/svg/square-outline.svg';
 export { default as StarIcon } from '@/assets/svg/star.svg';
 export { default as StarOutlineIcon } from '@/assets/svg/star-outline.svg';
+export { default as TagIcon } from '@/assets/svg/tag.svg';
 export { default as TextIcon } from '@/assets/svg/text.svg';
 export { default as WebIcon } from '@/assets/svg/web.svg';

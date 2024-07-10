@@ -32,31 +32,43 @@
       {{ bookmark.annotation }}
     </blockquote>
 
-    <div class="bookmark-toolbar">
-      <IconButton
-        v-if="!bookmark.isArchived && actions.archive"
-        i18nKey="common.archive"
-        @click="emits('archiveClick')"
-      >
-        <ArchiveIcon class="bookmark-action-icon" />
-      </IconButton>
-      <IconButton
-        v-if="actions['create-card']"
-        i18nKey="page.bookmarks.create_bookmark_card"
-        @click="emits('createCardClick')"
-      >
-        <ShareVariantIcon class="bookmark-action-icon" />
-      </IconButton>
-      <IconButton v-if="actions['edit']" i18nKey="common.edit" @click="emits('editClick')">
-        <PencilIcon class="bookmark-action-icon" />
-      </IconButton>
-
-      <template v-if="bookmark.isArchived">
-        <span class="bookmark-state-text">(<i18n-t keypath="common.archived" />)</span>
-        <IconButton v-if="actions.archive" i18nKey="common.cancel_archive" @click="emits('cancelArchiveClick')">
-          <ArchiveRefreshIcon class="bookmark-action-icon" />
+    <div class="bookmark-footer">
+      <TagsBar
+        :bookmark="bookmark"
+        :editing="editingTag"
+        :readonly="!actions.edit"
+        @tagUpdated="emits('tagUpdated', $event)"
+        @finish="emits('finishEditingTag')"
+      />
+      <div class="bookmark-toolbar">
+        <IconButton v-if="!bookmark.isArchived && actions.archive" i18nKey="common.tag" @click="emits('tagEditClick')">
+          <TagIcon class="bookmark-action-icon" />
         </IconButton>
-      </template>
+        <IconButton
+          v-if="!bookmark.isArchived && actions.archive"
+          i18nKey="common.archive"
+          @click="emits('archiveClick')"
+        >
+          <ArchiveIcon class="bookmark-action-icon" />
+        </IconButton>
+        <IconButton
+          v-if="actions['create-card']"
+          i18nKey="page.bookmarks.create_bookmark_card"
+          @click="emits('createCardClick')"
+        >
+          <ShareVariantIcon class="bookmark-action-icon" />
+        </IconButton>
+        <IconButton v-if="actions['edit']" i18nKey="common.edit" @click="emits('editClick')">
+          <PencilIcon class="bookmark-action-icon" />
+        </IconButton>
+
+        <template v-if="bookmark.isArchived">
+          <span class="bookmark-state-text">(<i18n-t keypath="common.archived" />)</span>
+          <IconButton v-if="actions.archive" i18nKey="common.cancel_archive" @click="emits('cancelArchiveClick')">
+            <ArchiveRefreshIcon class="bookmark-action-icon" />
+          </IconButton>
+        </template>
+      </div>
     </div>
   </div>
 </template>
@@ -65,20 +77,22 @@
 import { ref, computed } from 'vue';
 
 import HighlightText from '@/component/HighlightText/HighlightText.vue';
-import { ArchiveIcon, ArchiveRefreshIcon, ShareVariantIcon, PencilIcon } from '@/component/icon';
+import { TagIcon, ArchiveIcon, ArchiveRefreshIcon, ShareVariantIcon, PencilIcon } from '@/component/icon';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { useSyncSetting } from '@/composition/use-sync-setting';
 import { newBookmarkTime } from '@/const/consts';
-import { KoboBookmark, KoboBookChapter } from '@/dto/kobo-book';
+import { KoboBookmark, KoboBookChapter, KoboBookmarkTag } from '@/dto/kobo-book';
 import { BookmarkAction } from '@/enum/bookmark-action';
 import { HighlightColor } from '@/enum/highlight-color';
 import { SettingKey } from '@/enum/setting-key';
 import BookmarkChapterView from '@/module/bookmarks/component/BookmarkChapterView/BookmarkChapterView.vue';
+import TagsBar from '@/module/bookmarks/component/TagsBar/TagsBar.vue';
 
 const props = defineProps<{
   chapterIndexMap: Record<number, KoboBookChapter>;
   bookmark: KoboBookmark;
   search?: string;
+  editingTag: boolean;
   enabledActions?: BookmarkAction[];
 }>();
 const emits = defineEmits<{
@@ -86,6 +100,9 @@ const emits = defineEmits<{
   (e: 'createCardClick'): void;
   (e: 'archiveClick'): void;
   (e: 'cancelArchiveClick'): void;
+  (e: 'tagEditClick'): void;
+  (e: 'tagUpdated', value: KoboBookmarkTag[]): void;
+  (e: 'finishEditingTag'): void;
   (e: 'highlightAnimationEnd'): void;
 }>();
 const elementRef = ref<HTMLElement>();

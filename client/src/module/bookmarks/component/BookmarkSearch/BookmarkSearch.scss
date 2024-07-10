@@ -4,6 +4,12 @@
   height: 32px;
 }
 
+:deep(.bookmark-tag-search-button) {
+  position: absolute;
+  top: 0;
+  right: 8px;
+}
+
 .bookmark-search-dropdown-container {
   position: absolute;
   top: calc(100% + 4px);

@@ -42,6 +42,7 @@ export interface KoboBookmark {
   startContainerPath: string;
   endContainerPath: string;
   color?: HighlightColor;
+  tags?: KoboBookmarkTag[];
   isArchived?: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -64,6 +65,11 @@ export interface KoboBookChapter {
   children?: KoboBookChapter[];
   /** @deprecated */
   parentChapter?: KoboBookChapter;
+}
+
+export interface KoboBookmarkTag {
+  title: string;
+  createdAt: Date;
 }
 
 export interface NotionExportState {
