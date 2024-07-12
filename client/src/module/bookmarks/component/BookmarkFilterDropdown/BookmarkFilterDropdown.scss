@@ -10,3 +10,27 @@
     opacity: .4;
   }
 }
+
+.bookmark-filter-groups {
+  min-width: 240px;
+  max-height: 80vh;
+  padding: 4px 0;
+  overflow-y: auto;
+  background-color: #48484e;
+  border-radius: 4px;
+
+  > * + * {
+    position: relative;
+    margin-top: 8px;
+
+    &:before {
+      position: absolute;
+      top: -4px;
+      left: 8px;
+      width: calc(100% - 16px);
+      height: 1px;
+      background-color: rgba(white, .2);
+      content: '';
+    }
+  }
+}

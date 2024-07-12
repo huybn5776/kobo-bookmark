@@ -34,7 +34,9 @@
         <BookmarkFilterDropdown
           v-if="!bookmarkSearchActive"
           v-model:collection="bookCollectionIdFilter"
+          v-model:tag="tagFilter"
           v-model:colors="highlightColorFilter"
+          :books="allBooks"
           :disabled="!allBooks.length"
           @createCollectionClick="handleCreateCollection"
           @editCollectionClick="handleEditCollection"
@@ -186,6 +188,7 @@ const { bookSortingPriority, bookSorting, bookmarkSorting, sortedBooks, keepSort
 });
 const {
   bookCollectionIdFilter,
+  tagFilter,
   highlightColorFilter,
   books: filteredBooks,
   activeBookCollection,

@@ -27,9 +27,10 @@ watch(
   () => (direction.value = props.direction),
 );
 
-function toggleDirection(): void {
+function toggleDirection(event: MouseEvent): void {
   direction.value = direction.value === 'up' ? 'down' : 'up';
   emits('update:direction', direction.value);
+  event.stopPropagation();
 }
 </script>
 

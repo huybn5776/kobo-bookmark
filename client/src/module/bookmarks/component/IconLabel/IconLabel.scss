@@ -1,11 +1,12 @@
 .icon-label {
   display: flex;
-  gap: 8px;
+  gap: 4px;
   align-items: center;
 }
 
 .icon-label-icon-container {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   width: 30px;
@@ -19,4 +20,10 @@
       background-color: rgba(white, .2);
     }
   }
+}
+
+.icon-label-text {
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

@@ -4,6 +4,7 @@ import { BookCollections } from '@/dto/book-collection';
 import { BookImportState } from '@/dto/book-import-state';
 import { BookSortingKey } from '@/enum/book-sorting-key';
 import { BookSortingPriorityKey } from '@/enum/book-sorting-priority-key';
+import { BookmarkFilterKey } from '@/enum/bookmark-filter-key';
 import { BookmarkSortingKey } from '@/enum/bookmark-sorting-key';
 import { MarkdownExportMode } from '@/enum/markdown-export-mode';
 import { NotionExportToType } from '@/enum/notion-export-to-type';
@@ -14,6 +15,7 @@ export enum SettingKey {
   ImportDataInstructionCollapsed = 'import-data-instruction-collapsed',
   BookmarksToolbarPinned = 'bookmarks-toolbar-pinned',
   BookCollection = 'book-collection',
+  ExpandedBookFilters = 'expanded-book-filters',
   BookSortingPriority = `book-sorting-priority`,
   BookSorting = 'book-sorting',
   BookmarkSorting = 'bookmark-sorting',
@@ -38,6 +40,7 @@ export type SettingValueType = {
   [SettingKey.ImportDataInstructionCollapsed]: boolean;
   [SettingKey.BookmarksToolbarPinned]: boolean;
   [SettingKey.BookCollection]: BookCollections;
+  [SettingKey.ExpandedBookFilters]: Partial<Record<BookmarkFilterKey, boolean>>;
   [SettingKey.BookSortingPriority]: BookSortingPriorityKey;
   [SettingKey.BookSorting]: BookSortingKey;
   [SettingKey.BookmarkSorting]: BookmarkSortingKey;

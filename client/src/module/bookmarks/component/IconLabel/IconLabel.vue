@@ -1,19 +1,17 @@
 <template>
   <div class="icon-label">
-    <div class="icon-label-icon-container" :class="{ 'icon-label-clickable': clickable }">
-      <component :is="icon" :class="iconClass || 'icon-24'" @click="onIconClick" />
+    <div class="icon-label-icon-container" :class="{ 'icon-label-clickable': clickable }" @click="onIconClick">
+      <slot />
     </div>
-    <span>{{ label }}</span>
+    <span class="icon-label-text">{{ label }}</span>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { VNodeChild } from 'vue';
-
-const props = defineProps<{ icon: () => VNodeChild; iconClass?: string; label: string; clickable?: boolean }>();
+const props = defineProps<{ iconClass?: string; label: string; clickable?: boolean }>();
 const emits = defineEmits<{ (e: 'iconClick'): void }>();
 
-function onIconClick(event: PointerEvent): void {
+function onIconClick(event: MouseEvent): void {
   if (!props.clickable) {
     return;
   }

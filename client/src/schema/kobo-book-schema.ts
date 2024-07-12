@@ -39,6 +39,11 @@ export const koboBookmarkChapterSchema = z.object({
   parentChapterIndexes: z.array(z.number()).optional(),
 });
 
+export const koboBookmarkTagSchema = z.object({
+  title: z.string(),
+  createdAt: z.string().pipe(z.coerce.date()),
+});
+
 export const koboBookmarkSchema = z.object({
   id: z.string(),
   text: z.string(),
@@ -50,6 +55,7 @@ export const koboBookmarkSchema = z.object({
   startContainerPath: z.string(),
   endContainerPath: z.string(),
   color: z.nativeEnum(HighlightColor).optional().nullable(),
+  tags: z.array(koboBookmarkTagSchema).optional().nullable(),
   createdAt: z.string().pipe(z.coerce.date()),
   updatedAt: z.string().pipe(z.coerce.date()),
   importedAt: z.string().pipe(z.coerce.date()).optional().nullable(),

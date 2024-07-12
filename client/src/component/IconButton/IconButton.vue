@@ -27,14 +27,14 @@ import { ref } from 'vue';
 import { NButton, NPopover } from 'naive-ui';
 
 defineProps<{ i18nKey: string; disabled?: boolean; loading?: boolean }>();
-const emits = defineEmits<{ (e: 'click'): void }>();
+const emits = defineEmits<{ (e: 'click', value: MouseEvent): void }>();
 
 const waitForMouseLeave = ref<boolean>(false);
 
 function onClick(event: MouseEvent): void {
   waitForMouseLeave.value = true;
   (event.target as HTMLElement).addEventListener('mouseleave', () => (waitForMouseLeave.value = false), { once: true });
-  emits('click');
+  emits('click', event);
 }
 </script>
 

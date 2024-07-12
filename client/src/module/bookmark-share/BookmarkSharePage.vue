@@ -95,6 +95,7 @@ import { useRoute } from 'vue-router';
 
 import PageResult from '@/component/PageResult/PageResult.vue';
 import VirtualList from '@/component/VirtualList/VirtualList.vue';
+import { useProvideAllBookmarkTags } from '@/composition/use-provide-all-bookmark-tags';
 import { useSyncSetting } from '@/composition/use-sync-setting';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { BookmarkShare } from '@/dto/bookmark-share';
@@ -162,6 +163,7 @@ const {
 const { exportingBookIds, exportBookmarkToText, exportBookmarkToMarkdown, exportBookmarkToNotion } = useBookmarkExport({
   selectedBooks,
 });
+useProvideAllBookmarkTags({ allBooks });
 
 onMounted(async () => {
   allBooks.value = [];

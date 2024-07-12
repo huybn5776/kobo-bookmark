@@ -1,9 +1,10 @@
-import { Ref, ComputedRef, computed } from 'vue';
+import { Ref, ComputedRef, computed, provide } from 'vue';
 
 import * as E from 'fp-ts/Either';
 
 import { useRouterParam } from '@/composition/use-router-param';
 import { KoboBook } from '@/dto/kobo-book';
+import { provideExpandedBookId } from '@/symbols';
 import { decodeBookId, encodeBookId } from '@/util/book-id-encode';
 
 export function useExpandedBook({
@@ -22,6 +23,7 @@ export function useExpandedBook({
   const expandedBookId = computed(() =>
     expandedBookIdParam.value ? handleIdDecode(expandedBookIdParam.value) : undefined,
   );
+  provide(provideExpandedBookId, expandedBookId);
 
   const booksToShow = computed(() => {
     if (expandedBookIdParam.value) {
