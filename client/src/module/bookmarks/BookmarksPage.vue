@@ -81,6 +81,7 @@
           :selected="selectedBookIds.includes(book.id)"
           :search="(bookmarkSearchActive && bookmarkSearch) || ''"
           tagClickable
+          tagRemovable
           :exportNotionLoading="exportingBookIds.includes(book.id)"
           @update:expanded="onExpandedBookUpdated(book, $event)"
           @update:selected="(v) => onBookSelectChanges(book, v)"

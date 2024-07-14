@@ -29,6 +29,7 @@
       :disabled="!!book.isArchived"
       :readonly="readonly"
       :tagClickable="tagClickable"
+      :tagRemovable="tagRemovable"
       class="book-bookmark-list"
       @tagClick="emits('bookmarkTagClick', $event)"
       @createBookmarkCardClick="emits('createBookmarkCardClick', book, $event)"
@@ -55,6 +56,7 @@ const props = defineProps<{
   search?: string;
   readonly?: boolean;
   tagClickable?: boolean;
+  tagRemovable?: boolean;
   exportNotionLoading?: boolean;
 }>();
 const emits = defineEmits<{

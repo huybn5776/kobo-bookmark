@@ -10,6 +10,7 @@
         :editingTag="editingTagBookmarkId === bookmark.id"
         :enabledActions="enabledActions"
         :tagClickable="tagClickable"
+        :tagRemovable="tagRemovable"
         @editClick="editingBookmarkId = bookmark.id"
         @createCardClick="emits('createBookmarkCardClick', bookmark)"
         @archiveClick="emits('bookmarkArchive', bookmark)"
@@ -52,6 +53,7 @@ const props = defineProps<{
   readonly?: boolean;
   showAllBookmarks?: boolean;
   tagClickable?: boolean;
+  tagRemovable?: boolean;
 }>();
 const emits = defineEmits<{
   (e: 'bookmarkEditClick', bookmark: KoboBookmark): void;

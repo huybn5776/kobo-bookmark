@@ -38,6 +38,7 @@
         :editing="editingTag"
         :readonly="!actions.edit"
         :tagClickable="tagClickable"
+        :removable="tagRemovable"
         @tagClick="emits('tagClick', $event)"
         @tagUpdated="emits('tagUpdated', $event)"
         @finish="emits('finishEditingTag')"
@@ -96,6 +97,7 @@ const props = defineProps<{
   search?: string;
   editingTag: boolean;
   enabledActions?: BookmarkAction[];
+  tagRemovable?: boolean;
   tagClickable?: boolean;
 }>();
 const emits = defineEmits<{
