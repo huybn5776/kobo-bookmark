@@ -198,7 +198,7 @@ const {
   expandedBookId,
   updateExpandedBookId,
   onExpandedBookUpdated,
-} = useExpandedBook({ books: filteredBooks, setMessage });
+} = useExpandedBook({ books: filteredBooks, activeBookCollection, setMessage });
 const { virtualListRef, setBookBookmarkRef, gotoBook, gotoBookmark } = useGoToBook({
   booksToShow,
   expandedBookId,
