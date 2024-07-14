@@ -7,6 +7,10 @@
   overflow-x: hidden;
   border: 1px solid rgba(white, .24);
   border-radius: 2px;
+
+  &.tag-bar-item-clickable {
+    cursor: pointer;
+  }
 }
 
 .tag-bar-item-text {

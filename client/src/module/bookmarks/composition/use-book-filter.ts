@@ -17,6 +17,7 @@ export function useBookFilter({ books: allBooks }: { books: Ref<KoboBook[]> }): 
   tagFilter: Ref<string | undefined>;
   highlightColorFilter: Ref<HighlightColor[]>;
   activeBookCollection: ComputedRef<BookCollection | undefined>;
+  toggleTagFilter: (title: string) => void;
 } {
   const route = useRoute();
   const router = useRouter();
@@ -83,6 +84,10 @@ export function useBookFilter({ books: allBooks }: { books: Ref<KoboBook[]> }): 
     },
   );
 
+  function toggleTagFilter(title: string): void {
+    tagFilter.value = tagFilter.value === title ? undefined : title;
+  }
+
   function filterByBookIds(books: KoboBook[]): KoboBook[] {
     if (bookCollectionIdFilter.value && !activeBookCollection.value) {
       return [];
@@ -119,5 +124,12 @@ export function useBookFilter({ books: allBooks }: { books: Ref<KoboBook[]> }): 
     });
   }
 
-  return { bookCollectionIdFilter, tagFilter, highlightColorFilter, books: booksToShow, activeBookCollection };
+  return {
+    bookCollectionIdFilter,
+    tagFilter,
+    highlightColorFilter,
+    books: booksToShow,
+    activeBookCollection,
+    toggleTagFilter,
+  };
 }

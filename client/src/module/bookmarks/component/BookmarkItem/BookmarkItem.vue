@@ -37,6 +37,8 @@
         :bookmark="bookmark"
         :editing="editingTag"
         :readonly="!actions.edit"
+        :tagClickable="tagClickable"
+        @tagClick="emits('tagClick', $event)"
         @tagUpdated="emits('tagUpdated', $event)"
         @finish="emits('finishEditingTag')"
       />
@@ -94,12 +96,14 @@ const props = defineProps<{
   search?: string;
   editingTag: boolean;
   enabledActions?: BookmarkAction[];
+  tagClickable?: boolean;
 }>();
 const emits = defineEmits<{
   (e: 'editClick'): void;
   (e: 'createCardClick'): void;
   (e: 'archiveClick'): void;
   (e: 'cancelArchiveClick'): void;
+  (e: 'tagClick', value: string): void;
   (e: 'tagEditClick'): void;
   (e: 'tagUpdated', value: KoboBookmarkTag[]): void;
   (e: 'finishEditingTag'): void;

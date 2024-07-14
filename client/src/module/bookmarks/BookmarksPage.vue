@@ -80,6 +80,7 @@
           :defaultExpanded="booksToShow?.length === 1"
           :selected="selectedBookIds.includes(book.id)"
           :search="(bookmarkSearchActive && bookmarkSearch) || ''"
+          tagClickable
           :exportNotionLoading="exportingBookIds.includes(book.id)"
           @update:expanded="onExpandedBookUpdated(book, $event)"
           @update:selected="(v) => onBookSelectChanges(book, v)"
@@ -88,6 +89,7 @@
           @notionExportClick="exportBookmarkToNotion"
           @bookStarClick="toggleBookStar"
           @bookCoverImageUpdated="(v) => updateBookCoverImage(book, v)"
+          @bookmarkTagClick="toggleTagFilter"
           @bookArchiveClick="archiveBook"
           @shareClick="openShareBooksWithDropboxDialog([book])"
           @bookCancelArchive="cancelArchiveBook"
@@ -192,6 +194,7 @@ const {
   highlightColorFilter,
   books: filteredBooks,
   activeBookCollection,
+  toggleTagFilter,
 } = useBookFilter({ books: sortedBooks });
 const {
   books: booksToShow,

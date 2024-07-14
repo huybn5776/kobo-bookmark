@@ -9,12 +9,12 @@
         :search="search"
         :editingTag="editingTagBookmarkId === bookmark.id"
         :enabledActions="enabledActions"
-        :disabled="disabled"
-        :readonly="readonly"
+        :tagClickable="tagClickable"
         @editClick="editingBookmarkId = bookmark.id"
         @createCardClick="emits('createBookmarkCardClick', bookmark)"
         @archiveClick="emits('bookmarkArchive', bookmark)"
         @cancelArchiveClick="emits('bookmarkCancelArchive', bookmark)"
+        @tagClick="emits('tagClick', $event)"
         @tagEditClick="toggleEditingTagBookmark(bookmark)"
         @finishEditingTag="editingTagBookmarkId = undefined"
         @tagUpdated="updateBookmarkTag(bookmark, $event)"
@@ -51,6 +51,7 @@ const props = defineProps<{
   disabled?: boolean;
   readonly?: boolean;
   showAllBookmarks?: boolean;
+  tagClickable?: boolean;
 }>();
 const emits = defineEmits<{
   (e: 'bookmarkEditClick', bookmark: KoboBookmark): void;
@@ -58,6 +59,7 @@ const emits = defineEmits<{
   (e: 'createBookmarkCardClick', bookmark: KoboBookmark): void;
   (e: 'bookmarkArchive', value: KoboBookmark): void;
   (e: 'bookmarkCancelArchive', value: KoboBookmark): void;
+  (e: 'tagClick', value: string): void;
 }>();
 defineExpose({ focusToBookmark });
 

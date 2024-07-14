@@ -4,8 +4,10 @@
       <TagBarItem
         v-for="title of currentTagTitles"
         :key="title"
+        :clickable="tagClickable"
         allowRemove
         :label="title"
+        @click="onTagClick(title)"
         @removeClick="removeTag(title)"
       />
     </div>
@@ -32,14 +34,24 @@ import { injectStrict } from '@/util/vue-utils';
 
 const allAvailableTags = injectStrict(provideAllBookmarkTags);
 
-const props = defineProps<{ bookmark: KoboBookmark; editing: boolean; readonly: boolean }>();
-const emits = defineEmits<{ (e: 'tagUpdated', value: KoboBookmarkTag[]): void; (e: 'finish'): void }>();
+const props = defineProps<{ bookmark: KoboBookmark; editing: boolean; readonly: boolean; tagClickable?: boolean }>();
+const emits = defineEmits<{
+  (e: 'tagClick', value: string): void;
+  (e: 'tagUpdated', value: KoboBookmarkTag[]): void;
+  (e: 'finish'): void;
+}>();
 
 const currentTagTitles = computed(() => props.bookmark.tags?.map((tag) => tag.title) || []);
 
 function addTag(title: string): void {
   const updatedTags = [...(props.bookmark.tags || []), { title, createdAt: new Date() }];
   emits('tagUpdated', updatedTags);
+}
+
+function onTagClick(title: string): void {
+  if (props.tagClickable) {
+    emits('tagClick', title);
+  }
 }
 
 function removeTag(title: string): void {

@@ -28,7 +28,9 @@
       :search="search"
       :disabled="!!book.isArchived"
       :readonly="readonly"
+      :tagClickable="tagClickable"
       class="book-bookmark-list"
+      @tagClick="emits('bookmarkTagClick', $event)"
       @createBookmarkCardClick="emits('createBookmarkCardClick', book, $event)"
       @bookmarkUpdated="(bookmarkId, bookmarkPatch) => emits('bookmarkUpdated', book, bookmarkId, bookmarkPatch)"
       @bookmarkArchive="emits('bookmarkArchiveClick', book, $event)"
@@ -52,6 +54,7 @@ const props = defineProps<{
   selected: boolean;
   search?: string;
   readonly?: boolean;
+  tagClickable?: boolean;
   exportNotionLoading?: boolean;
 }>();
 const emits = defineEmits<{
@@ -62,6 +65,7 @@ const emits = defineEmits<{
   (e: 'notionExportClick', value: KoboBook): void;
   (e: 'bookStarClick', value: KoboBook): void;
   (e: 'bookCoverImageUpdated', value: string): void;
+  (e: 'bookmarkTagClick', value: string): void;
   (e: 'bookArchiveClick', value: KoboBook): void;
   (e: 'bookCancelArchive', value: KoboBook): void;
   (e: 'shareClick', value: KoboBook): void;
