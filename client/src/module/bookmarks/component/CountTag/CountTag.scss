@@ -8,14 +8,14 @@
   justify-content: center;
   width: 24px;
   height: 24px;
-  color: white;
-  font-weight: bold;
   font-size: 12px;
+  font-weight: bold;
+  color: white;
   text-align: center;
+  user-select: none;
   background-color: #d03a52;
   border-radius: 50%;
   transition: box-shadow .2s;
-  user-select: none;
 
   &:hover {
     box-shadow: 0 0 4px 4px rgba(white, .3);

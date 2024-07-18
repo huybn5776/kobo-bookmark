@@ -105,10 +105,10 @@
   position: absolute;
   top: 40px;
   left: 0;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-sizing: border-box;
   width: 100%;
   height: calc(100% - 80px);
   padding: 0 32px;
@@ -125,9 +125,9 @@
   padding: 0 32px;
   overflow-x: hidden;
   font-size: 16px;
-  white-space: pre;
   text-align: center;
   text-overflow: ellipsis;
+  white-space: pre;
 }
 
 .bookmark-card-dialog-actions {

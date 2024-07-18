@@ -38,8 +38,8 @@
 
 .bookmark-text {
   position: relative;
-  margin: 0;
   padding: 0 16px;
+  margin: 0;
   font-size: 18px;
   line-height: 1.6;
   white-space: pre-wrap;
@@ -54,8 +54,8 @@
     left: 0;
     width: 2px;
     height: 100%;
-    background-color: #d03a52;
     content: '';
+    background-color: #d03a52;
   }
 }
 
@@ -84,8 +84,8 @@
 }
 
 .bookmark-annotation {
-  margin: 16px 16px 0 16px;
   padding: 4px 8px;
+  margin: 16px 16px 0 16px;
   font-size: 16px;
   border-left: solid 4px lightgray;
 }

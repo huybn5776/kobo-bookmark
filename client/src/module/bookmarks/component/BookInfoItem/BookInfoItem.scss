@@ -3,11 +3,11 @@
   gap: 4px;
   align-items: center;
   padding: 2px 4px;
-  color: gray;
   font-size: 16px;
+  color: gray;
+  user-select: none;
   border-radius: 4px;
   transition: background-color .2s;
-  user-select: none;
 
   &:hover {
     background-color: rgba(white, .1);

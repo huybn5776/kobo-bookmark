@@ -15,21 +15,21 @@
 
 .tag-bar-item-text {
   overflow-x: hidden;
-  white-space: pre;
   text-overflow: ellipsis;
+  white-space: pre;
 }
 
 .tag-bar-item-remove-button {
   width: 22px;
   height: 22px;
-  margin-right: -4px;
   padding: 0;
-  color: rgba(white, .52);
+  margin-right: -4px;
   font-size: 0;
+  color: rgba(white, .52);
+  cursor: pointer;
   background: transparent;
   border: none;
   border-radius: 50%;
-  cursor: pointer;
   transition: background .2s;
 
   &:hover {

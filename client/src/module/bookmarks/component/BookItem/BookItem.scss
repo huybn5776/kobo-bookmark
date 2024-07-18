@@ -91,20 +91,20 @@
 }
 
 .book-title-button {
-  display: block;
   box-sizing: border-box;
+  display: block;
   width: 100%;
   padding: 4px;
-  color: white;
-  font-weight: normal;
-  font-size: 22px;
   font-family: inherit;
+  font-size: 22px;
+  font-weight: normal;
   line-height: 1.6;
+  color: white;
   text-align: start;
-  background: none;
-  border: none;
   cursor: pointer;
   user-select: auto;
+  background: none;
+  border: none;
 
   &:hover {
     text-decoration: none;
@@ -112,8 +112,8 @@
 
   &:not(.book-expanded &) {
     overflow-x: hidden;
-    white-space: nowrap;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 
@@ -129,8 +129,8 @@
 
   &:not(.book-expanded &) {
     overflow-x: hidden;
-    white-space: nowrap;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 
@@ -139,8 +139,8 @@
   gap: 2px;
   margin-left: -4px;
   overflow-x: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .book-state-text {

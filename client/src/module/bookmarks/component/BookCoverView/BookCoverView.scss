@@ -8,8 +8,8 @@
 .book-cover-image > :deep(img) {
   width: 100%;
   height: 100%;
-  object-fit: contain;
   cursor: zoom-in;
+  object-fit: contain;
 }
 
 .fallback-book-cover {

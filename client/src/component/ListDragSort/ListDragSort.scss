@@ -18,9 +18,9 @@
   display: grid;
   grid-template-columns: 40px minmax(0, 1fr);
   align-items: center;
-  transform-origin: 40px center;
-  transition: transform .3s;
   user-select: none;
+  transition: transform .3s;
+  transform-origin: 40px center;
 
   .dragging-item & {
     transform: scale(1.05);
@@ -31,9 +31,9 @@
   width: 40px;
   height: 32px ;
   padding: 0;
+  cursor: ns-resize;
   background-color: transparent;
   border: 0;
-  cursor: ns-resize;
 
   &:hover {
     transform: scale(1.1);

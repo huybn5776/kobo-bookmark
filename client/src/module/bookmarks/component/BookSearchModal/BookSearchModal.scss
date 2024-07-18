@@ -15,8 +15,8 @@
 }
 
 .book-modal-search-input {
-  margin: 12px 0;
   padding: 8px 12px;
+  margin: 12px 0;
   background-color: rgba(black, .25);
   border: solid #606060;
   border-width: 0 0 1px 0;
@@ -24,11 +24,11 @@
 }
 
 .book-modal-item {
+  box-sizing: border-box;
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 8px;
   align-items: center;
-  box-sizing: border-box;
   width: 100%;
   height: 36px;
   padding: 0 12px;
@@ -48,8 +48,8 @@
 
 .book-modal-title {
   overflow-x: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .book-modal-instruction {

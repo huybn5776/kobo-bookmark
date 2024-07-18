@@ -13,8 +13,8 @@
 .book-info-label {
   align-self: start;
   justify-self: end;
-  color: white;
   font-weight: bold;
+  color: white;
 }
 
 .book-information-title {
@@ -22,8 +22,8 @@
   grid-column: 1 / 3;
   align-items: center;
   justify-content: center;
-  color: white;
   font-size: 18px;
+  color: white;
   text-align: center;
 
   :deep(.book-information-title-edit-button) {

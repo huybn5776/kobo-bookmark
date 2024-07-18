@@ -17,8 +17,8 @@
   grid-template-columns: 1fr auto auto;
   align-items: center;
   padding: 12px 12px 12px 16px;
-  font-weight: bold;
   font-size: 20px;
+  font-weight: bold;
   box-shadow: 0 2px 4px rgba(black, .2);
 }
 
@@ -32,10 +32,10 @@
 
 .book-export-progress-message {
   overflow: hidden;
-  color: lightgray;
   font-size: 15px;
-  white-space: nowrap;
+  color: lightgray;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .book-export-progress-modal-content {

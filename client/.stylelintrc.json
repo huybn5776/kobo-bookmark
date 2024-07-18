@@ -1,13 +1,6 @@
 {
-  "extends": [
-    "stylelint-config-recommended-scss",
-    "stylelint-config-rational-order"
-  ],
-  "plugins": [
-    "stylelint-scss",
-    "stylelint-order",
-    "stylelint-config-rational-order/plugin"
-  ],
+  "extends": ["stylelint-config-recommended-scss", "stylelint-config-recess-order"],
+  "plugins": ["stylelint-scss", "stylelint-order"],
   "rules": {
     "order/order": [
       "declarations",
@@ -19,10 +12,6 @@
         "hasBlock": true
       },
       "rules"
-    ],
-    "order/properties-order": [
-      "width",
-      "height"
     ],
     "selector-pseudo-class-no-unknown": [
       true,

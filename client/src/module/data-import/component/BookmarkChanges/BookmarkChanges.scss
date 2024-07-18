@@ -4,16 +4,16 @@
   gap: 8px;
   align-items: center;
   overflow-x: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .bookmark-changes-tag {
   padding: 8px;
   text-align: center;
+  user-select: none;
   background-color: rgba(white, .04);
   border-radius: 4px;
-  user-select: none;
 }
 
 .changes-added {
@@ -31,6 +31,6 @@
 .changes-content {
   overflow-x: hidden;
   font-size: 15px;
-  white-space: nowrap;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }

@@ -5,10 +5,10 @@
 }
 
 .nav-bar-link {
+  box-sizing: border-box;
   display: flex;
   gap: 4px;
   align-items: center;
-  box-sizing: border-box;
   padding: 8px;
   border-radius: 4px;
 
@@ -22,9 +22,9 @@
     left: -4px;
     width: 1px;
     height: 12px;
-    background-color: rgba(white, .4);
-    content: '';
     pointer-events: none;
+    content: '';
+    background-color: rgba(white, .4);
   }
 
   &.router-link-active {
@@ -54,11 +54,11 @@
   width: 40px;
   margin-left: 4px;
   font-size: 0;
+  cursor: pointer;
   background: none;
   border: none;
   border-radius: 50%;
   outline: none;
-  cursor: pointer;
 
   &.nav-bar-button-active {
     background-color: rgba(white, .1);
