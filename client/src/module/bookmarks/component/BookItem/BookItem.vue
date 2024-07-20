@@ -47,7 +47,12 @@
         @update:direction="emit('update:expanded', $event === 'up')"
       />
       <div v-if="selectable" class="book-checkbox-container">
-        <NCheckbox size="large" :checked="selected" @update:checked="(v) => emit('update:selected', v)" />
+        <NCheckbox
+          size="large"
+          aria-label="check"
+          :checked="selected"
+          @update:checked="(v) => emit('update:selected', v)"
+        />
       </div>
       <div class="book-toolbar-container">
         <div class="book-toolbar">

@@ -32,6 +32,7 @@
       <NCheckbox
         v-if="!bookmarkSearchActive"
         size="large"
+        aria-label="check"
         :checked="selectedBooksCheckState === CheckboxState.Checked"
         :indeterminate="selectedBooksCheckState === CheckboxState.Indeterminate"
         @click="handleMasterCheckboxClick"

@@ -53,6 +53,7 @@
         v-if="!bookmarkSearchActive"
         class="bookmark-page-all-checkbox"
         size="large"
+        aria-label="Check all"
         :checked="selectedBooksCheckState === CheckboxState.Checked"
         :indeterminate="selectedBooksCheckState === CheckboxState.Indeterminate"
         @click="handleMasterCheckboxClick"
