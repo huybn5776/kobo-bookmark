@@ -9,7 +9,7 @@
 
 <script lang="ts" setup>
 const props = defineProps<{ iconClass?: string; label: string; clickable?: boolean }>();
-const emits = defineEmits<{ (e: 'iconClick'): void }>();
+const emit = defineEmits<{ (e: 'iconClick'): void }>();
 
 function onIconClick(event: MouseEvent): void {
   if (!props.clickable) {
@@ -17,7 +17,7 @@ function onIconClick(event: MouseEvent): void {
   }
   event.stopPropagation();
   event.preventDefault();
-  emits('iconClick');
+  emit('iconClick');
 }
 </script>
 

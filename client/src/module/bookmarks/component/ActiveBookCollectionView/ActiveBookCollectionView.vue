@@ -2,7 +2,7 @@
   <div v-if="bookCollection" class="active-book-collection">
     <h1 class="active-book-collection-name">
       <span>{{ bookCollection?.name }}</span>
-      <IconButton class="deactivate-book-collection-button" i18nKey="common.close" @click="emits('closeClick')">
+      <IconButton class="deactivate-book-collection-button" i18nKey="common.close" @click="emit('closeClick')">
         <CloseCircleIcon class="icon-24" />
       </IconButton>
     </h1>
@@ -20,7 +20,7 @@ import IconButton from '@/component/IconButton/IconButton.vue';
 import { BookCollection } from '@/dto/book-collection';
 
 defineProps<{ bookCollection: BookCollection | undefined }>();
-const emits = defineEmits<{ (e: 'closeClick'): void }>();
+const emit = defineEmits<{ (e: 'closeClick'): void }>();
 </script>
 
 <style lang="scss" scoped>

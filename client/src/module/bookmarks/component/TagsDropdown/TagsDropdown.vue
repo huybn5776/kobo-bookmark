@@ -20,7 +20,7 @@
           @click="selectTag(tag)"
           @mouseover="onTagHover(tag)"
         >
-          <TagBarItem class="tags-dropdown-tag" :label="tag.label" @removeClick="emits('removeTag', tag.key)" />
+          <TagBarItem class="tags-dropdown-tag" :label="tag.label" @removeClick="emit('removeTag', tag.key)" />
         </div>
       </template>
     </NVirtualList>
@@ -41,7 +41,7 @@ import { scrollToElementIfNotInView } from '@/util/dom-utils';
 const { t } = useI18n<[I18NMessageSchema]>();
 
 const props = defineProps<{ currentTagTitles: string[]; allTags: { title: string; count: number }[] }>();
-const emits = defineEmits<{
+const emit = defineEmits<{
   (e: 'addTag', value: string): void;
   (e: 'removeTag', value: string): void;
   (e: 'clickOutside'): void;
@@ -98,7 +98,7 @@ watch(
 
 onClickOutside(elementRef, (event) => {
   event.stopPropagation();
-  emits('clickOutside');
+  emit('clickOutside');
 });
 
 function onTagHover(tag: TagDropdownItem): void {
@@ -135,7 +135,7 @@ function movePendingTag(offset: number): void {
 
 function selectTag(tag: TagDropdownItem | undefined): void {
   if (tag && !tag.disabled) {
-    emits('addTag', tag.key);
+    emit('addTag', tag.key);
   }
 }
 

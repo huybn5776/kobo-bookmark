@@ -3,7 +3,7 @@
     <button
       class="bookmark-filter-group-header"
       :class="{ 'bookmark-filter-group-header-active': hasSelectedValue }"
-      @click="emits('update:expanded', !expanded)"
+      @click="emit('update:expanded', !expanded)"
     >
       <span><i18n-t :keypath="titleKey" /></span>
       <IconButton v-if="hasSelectedValue" i18nKey="common.remove" @click="onRemoveButtonClick">
@@ -11,7 +11,7 @@
       </IconButton>
       <ChevronArrow
         :direction="expanded ? 'up' : 'down'"
-        @update:direction="emits('update:expanded', $event === 'up')"
+        @update:direction="emit('update:expanded', $event === 'up')"
       />
     </button>
     <template v-if="expanded">
@@ -68,7 +68,7 @@ const props = defineProps<{
   searchable?: boolean;
   emptyMessageKey?: string;
 }>();
-const emits = defineEmits<{ (e: 'update:expanded', value: boolean): void; (e: 'escape'): void }>();
+const emit = defineEmits<{ (e: 'update:expanded', value: boolean): void; (e: 'escape'): void }>();
 const valueModel = defineModel<IT>('value');
 
 const { t } = useI18n<[I18NMessageSchema]>();
@@ -113,7 +113,7 @@ function onInputKeyDown(event: KeyboardEvent): void {
     } else if (valueModel.value) {
       valueModel.value = undefined;
     } else {
-      emits('escape');
+      emit('escape');
     }
   }
 }

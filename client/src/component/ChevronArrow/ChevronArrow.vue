@@ -18,7 +18,7 @@ const props = defineProps({
   },
   disabled: { type: Boolean },
 });
-const emits = defineEmits<{ (direction: 'update:direction', value: 'up' | 'down'): void }>();
+const emit = defineEmits<{ (direction: 'update:direction', value: 'up' | 'down'): void }>();
 
 const direction = ref(props.direction);
 
@@ -29,7 +29,7 @@ watch(
 
 function toggleDirection(event: MouseEvent): void {
   direction.value = direction.value === 'up' ? 'down' : 'up';
-  emits('update:direction', direction.value);
+  emit('update:direction', direction.value);
   event.stopPropagation();
 }
 </script>

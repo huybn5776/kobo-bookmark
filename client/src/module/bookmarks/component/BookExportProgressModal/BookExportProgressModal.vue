@@ -15,7 +15,7 @@
 
     <div v-if="runningTask && progressMessage" class="book-export-progress-current-state">
       <span class="book-export-progress-message">{{ progressMessage }}</span>
-      <NButton secondary @click="emits('cancelTask', runningTask)">Cancel</NButton>
+      <NButton secondary @click="emit('cancelTask', runningTask)">Cancel</NButton>
     </div>
 
     <div v-if="!collapsed" class="book-export-progress-modal-content">
@@ -23,8 +23,8 @@
         v-for="task of tasks"
         :key="task.id"
         :task="task"
-        @click="emits('taskClick', task)"
-        @cancel="emits('cancelTask', task)"
+        @click="emit('taskClick', task)"
+        @cancel="emit('cancelTask', task)"
       />
     </div>
   </div>
@@ -44,7 +44,7 @@ import { BookExportTask, BookExportState, BookExportStage } from '@/interface/bo
 import BookTaskItem from '@/module/bookmarks/component/BookTaskItem/BookTaskItem.vue';
 
 const props = defineProps<{ tasks: BookExportTask[] }>();
-const emits = defineEmits<{
+const emit = defineEmits<{
   (e: 'taskClick', value: BookExportTask): void;
   (e: 'cancelTask', value: BookExportTask): void;
   (e: 'discardAllTasks'): void;
@@ -106,7 +106,7 @@ function taskToMessage(task: BookExportTask): string {
 }
 
 function discardAllTasks(): void {
-  emits('discardAllTasks');
+  emit('discardAllTasks');
   collapsed.value = true;
 }
 </script>

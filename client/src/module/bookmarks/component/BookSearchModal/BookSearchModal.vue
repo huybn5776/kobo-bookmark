@@ -37,7 +37,7 @@ import { KoboBook } from '@/dto/kobo-book';
 const itemSize = 36;
 
 const props = defineProps<{ books: KoboBook[] }>();
-const emits = defineEmits<{
+const emit = defineEmits<{
   (e: 'select', value: KoboBook): void;
   (e: 'alterSelect', value: KoboBook): void;
   (e: 'close'): void;
@@ -64,7 +64,7 @@ const filteredBooks = computed(() => {
 });
 
 onMounted(() => searchInput.value?.focus());
-onClickOutside(elementRef, () => emits('close'));
+onClickOutside(elementRef, () => emit('close'));
 
 watch(
   () => pendingBookIndex.value,
@@ -109,9 +109,9 @@ function moveCursor(cursorOffset: number): void {
 
 function selectBook(event: KeyboardEvent | MouseEvent, book: KoboBook): void {
   if (event.ctrlKey || event.metaKey) {
-    emits('alterSelect', book);
+    emit('alterSelect', book);
   } else {
-    emits('select', book);
+    emit('select', book);
   }
 }
 

@@ -12,11 +12,11 @@
 import { CloseIcon } from '@/component/icon';
 
 defineProps<{ label: string; clickable?: boolean; allowRemove?: boolean }>();
-const emits = defineEmits<{ (e: 'removeClick'): void }>();
+const emit = defineEmits<{ (e: 'removeClick'): void }>();
 
 function onRemoveClick(event: MouseEvent): void {
   event.stopPropagation();
-  emits('removeClick');
+  emit('removeClick');
 }
 </script>
 

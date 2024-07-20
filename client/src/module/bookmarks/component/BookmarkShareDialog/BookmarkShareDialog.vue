@@ -65,7 +65,7 @@
     </div>
 
     <div v-if="!shareLink" class="bookmark-share-dialog-actions">
-      <NButton size="small" @click="emits('closeClick')">
+      <NButton size="small" @click="emit('closeClick')">
         <i18n-t keypath="common.close" />
       </NButton>
       <NButton size="small" type="primary" :loading="loading" @click="createShareLink">
@@ -96,7 +96,7 @@ import {
 import { formatDateToShortTimeString } from '@/util/time-utils';
 
 const props = defineProps<{ books: KoboBook[] }>();
-const emits = defineEmits<{ (e: 'closeClick'): void; (e: 'completed'): void }>();
+const emit = defineEmits<{ (e: 'closeClick'): void; (e: 'completed'): void }>();
 
 const { t } = useI18n<[I18NMessageSchema]>();
 
@@ -112,7 +112,7 @@ async function createShareLink(): Promise<void> {
   const fileName = `bookmark-share-${formatDateToShortTimeString(bookmarkShare.createdAt)}.json`;
   shareLink.value = await uploadAndCreateShareLink(bookmarkShare, fileName);
   loading.value = false;
-  emits('completed');
+  emit('completed');
 }
 
 async function uploadAndCreateShareLink(bookmarkShare: BookmarkShare, fileName: string): Promise<string> {

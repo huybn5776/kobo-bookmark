@@ -13,7 +13,7 @@
         :class="{ 'book-cover-star-button-started': book.tags?.star }"
         secondary
         round
-        @click="emits('starClick')"
+        @click="emit('starClick')"
       >
         <StarIcon v-if="book.tags?.star" class="icon-24" />
         <StarOutlineIcon v-if="!book.tags?.star" class="icon-24" />
@@ -42,7 +42,7 @@ import { KoboBook } from '@/dto/kobo-book';
 import { processImageUrl } from '@/services/bookmark/book-cover.service';
 
 const props = defineProps<{ book: KoboBook }>();
-const emits = defineEmits<{ (e: 'starClick'): void; (e: 'coverImageUpdated', value: string): void }>();
+const emit = defineEmits<{ (e: 'starClick'): void; (e: 'coverImageUpdated', value: string): void }>();
 
 const { t } = useI18n<[I18NMessageSchema]>();
 
@@ -72,7 +72,7 @@ async function onNewCoverImageEntered(newCoverImageUrl: string): Promise<boolean
     inputDialog.setErrorMessage(t(result.left));
     return false;
   }
-  emits('coverImageUpdated', result.right);
+  emit('coverImageUpdated', result.right);
   message.success(t('page.bookmarks.cover_image_updated'));
   return true;
 }

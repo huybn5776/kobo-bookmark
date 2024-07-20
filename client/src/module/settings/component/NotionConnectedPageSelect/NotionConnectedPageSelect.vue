@@ -28,7 +28,7 @@ const props = defineProps<{
   loading?: boolean;
   disabled?: boolean;
 }>();
-const emits = defineEmits<{
+const emit = defineEmits<{
   (e: 'update:id', value: string | undefined): void;
   (e: 'update:title', value: string | undefined): void;
 }>();
@@ -56,8 +56,8 @@ function renderLabel(option: SelectOption): string {
 }
 
 function onSelected(id: string, option: SelectOption | null): void {
-  emits('update:id', id);
-  emits('update:title', option?.label?.toString());
+  emit('update:id', id);
+  emit('update:title', option?.label?.toString());
 }
 
 async function onSelectShowStateChanged(show: boolean): Promise<void> {

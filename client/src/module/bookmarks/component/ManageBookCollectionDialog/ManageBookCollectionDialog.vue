@@ -17,7 +17,7 @@
     </div>
 
     <div class="manage-book-collection-dialog-actions">
-      <NButton size="small" @click="emits('closeClick')">
+      <NButton size="small" @click="emit('closeClick')">
         <i18n-t keypath="common.close" />
       </NButton>
       <NButton size="small" type="primary" @click="save">
@@ -37,7 +37,7 @@ import ListDragSort from '@/component/ListDragSort/ListDragSort.vue';
 import { BookCollection } from '@/dto/book-collection';
 
 const props = defineProps<{ collections: BookCollection[] }>();
-const emits = defineEmits<{ (e: 'closeClick'): void; (e: 'saveClick', value: BookCollection[]): void }>();
+const emit = defineEmits<{ (e: 'closeClick'): void; (e: 'saveClick', value: BookCollection[]): void }>();
 
 const bookCollections = ref<BookCollection[]>(props.collections);
 
@@ -50,7 +50,7 @@ function deleteCollection(collection: BookCollection): void {
 }
 
 function save(): void {
-  emits('saveClick', bookCollections.value);
+  emit('saveClick', bookCollections.value);
 }
 </script>
 

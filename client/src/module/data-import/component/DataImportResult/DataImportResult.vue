@@ -44,10 +44,10 @@
             <i18n-t keypath="page.data_import.export_changes" />
           </NButton>
         </NDropdown>
-        <NButton @click="emits('discardClick')">
+        <NButton @click="emit('discardClick')">
           <i18n-t keypath="page.data_import.discard_changes" />
         </NButton>
-        <NButton type="primary" @click="emits('saveClick')">
+        <NButton type="primary" @click="emit('saveClick')">
           <i18n-t keypath="page.data_import.save_changes" />
         </NButton>
       </div>
@@ -70,7 +70,7 @@ import BookChangesHeader from '@/module/data-import/component/BookChangesHeader/
 import { getSettingFromStorage } from '@/services/setting.service';
 
 const props = defineProps<{ bookChanges: KoboBookChanges[] }>();
-const emits = defineEmits<{
+const emit = defineEmits<{
   (e: 'exportTextFileClick'): void;
   (e: 'exportTextClipboardClick'): void;
   (e: 'exportMarkdownFileClick'): void;
@@ -120,10 +120,10 @@ const bookmarksWording = computed(() => t('page.data_import.imported_bookmark', 
 
 function onExportChangeSelected(id: string): void {
   const action = {
-    'text-file': () => emits('exportTextFileClick'),
-    'text-clipboard': () => emits('exportTextClipboardClick'),
-    'markdown-file': () => emits('exportMarkdownFileClick'),
-    'markdown-clipboard': () => emits('exportMarkdownClipboardClick'),
+    'text-file': () => emit('exportTextFileClick'),
+    'text-clipboard': () => emit('exportTextClipboardClick'),
+    'markdown-file': () => emit('exportMarkdownFileClick'),
+    'markdown-clipboard': () => emit('exportMarkdownClipboardClick'),
   }[id];
   action?.();
 }

@@ -18,7 +18,7 @@
       :allTags="allAvailableTags"
       @addTag="addTag"
       @removeTag="removeTag"
-      @clickOutside="emits('finish')"
+      @clickOutside="emit('finish')"
     />
   </div>
 </template>
@@ -35,7 +35,7 @@ import { injectStrict } from '@/util/vue-utils';
 const allAvailableTags = injectStrict(provideAllBookmarkTags);
 
 const props = defineProps<{ bookmark: KoboBookmark; editing: boolean; removable?: boolean; tagClickable?: boolean }>();
-const emits = defineEmits<{
+const emit = defineEmits<{
   (e: 'tagClick', value: string): void;
   (e: 'tagUpdated', value: KoboBookmarkTag[]): void;
   (e: 'finish'): void;
@@ -45,18 +45,18 @@ const currentTagTitles = computed(() => props.bookmark.tags?.map((tag) => tag.ti
 
 function addTag(title: string): void {
   const updatedTags = [...(props.bookmark.tags || []), { title, createdAt: new Date() }];
-  emits('tagUpdated', updatedTags);
+  emit('tagUpdated', updatedTags);
 }
 
 function onTagClick(title: string): void {
   if (props.tagClickable) {
-    emits('tagClick', title);
+    emit('tagClick', title);
   }
 }
 
 function removeTag(title: string): void {
   const updatedTags = (props.bookmark.tags || []).filter((tag) => tag.title !== title);
-  emits('tagUpdated', updatedTags);
+  emit('tagUpdated', updatedTags);
 }
 </script>
 

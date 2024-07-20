@@ -11,7 +11,7 @@ import { useI18n } from 'vue-i18n';
 import { I18NMessageSchema } from '@/config/i18n-config';
 
 defineProps<{ language: string | undefined }>();
-const emits = defineEmits<{ (e: 'update:language', value: string | undefined): void }>();
+const emit = defineEmits<{ (e: 'update:language', value: string | undefined): void }>();
 
 const { t, locale } = useI18n<[I18NMessageSchema]>();
 
@@ -25,10 +25,10 @@ const options = computed(() => {
 
 function onSelected(id: string): void {
   if (id === 'auto') {
-    emits('update:language', undefined);
+    emit('update:language', undefined);
     locale.value = navigator.language as typeof locale.value;
   } else {
-    emits('update:language', id);
+    emit('update:language', id);
     locale.value = id as typeof locale.value;
   }
 }

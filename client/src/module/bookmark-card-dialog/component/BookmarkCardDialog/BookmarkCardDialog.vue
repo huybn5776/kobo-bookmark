@@ -91,7 +91,7 @@
     </div>
 
     <div class="bookmark-card-dialog-actions">
-      <NButton size="small" @click="emits('closeClick')">
+      <NButton size="small" @click="emit('closeClick')">
         <i18n-t keypath="common.close" />
       </NButton>
       <NButton size="small" type="primary" @click="downloadBookmarkImage">
@@ -125,7 +125,7 @@ import { tryFetchUrl } from '@/services/bookmark/book-cover.service';
 import { downloadFile } from '@/util/file-utils';
 
 const props = defineProps<{ book: KoboBook; bookmark: KoboBookmark }>();
-const emits = defineEmits<{ (e: 'closeClick'): void }>();
+const emit = defineEmits<{ (e: 'closeClick'): void }>();
 
 type BookmarkCardTheme = { bg: string; fg: string; highlightStyle: HighlightStyle };
 

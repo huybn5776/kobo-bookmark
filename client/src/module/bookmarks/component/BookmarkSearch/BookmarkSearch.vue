@@ -55,7 +55,7 @@ import { highlightSyntax } from '@/const/consts';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 
 const props = defineProps<{ books: KoboBook[] }>();
-const emits = defineEmits<{
+const emit = defineEmits<{
   (e: 'selected', book: KoboBook, bookmark: KoboBookmark): void;
 }>();
 const showModel = defineModel<boolean>('show', { default: false });
@@ -169,7 +169,7 @@ function onOptionHover(option: BookmarkSearchOption): void {
 
 function onSelect(option?: BookmarkSearchOption): void {
   if (option) {
-    emits('selected', option.book, option.bookmark);
+    emit('selected', option.book, option.bookmark);
   }
 }
 

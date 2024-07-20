@@ -84,7 +84,7 @@
     </div>
 
     <div class="book-information-dialog-actions">
-      <NButton size="small" @click="emits('closeClick')">
+      <NButton size="small" @click="emit('closeClick')">
         <i18n-t keypath="common.close" />
       </NButton>
     </div>
@@ -101,7 +101,7 @@ import IconButton from '@/component/IconButton/IconButton.vue';
 import { KoboBook } from '@/dto/kobo-book';
 
 const props = defineProps<{ book: KoboBook }>();
-const emits = defineEmits<{
+const emit = defineEmits<{
   (e: 'titleUpdated', title: string): void;
   (e: 'closeClick'): void;
 }>();
@@ -142,7 +142,7 @@ function cancelEditTitle(): void {
 function saveTitle(): void {
   editingTitle.value = false;
   if (bookTitle.value && bookTitle.value !== props.book.info.title) {
-    emits('titleUpdated', bookTitle.value);
+    emit('titleUpdated', bookTitle.value);
   }
 }
 </script>

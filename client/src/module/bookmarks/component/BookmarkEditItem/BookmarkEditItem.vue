@@ -23,7 +23,7 @@
         <RestoreIcon class="bookmark-edit-action-icon" />
       </IconButton>
       <HighlightColorDropdown v-model:color="color" />
-      <IconButton i18nKey="common.cancel" @click="emits('cancel')">
+      <IconButton i18nKey="common.cancel" @click="emit('cancel')">
         <CloseIcon class="bookmark-edit-action-icon" />
       </IconButton>
       <IconButton i18nKey="common.save" @click="completeEditing">
@@ -53,7 +53,7 @@ const props = defineProps<{
   chapterIndexMap: Record<number, KoboBookChapter>;
   bookmark: KoboBookmark;
 }>();
-const emits = defineEmits<{
+const emit = defineEmits<{
   (e: 'revert'): void;
   (e: 'cancel'): void;
   (e: 'save', bookmarkId: string, bookmarkPatch: Partial<KoboBookmark>): void;
@@ -76,7 +76,7 @@ const canRestoreBookmarkText = computed(
 
 function onDocumentKeyDown(event: KeyboardEvent): void {
   if (!event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey && event.key === 'Escape') {
-    emits('cancel');
+    emit('cancel');
   }
 }
 
@@ -120,9 +120,9 @@ function completeEditing(): void {
     changes.color = color.value;
   }
   if (Object.keys(changes)) {
-    emits('save', props.bookmark.id, changes);
+    emit('save', props.bookmark.id, changes);
   } else {
-    emits('cancel');
+    emit('cancel');
   }
 }
 </script>

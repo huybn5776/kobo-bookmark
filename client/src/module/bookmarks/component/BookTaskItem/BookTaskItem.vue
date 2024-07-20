@@ -43,7 +43,7 @@ import { CancelIcon, CloseCircleIcon } from '@/component/icon';
 import { BookExportTask, BookExportState } from '@/interface/book-export-task';
 
 const props = defineProps<{ task: BookExportTask }>();
-const emits = defineEmits<{ (e: 'cancel'): void }>();
+const emit = defineEmits<{ (e: 'cancel'): void }>();
 
 const hovered = ref(false);
 
@@ -87,7 +87,7 @@ const showIndicator = computed(() => {
 
 function onCancelClick(event: MouseEvent): void {
   event.stopPropagation();
-  emits('cancel');
+  emit('cancel');
 }
 </script>
 

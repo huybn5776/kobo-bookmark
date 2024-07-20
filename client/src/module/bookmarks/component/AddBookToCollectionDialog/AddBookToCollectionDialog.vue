@@ -18,14 +18,14 @@
           </div>
         </template>
       </NVirtualList>
-      <div class="book-collection" @click="emits('createCollectionClick')">
+      <div class="book-collection" @click="emit('createCollectionClick')">
         <PlusIcon class="icon-24" />
         <i18n-t keypath="page.bookmarks.create_collection" />
       </div>
     </div>
 
     <div class="add-book-to-collection-dialog-actions">
-      <NButton size="small" @click="emits('cancelClick')">
+      <NButton size="small" @click="emit('cancelClick')">
         <i18n-t keypath="common.cancel" />
       </NButton>
     </div>
@@ -41,7 +41,7 @@ import { PlusIcon } from '@/component/icon';
 import { BookCollection } from '@/dto/book-collection';
 
 const props = defineProps<{ bookIds: string[]; bookCollections: BookCollection[] }>();
-const emits = defineEmits<{
+const emit = defineEmits<{
   (e: 'collectionClick', collection: BookCollection): void;
   (e: 'createCollectionClick'): void;
   (e: 'cancelClick'): void;
@@ -56,7 +56,7 @@ const disabledCollections = computed(() => {
 });
 
 function onCollectionClick(collection: BookCollection): void {
-  emits('collectionClick', collection);
+  emit('collectionClick', collection);
 }
 </script>
 

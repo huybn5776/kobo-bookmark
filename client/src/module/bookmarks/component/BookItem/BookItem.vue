@@ -4,8 +4,8 @@
       <BookCoverView
         :book="book"
         :countTag="newBookmarksCount"
-        @starClick="emits('bookStarClick', book)"
-        @coverImageUpdated="(v) => emits('bookCoverImageUpdated', v)"
+        @starClick="emit('bookStarClick', book)"
+        @coverImageUpdated="(v) => emit('bookCoverImageUpdated', v)"
       />
       <CountTag v-if="newBookmarksCount" keyPath="page.bookmarks.new_highlight_count" :count="newBookmarksCount" />
     </div>
@@ -44,10 +44,10 @@
         class="bookmark-expand-handle"
         :direction="expandedDirection"
         :disabled="disableBookmarkExpand"
-        @update:direction="emits('update:expanded', $event === 'up')"
+        @update:direction="emit('update:expanded', $event === 'up')"
       />
       <div v-if="selectable" class="book-checkbox-container">
-        <NCheckbox size="large" :checked="selected" @update:checked="(v) => emits('update:selected', v)" />
+        <NCheckbox size="large" :checked="selected" @update:checked="(v) => emit('update:selected', v)" />
       </div>
       <div class="book-toolbar-container">
         <div class="book-toolbar">
@@ -55,7 +55,7 @@
             v-if="!book.isArchived && actions.archive"
             i18nKey="common.archive"
             class="book-toolbar-secondary-button"
-            @click="emits('bookArchiveClick', book)"
+            @click="emit('bookArchiveClick', book)"
           >
             <ArchiveIcon class="icon-24" />
           </IconButton>
@@ -63,7 +63,7 @@
             v-if="actions['dropbox-share']"
             i18nKey="page.bookmarks.share_dropbox"
             class="book-toolbar-secondary-button"
-            @click="emits('shareClick', book)"
+            @click="emit('shareClick', book)"
           >
             <DropboxShareIcon />
           </IconButton>
@@ -71,7 +71,7 @@
             v-if="actions['export-text']"
             i18nKey="page.bookmarks.export_text"
             class="book-toolbar-secondary-button"
-            @click="emits('textExportClick', book)"
+            @click="emit('textExportClick', book)"
           >
             <TextIcon class="icon-24" />
           </IconButton>
@@ -79,7 +79,7 @@
             v-if="actions['export-markdown']"
             i18nKey="page.bookmarks.export_markdown"
             class="book-toolbar-secondary-button"
-            @click="emits('markdownExportClick', book)"
+            @click="emit('markdownExportClick', book)"
           >
             <i18n-t keypath="page.bookmarks.export_markdown" />
             <MarkdownIcon class="icon-24" />
@@ -89,7 +89,7 @@
             i18nKey="page.bookmarks.export_notion"
             class="book-toolbar-secondary-button"
             :loading="exportNotionLoading"
-            @click="emits('notionExportClick', book)"
+            @click="emit('notionExportClick', book)"
           >
             <NotionIcon class="icon-24" />
           </IconButton>
@@ -99,11 +99,11 @@
             v-if="book.isArchived && actions.archive"
             i18nKey="common.cancel_archive"
             class="book-toolbar-secondary-button"
-            @click="emits('bookCancelArchive', book)"
+            @click="emit('bookCancelArchive', book)"
           >
             <ArchiveRefreshIcon class="icon-24" />
           </IconButton>
-          <IconButton i18nKey="page.bookmarks.book_information" @click="emits('bookInformationClick', book)">
+          <IconButton i18nKey="page.bookmarks.book_information" @click="emit('bookInformationClick', book)">
             <InformationOutlineIcon class="icon-24" />
           </IconButton>
         </div>
@@ -152,7 +152,7 @@ const props = defineProps<{
   enabledActions?: BookAction[];
   exportNotionLoading?: boolean;
 }>();
-const emits = defineEmits<{
+const emit = defineEmits<{
   (e: 'update:expanded', value: boolean): void;
   (e: 'update:selected', value: boolean): void;
   (e: 'textExportClick', value: KoboBook): void;
@@ -188,7 +188,7 @@ function toggleExpanded(): void {
   if (props.disableBookmarkExpand) {
     return;
   }
-  emits('update:expanded', !props.expanded);
+  emit('update:expanded', !props.expanded);
 }
 
 const timeSpanReadingHours = computed(() => {

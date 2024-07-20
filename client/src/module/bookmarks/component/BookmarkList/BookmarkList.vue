@@ -12,10 +12,10 @@
         :tagClickable="tagClickable"
         :tagRemovable="tagRemovable"
         @editClick="editingBookmarkId = bookmark.id"
-        @createCardClick="emits('createBookmarkCardClick', bookmark)"
-        @archiveClick="emits('bookmarkArchive', bookmark)"
-        @cancelArchiveClick="emits('bookmarkCancelArchive', bookmark)"
-        @tagClick="emits('tagClick', $event)"
+        @createCardClick="emit('createBookmarkCardClick', bookmark)"
+        @archiveClick="emit('bookmarkArchive', bookmark)"
+        @cancelArchiveClick="emit('bookmarkCancelArchive', bookmark)"
+        @tagClick="emit('tagClick', $event)"
         @tagEditClick="toggleEditingTagBookmark(bookmark)"
         @finishEditingTag="editingTagBookmarkId = undefined"
         @tagUpdated="updateBookmarkTag(bookmark, $event)"
@@ -55,7 +55,7 @@ const props = defineProps<{
   tagClickable?: boolean;
   tagRemovable?: boolean;
 }>();
-const emits = defineEmits<{
+const emit = defineEmits<{
   (e: 'bookmarkEditClick', bookmark: KoboBookmark): void;
   (e: 'bookmarkUpdated', bookmarkId: string, bookmarkPatch: Partial<KoboBookmark>): void;
   (e: 'createBookmarkCardClick', bookmark: KoboBookmark): void;
@@ -112,7 +112,7 @@ function cancelBookmarkEdit(): void {
 }
 
 function saveBookmark(bookmarkId: string, bookmarkPatch: Partial<KoboBookmark>): void {
-  emits('bookmarkUpdated', bookmarkId, bookmarkPatch);
+  emit('bookmarkUpdated', bookmarkId, bookmarkPatch);
   editingBookmarkId.value = undefined;
 }
 
@@ -140,7 +140,7 @@ function toggleEditingTagBookmark(bookmark: KoboBookmark): void {
 function updateBookmarkTag(bookmark: KoboBookmark, tags: KoboBookmarkTag[]): void {
   const updatedBookmark: KoboBookmark = { ...bookmark };
   updatedBookmark.tags = tags;
-  emits('bookmarkUpdated', updatedBookmark.id, updatedBookmark);
+  emit('bookmarkUpdated', updatedBookmark.id, updatedBookmark);
   editingTagBookmarkId.value = undefined;
 }
 </script>

@@ -49,14 +49,14 @@
         size="small"
         type="error"
         secondary
-        @click="emits('deleteClick', bookCollection)"
+        @click="emit('deleteClick', bookCollection)"
       >
         <i18n-t keypath="common.delete" />
       </NButton>
-      <NButton size="small" @click="emits('closeClick')">
+      <NButton size="small" @click="emit('closeClick')">
         <i18n-t keypath="common.close" />
       </NButton>
-      <NButton size="small" @click="emits('manageCollectionsClick')">
+      <NButton size="small" @click="emit('manageCollectionsClick')">
         <i18n-t keypath="page.bookmarks.manage_book_collections" />
       </NButton>
       <NButton size="small" type="primary" @click="save">
@@ -86,7 +86,7 @@ import { generateUuid } from '@/util/id-utils';
 import { deepToRaw } from '@/util/vue-utils';
 
 const props = defineProps<{ allBooks: KoboBook[]; collectionId?: string; presetBookIds?: string[] }>();
-const emits = defineEmits<{
+const emit = defineEmits<{
   (e: 'deleteClick', value: BookCollection): void;
   (e: 'closeClick'): void;
   (e: 'manageCollectionsClick'): void;
@@ -139,7 +139,7 @@ function save(): void {
     errorMessage.value = t('page.bookmarks.collection_name_duplicated');
     return;
   }
-  emits('saveClick', deepToRaw(bookCollection.value));
+  emit('saveClick', deepToRaw(bookCollection.value));
 }
 
 function onBookSelected(bookIds: string[]): void {

@@ -44,7 +44,7 @@ import { useUntilDestroyed } from '@/composition/use-until-destroyed';
 import { useValueSample } from '@/composition/use-value-sample';
 
 const props = defineProps<{ items: T[] }>();
-const emits = defineEmits<{
+const emit = defineEmits<{
   (e: 'dragging', value: boolean): void;
   (e: 'update:items', value: T[]): void;
 }>();
@@ -62,7 +62,7 @@ const delayedItems = useValueSample(items as ComputedRef<unknown>, useInverseRef
   UnwrapRef<T>[]
 >;
 
-watch(isDragging, () => emits('dragging', isDragging.value));
+watch(isDragging, () => emit('dragging', isDragging.value));
 
 function subscribeForDragMove(startEvent: MouseEvent | TouchEvent, itemIndex: number): void {
   const targetElement = startEvent.target as HTMLElement;
@@ -169,7 +169,7 @@ function emitItemUpdate(offsets: number[]): void {
     const limitedIndex = clamp(0, props.items.length - 1, indexAfterApplyOffset);
     newItems[limitedIndex] = item;
   });
-  emits('update:items', newItems);
+  emit('update:items', newItems);
 }
 
 function transitionListAfterDragMove(

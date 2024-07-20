@@ -6,39 +6,39 @@
       <i class="multi-book-action-scrollable-shadow-left" />
     </span>
     <div class="multi-book-actions">
-      <IconButton v-if="!readonly" i18nKey="common.archive_selected" @click="emits('archiveClick')">
+      <IconButton v-if="!readonly" i18nKey="common.archive_selected" @click="emit('archiveClick')">
         <ArchiveIcon class="icon-24" />
       </IconButton>
-      <IconButton v-if="!readonly" i18nKey="common.delete_selected" @click="emits('deleteClick')">
+      <IconButton v-if="!readonly" i18nKey="common.delete_selected" @click="emit('deleteClick')">
         <DeleteIcon class="icon-24" />
       </IconButton>
       <IconButton
         v-if="!readonly && !collectionFilterEnabled"
         i18nKey="page.bookmarks.add_to_book_collection"
-        @click="emits('addToCollectionClick')"
+        @click="emit('addToCollectionClick')"
       >
         <PlaylistPlusIcon class="icon-24" />
       </IconButton>
       <IconButton
         v-if="!readonly && collectionFilterEnabled"
         i18nKey="page.bookmarks.remove_from_book_collection"
-        @click="emits('removeFromCollectionClick')"
+        @click="emit('removeFromCollectionClick')"
       >
         <PlaylistMinusIcon class="icon-24" />
       </IconButton>
-      <IconButton i18nKey="common.export_selected" @click="emits('exportBookFileClick')">
+      <IconButton i18nKey="common.export_selected" @click="emit('exportBookFileClick')">
         <ExportIcon class="icon-24" />
       </IconButton>
-      <IconButton v-if="!readonly" i18nKey="page.bookmarks.share_dropbox" @click="emits('shareClick')">
+      <IconButton v-if="!readonly" i18nKey="page.bookmarks.share_dropbox" @click="emit('shareClick')">
         <DropboxShareIcon class="icon-24" />
       </IconButton>
-      <IconButton i18nKey="page.bookmarks.export_all_text" @click="emits('textExportClick')">
+      <IconButton i18nKey="page.bookmarks.export_all_text" @click="emit('textExportClick')">
         <TextIcon class="icon-24" />
       </IconButton>
-      <IconButton i18nKey="page.bookmarks.export_all_markdown" @click="emits('markdownExportClick')">
+      <IconButton i18nKey="page.bookmarks.export_all_markdown" @click="emit('markdownExportClick')">
         <MarkdownIcon class="icon-24" />
       </IconButton>
-      <IconButton i18nKey="page.bookmarks.export_all_notion" @click="emits('notionExportClick')">
+      <IconButton i18nKey="page.bookmarks.export_all_notion" @click="emit('notionExportClick')">
         <NotionIcon class="icon-24" />
       </IconButton>
     </div>
@@ -67,7 +67,7 @@ defineProps<{
   collectionFilterEnabled?: boolean;
   exportNotionLoading?: boolean;
 }>();
-const emits = defineEmits<{
+const emit = defineEmits<{
   (e: 'textExportClick'): void;
   (e: 'markdownExportClick'): void;
   (e: 'notionExportClick'): void;

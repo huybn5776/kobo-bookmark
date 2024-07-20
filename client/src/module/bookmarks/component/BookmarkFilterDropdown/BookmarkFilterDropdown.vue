@@ -91,7 +91,7 @@ import { provideActiveCollection, provideExpandedBookId } from '@/symbols';
 import { injectStrict } from '@/util/vue-utils';
 
 const props = defineProps<{ books: KoboBook[]; disabled?: boolean }>();
-const emits = defineEmits<{
+const emit = defineEmits<{
   (e: 'createCollectionClick'): void;
   (e: 'editCollectionClick', collectionId: string): void;
 }>();
@@ -141,7 +141,7 @@ function setExpandedFilter(key: BookmarkFilterKey, expanded: boolean): void {
 }
 
 function onCollectionEditClick(item: BookCollection): void {
-  emits('editCollectionClick', item.id);
+  emit('editCollectionClick', item.id);
   showPopover.value = false;
 }
 </script>

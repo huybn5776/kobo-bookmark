@@ -34,7 +34,7 @@ import { WebIcon, CogIcon, ArrowLeftIcon } from '@/component/icon';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import PageLanguageMenu from '@/module/PageMenuModal/component/PageLanguageMenu/PageLanguageMenu.vue';
 
-const emits = defineEmits<{ (e: 'close'): void }>();
+const emit = defineEmits<{ (e: 'close'): void }>();
 
 const { t } = useI18n<[I18NMessageSchema]>();
 
@@ -52,7 +52,7 @@ onKeyStroke('Escape', closeMenu);
 
 function closeMenu(event: Event): void {
   event.stopPropagation();
-  emits('close');
+  emit('close');
 }
 </script>
 

@@ -9,17 +9,17 @@
       :selected="selected"
       :enabledActions="enabledActions"
       :exportNotionLoading="exportNotionLoading"
-      @update:expanded="emits('update:expanded', $event)"
-      @update:selected="emits('update:selected', $event)"
-      @textExportClick="emits('textExportClick', $event)"
-      @markdownExportClick="emits('markdownExportClick', $event)"
-      @notionExportClick="emits('notionExportClick', $event)"
-      @bookStarClick="emits('bookStarClick', $event)"
-      @bookCoverImageUpdated="emits('bookCoverImageUpdated', $event)"
-      @bookArchiveClick="emits('bookArchiveClick', $event)"
-      @shareClick="emits('shareClick', $event)"
-      @bookCancelArchive="emits('bookCancelArchive', $event)"
-      @bookInformationClick="emits('bookInformationClick', $event)"
+      @update:expanded="emit('update:expanded', $event)"
+      @update:selected="emit('update:selected', $event)"
+      @textExportClick="emit('textExportClick', $event)"
+      @markdownExportClick="emit('markdownExportClick', $event)"
+      @notionExportClick="emit('notionExportClick', $event)"
+      @bookStarClick="emit('bookStarClick', $event)"
+      @bookCoverImageUpdated="emit('bookCoverImageUpdated', $event)"
+      @bookArchiveClick="emit('bookArchiveClick', $event)"
+      @shareClick="emit('shareClick', $event)"
+      @bookCancelArchive="emit('bookCancelArchive', $event)"
+      @bookInformationClick="emit('bookInformationClick', $event)"
     />
     <BookmarkList
       v-if="expanded && !disableBookmarkExpand"
@@ -31,11 +31,11 @@
       :tagClickable="tagClickable"
       :tagRemovable="tagRemovable"
       class="book-bookmark-list"
-      @tagClick="emits('bookmarkTagClick', $event)"
-      @createBookmarkCardClick="emits('createBookmarkCardClick', book, $event)"
-      @bookmarkUpdated="(bookmarkId, bookmarkPatch) => emits('bookmarkUpdated', book, bookmarkId, bookmarkPatch)"
-      @bookmarkArchive="emits('bookmarkArchiveClick', book, $event)"
-      @bookmarkCancelArchive="emits('bookmarkCancelArchiveClick', book, $event)"
+      @tagClick="emit('bookmarkTagClick', $event)"
+      @createBookmarkCardClick="emit('createBookmarkCardClick', book, $event)"
+      @bookmarkUpdated="(bookmarkId, bookmarkPatch) => emit('bookmarkUpdated', book, bookmarkId, bookmarkPatch)"
+      @bookmarkArchive="emit('bookmarkArchiveClick', book, $event)"
+      @bookmarkCancelArchive="emit('bookmarkCancelArchiveClick', book, $event)"
     />
   </div>
 </template>
@@ -59,7 +59,7 @@ const props = defineProps<{
   tagRemovable?: boolean;
   exportNotionLoading?: boolean;
 }>();
-const emits = defineEmits<{
+const emit = defineEmits<{
   (e: 'update:selected', value: boolean): void;
   (e: 'update:expanded', value: boolean): void;
   (e: 'textExportClick', value: KoboBook): void;
@@ -101,7 +101,7 @@ const enabledActions = computed<BookAction[]>(() => {
 const disableBookmarkExpand = computed(() => !props.book.bookmarks.length);
 
 function scrollToBookmark(bookmark: KoboBookmark, options?: ScrollIntoViewOptions): void {
-  emits('update:expanded', true);
+  emit('update:expanded', true);
   bookmarkListRef.value?.focusToBookmark(bookmark, options);
 }
 </script>

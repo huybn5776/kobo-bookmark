@@ -39,35 +39,35 @@
         :readonly="!actions.edit"
         :tagClickable="tagClickable"
         :removable="tagRemovable"
-        @tagClick="emits('tagClick', $event)"
-        @tagUpdated="emits('tagUpdated', $event)"
-        @finish="emits('finishEditingTag')"
+        @tagClick="emit('tagClick', $event)"
+        @tagUpdated="emit('tagUpdated', $event)"
+        @finish="emit('finishEditingTag')"
       />
       <div class="bookmark-toolbar">
-        <IconButton v-if="!bookmark.isArchived && actions.archive" i18nKey="common.tag" @click="emits('tagEditClick')">
+        <IconButton v-if="!bookmark.isArchived && actions.archive" i18nKey="common.tag" @click="emit('tagEditClick')">
           <TagIcon class="bookmark-action-icon" />
         </IconButton>
         <IconButton
           v-if="!bookmark.isArchived && actions.archive"
           i18nKey="common.archive"
-          @click="emits('archiveClick')"
+          @click="emit('archiveClick')"
         >
           <ArchiveIcon class="bookmark-action-icon" />
         </IconButton>
         <IconButton
           v-if="actions['create-card']"
           i18nKey="page.bookmarks.create_bookmark_card"
-          @click="emits('createCardClick')"
+          @click="emit('createCardClick')"
         >
           <ShareVariantIcon class="bookmark-action-icon" />
         </IconButton>
-        <IconButton v-if="actions['edit']" i18nKey="common.edit" @click="emits('editClick')">
+        <IconButton v-if="actions['edit']" i18nKey="common.edit" @click="emit('editClick')">
           <PencilIcon class="bookmark-action-icon" />
         </IconButton>
 
         <template v-if="bookmark.isArchived">
           <span class="bookmark-state-text">(<i18n-t keypath="common.archived" />)</span>
-          <IconButton v-if="actions.archive" i18nKey="common.cancel_archive" @click="emits('cancelArchiveClick')">
+          <IconButton v-if="actions.archive" i18nKey="common.cancel_archive" @click="emit('cancelArchiveClick')">
             <ArchiveRefreshIcon class="bookmark-action-icon" />
           </IconButton>
         </template>
@@ -100,7 +100,7 @@ const props = defineProps<{
   tagRemovable?: boolean;
   tagClickable?: boolean;
 }>();
-const emits = defineEmits<{
+const emit = defineEmits<{
   (e: 'editClick'): void;
   (e: 'createCardClick'): void;
   (e: 'archiveClick'): void;

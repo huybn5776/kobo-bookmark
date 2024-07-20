@@ -9,7 +9,7 @@
       :autosize="autosize"
       :inputProps="inputProps"
       :status="status"
-      @update:value="(v) => emits('update:value', v)"
+      @update:value="(v) => emit('update:value', v)"
     />
     <span v-if="errorMessage">❌ {{ errorMessage }}</span>
   </div>
@@ -28,7 +28,7 @@ defineProps<{
   status: InstanceType<typeof NInput>['status'];
   errorMessage?: string;
 }>();
-const emits = defineEmits<{ (e: 'update:value', value: string): void }>();
+const emit = defineEmits<{ (e: 'update:value', value: string): void }>();
 </script>
 
 <style lang="scss" scoped>

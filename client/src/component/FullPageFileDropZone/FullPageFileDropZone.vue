@@ -23,12 +23,12 @@ import { ImportIcon } from '@/component/icon';
 import { useDropArea } from '@/composition/use-drop-area';
 
 const props = defineProps<{ targetPath: string; dropTarget: HTMLElement | undefined; enabled: boolean }>();
-const emits = defineEmits<{ (e: 'fileDropped', value: Record<string, File>): void }>();
+const emit = defineEmits<{ (e: 'fileDropped', value: Record<string, File>): void }>();
 
 const enabledRef = ref(props.enabled);
 
 const { dropTargetRef, dropOverlayRef, fileDragEnter } = useDropArea({
-  fileDropped: (filesMap) => emits('fileDropped', filesMap),
+  fileDropped: (filesMap) => emit('fileDropped', filesMap),
   targetPath: props.targetPath,
   enabled: enabledRef,
 });
