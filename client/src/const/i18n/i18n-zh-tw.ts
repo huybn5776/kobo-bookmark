@@ -194,6 +194,8 @@ export const i18nZhTw = {
       book_search_instruction: '{0} 展開書本，{1} 移至書本',
       bookmarks_count: '書籤數量',
       read_time: '閱讀時間',
+      add_star_mark: '加入星號標籤',
+      remove_star_mark: '移除星號標籤',
       change_cover_image: '更換封面圖片',
       not_image_url: '這不是圖片的網址',
       cover_image_updated: '封面圖片已更新',

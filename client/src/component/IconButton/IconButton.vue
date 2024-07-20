@@ -2,6 +2,7 @@
   <NPopover trigger="hover" :delay="500" :disabled="loading || waitForMouseLeave">
     <template #trigger>
       <NButton
+        ref="elementRef"
         secondary
         round
         v-bind="$attrs"
@@ -10,6 +11,7 @@
         :disabled="disabled"
         :loading="loading"
         @click="onClick"
+        @mouseleave="waitForMouseLeave = false"
       >
         <div class="icon-button-icon-container">
           <slot />
@@ -26,14 +28,15 @@ import { ref } from 'vue';
 
 import { NButton, NPopover } from 'naive-ui';
 
-defineProps<{ i18nKey: string; disabled?: boolean; loading?: boolean }>();
+const props = defineProps<{ i18nKey: string; disabled?: boolean; loading?: boolean; keepPopoverWhenClick?: boolean }>();
 const emit = defineEmits<{ (e: 'click', value: MouseEvent): void }>();
 
 const waitForMouseLeave = ref<boolean>(false);
 
 function onClick(event: MouseEvent): void {
-  waitForMouseLeave.value = true;
-  (event.target as HTMLElement).addEventListener('mouseleave', () => (waitForMouseLeave.value = false), { once: true });
+  if (!props.keepPopoverWhenClick) {
+    waitForMouseLeave.value = true;
+  }
   emit('click', event);
 }
 </script>

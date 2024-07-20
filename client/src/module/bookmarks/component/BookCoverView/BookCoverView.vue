@@ -8,16 +8,16 @@
     </div>
 
     <div class="book-cover-view-toolbar">
-      <NButton
+      <IconButton
         class="book-cover-toolbar-button book-cover-star-button"
         :class="{ 'book-cover-star-button-started': book.tags?.star }"
-        secondary
-        round
+        :i18nKey="book.tags?.star ? 'page.bookmarks.remove_star_mark' : 'page.bookmarks.add_star_mark'"
+        keepPopoverWhenClick
         @click="emit('starClick')"
       >
         <StarIcon v-if="book.tags?.star" class="icon-24" />
         <StarOutlineIcon v-if="!book.tags?.star" class="icon-24" />
-      </NButton>
+      </IconButton>
       <IconButton
         class="book-cover-toolbar-button book-cover-edit-button"
         i18nKey="common.change_image"
@@ -31,7 +31,7 @@
 
 <script lang="ts" setup>
 import * as E from 'fp-ts/Either';
-import { NImage, useMessage, NButton } from 'naive-ui';
+import { NImage, useMessage } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 
 import { StarIcon, StarOutlineIcon, ImageEditIcon } from '@/component/icon';

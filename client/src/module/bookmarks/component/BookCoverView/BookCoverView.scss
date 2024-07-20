@@ -46,10 +46,11 @@
   }
 }
 
-.book-cover-star-button {
+:deep(.book-cover-star-button) {
   width: 30px;
   height: 30px;
   padding: 4px;
+  font-size: 0;
   transition: all .3s;
 
   &, &:active, &:focus {

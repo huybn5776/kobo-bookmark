@@ -196,6 +196,8 @@ export const i18nEn = {
       book_search_instruction: '{0} expand book, {1} go to book',
       bookmarks_count: 'Bookmarks count',
       read_time: 'Read time',
+      add_star_mark: 'Add star mark',
+      remove_star_mark: 'Remove star mark',
       change_cover_image: 'Change cover image',
       not_image_url: 'This is not the url of image.',
       cover_image_updated: 'Cover image updated.',
