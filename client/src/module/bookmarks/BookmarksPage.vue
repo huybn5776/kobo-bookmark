@@ -1,10 +1,6 @@
 <template>
   <div class="page-content bookmark-page">
-    <div
-      v-if="allBooks.length"
-      class="bookmark-page-tools"
-      :class="{ 'bookmark-page-tools-sticky': showMultiSelectToolbar || bookmarkSearchActive || toolbarPinned }"
-    >
+    <BooksToolbar v-if="allBooks.length" :sticky="bookToolbarSticky">
       <MultiBookActionBar
         v-if="showMultiSelectToolbar"
         :collectionFilterEnabled="!!bookCollectionIdFilter"
@@ -59,7 +55,7 @@
         @click="handleMasterCheckboxClick"
       />
       <BookSearchButton v-if="bookmarkSearchActive" @click="showBookSearchModal = true" />
-    </div>
+    </BooksToolbar>
 
     <ActiveBookCollectionView :bookCollection="activeBookCollection" @closeClick="bookCollectionIdFilter = undefined" />
 
@@ -131,13 +127,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watchEffect, watch, onMounted } from 'vue';
+import { ref, watchEffect, watch, onMounted, computed } from 'vue';
 
 import { NCheckbox } from 'naive-ui';
 import { isNil } from 'ramda';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
+import BooksToolbar from '@/component/BooksToolbar/BooksToolbar.vue';
 import PageResult from '@/component/PageResult/PageResult.vue';
 import VirtualList from '@/component/VirtualList/VirtualList.vue';
 import { useProvideAllBookmarkTags } from '@/composition/use-provide-all-bookmark-tags';
@@ -247,6 +244,10 @@ const {
 } = useBookmarkExport({ selectedBooks, updateBookById });
 useBookBookmarkArchive({ reloadBooks });
 useProvideAllBookmarkTags({ allBooks });
+
+const bookToolbarSticky = computed(
+  () => showMultiSelectToolbar.value || bookmarkSearchActive.value || toolbarPinned.value || false,
+);
 
 onMounted(async () => {
   allBooks.value = [];

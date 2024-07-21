@@ -2,11 +2,7 @@
   <div class="page-content bookmark-share-page">
     <BookmarkShareView v-if="bookmarkShare" :bookmarkShare="bookmarkShare" />
 
-    <div
-      v-if="allBooks.length"
-      class="bookmark-share-page-tools"
-      :class="{ 'bookmark-share-page-tools-sticky': showMultiSelectToolbar || bookmarkSearchActive || toolbarPinned }"
-    >
+    <BooksToolbar v-if="allBooks.length" :sticky="bookToolbarSticky">
       <MultiBookActionBar
         v-if="showMultiSelectToolbar"
         :readonly="!!bookmarkShare"
@@ -38,7 +34,7 @@
         @click="handleMasterCheckboxClick"
       />
       <BookSearchButton v-if="bookmarkSearchActive" @click="showBookSearchModal = true" />
-    </div>
+    </BooksToolbar>
 
     <div v-if="allBooks.length" class="bookmark-share-books-container">
       <VirtualList
@@ -87,13 +83,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watchEffect, onMounted } from 'vue';
+import { ref, watchEffect, onMounted, computed } from 'vue';
 
 import * as E from 'fp-ts/Either';
 import { NCheckbox, useLoadingBar } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
+import BooksToolbar from '@/component/BooksToolbar/BooksToolbar.vue';
 import PageResult from '@/component/PageResult/PageResult.vue';
 import VirtualList from '@/component/VirtualList/VirtualList.vue';
 import { useProvideAllBookmarkTags } from '@/composition/use-provide-all-bookmark-tags';
@@ -165,6 +162,10 @@ const { exportingBookIds, exportBookmarkToText, exportBookmarkToMarkdown, export
   selectedBooks,
 });
 useProvideAllBookmarkTags({ allBooks });
+
+const bookToolbarSticky = computed(
+  () => showMultiSelectToolbar.value || bookmarkSearchActive.value || toolbarPinned.value || false,
+);
 
 onMounted(async () => {
   allBooks.value = [];

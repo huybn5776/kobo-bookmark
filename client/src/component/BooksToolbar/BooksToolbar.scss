@@ -1,0 +1,17 @@
+.books-toolbar {
+  display: grid;
+  grid-template-columns: 1fr 32px;
+  gap: 8px;
+  align-items: center;
+  padding: 0 8px 8px 16px;
+  box-shadow: 0 -8px 0 var(--bg-dark), 0 2px 2px -2px rgba(white, 0);
+  transition: box-shadow .2s;
+
+  &.books-toolbar-sticky {
+    position: sticky;
+    top: 8px;
+    z-index: 1;
+    background-color: var(--bg-dark);
+    box-shadow: 0 -8px 0 var(--bg-dark), 0 2px 2px -2px rgba(white, .6);
+  }
+}
