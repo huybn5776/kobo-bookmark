@@ -265,6 +265,7 @@ export const i18nEn = {
         first_bookmark_at: 'First bookmark at',
         last_bookmark_at: 'Last bookmark at',
       },
+      number_tagged_highlights: `{0} tagged @:common.highlight`,
     },
     settings: {
       title: 'Settings',

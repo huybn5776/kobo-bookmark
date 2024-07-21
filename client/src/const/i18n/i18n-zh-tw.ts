@@ -264,6 +264,7 @@ export const i18nZhTw = {
         first_bookmark_at: '首次加書籤時間',
         last_bookmark_at: '最後加書籤時間',
       },
+      number_tagged_highlights: '{0} 個已標籤的劃線',
     },
     settings: {
       title: '設定',

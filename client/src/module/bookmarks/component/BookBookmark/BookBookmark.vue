@@ -1,6 +1,7 @@
 <template>
   <div ref="elementRef" class="book-bookmark" :class="{ 'book-selected': selected, 'book-expanded': expanded }">
     <BookItem
+      v-if="!simple"
       selectable
       expandWithLink
       :book="book"
@@ -21,8 +22,9 @@
       @bookCancelArchive="emit('bookCancelArchive', $event)"
       @bookInformationClick="emit('bookInformationClick', $event)"
     />
+    <BookItemSimple v-if="simple" :book="book" :selected="selected" :stickyGap="stickyGap" />
     <BookmarkList
-      v-if="expanded && !disableBookmarkExpand"
+      v-if="(expanded && !disableBookmarkExpand) || simple"
       ref="bookmarkListRef"
       :book="book"
       :search="search"
@@ -46,6 +48,7 @@ import { ref, computed, ComponentInstance } from 'vue';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import { BookAction } from '@/enum/book-action';
 import BookItem from '@/module/bookmarks/component/BookItem/BookItem.vue';
+import BookItemSimple from '@/module/bookmarks/component/BookItemSimple/BookItemSimple.vue';
 import BookmarkList from '@/module/bookmarks/component/BookmarkList/BookmarkList.vue';
 
 const props = defineProps<{
@@ -53,6 +56,8 @@ const props = defineProps<{
   expanded: boolean;
   defaultExpanded: boolean;
   selected: boolean;
+  simple?: boolean;
+  stickyGap?: number;
   search?: string;
   readonly?: boolean;
   tagClickable?: boolean;

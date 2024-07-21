@@ -68,12 +68,14 @@
         :keyField="'id'"
         :scrollableElement="scrollableElement"
         :focusItemKey="expandedBookId"
-        :enabled="!expandedBookId"
+        :enabled="!expandedBookId && !showBookInSimpleView"
       >
         <BookBookmark
           :ref="setBookBookmarkRef"
           :book="book"
           :expanded="expandedBookId === book.id"
+          :simple="showBookInSimpleView"
+          :stickyGap="toolbarPinned ? toolbarHeight : undefined"
           :defaultExpanded="booksToShow?.length === 1"
           :selected="selectedBookIds.includes(book.id)"
           :search="(bookmarkSearchActive && bookmarkSearch) || ''"
@@ -174,6 +176,7 @@ import { deepToRaw } from '@/util/vue-utils';
 const { t } = useI18n<[I18NMessageSchema]>();
 const route = useRoute();
 
+const toolbarHeight = 48;
 const scrollableElement = document.getElementsByClassName('app')[0] as HTMLElement;
 
 const loadingBooks = ref<boolean>(false);
@@ -248,6 +251,7 @@ useProvideAllBookmarkTags({ allBooks });
 const bookToolbarSticky = computed(
   () => showMultiSelectToolbar.value || bookmarkSearchActive.value || toolbarPinned.value || false,
 );
+const showBookInSimpleView = computed(() => !!tagFilter.value && !expandedBookId.value);
 
 onMounted(async () => {
   allBooks.value = [];
