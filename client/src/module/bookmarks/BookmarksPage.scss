@@ -25,6 +25,10 @@
   grid-template-columns: 1fr repeat(3, auto);
   gap: 8px;
 
+  > * {
+    height: 32px;
+  }
+
   &.bookmark-list-actions-expanded {
     grid-template-columns: 1fr;
   }
