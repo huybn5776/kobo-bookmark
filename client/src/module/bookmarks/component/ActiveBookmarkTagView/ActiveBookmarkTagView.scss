@@ -1,0 +1,22 @@
+.active-bookmark-tag-title {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  font-size: 18px;
+  font-weight: normal;
+
+  :deep(.deactivate-bookmark-tag-button) {
+    margin-left: 4px;
+    transition: opacity .2s;
+  }
+
+  &:not(:hover):deep(.deactivate-bookmark-tag-button) {
+    opacity: .2;
+  }
+}
+
+.active-bookmark-tag-count {
+  margin-left: .5ch;
+  font-size: 14px;
+  color: #999;
+}

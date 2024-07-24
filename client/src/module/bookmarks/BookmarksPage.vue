@@ -57,7 +57,19 @@
       <BookSearchButton v-if="bookmarkSearchActive" @click="showBookSearchModal = true" />
     </BooksToolbar>
 
-    <ActiveBookCollectionView :bookCollection="activeBookCollection" @closeClick="bookCollectionIdFilter = undefined" />
+    <div v-if="activeBookCollection || tagFilter" class="book-filter-state-view">
+      <ActiveBookCollectionView
+        v-if="activeBookCollection"
+        :bookCollection="activeBookCollection"
+        @closeClick="bookCollectionIdFilter = undefined"
+      />
+      <ActiveBookmarkTagView
+        v-if="tagFilter"
+        :bookmarkTagTitle="tagFilter"
+        :books="booksToShow"
+        @closeClick="tagFilter = undefined"
+      />
+    </div>
 
     <div v-if="allBooks.length" class="books-container">
       <VirtualList
@@ -147,6 +159,7 @@ import { CheckboxState } from '@/enum/checkbox-state';
 import { SettingKey } from '@/enum/setting-key';
 import { useBookmarkCardDialog } from '@/module/bookmark-card-dialog/composition/use-bookmark-card-dialog';
 import ActiveBookCollectionView from '@/module/bookmarks/component/ActiveBookCollectionView/ActiveBookCollectionView.vue';
+import ActiveBookmarkTagView from '@/module/bookmarks/component/ActiveBookmarkTagView/ActiveBookmarkTagView.vue';
 import BookBookmark from '@/module/bookmarks/component/BookBookmark/BookBookmark.vue';
 import BookExportProgressModal from '@/module/bookmarks/component/BookExportProgressModal/BookExportProgressModal.vue';
 import BookmarkFilterDropdown from '@/module/bookmarks/component/BookmarkFilterDropdown/BookmarkFilterDropdown.vue';
