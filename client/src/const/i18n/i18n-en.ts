@@ -29,6 +29,7 @@ export const i18nEn = {
     optional: 'Optional',
     name: 'Name',
     more: 'More',
+    menu: 'Menu',
     instruction: 'Instruction',
     selected: 'Selected',
     clear_selection: 'Clear selection',

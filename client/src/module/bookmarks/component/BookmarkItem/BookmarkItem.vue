@@ -2,18 +2,12 @@
   <div
     ref="elementRef"
     class="bookmark-item"
-    :class="{
-      'bookmark-item-focused': highlightItem,
-      'bookmark-item-no-chapter': !bookmark.chapter.relatedChapterIndexes.length,
-    }"
+    :class="{ 'bookmark-item-focused': highlightItem }"
     @animationend="highlightItem = false"
   >
-    <BookmarkChapterView
-      v-if="bookmark.chapter.relatedChapterIndexes.length"
-      :chapterIndexMap="chapterIndexMap"
-      :chapter="bookmark.chapter"
-      :archived="bookmark.isArchived"
-    />
+    <BookmarkChapterView :chapterIndexMap="chapterIndexMap" :chapter="bookmark.chapter" :archived="bookmark.isArchived">
+      <BookmarkDropdownMenu @createCardClick="emit('createCardClick')" @archiveClick="emit('archiveClick')" />
+    </BookmarkChapterView>
     <p class="bookmark-text" :class="{ 'bookmark-text-new': isNew, 'bookmark-text-archived': bookmark.isArchived }">
       <span
         :class="{
@@ -47,20 +41,6 @@
         <IconButton v-if="!bookmark.isArchived && actions.archive" i18nKey="common.tag" @click="emit('tagEditClick')">
           <TagIcon class="bookmark-action-icon" />
         </IconButton>
-        <IconButton
-          v-if="!bookmark.isArchived && actions.archive"
-          i18nKey="common.archive"
-          @click="emit('archiveClick')"
-        >
-          <ArchiveIcon class="bookmark-action-icon" />
-        </IconButton>
-        <IconButton
-          v-if="actions['create-card']"
-          i18nKey="page.bookmarks.create_bookmark_card"
-          @click="emit('createCardClick')"
-        >
-          <ShareVariantIcon class="bookmark-action-icon" />
-        </IconButton>
         <IconButton v-if="actions['edit']" i18nKey="common.edit" @click="emit('editClick')">
           <PencilIcon class="bookmark-action-icon" />
         </IconButton>
@@ -80,7 +60,7 @@
 import { ref, computed } from 'vue';
 
 import HighlightText from '@/component/HighlightText/HighlightText.vue';
-import { TagIcon, ArchiveIcon, ArchiveRefreshIcon, ShareVariantIcon, PencilIcon } from '@/component/icon';
+import { TagIcon, ArchiveRefreshIcon, PencilIcon } from '@/component/icon';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { useSyncSetting } from '@/composition/use-sync-setting';
 import { newBookmarkTime } from '@/const/consts';
@@ -89,6 +69,7 @@ import { BookmarkAction } from '@/enum/bookmark-action';
 import { HighlightColor } from '@/enum/highlight-color';
 import { SettingKey } from '@/enum/setting-key';
 import BookmarkChapterView from '@/module/bookmarks/component/BookmarkChapterView/BookmarkChapterView.vue';
+import BookmarkDropdownMenu from '@/module/bookmarks/component/BookmarkDropdownMenu/BookmarkDropdownMenu.vue';
 import TagsBar from '@/module/bookmarks/component/TagsBar/TagsBar.vue';
 
 const props = defineProps<{

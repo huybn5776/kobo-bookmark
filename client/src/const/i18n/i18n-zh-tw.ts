@@ -29,6 +29,7 @@ export const i18nZhTw = {
     optional: '可選',
     name: '名稱',
     more: '更多',
+    menu: '選單',
     instruction: '說明',
     selected: '已選取',
     clear_selection: '清除選取',
