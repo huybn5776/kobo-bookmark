@@ -20,14 +20,14 @@
         :disabled="!canRestoreBookmarkText"
         @click="revertBookmarkText"
       >
-        <RestoreIcon class="bookmark-edit-action-icon" />
+        <Icon name="restore" class="bookmark-edit-action-icon" />
       </IconButton>
       <HighlightColorDropdown v-model:color="color" />
       <IconButton i18nKey="common.cancel" @click="emit('cancel')">
-        <CloseIcon class="bookmark-edit-action-icon" />
+        <Icon name="close" class="bookmark-edit-action-icon" />
       </IconButton>
       <IconButton i18nKey="common.save" @click="completeEditing">
-        <CheckIcon class="bookmark-edit-action-icon" />
+        <Icon name="check" class="bookmark-edit-action-icon" />
       </IconButton>
     </div>
   </div>
@@ -39,7 +39,7 @@ import { ref, computed, nextTick } from 'vue';
 import { useEventListener } from '@vueuse/core';
 import { NInput } from 'naive-ui';
 
-import { RestoreIcon, CloseIcon, CheckIcon } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { highlightSyntax } from '@/const/consts';
 import { KoboBookmark, KoboBookChapter, KoboBook } from '@/dto/kobo-book';

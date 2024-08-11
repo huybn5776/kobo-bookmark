@@ -32,7 +32,7 @@
           <div class="book-collection">
             <span class="book-collection-name">{{ item.info.title }}</span>
             <NButton class="book-delete-button" secondary round @click="removeBookFromCollection(item)">
-              <CloseIcon class="icon-16" />
+              <Icon name="close" class="icon-16" />
               <i18n-t keypath="common.delete" />
             </NButton>
           </div>
@@ -73,7 +73,7 @@ import { NInput, NButton, NSelect, SelectOption } from 'naive-ui';
 import { sortBy, indexBy, prop, identity } from 'ramda';
 import { useI18n } from 'vue-i18n';
 
-import { CloseIcon } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 import ListDragSort from '@/component/ListDragSort/ListDragSort.vue';
 import { useCmdEnterHotkey } from '@/composition/use-cmd-enter-hotkey';
 import { I18NMessageSchema } from '@/config/i18n-config';

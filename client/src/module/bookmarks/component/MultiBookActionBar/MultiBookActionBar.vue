@@ -7,39 +7,39 @@
     </span>
     <div class="multi-book-actions">
       <IconButton v-if="!readonly" i18nKey="common.archive_selected" @click="emit('archiveClick')">
-        <ArchiveIcon class="icon-24" />
+        <Icon name="archive" class="icon-24" />
       </IconButton>
       <IconButton v-if="!readonly" i18nKey="common.delete_selected" @click="emit('deleteClick')">
-        <DeleteIcon class="icon-24" />
+        <Icon name="delete" class="icon-24" />
       </IconButton>
       <IconButton
         v-if="!readonly && !collectionFilterEnabled"
         i18nKey="page.bookmarks.add_to_book_collection"
         @click="emit('addToCollectionClick')"
       >
-        <PlaylistPlusIcon class="icon-24" />
+        <Icon name="playlist-plus" class="icon-24" />
       </IconButton>
       <IconButton
         v-if="!readonly && collectionFilterEnabled"
         i18nKey="page.bookmarks.remove_from_book_collection"
         @click="emit('removeFromCollectionClick')"
       >
-        <PlaylistMinusIcon class="icon-24" />
+        <Icon name="playlist-minus" class="icon-24" />
       </IconButton>
       <IconButton i18nKey="common.export_selected" @click="emit('exportBookFileClick')">
-        <ExportIcon class="icon-24" />
+        <Icon name="export" class="icon-24" />
       </IconButton>
       <IconButton v-if="!readonly" i18nKey="page.bookmarks.share_dropbox" @click="emit('shareClick')">
         <DropboxShareIcon class="icon-24" />
       </IconButton>
       <IconButton i18nKey="page.bookmarks.export_all_text" @click="emit('textExportClick')">
-        <TextIcon class="icon-24" />
+        <Icon name="text" class="icon-24" />
       </IconButton>
       <IconButton i18nKey="page.bookmarks.export_all_markdown" @click="emit('markdownExportClick')">
-        <MarkdownIcon class="icon-24" />
+        <Icon name="markdown" class="icon-24" />
       </IconButton>
       <IconButton i18nKey="page.bookmarks.export_all_notion" @click="emit('notionExportClick')">
-        <NotionIcon class="icon-24" />
+        <Icon name="notion" class="icon-24" />
       </IconButton>
     </div>
     <i class="multi-book-action-scrollable-shadow-right" />
@@ -47,17 +47,8 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  PlaylistPlusIcon,
-  PlaylistMinusIcon,
-  ArchiveIcon,
-  DeleteIcon,
-  ExportIcon,
-  MarkdownIcon,
-  NotionIcon,
-  TextIcon,
-  DropboxShareIcon,
-} from '@/component/icon';
+import DropboxShareIcon from '@/component/icon/DropboxShareIcon/DropboxShareIcon.vue';
+import Icon from '@/component/icon/Icon.vue';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { KoboBook } from '@/dto/kobo-book';
 

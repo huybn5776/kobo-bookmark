@@ -1,7 +1,7 @@
 <template>
   <div class="book-search-button">
     <IconButton :i18nKey="i18nKey" @click="emit('click')">
-      <BookSearch class="icon-24" />
+      <Icon name="book-search" class="icon-24" />
     </IconButton>
   </div>
 </template>
@@ -9,7 +9,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 
-import { BookSearch } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 import IconButton from '@/component/IconButton/IconButton.vue';
 
 const emit = defineEmits<{ (e: 'click'): void }>();

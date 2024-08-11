@@ -9,7 +9,7 @@
           :disabled="disabled"
           :class="{ 'bookmark-filter-button-active': collectionModel || tagModel || colorsModel.length }"
         >
-          <FilterIcon class="icon-24" />
+          <Icon name="filter" class="icon-24" />
           <i18n-t keypath="common.filter" />
         </NButton>
       </template>
@@ -32,7 +32,7 @@
             :label="`${item.name} (${item.bookIds.length})`"
             @iconClick="onCollectionEditClick(item)"
           >
-            <PencilIcon class="icon-20" />
+            <Icon name="pencil" class="icon-20" />
           </IconLabel>
         </BookmarkFilterGroup>
         <BookmarkFilterGroup
@@ -50,7 +50,7 @@
           @escape="showPopover = false"
         >
           <IconLabel :label="`${item.title} (${item.count})`">
-            <TagIcon class="icon-16" />
+            <Icon name="tag" class="icon-16" />
           </IconLabel>
         </BookmarkFilterGroup>
         <BookmarkFilterGroup
@@ -75,7 +75,7 @@ import { ref, computed } from 'vue';
 import { NButton, NPopover } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 
-import { PencilIcon, TagIcon, FilterIcon } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 import { useSyncSetting } from '@/composition/use-sync-setting';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { BookCollection } from '@/dto/book-collection';

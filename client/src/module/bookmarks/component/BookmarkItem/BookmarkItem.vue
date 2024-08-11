@@ -39,16 +39,16 @@
       />
       <div class="bookmark-toolbar">
         <IconButton v-if="!bookmark.isArchived && actions.archive" i18nKey="common.tag" @click="emit('tagEditClick')">
-          <TagIcon class="bookmark-action-icon" />
+          <Icon name="tag" class="bookmark-action-icon" />
         </IconButton>
         <IconButton v-if="actions['edit']" i18nKey="common.edit" @click="emit('editClick')">
-          <PencilIcon class="bookmark-action-icon" />
+          <Icon name="pencil" class="bookmark-action-icon" />
         </IconButton>
 
         <template v-if="bookmark.isArchived">
           <span class="bookmark-state-text">(<i18n-t keypath="common.archived" />)</span>
           <IconButton v-if="actions.archive" i18nKey="common.cancel_archive" @click="emit('cancelArchiveClick')">
-            <ArchiveRefreshIcon class="bookmark-action-icon" />
+            <Icon name="archive-refresh" class="bookmark-action-icon" />
           </IconButton>
         </template>
       </div>
@@ -60,7 +60,7 @@
 import { ref, computed } from 'vue';
 
 import HighlightText from '@/component/HighlightText/HighlightText.vue';
-import { TagIcon, ArchiveRefreshIcon, PencilIcon } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { useSyncSetting } from '@/composition/use-sync-setting';
 import { newBookmarkTime } from '@/const/consts';

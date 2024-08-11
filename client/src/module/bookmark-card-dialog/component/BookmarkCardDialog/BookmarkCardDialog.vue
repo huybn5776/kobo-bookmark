@@ -19,8 +19,8 @@
           <img class="bookmark-card-background-image" :src="coverImageUrl" :alt="book.info.title" />
           <i class="bookmark-card-background-cover" :style="{ backgroundColor: cardBackgroundColor }" />
           <i class="bookmark-card-background-gradient" />
-          <FormatQuoteOpenIcon class="bookmark-card-quote bookmark-card-quote-open" />
-          <FormatQuoteCloseIcon class="bookmark-card-quote bookmark-card-quote-close" />
+          <Icon name="format-quote-open" class="bookmark-card-quote bookmark-card-quote-open" />
+          <Icon name="format-quote-close" class="bookmark-card-quote bookmark-card-quote-close" />
           <div class="bookmark-card-bookmark-content">
             <span
               ref="cardTextRef"
@@ -52,7 +52,7 @@
               :style="{ backgroundColor: theme.bg, color: theme.fg }"
               @click="applyTheme(theme)"
             >
-              <FormatTextVariantIcon class="icon-24" />
+              <Icon name="format-text-variant" class="icon-24" />
             </NButton>
           </div>
         </div>
@@ -63,10 +63,10 @@
           </p>
           <div class="bookmark-card-shape">
             <NButton circle :type="cardShape === 'rectangle' ? 'primary' : undefined" @click="cardShape = 'rectangle'">
-              <RectangleOutlineIcon class="icon-28" />
+              <Icon name="rectangle-outline" class="icon-28" />
             </NButton>
             <NButton circle :type="cardShape === 'square' ? 'primary' : undefined" @click="cardShape = 'square'">
-              <SquareOutlineIcon class="icon-20" />
+              <Icon name="square-outline" class="icon-20" />
             </NButton>
           </div>
         </div>
@@ -77,13 +77,13 @@
           </p>
           <div class="bookmark-card-font-size">
             <NButton circle :disabled="fontSize <= minFontSize" @click="adjustFontSize(-1)">
-              <FormatFontSizeDecreaseIcon class="icon-20" />
+              <Icon name="format-font-size-decrease" class="icon-20" />
             </NButton>
             <NButton circle :disabled="fontSize >= maxFontSize" @click="adjustFontSize(1)">
-              <FormatFontSizeIncreaseIcon class="icon-20" />
+              <Icon name="format-font-size-increase" class="icon-20" />
             </NButton>
             <NButton circle @click="autoFontSize()">
-              <ArrowExpandVerticalIcon class="icon-20" />
+              <Icon name="arrow-expand-vertical" class="icon-20" />
             </NButton>
           </div>
         </div>
@@ -108,16 +108,7 @@ import { useEventListener } from '@vueuse/core';
 import { toJpeg } from 'html-to-image';
 import { NButton } from 'naive-ui';
 
-import {
-  RectangleOutlineIcon,
-  SquareOutlineIcon,
-  FormatTextVariantIcon,
-  FormatFontSizeDecreaseIcon,
-  FormatFontSizeIncreaseIcon,
-  ArrowExpandVerticalIcon,
-  FormatQuoteOpenIcon,
-  FormatQuoteCloseIcon,
-} from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import { HighlightStyle } from '@/enum/highlight-style';
 import BookmarkCardHighlightText from '@/module/bookmark-card-dialog/component/BookmarkCardHighlightText/BookmarkCardHighlightText.vue';

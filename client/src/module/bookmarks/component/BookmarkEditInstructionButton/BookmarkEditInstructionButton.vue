@@ -2,7 +2,7 @@
   <NPopover trigger="click">
     <template #trigger>
       <NButton secondary round v-bind="$attrs" class="bookmark-edit-instruction-button">
-        <InformationOutlineIcon class="icon-24" />
+        <Icon name="information-outline" class="icon-24" />
         <i18n-t keypath="common.instruction" />
       </NButton>
     </template>
@@ -15,7 +15,7 @@
 <script lang="ts" setup>
 import { NPopover, NButton } from 'naive-ui';
 
-import { InformationOutlineIcon } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 
 const highlightHotkey = navigator.userAgent.includes('Mac') ? '⌘B' : 'Ctrl-B';
 </script>

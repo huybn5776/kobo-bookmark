@@ -3,7 +3,7 @@
     <h1 class="active-book-collection-name">
       <span>{{ bookCollection?.name }}</span>
       <IconButton class="deactivate-book-collection-button" i18nKey="common.close" @click="emit('closeClick')">
-        <CloseCircleIcon class="icon-24" />
+        <Icon name="close-circle" class="icon-24" />
       </IconButton>
     </h1>
     <p class="active-book-collection-subtitle">
@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { CloseCircleIcon } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { BookCollection } from '@/dto/book-collection';
 

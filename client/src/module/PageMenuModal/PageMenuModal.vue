@@ -2,11 +2,11 @@
   <div ref="elementRef" class="page-menu" :class="{ 'page-menu-nested': activeNestedMenu }">
     <template v-if="!activeNestedMenu">
       <button class="page-menu-item" @click="activeNestedMenu = 'language'">
-        <WebIcon class="icon-24" />
+        <Icon name="web" class="icon-24" />
         <span class="menu-item-text"><i18n-t keypath="page_menu.language" /></span>
       </button>
       <router-link :to="{ name: 'settings' }" class="page-menu-item" @click="closeMenu">
-        <CogIcon class="icon-24" />
+        <Icon name="cog" class="icon-24" />
         <span class="menu-item-text"><i18n-t keypath="page_name.settings" /></span>
       </router-link>
     </template>
@@ -14,7 +14,7 @@
     <template v-if="activeNestedMenu">
       <div class="page-menu-head-item">
         <button class="page-menu-head-item-button" @click="activeNestedMenu = undefined">
-          <ArrowLeftIcon class="icon-24" />
+          <Icon name="arrow-left" class="icon-24" />
         </button>
         <span class="menu-item-text">{{ nestedMenuTitle }}</span>
       </div>
@@ -30,7 +30,7 @@ import { ref, computed, UnwrapRef } from 'vue';
 import { onClickOutside, onKeyStroke } from '@vueuse/core';
 import { useI18n } from 'vue-i18n';
 
-import { WebIcon, CogIcon, ArrowLeftIcon } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import PageLanguageMenu from '@/module/PageMenuModal/component/PageLanguageMenu/PageLanguageMenu.vue';
 

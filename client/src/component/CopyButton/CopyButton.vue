@@ -2,7 +2,7 @@
   <NPopover trigger="manual" :show="showPopover">
     <template #trigger>
       <NButton class="copy-button" size="small" v-bind="$attrs" @click="copy">
-        <ContentCopyIcon class="copy-button-icon" />
+        <Icon name="content-copy" class="copy-button-icon" />
         <i18n-t keypath="common.copy" />
       </NButton>
     </template>
@@ -16,7 +16,7 @@ import { ref, computed } from 'vue';
 import { NButton, NPopover } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 
-import { ContentCopyIcon } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { waitMilliseconds } from '@/util/time-utils';
 

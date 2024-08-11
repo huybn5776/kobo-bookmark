@@ -9,16 +9,16 @@
             i18nKey="common.edit"
             @click="editingTitle = !editingTitle"
           >
-            <PencilIcon class="icon-20" />
+            <Icon name="pencil" class="icon-20" />
           </IconButton>
         </template>
         <template v-if="editingTitle">
           <NInput v-model:value="bookTitle" class="book-information-title-input" @keydown="onTitleKeydown" />
           <IconButton class="book-information-title-edit-button" i18nKey="common.cancel" @click="cancelEditTitle">
-            <CloseIcon class="icon-20" />
+            <Icon name="close" class="icon-20" />
           </IconButton>
           <IconButton class="book-information-title-edit-button" i18nKey="common.edit" @click="saveTitle">
-            <CheckIcon class="icon-20" />
+            <Icon name="check" class="icon-20" />
           </IconButton>
         </template>
       </div>
@@ -96,7 +96,7 @@ import { computed, ref } from 'vue';
 
 import { NButton, NInput } from 'naive-ui';
 
-import { PencilIcon, CloseIcon, CheckIcon } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { KoboBook } from '@/dto/kobo-book';
 

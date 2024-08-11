@@ -10,20 +10,20 @@
     </div>
 
     <div class="introduction-text">
-      <FormatQuoteOpenIcon class="introduction-decoration-start" />
+      <Icon name="format-quote-open" class="introduction-decoration-start" />
       <h1 class="introduction-title">
         <i18n-t :keypath="titleKey" />
       </h1>
       <p class="introduction-description">
         <i18n-t :keypath="descriptionKey" />
       </p>
-      <FormatQuoteCloseIcon class="introduction-decoration-end" />
+      <Icon name="format-quote-close" class="introduction-decoration-end" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { FormatQuoteOpenIcon, FormatQuoteCloseIcon } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 
 defineProps<{ titleKey: string; descriptionKey: string; flip?: boolean }>();
 </script>

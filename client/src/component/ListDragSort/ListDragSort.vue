@@ -23,7 +23,7 @@
           @mousedown="subscribeForDragMove($event, index)"
           @touchstart="subscribeForDragMove($event, index)"
         >
-          <DragIcon class="icon-24" />
+          <Icon name="drag" class="icon-24" />
         </button>
         <span v-else />
         <slot :item="item as T" :index="index" />
@@ -38,7 +38,7 @@ import { ref, computed, watch, Ref, UnwrapRef, ComputedRef } from 'vue';
 import { clamp } from 'ramda';
 import { merge, fromEvent, tap, map, distinctUntilChanged, takeUntil, take } from 'rxjs';
 
-import { DragIcon } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 import { useInverseRef } from '@/composition/use-inverse-ref';
 import { useUntilDestroyed } from '@/composition/use-until-destroyed';
 import { useValueSample } from '@/composition/use-value-sample';

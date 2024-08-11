@@ -6,13 +6,13 @@
     :alt="title"
     @error="failToLoadCoverImage = true"
   />
-  <BlueBookIcon v-if="failToLoadCoverImage" class="book-cover-fallback-icon" />
+  <Icon v-if="failToLoadCoverImage" name="blue-book" class="book-cover-fallback-icon" />
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
 
-import { BlueBookIcon } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 
 const props = defineProps<{ src?: string; title?: string }>();
 const failToLoadCoverImage = ref(!props.src);

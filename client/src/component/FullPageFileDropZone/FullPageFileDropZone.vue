@@ -10,7 +10,7 @@
     :class="{ 'full-page-file-drop-overlay-message-container-hidden': !fileDragEnter }"
   >
     <div class="full-page-file-drop-zone-message">
-      <ImportIcon class="icon-24" />
+      <Icon name="import" class="icon-24" />
       <span class="full-page-file-drop-zone-message-text"><slot /></span>
     </div>
   </div>
@@ -19,7 +19,7 @@
 <script lang="ts" setup>
 import { ref, watchEffect } from 'vue';
 
-import { ImportIcon } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 import { useDropArea } from '@/composition/use-drop-area';
 
 const props = defineProps<{ targetPath: string; dropTarget: HTMLElement | undefined; enabled: boolean }>();

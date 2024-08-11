@@ -7,7 +7,7 @@
     >
       <span><i18n-t :keypath="titleKey" /></span>
       <IconButton v-if="hasSelectedValue" i18nKey="common.remove" @click="onRemoveButtonClick">
-        <CloseCircleIcon class="icon-20" />
+        <Icon name="close-circle" class="icon-20" />
       </IconButton>
       <ChevronArrow
         :direction="expanded ? 'up' : 'down'"
@@ -31,7 +31,7 @@
             @click="toggleSelectedItem(item)"
           >
             <slot :item="item as T" :index="index" />
-            <CheckIcon v-if="selectedIndexes[index]" class="bookmark-filter-checked-icon" />
+            <Icon v-if="selectedIndexes[index]" name="check" class="bookmark-filter-checked-icon" />
           </div>
         </template>
         <div v-if="!visibleItems.length" class="bookmark-filter-group-empty-item">
@@ -54,7 +54,7 @@ import { remove } from 'ramda';
 import { useI18n } from 'vue-i18n';
 
 import ChevronArrow from '@/component/ChevronArrow/ChevronArrow.vue';
-import { CheckIcon, CloseCircleIcon } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { I18NMessageSchema } from '@/config/i18n-config';
 

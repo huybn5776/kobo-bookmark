@@ -1,7 +1,7 @@
 <template>
   <NPopselect multiple trigger="click" :options="options" :value="selectValue" @update:value="onSelect">
     <NButton secondary round class="bookmark-sort-button" :disabled="disabled">
-      <SortIcon class="icon-24" />
+      <Icon name="sort" class="icon-24" />
       <i18n-t keypath="common.sorting" />
     </NButton>
   </NPopselect>
@@ -14,7 +14,7 @@ import { NButton, NPopselect, SelectOption } from 'naive-ui';
 import { SelectGroupOption } from 'naive-ui/es/select/src/interface';
 import { useI18n } from 'vue-i18n';
 
-import { SortIcon } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { BookSortingKey } from '@/enum/book-sorting-key';
 import { BookSortingPriorityKey } from '@/enum/book-sorting-priority-key';

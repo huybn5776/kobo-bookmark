@@ -26,7 +26,6 @@
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "sql.js": "^1.10.2",
-    "vite-svg-loader": "^5.1.0",
     "vue": "^3.4.21",
     "vue-i18n": "^9.11.1",
     "vue-router": "^4.3.0",
@@ -62,6 +61,7 @@
     "ts-to-zod": "^3.8.2",
     "typescript": "^5.4.5",
     "vite": "^5.2.8",
+    "vite-plugin-icons-spritesheet": "^2.1.0",
     "vue-eslint-parser": "^9.4.2",
     "vue-tsc": "^2.0.12"
   }

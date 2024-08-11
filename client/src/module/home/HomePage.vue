@@ -100,7 +100,7 @@
 
     <div class="home-page-footer">
       <a class="github-link" href="https://github.com/huybn5776/kobo-bookmark" target="_blank">
-        <GithubIcon class="github-icon" />
+        <Icon name="github" class="github-icon" />
         GitHub
       </a>
     </div>
@@ -114,7 +114,7 @@ import fitty from 'fitty';
 import { NButton } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 
-import { GithubIcon } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import BookShapeGraph from '@/module/home/component/BookShapeGraph/BookShapeGraph.vue';
 import DemoBookView from '@/module/home/component/DemoBookView/DemoBookView.vue';

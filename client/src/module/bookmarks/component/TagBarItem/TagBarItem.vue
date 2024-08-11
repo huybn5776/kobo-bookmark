@@ -3,13 +3,13 @@
     <span class="tag-bar-item-text">{{ label }}</span>
     <button v-if="allowRemove" class="tag-bar-item-remove-button" @click="onRemoveClick">
       <i18n-t keypath="common.remove" />
-      <CloseIcon class="icon-14" />
+      <Icon name="close" class="icon-14" />
     </button>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { CloseIcon } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 
 defineProps<{ label: string; clickable?: boolean; allowRemove?: boolean }>();
 const emit = defineEmits<{ (e: 'removeClick'): void }>();

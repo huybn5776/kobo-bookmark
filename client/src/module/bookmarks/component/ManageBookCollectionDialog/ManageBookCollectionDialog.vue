@@ -9,7 +9,7 @@
         <div class="book-collection">
           <span class="book-collection-name">{{ item.name }} ({{ item.bookIds.length }})</span>
           <NButton class="book-collection-delete-button" secondary round @click="deleteCollection(item)">
-            <CloseIcon class="icon-16" />
+            <Icon name="close" class="icon-16" />
             <i18n-t keypath="common.delete" />
           </NButton>
         </div>
@@ -32,7 +32,7 @@ import { ref } from 'vue';
 
 import { NButton } from 'naive-ui';
 
-import { CloseIcon } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 import ListDragSort from '@/component/ListDragSort/ListDragSort.vue';
 import { BookCollection } from '@/dto/book-collection';
 

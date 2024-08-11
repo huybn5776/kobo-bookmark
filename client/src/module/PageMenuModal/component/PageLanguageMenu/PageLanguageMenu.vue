@@ -5,7 +5,7 @@
     class="page-menu-item page-menu-check-item"
     @click="switchLanguage(option.value)"
   >
-    <CheckIcon v-if="language === option.value" class="page-menu-check-icon" />
+    <Icon v-if="language === option.value" name="check" class="page-menu-check-icon" />
     <span class="menu-item-text">{{ option.label }}</span>
   </button>
 </template>
@@ -15,7 +15,7 @@ import { computed } from 'vue';
 
 import { useI18n } from 'vue-i18n';
 
-import { CheckIcon } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 import { useSyncSetting } from '@/composition/use-sync-setting';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { SettingKey } from '@/enum/setting-key';

@@ -15,15 +15,15 @@
         keepPopoverWhenClick
         @click="emit('starClick')"
       >
-        <StarIcon v-if="book.tags?.star" class="icon-24" />
-        <StarOutlineIcon v-if="!book.tags?.star" class="icon-24" />
+        <Icon v-if="book.tags?.star" name="star" class="icon-24" />
+        <Icon v-if="!book.tags?.star" name="star-outline" class="icon-24" />
       </IconButton>
       <IconButton
         class="book-cover-toolbar-button book-cover-edit-button"
         i18nKey="common.change_image"
         @click="showChangeCoverImageDialog"
       >
-        <ImageEditIcon class="book-cover-edit-icon" />
+        <Icon name="image-edit" class="book-cover-edit-icon" />
       </IconButton>
     </div>
   </div>
@@ -34,7 +34,7 @@ import * as E from 'fp-ts/Either';
 import { NImage, useMessage } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 
-import { StarIcon, StarOutlineIcon, ImageEditIcon } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { useInputDialog } from '@/composition/use-input-dialog';
 import { I18NMessageSchema } from '@/config/i18n-config';

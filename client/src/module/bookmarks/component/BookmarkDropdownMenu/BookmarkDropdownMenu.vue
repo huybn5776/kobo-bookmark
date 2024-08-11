@@ -1,7 +1,7 @@
 <template>
   <NDropdown trigger="click" :options="options" @select="onDropdownSelect">
     <NButton class="bookmark-dropdown-menu-button" secondary round>
-      <DotsVerticalIcon class="icon-20" />
+      <Icon name="dots-vertical" class="icon-20" />
       <i18n-t keypath="common.menu" />
     </NButton>
   </NDropdown>
@@ -13,7 +13,7 @@ import { computed, h } from 'vue';
 import { NDropdown, NButton } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 
-import { DotsVerticalIcon, ArchiveIcon, ShareVariantIcon } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 import { I18NMessageSchema } from '@/config/i18n-config';
 
 const emit = defineEmits<{ (e: 'createCardClick'): void; (e: 'archiveClick'): void }>();
@@ -24,9 +24,9 @@ const options = computed(() => {
     {
       key: 'create-bookmark-card',
       label: t('page.bookmarks.create_bookmark_card'),
-      icon: () => h(ShareVariantIcon, { class: 'icon-24' }),
+      icon: () => h(Icon, { name: 'share-variant', class: 'icon-24' }),
     },
-    { key: 'archive', label: t('common.archive'), icon: () => h(ArchiveIcon, { class: 'icon-24' }) },
+    { key: 'archive', label: t('common.archive'), icon: () => h(Icon, { name: 'archive', class: 'icon-24' }) },
   ];
 });
 

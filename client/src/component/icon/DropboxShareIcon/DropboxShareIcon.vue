@@ -1,12 +1,12 @@
 <template>
   <div class="dropbox-share-icon">
-    <ShareVariantIcon class="share-icon" />
-    <DropboxIcon class="dropbox-icon" />
+    <Icon name="share-variant" class="share-icon" />
+    <Icon name="dropbox" class="dropbox-icon" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ShareVariantIcon, DropboxIcon } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 </script>
 
 <style scoped lang="scss">

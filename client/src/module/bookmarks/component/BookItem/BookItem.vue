@@ -29,11 +29,11 @@
 
         <div class="book-info-bar">
           <BookInfoItem i18nKey="page.bookmarks.bookmarks_count">
-            <BookmarkMultipleIcon class="book-info-item-icon" />
+            <Icon name="bookmark-multiple" class="book-info-item-icon" />
             <span>{{ book.bookmarks.length }}</span>
           </BookInfoItem>
           <BookInfoItem v-if="timeSpanReadingHours" i18nKey="page.bookmarks.read_time">
-            <BookClockIcon class="book-info-item-icon" />
+            <Icon name="book-clock-outline" class="book-info-item-icon" />
             <span>{{ timeSpanReadingHours }}</span>
           </BookInfoItem>
         </div>
@@ -62,7 +62,7 @@
             class="book-toolbar-secondary-button"
             @click="emit('bookArchiveClick', book)"
           >
-            <ArchiveIcon class="icon-24" />
+            <Icon name="archive" class="icon-24" />
           </IconButton>
           <IconButton
             v-if="actions['dropbox-share']"
@@ -78,7 +78,7 @@
             class="book-toolbar-secondary-button"
             @click="emit('textExportClick', book)"
           >
-            <TextIcon class="icon-24" />
+            <Icon name="text" class="icon-24" />
           </IconButton>
           <IconButton
             v-if="actions['export-markdown']"
@@ -87,7 +87,7 @@
             @click="emit('markdownExportClick', book)"
           >
             <i18n-t keypath="page.bookmarks.export_markdown" />
-            <MarkdownIcon class="icon-24" />
+            <Icon name="markdown" class="icon-24" />
           </IconButton>
           <IconButton
             v-if="actions['export-notion']"
@@ -96,7 +96,7 @@
             :loading="exportNotionLoading"
             @click="emit('notionExportClick', book)"
           >
-            <NotionIcon class="icon-24" />
+            <Icon name="notion" class="icon-24" />
           </IconButton>
 
           <span v-if="book.isArchived" class="book-state-text">(<i18n-t keypath="common.archived" />)</span>
@@ -106,10 +106,10 @@
             class="book-toolbar-secondary-button"
             @click="emit('bookCancelArchive', book)"
           >
-            <ArchiveRefreshIcon class="icon-24" />
+            <Icon name="archive-refresh" class="icon-24" />
           </IconButton>
           <IconButton i18nKey="page.bookmarks.book_information" @click="emit('bookInformationClick', book)">
-            <InformationOutlineIcon class="icon-24" />
+            <Icon name="information-outline" class="icon-24" />
           </IconButton>
         </div>
       </div>
@@ -124,17 +124,8 @@ import { NCheckbox } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 
 import ChevronArrow from '@/component/ChevronArrow/ChevronArrow.vue';
-import {
-  NotionIcon,
-  BookmarkMultipleIcon,
-  DropboxShareIcon,
-  BookClockIcon,
-  MarkdownIcon,
-  ArchiveIcon,
-  ArchiveRefreshIcon,
-  TextIcon,
-  InformationOutlineIcon,
-} from '@/component/icon';
+import DropboxShareIcon from '@/component/icon/DropboxShareIcon/DropboxShareIcon.vue';
+import Icon from '@/component/icon/Icon.vue';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { useSyncSetting } from '@/composition/use-sync-setting';
 import { I18NMessageSchema } from '@/config/i18n-config';

@@ -61,7 +61,7 @@ import { computed, h, ref, onMounted } from 'vue';
 import { NButton, NDropdown, DropdownOption, NCollapseItem, NCollapse } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 
-import { TextIcon, MarkdownIcon } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBookChanges } from '@/dto/kobo-book';
 import { SettingKey } from '@/enum/setting-key';
@@ -94,21 +94,25 @@ onMounted(() => {
 });
 
 const exportChangesOptions: DropdownOption[] = [
-  { key: 'text-file', label: t('page.data_import.as_text_file'), icon: () => h(TextIcon, { class: 'icon-24' }) },
+  {
+    key: 'text-file',
+    label: t('page.data_import.as_text_file'),
+    icon: () => h(Icon, { name: 'text', class: 'icon-24' }),
+  },
   {
     key: 'text-clipboard',
     label: t('page.data_import.as_text_clipboard'),
-    icon: () => h(TextIcon, { class: 'icon-24' }),
+    icon: () => h(Icon, { name: 'text', class: 'icon-24' }),
   },
   {
     key: 'markdown-file',
     label: t('page.data_import.as_markdown_file'),
-    icon: () => h(MarkdownIcon, { class: 'icon-24' }),
+    icon: () => h(Icon, { name: 'markdown', class: 'icon-24' }),
   },
   {
     key: 'markdown-clipboard',
     label: t('page.data_import.as_markdown_clipboard'),
-    icon: () => h(MarkdownIcon, { class: 'icon-24' }),
+    icon: () => h(Icon, { name: 'markdown', class: 'icon-24' }),
   },
 ];
 

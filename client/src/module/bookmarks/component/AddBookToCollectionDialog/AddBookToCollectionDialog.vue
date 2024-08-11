@@ -19,7 +19,7 @@
         </template>
       </NVirtualList>
       <div class="book-collection" @click="emit('createCollectionClick')">
-        <PlusIcon class="icon-24" />
+        <Icon name="plus" class="icon-24" />
         <i18n-t keypath="page.bookmarks.create_collection" />
       </div>
     </div>
@@ -37,7 +37,7 @@ import { computed } from 'vue';
 
 import { NButton, NVirtualList, NTooltip } from 'naive-ui';
 
-import { PlusIcon } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 import { BookCollection } from '@/dto/book-collection';
 
 const props = defineProps<{ bookIds: string[]; bookCollections: BookCollection[] }>();

@@ -20,13 +20,13 @@
         </NButton>
         <NButton :loading="uploadSettingsToDropboxLoading" @click="processUploadSettingsToDropbox">
           <template #icon>
-            <CloudArrowUp class="icon-24" />
+            <Icon name="cloud-arrow-up" class="icon-24" />
           </template>
           <i18n-t keypath="page.settings.backup.upload_to_dropbox" />
         </NButton>
         <NButton :loading="loadSettingsFromDropboxLoading" @click="processLoadSettingsFromDropbox">
           <template #icon>
-            <CloudArrowDown class="icon-24" />
+            <Icon name="cloud-arrow-down" class="icon-24" />
           </template>
           <i18n-t keypath="page.settings.backup.import_from_dropbox" />
         </NButton>
@@ -49,13 +49,13 @@
         </NButton>
         <NButton :loading="uploadBooksToDropboxLoading" @click="processUploadBooksToDropbox">
           <template #icon>
-            <CloudArrowUp class="icon-24" />
+            <Icon name="cloud-arrow-up" class="icon-24" />
           </template>
           <i18n-t keypath="page.settings.backup.upload_to_dropbox" />
         </NButton>
         <NButton :loading="downloadBooksFromDropboxLoading" @click="processDownloadBooksFromDropbox">
           <template #icon>
-            <CloudArrowDown class="icon-24" />
+            <Icon name="cloud-arrow-down" class="icon-24" />
           </template>
           <i18n-t keypath="page.settings.backup.import_from_dropbox" />
         </NButton>
@@ -72,7 +72,7 @@ import { path, isNil } from 'ramda';
 import { useI18n } from 'vue-i18n';
 import { ZodError } from 'zod';
 
-import { CloudArrowUp, CloudArrowDown } from '@/component/icon';
+import Icon from '@/component/icon/Icon.vue';
 import MultiLineText from '@/component/MultiLineText/MultiLineText.vue';
 import { useCheckDropboxToken } from '@/composition/use-check-dropbox-token';
 import { useParseKoboBooksJson } from '@/composition/use-parse-kobo-books-json';

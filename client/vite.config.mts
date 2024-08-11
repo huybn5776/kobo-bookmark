@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import path from 'path';
 
-import svgLoader from 'vite-svg-loader';
+import { iconsSpritesheet } from 'vite-plugin-icons-spritesheet';
 import vue from '@vitejs/plugin-vue';
 import { PreRenderedAsset } from 'rollup';
 import { defineConfig, Alias } from 'vite';
@@ -42,7 +42,19 @@ function handleRenameAsset(asset: PreRenderedAsset): string | null {
 }
 
 export default defineConfig({
-  plugins: [vue(), svgLoader()],
+  plugins: [
+    vue(),
+    iconsSpritesheet({
+      withTypes: true,
+      inputDir: 'src/assets/svg',
+      outputDir: 'public/icons',
+      typesOutputFile: 'src/component/icon/index.ts',
+      fileName: 'icon.svg',
+      formatter: 'prettier',
+      pathToFormatterConfig: '../.prettierrc',
+      iconNameTransformer: (iconName) => iconName,
+    }),
+  ],
   resolve: {
     alias: readAliasFromTsConfig(),
   },
