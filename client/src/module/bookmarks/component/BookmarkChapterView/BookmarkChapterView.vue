@@ -1,9 +1,9 @@
 <template>
-  <p v-if="hasChapter" class="bookmark-chapter-view" :class="{ 'bookmark-chapter-archived': archived }">
+  <p v-if="showContent" class="bookmark-chapter-view" :class="{ 'bookmark-chapter-archived': archived }">
     <BookmarkChapterViewContent :chapterIndexMap="chapterIndexMap" :chapter="chapter" />
     <slot />
   </p>
-  <div v-if="!hasChapter" class="bookmark-chapter-empty-view">
+  <div v-if="!showContent" class="bookmark-chapter-empty-view">
     <slot />
   </div>
 </template>
@@ -15,12 +15,13 @@ import { KoboBookmarkChapter, KoboBookChapter } from '@/dto/kobo-book';
 import BookmarkChapterViewContent from '@/module/bookmarks/component/BookmarkChapterViewContent/BookmarkChapterViewContent.vue';
 
 const props = defineProps<{
+  showChapterContent: boolean;
   chapterIndexMap: Record<number, KoboBookChapter>;
   chapter: KoboBookmarkChapter;
   archived?: boolean;
 }>();
 
-const hasChapter = computed(() => !!props.chapter.relatedChapterIndexes.length);
+const showContent = computed(() => props.showChapterContent && !!props.chapter.relatedChapterIndexes.length);
 </script>
 
 <style lang="scss" scoped>

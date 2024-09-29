@@ -2,11 +2,20 @@
   <div
     ref="elementRef"
     class="bookmark-item"
-    :class="{ 'bookmark-item-focused': highlightItem }"
+    :class="{ 'bookmark-item-focused': highlightItem, 'bookmark-item-no-chapter': !showChapter }"
     @animationend="highlightItem = false"
   >
-    <BookmarkChapterView :chapterIndexMap="chapterIndexMap" :chapter="bookmark.chapter" :archived="bookmark.isArchived">
-      <BookmarkDropdownMenu @createCardClick="emit('createCardClick')" @archiveClick="emit('archiveClick')" />
+    <BookmarkChapterView
+      :showChapterContent="showChapter"
+      :chapterIndexMap="chapterIndexMap"
+      :chapter="bookmark.chapter"
+      :archived="bookmark.isArchived"
+    >
+      <BookmarkDropdownMenu
+        class="bookmark-chapter-dropdown-menu"
+        @createCardClick="emit('createCardClick')"
+        @archiveClick="emit('archiveClick')"
+      />
     </BookmarkChapterView>
     <p class="bookmark-text" :class="{ 'bookmark-text-new': isNew, 'bookmark-text-archived': bookmark.isArchived }">
       <span
@@ -75,6 +84,7 @@ import TagsBar from '@/module/bookmarks/component/TagsBar/TagsBar.vue';
 const props = defineProps<{
   chapterIndexMap: Record<number, KoboBookChapter>;
   bookmark: KoboBookmark;
+  showChapter: boolean;
   search?: string;
   editingTag: boolean;
   enabledActions?: BookmarkAction[];

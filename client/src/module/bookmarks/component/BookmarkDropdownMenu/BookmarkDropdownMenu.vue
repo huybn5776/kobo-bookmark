@@ -1,6 +1,6 @@
 <template>
   <NDropdown trigger="click" :options="options" @select="onDropdownSelect">
-    <NButton class="bookmark-dropdown-menu-button" secondary round>
+    <NButton class="bookmark-dropdown-menu-button" secondary round v-bind="$attrs">
       <Icon name="dots-vertical" class="icon-20" />
       <i18n-t keypath="common.menu" />
     </NButton>

@@ -9,6 +9,12 @@
     background-color: rgba(white, 0.04);
   }
 
+  &:not(:hover) {
+    :deep(.bookmark-chapter-dropdown-menu) {
+      opacity: .3;
+    }
+  }
+
   &:first-child {
     padding-top: 8px;
   }

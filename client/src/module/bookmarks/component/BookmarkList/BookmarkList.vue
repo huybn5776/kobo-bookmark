@@ -6,6 +6,7 @@
         ref="bookBookmarkRefs"
         :chapterIndexMap="chapterIndexMap"
         :bookmark="bookmark"
+        :showChapter="bookmarkChapterVisibleMap[bookmark.id]"
         :search="search"
         :editingTag="editingTagBookmarkId === bookmark.id"
         :enabledActions="enabledActions"
@@ -84,6 +85,20 @@ const bookmarksToShow = computed<{ bookmark: KoboBookmark; enabledActions: Bookm
 });
 
 const chapterIndexMap = computed(() => getChapterIndexMap(props.book.chapters));
+const bookmarkChapterVisibleMap = computed<Record<string, boolean>>(() => {
+  const result: Record<string, boolean> = {};
+  const showedChapterIndex = new Set<number>();
+  for (const bookmark of props.book.bookmarks) {
+    const chapterIndex = bookmark.chapter.relatedChapterIndexes[0];
+    if (showedChapterIndex.has(chapterIndex)) {
+      result[bookmark.id] = false;
+    } else {
+      result[bookmark.id] = true;
+      showedChapterIndex.add(chapterIndex);
+    }
+  }
+  return result;
+});
 
 useEventListener(document, 'keydown', (event: KeyboardEvent) => {
   if (!editingTagBookmarkId.value) {
