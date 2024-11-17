@@ -16,7 +16,12 @@
           class="bookmark-card-preview"
           :style="{ color: cardFontColor, transform: `scale(${previewScale})` }"
         >
-          <img class="bookmark-card-background-image" :src="coverImageUrl" :alt="book.info.title" />
+          <img
+            v-if="coverImageUrl"
+            class="bookmark-card-background-image"
+            :src="coverImageUrl"
+            :alt="book.info.title"
+          />
           <i class="bookmark-card-background-cover" :style="{ backgroundColor: cardBackgroundColor }" />
           <i class="bookmark-card-background-gradient" />
           <Icon name="format-quote-open" class="bookmark-card-quote bookmark-card-quote-open" />
@@ -106,9 +111,11 @@ import { ref, onMounted, computed, watch, nextTick } from 'vue';
 
 import { useEventListener } from '@vueuse/core';
 import { toJpeg } from 'html-to-image';
-import { NButton } from 'naive-ui';
+import { NButton, useMessage } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 
 import Icon from '@/component/icon/Icon.vue';
+import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import { HighlightStyle } from '@/enum/highlight-style';
 import BookmarkCardHighlightText from '@/module/bookmark-card-dialog/component/BookmarkCardHighlightText/BookmarkCardHighlightText.vue';
@@ -117,6 +124,9 @@ import { downloadFile } from '@/util/file-utils';
 
 const props = defineProps<{ book: KoboBook; bookmark: KoboBookmark }>();
 const emit = defineEmits<{ (e: 'closeClick'): void }>();
+
+const { t } = useI18n<[I18NMessageSchema]>();
+const message = useMessage();
 
 type BookmarkCardTheme = { bg: string; fg: string; highlightStyle: HighlightStyle };
 
@@ -194,7 +204,9 @@ async function proxyCoverImageIfNeed(): Promise<void> {
     return;
   }
   const response = await tryFetchUrl(coverImageUrl.value);
-  if (!response?.ok) {
+  if (!response?.ok || response?.headers.get('content-type')?.startsWith('text')) {
+    coverImageUrl.value = '';
+    message.info(t('page.bookmarks.fail_to_load_image_for_card'));
     return;
   }
   coverImageUrl.value = response.url;

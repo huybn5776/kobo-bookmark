@@ -231,6 +231,7 @@ export const i18nEn = {
       font_size: 'Font size',
       shape: 'Shape',
       download_image: 'Download image',
+      fail_to_load_image_for_card: 'Fail to load image for bookmark card, only solid background color is available.',
       change_highlight_color: 'Change highlight color',
       exporting_books: 'Exporting {0} book | Exporting {0} books',
       book_exported: '{0} book exported | {0} books exported',
