@@ -14,7 +14,7 @@
       "lastBookmarkAt": "2024-01-15T06:28:35.659Z",
       "createdAt": "2023-02-08T21:00:00.000Z"
     },
-    "coverImageUrl": "https://corsproxy.io/?https%3A%2F%2Fcdn.kobo.com%2Fbook-images%2Ff868ba07-cae3-4d8d-ba39-b750f15cc70e%2F-.jpg",
+    "coverImageUrl": "https://corsproxy.io/?url=https%3A%2F%2Fcdn.kobo.com%2Fbook-images%2Ff868ba07-cae3-4d8d-ba39-b750f15cc70e%2F-.jpg",
     "chapters": [
       { "title": "封面", "index": 0 },
       { "title": "書名頁", "index": 1 },
@@ -84,7 +84,7 @@
       "lastBookmarkAt": "2024-04-18T06:00:14.807Z",
       "createdAt": "2024-03-06T23:24:06.000Z"
     },
-    "coverImageUrl": "https://corsproxy.io/?https%3A%2F%2Fbooks.google.com%2Fbooks%2Fcontent%3Fid%3DST-ZDwAAQBAJ%26printsec%3Dfrontcover%26img%3D1%26zoom%3D2%26edge%3Dcurl",
+    "coverImageUrl": "https://corsproxy.io/?url=https%3A%2F%2Fbooks.google.com%2Fbooks%2Fcontent%3Fid%3DST-ZDwAAQBAJ%26printsec%3Dfrontcover%26img%3D1%26zoom%3D2%26edge%3Dcurl",
     "chapters": [
       { "title": "書封", "index": 0 },
       { "title": "目錄", "index": 1 },

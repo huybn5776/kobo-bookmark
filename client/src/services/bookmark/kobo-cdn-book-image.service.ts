@@ -6,7 +6,7 @@ export async function getBookCoverFromKoboBookInfo(book: KoboBook): Promise<stri
     return null;
   }
   const imageUrl = `https://cdn.kobo.com/book-images/${imageId}/-.jpg`;
-  const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(imageUrl)}`;
+  const proxyUrl = `https://corsproxy.io/?url=${encodeURIComponent(imageUrl)}`;
   try {
     await fetch(proxyUrl);
     return proxyUrl;

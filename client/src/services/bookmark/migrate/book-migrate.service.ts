@@ -1,5 +1,5 @@
 import { KoboBook } from '@/dto/kobo-book';
-import { migrateBookV1 } from '@/services/bookmark/migrate/book-migrate-v1';
+import { migrateBookV2 } from '@/services/bookmark/migrate/book-migrate-v2';
 
 export function migrateBooksIfNeeds(books: KoboBook[]): KoboBook[] {
   return books.map(migrateBookIfNeeds);
@@ -7,6 +7,6 @@ export function migrateBooksIfNeeds(books: KoboBook[]): KoboBook[] {
 
 export function migrateBookIfNeeds(book: KoboBook): KoboBook {
   let updatedBook = book;
-  updatedBook = migrateBookV1(updatedBook);
+  updatedBook = migrateBookV2(updatedBook);
   return updatedBook;
 }

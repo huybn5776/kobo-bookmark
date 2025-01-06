@@ -45,7 +45,7 @@ export async function tryFetchUrl(url: string): Promise<Response | null> {
   if (response?.ok) {
     return response;
   }
-  const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+  const proxyUrl = `https://corsproxy.io/?url=${encodeURIComponent(url)}`;
   try {
     response = await fetch(proxyUrl);
   } catch (_) {
