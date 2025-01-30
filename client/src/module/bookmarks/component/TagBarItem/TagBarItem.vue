@@ -21,5 +21,5 @@ function onRemoveClick(event: MouseEvent): void {
 </script>
 
 <style lang="scss" scoped>
-@import './TagBarItem';
+@forward './TagBarItem';
 </style>

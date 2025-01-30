@@ -360,5 +360,5 @@ function setMessage(message: string): void {
 </script>
 
 <style lang="scss" scoped>
-@import './BookmarksPage';
+@forward './BookmarksPage';
 </style>

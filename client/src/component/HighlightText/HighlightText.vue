@@ -50,5 +50,5 @@ function processBySearch(originalText: string, search: string): SyntaxSegment[] 
 </script>
 
 <style lang="scss" scoped>
-@import './HighlightText';
+@forward './HighlightText';
 </style>

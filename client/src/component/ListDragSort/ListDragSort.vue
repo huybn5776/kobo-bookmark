@@ -197,5 +197,5 @@ function transitionListAfterDragMove(
 </script>
 
 <style lang="scss" scoped>
-@import './ListDragSort';
+@forward './ListDragSort';
 </style>

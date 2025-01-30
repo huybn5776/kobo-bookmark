@@ -147,5 +147,5 @@ function onCollectionEditClick(item: BookCollection): void {
 </script>
 
 <style lang="scss" scoped>
-@import './BookmarkFilterDropdown';
+@forward './BookmarkFilterDropdown';
 </style>

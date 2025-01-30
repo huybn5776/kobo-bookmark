@@ -69,5 +69,5 @@ async function closePopover(): Promise<void> {
 </script>
 
 <style lang="scss" scoped>
-@import './CopyButton';
+@forward './CopyButton';
 </style>

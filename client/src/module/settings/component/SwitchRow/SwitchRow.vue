@@ -41,6 +41,6 @@ function isClickOnSwitch(event: MouseEvent): boolean {
 </script>
 
 <style lang="scss" scoped>
-@import './SwitchRow';
-@import '../settings';
+@forward './SwitchRow';
+@forward '../settings';
 </style>

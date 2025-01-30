@@ -19,5 +19,5 @@ const failToLoadCoverImage = ref(!props.src);
 </script>
 
 <style lang="scss" scoped>
-@import './BookCoverIconView';
+@forward './BookCoverIconView';
 </style>

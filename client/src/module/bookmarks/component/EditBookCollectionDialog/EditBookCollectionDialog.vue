@@ -152,5 +152,5 @@ function onSortChanged(books: KoboBook[]): void {
 </script>
 
 <style lang="scss" scoped>
-@import './EditBookCollectionDialog';
+@forward './EditBookCollectionDialog';
 </style>

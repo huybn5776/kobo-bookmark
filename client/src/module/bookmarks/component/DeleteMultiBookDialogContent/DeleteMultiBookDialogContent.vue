@@ -26,5 +26,5 @@ const totalBookmarks = computed(() => props.books.reduce((total, book) => total 
 </script>
 
 <style lang="scss" scoped>
-@import './DeleteMultiBookDialogContent';
+@forward './DeleteMultiBookDialogContent';
 </style>

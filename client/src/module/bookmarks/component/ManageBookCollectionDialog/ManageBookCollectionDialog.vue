@@ -55,5 +55,5 @@ function save(): void {
 </script>
 
 <style lang="scss" scoped>
-@import './ManageBookCollectionDialog';
+@forward './ManageBookCollectionDialog';
 </style>

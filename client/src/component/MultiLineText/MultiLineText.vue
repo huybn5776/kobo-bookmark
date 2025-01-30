@@ -9,5 +9,5 @@ defineProps<{ texts: string[] }>();
 </script>
 
 <style lang="scss" scoped>
-@import './MultiLineText';
+@forward './MultiLineText';
 </style>

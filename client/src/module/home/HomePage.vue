@@ -134,5 +134,5 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-@import './HomePage';
+@forward './HomePage';
 </style>

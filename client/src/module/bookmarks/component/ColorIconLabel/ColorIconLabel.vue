@@ -12,5 +12,5 @@ defineProps<{ color: string; label: string }>();
 </script>
 
 <style lang="scss" scoped>
-@import './ColorIconLabel';
+@forward './ColorIconLabel';
 </style>

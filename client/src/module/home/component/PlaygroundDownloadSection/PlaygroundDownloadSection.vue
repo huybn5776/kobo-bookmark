@@ -31,5 +31,5 @@ const playgroundBooksUrl = computed(
 </script>
 
 <style lang="scss" scoped>
-@import './PlaygroundDownloadSection';
+@forward './PlaygroundDownloadSection';
 </style>

@@ -16,5 +16,5 @@ defineProps<{ book: KoboBook }>();
 </script>
 
 <style lang="scss" scoped>
-@import './DeleteBookDialogContent';
+@forward './DeleteBookDialogContent';
 </style>

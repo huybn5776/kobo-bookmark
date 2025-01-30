@@ -18,5 +18,5 @@ defineProps<{ state?: 'loading' | 'warning' | 'error' }>();
 </script>
 
 <style lang="scss" scoped>
-@import './PageResult';
+@forward './PageResult';
 </style>

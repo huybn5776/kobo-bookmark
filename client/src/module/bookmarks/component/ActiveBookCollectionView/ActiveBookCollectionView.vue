@@ -24,5 +24,5 @@ const emit = defineEmits<{ (e: 'closeClick'): void }>();
 </script>
 
 <style lang="scss" scoped>
-@import './ActiveBookCollectionView';
+@forward './ActiveBookCollectionView';
 </style>

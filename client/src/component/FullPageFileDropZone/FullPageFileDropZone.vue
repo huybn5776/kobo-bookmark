@@ -38,5 +38,5 @@ watchEffect(() => (dropTargetRef.value = props.dropTarget));
 </script>
 
 <style lang="scss" scoped>
-@import './FullPageFileDropZone';
+@forward './FullPageFileDropZone';
 </style>

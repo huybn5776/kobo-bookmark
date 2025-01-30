@@ -21,5 +21,5 @@ const highlightHotkey = navigator.userAgent.includes('Mac') ? '⌘B' : 'Ctrl-B';
 </script>
 
 <style lang="scss" scoped>
-@import './BookmarkEditInstructionButton';
+@forward './BookmarkEditInstructionButton';
 </style>

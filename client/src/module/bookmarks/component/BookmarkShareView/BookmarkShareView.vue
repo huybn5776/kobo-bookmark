@@ -29,5 +29,5 @@ defineProps<{ bookmarkShare: BookmarkShare }>();
 </script>
 
 <style lang="scss" scoped>
-@import './BookmarkShareView';
+@forward './BookmarkShareView';
 </style>

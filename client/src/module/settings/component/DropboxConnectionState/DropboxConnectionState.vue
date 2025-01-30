@@ -30,5 +30,5 @@ const dropboxState = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-@import './DropboxConnectionState';
+@forward './DropboxConnectionState';
 </style>

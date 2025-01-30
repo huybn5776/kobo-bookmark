@@ -41,5 +41,5 @@ const textSegments = computed<SyntaxSegment[]>(() => toSyntaxSegment(props.text,
 </script>
 
 <style lang="scss" scoped>
-@import './BookmarkCardHighlightText';
+@forward './BookmarkCardHighlightText';
 </style>

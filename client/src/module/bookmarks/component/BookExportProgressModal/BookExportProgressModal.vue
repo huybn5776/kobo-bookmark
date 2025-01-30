@@ -112,5 +112,5 @@ function discardAllTasks(): void {
 </script>
 
 <style lang="scss" scoped>
-@import './BookExportProgressModal';
+@forward './BookExportProgressModal';
 </style>

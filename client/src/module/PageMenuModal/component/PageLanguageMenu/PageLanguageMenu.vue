@@ -41,5 +41,5 @@ function switchLanguage(lang: string | undefined): void {
 </script>
 
 <style lang="scss" scoped>
-@import '../../page-menu-modal';
+@forward '../../page-menu-modal';
 </style>

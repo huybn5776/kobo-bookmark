@@ -181,5 +181,5 @@ function closeModal(): void {
 </script>
 
 <style lang="scss" scoped>
-@import './BookmarkSearch';
+@forward './BookmarkSearch';
 </style>

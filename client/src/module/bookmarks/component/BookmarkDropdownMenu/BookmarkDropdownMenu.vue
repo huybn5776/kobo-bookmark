@@ -40,5 +40,5 @@ function onDropdownSelect(value: string): void {
 </script>
 
 <style lang="scss" scoped>
-@import './BookmarkDropdownMenu';
+@forward './BookmarkDropdownMenu';
 </style>

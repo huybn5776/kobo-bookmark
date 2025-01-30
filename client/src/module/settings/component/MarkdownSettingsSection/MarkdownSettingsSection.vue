@@ -42,5 +42,5 @@ const markdownExportMode = useSyncSetting(SettingKey.MarkdownExportMode, Markdow
 </script>
 
 <style lang="scss" scoped>
-@import '../settings';
+@forward '../settings';
 </style>

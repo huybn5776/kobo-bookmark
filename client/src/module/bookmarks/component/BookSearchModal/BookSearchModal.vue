@@ -121,5 +121,5 @@ function getViewportItemsSize(): number {
 </script>
 
 <style lang="scss" scoped>
-@import './BookSearchModal';
+@forward './BookSearchModal';
 </style>

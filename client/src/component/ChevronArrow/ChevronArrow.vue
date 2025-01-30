@@ -35,5 +35,5 @@ function toggleDirection(event: MouseEvent): void {
 </script>
 
 <style lang="scss" scoped>
-@import './ChevronArrow';
+@forward './ChevronArrow';
 </style>

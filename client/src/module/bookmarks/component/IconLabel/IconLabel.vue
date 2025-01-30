@@ -22,5 +22,5 @@ function onIconClick(event: MouseEvent): void {
 </script>
 
 <style lang="scss" scoped>
-@import './IconLabel';
+@forward './IconLabel';
 </style>

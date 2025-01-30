@@ -112,5 +112,5 @@ function scrollTo(index: number): void {
 </script>
 
 <style lang="scss" scoped>
-@import './VirtualList';
+@forward './VirtualList';
 </style>

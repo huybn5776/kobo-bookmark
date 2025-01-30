@@ -25,5 +25,5 @@ const showContent = computed(() => props.showChapterContent && !!props.chapter.r
 </script>
 
 <style lang="scss" scoped>
-@import './BookmarkChapterView';
+@forward './BookmarkChapterView';
 </style>

@@ -9,5 +9,5 @@ defineProps<{ sticky: boolean }>();
 </script>
 
 <style lang="scss" scoped>
-@import './BooksToolbar';
+@forward './BooksToolbar';
 </style>

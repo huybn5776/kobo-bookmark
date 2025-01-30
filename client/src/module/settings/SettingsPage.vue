@@ -23,5 +23,5 @@ import TextExportSettingsSection from '@/module/settings/component/TextExportSet
 </script>
 
 <style lang="scss" scoped>
-@import './SettingsPage';
+@forward './SettingsPage';
 </style>

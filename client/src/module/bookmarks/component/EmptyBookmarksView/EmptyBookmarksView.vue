@@ -15,5 +15,5 @@
 </template>
 
 <style lang="scss" scoped>
-@import './EmptyBookmarksView';
+@forward './EmptyBookmarksView';
 </style>

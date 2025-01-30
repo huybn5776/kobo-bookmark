@@ -15,5 +15,5 @@ import SiteHeader from '@/layout/SiteHeader/SiteHeader.vue';
 </script>
 
 <style lang="scss">
-@import './App';
+@forward './App';
 </style>

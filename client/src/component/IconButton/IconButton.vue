@@ -43,5 +43,5 @@ function onClick(event: MouseEvent): void {
 </script>
 
 <style lang="scss" scoped>
-@import './IconButton';
+@forward './IconButton';
 </style>

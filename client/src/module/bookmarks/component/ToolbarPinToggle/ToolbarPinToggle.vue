@@ -17,5 +17,5 @@ const pinModel = defineModel<boolean>('pin');
 </script>
 
 <style lang="scss" scoped>
-@import './ToolbarPinToggle';
+@forward './ToolbarPinToggle';
 </style>

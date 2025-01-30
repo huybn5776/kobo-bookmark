@@ -66,5 +66,5 @@ function clearDropboxToken(): void {
 </script>
 
 <style lang="scss" scoped>
-@import '../settings';
+@forward '../settings';
 </style>

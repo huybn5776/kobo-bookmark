@@ -32,5 +32,5 @@ const emit = defineEmits<{ (e: 'update:value', value: string): void }>();
 </script>
 
 <style lang="scss" scoped>
-@import './InputDialogContent';
+@forward './InputDialogContent';
 </style>

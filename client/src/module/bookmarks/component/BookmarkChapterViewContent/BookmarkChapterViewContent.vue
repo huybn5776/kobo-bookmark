@@ -26,5 +26,5 @@ const titles = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-@import './BookmarkChapterViewContent';
+@forward './BookmarkChapterViewContent';
 </style>

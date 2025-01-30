@@ -16,5 +16,5 @@ defineProps<{ i18nKey: string }>();
 </script>
 
 <style lang="scss" scoped>
-@import './BookInfoItem';
+@forward './BookInfoItem';
 </style>

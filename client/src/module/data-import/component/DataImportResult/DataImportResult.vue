@@ -134,5 +134,5 @@ function onExportChangeSelected(id: string): void {
 </script>
 
 <style lang="scss" scoped>
-@import './DataImportResult';
+@forward './DataImportResult';
 </style>

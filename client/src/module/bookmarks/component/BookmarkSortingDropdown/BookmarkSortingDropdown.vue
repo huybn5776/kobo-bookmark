@@ -148,5 +148,5 @@ function onSelect(
 </script>
 
 <style lang="scss" scoped>
-@import './BookmarkSortingDropdown';
+@forward './BookmarkSortingDropdown';
 </style>

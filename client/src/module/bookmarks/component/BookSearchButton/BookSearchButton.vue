@@ -20,5 +20,5 @@ const i18nKey = computed(() =>
 </script>
 
 <style lang="scss" scoped>
-@import './BookSearchButton';
+@forward './BookSearchButton';
 </style>

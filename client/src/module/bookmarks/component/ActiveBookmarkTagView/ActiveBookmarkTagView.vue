@@ -24,5 +24,5 @@ const bookmarksCount = computed(() => props.books.reduce((sum, book) => sum + bo
 </script>
 
 <style lang="scss" scoped>
-@import './ActiveBookmarkTagView';
+@forward './ActiveBookmarkTagView';
 </style>

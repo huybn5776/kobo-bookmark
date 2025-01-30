@@ -10,5 +10,5 @@ import Icon from '@/component/icon/Icon.vue';
 </script>
 
 <style scoped lang="scss">
-@import './DropboxShareIcon';
+@forward './DropboxShareIcon';
 </style>

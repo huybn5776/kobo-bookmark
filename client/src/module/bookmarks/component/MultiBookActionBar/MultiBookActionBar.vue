@@ -72,5 +72,5 @@ const emit = defineEmits<{
 </script>
 
 <style lang="scss" scoped>
-@import './MultiBookActionBar';
+@forward './MultiBookActionBar';
 </style>

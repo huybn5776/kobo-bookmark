@@ -74,5 +74,5 @@ function focusToParentChapter(): void {
 </script>
 
 <style lang="scss" scoped>
-@import './BookmarkChapterEdit';
+@forward './BookmarkChapterEdit';
 </style>

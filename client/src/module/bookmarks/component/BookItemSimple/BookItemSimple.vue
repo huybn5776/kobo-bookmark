@@ -52,5 +52,5 @@ const linkTarget = computed<RouteLocationRaw>(() => {
 </script>
 
 <style lang="scss" scoped>
-@import './BookItemSimple';
+@forward './BookItemSimple';
 </style>

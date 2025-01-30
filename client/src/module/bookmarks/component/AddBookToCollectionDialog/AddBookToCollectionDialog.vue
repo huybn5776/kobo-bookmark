@@ -61,5 +61,5 @@ function onCollectionClick(collection: BookCollection): void {
 </script>
 
 <style lang="scss" scoped>
-@import './AddBookToCollectionDialog';
+@forward './AddBookToCollectionDialog';
 </style>

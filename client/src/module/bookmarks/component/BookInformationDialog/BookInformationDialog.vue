@@ -148,5 +148,5 @@ function saveTitle(): void {
 </script>
 
 <style lang="scss" scoped>
-@import './BookInformationDialog';
+@forward './BookInformationDialog';
 </style>

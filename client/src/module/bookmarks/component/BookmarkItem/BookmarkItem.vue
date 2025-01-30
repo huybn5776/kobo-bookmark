@@ -142,5 +142,5 @@ function runHighlightAnimationWhenVisible(): void {
 </script>
 
 <style lang="scss" scoped>
-@import './BookmarkItem';
+@forward './BookmarkItem';
 </style>

@@ -202,5 +202,5 @@ const timeSpanReadingHours = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-@import './BookItem';
+@forward './BookItem';
 </style>

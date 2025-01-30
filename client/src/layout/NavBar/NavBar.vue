@@ -42,5 +42,5 @@ function toggleMenuExpanded(): void {
 </script>
 
 <style lang="scss" scoped>
-@import './NavBar';
+@forward './NavBar';
 </style>

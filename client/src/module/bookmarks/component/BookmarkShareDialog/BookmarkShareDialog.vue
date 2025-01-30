@@ -134,5 +134,5 @@ function createBookmarkShare(): BookmarkShare {
 </script>
 
 <style lang="scss" scoped>
-@import './BookmarkShareDialog';
+@forward './BookmarkShareDialog';
 </style>

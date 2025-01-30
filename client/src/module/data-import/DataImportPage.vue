@@ -185,5 +185,5 @@ async function parseBooksFromFile(file: File): Promise<KoboBook[] | null> {
 </script>
 
 <style lang="scss" scoped>
-@import './DataImportPage';
+@forward './DataImportPage';
 </style>

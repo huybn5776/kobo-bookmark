@@ -61,5 +61,5 @@ function removeTag(title: string): void {
 </script>
 
 <style lang="scss" scoped>
-@import './TagsBar';
+@forward './TagsBar';
 </style>

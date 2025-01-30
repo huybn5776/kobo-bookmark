@@ -83,5 +83,5 @@ function onExpandedNamesChange(names: string[]): void {
 </script>
 
 <style lang="scss" scoped>
-@import './ImportDataInstruction';
+@forward './ImportDataInstruction';
 </style>

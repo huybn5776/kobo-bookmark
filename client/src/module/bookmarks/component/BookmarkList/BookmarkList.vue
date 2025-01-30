@@ -161,5 +161,5 @@ function updateBookmarkTag(bookmark: KoboBookmark, tags: KoboBookmarkTag[]): voi
 </script>
 
 <style lang="scss" scoped>
-@import './BookmarkList';
+@forward './BookmarkList';
 </style>

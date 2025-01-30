@@ -20,5 +20,5 @@ defineProps<{ bookmarkChanges: KoboBookmarkChanges }>();
 </script>
 
 <style lang="scss" scoped>
-@import './BookmarkChanges';
+@forward './BookmarkChanges';
 </style>

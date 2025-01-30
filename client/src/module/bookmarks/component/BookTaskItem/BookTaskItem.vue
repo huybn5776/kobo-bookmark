@@ -93,5 +93,5 @@ function onCancelClick(event: MouseEvent): void {
 </script>
 
 <style lang="scss" scoped>
-@import './BookTaskItem';
+@forward './BookTaskItem';
 </style>

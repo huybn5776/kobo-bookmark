@@ -29,5 +29,5 @@ defineProps<{ titleKey: string; descriptionKey: string; flip?: boolean }>();
 </script>
 
 <style lang="scss" scoped>
-@import './FeatureIntroductionSection';
+@forward './FeatureIntroductionSection';
 </style>

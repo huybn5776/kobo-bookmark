@@ -155,5 +155,5 @@ function scrollToTag(key: string | undefined): void {
 </script>
 
 <style lang="scss" scoped>
-@import './TagsDropdown';
+@forward './TagsDropdown';
 </style>

@@ -115,5 +115,5 @@ function updateBookmark(bookId: string, bookmarkId: string, updater: (bookmark: 
 </script>
 
 <style lang="scss" scoped>
-@import './DemoBookView';
+@forward './DemoBookView';
 </style>

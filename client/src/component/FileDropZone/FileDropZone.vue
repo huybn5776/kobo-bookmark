@@ -18,5 +18,5 @@ const { dropTargetRef, dropOverlayRef, fileDragEnter } = useDropArea({
 </script>
 
 <style lang="scss" scoped>
-@import './FileDropZone';
+@forward './FileDropZone';
 </style>

@@ -13,5 +13,5 @@ const emit = defineEmits<{ (e: 'click'): void }>();
 </script>
 
 <style lang="scss" scoped>
-@import './ActionMessage';
+@forward './ActionMessage';
 </style>

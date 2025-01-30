@@ -134,5 +134,5 @@ function completeEditing(): void {
 </script>
 
 <style lang="scss" scoped>
-@import './BookmarkEditItem';
+@forward './BookmarkEditItem';
 </style>

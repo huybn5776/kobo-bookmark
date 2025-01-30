@@ -292,5 +292,5 @@ async function downloadBookmarkImage(): Promise<void> {
 </script>
 
 <style lang="scss" scoped>
-@import './BookmarkCardDialog';
+@forward './BookmarkCardDialog';
 </style>

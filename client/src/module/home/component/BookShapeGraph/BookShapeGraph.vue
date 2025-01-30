@@ -32,5 +32,5 @@ useEventListener(document.querySelector('.app'), 'scroll', (event) => {
 </script>
 
 <style lang="scss" scoped>
-@import './BookShapeGraph';
+@forward './BookShapeGraph';
 </style>

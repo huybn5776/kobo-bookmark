@@ -79,5 +79,5 @@ async function onNewCoverImageEntered(newCoverImageUrl: string): Promise<boolean
 </script>
 
 <style lang="scss" scoped>
-@import './BookCoverView';
+@forward './BookCoverView';
 </style>

@@ -7,5 +7,5 @@ defineProps<{ color: string }>();
 </script>
 
 <style lang="scss" scoped>
-@import './ColorIcon';
+@forward './ColorIcon';
 </style>

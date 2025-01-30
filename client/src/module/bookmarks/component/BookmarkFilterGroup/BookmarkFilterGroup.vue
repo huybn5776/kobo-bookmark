@@ -148,5 +148,5 @@ function toggleItemMulti(key: KT): void {
 </script>
 
 <style lang="scss" scoped>
-@import './BookmarkFilterGroup';
+@forward './BookmarkFilterGroup';
 </style>

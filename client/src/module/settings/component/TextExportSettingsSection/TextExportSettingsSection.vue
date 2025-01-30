@@ -42,5 +42,5 @@ const textExportMode = useSyncSetting(SettingKey.TextExportMode, TextExportMode.
 </script>
 
 <style lang="scss" scoped>
-@import '../settings';
+@forward '../settings';
 </style>

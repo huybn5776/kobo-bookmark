@@ -112,5 +112,5 @@ function scrollToBookmark(bookmark: KoboBookmark, options?: ScrollIntoViewOption
 </script>
 
 <style lang="scss" scoped>
-@import './BookBookmark';
+@forward './BookBookmark';
 </style>

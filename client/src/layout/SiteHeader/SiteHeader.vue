@@ -17,5 +17,5 @@ import NavBar from '@/layout/NavBar/NavBar.vue';
 </script>
 
 <style lang="scss" scoped>
-@import './SiteHeader';
+@forward './SiteHeader';
 </style>

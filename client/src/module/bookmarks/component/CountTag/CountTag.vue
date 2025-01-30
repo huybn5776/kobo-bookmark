@@ -20,5 +20,5 @@ const countDisplay = computed(() => Math.min(99, props.count));
 </script>
 
 <style lang="scss" scoped>
-@import './CountTag';
+@forward './CountTag';
 </style>

@@ -53,5 +53,5 @@ function onColorSelect(value?: HighlightColor): void {
 </script>
 
 <style lang="scss" scoped>
-@import './HighlightColorDropdown';
+@forward './HighlightColorDropdown';
 </style>

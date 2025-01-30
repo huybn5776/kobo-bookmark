@@ -36,5 +36,5 @@ function countChangesOfType(type: KoboBookmarkChangesType): number {
 </script>
 
 <style lang="scss" scoped>
-@import './BookChangesHeader';
+@forward './BookChangesHeader';
 </style>
