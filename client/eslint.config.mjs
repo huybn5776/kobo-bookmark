@@ -1,11 +1,14 @@
 import eslintPluginVue from 'eslint-plugin-vue';
+import pluginVueA11y from 'eslint-plugin-vuejs-accessibility';
 // noinspection NpmUsedModulesInstalled
 import globals from 'globals';
 import typescriptEslint from 'typescript-eslint';
+
 import baseEslintConfig from '../eslint.config.mjs';
 
 export default typescriptEslint.config(
   { ignores: ['*.d.ts', '**/coverage', '**/dist'] },
+  ...pluginVueA11y.configs['flat/recommended'],
   {
     extends: [...baseEslintConfig, ...eslintPluginVue.configs['flat/recommended']],
     files: ['**/*.{ts,vue}'],
@@ -31,7 +34,8 @@ export default typescriptEslint.config(
       'vue/attribute-hyphenation': [2, 'never'],
       'vue/max-attributes-per-line': 0,
       'vue/v-on-event-hyphenation': [2, 'never'],
-      'vuejs-accessibility/heading-has-content': [0],
+      'vuejs-accessibility/anchor-has-content': 0,
+      'vuejs-accessibility/heading-has-content': 0,
 
       'import/order': [
         2,

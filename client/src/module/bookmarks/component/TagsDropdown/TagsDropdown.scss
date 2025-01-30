@@ -25,9 +25,12 @@
 .tag-dropdown-item {
   display: flex;
   align-items: center;
+  width: 100%;
   height: 36px;
   padding: 0 4px;
   cursor: pointer;
+  background: transparent;
+  border: 0;
 
   &:hover:not(&.tag-dropdown-item-disabled), &.tag-dropdown-item-pending:not(&.tag-dropdown-item-disabled) {
     background-color: rgba(white, .1);

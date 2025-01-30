@@ -1,9 +1,11 @@
 <template>
-  <div
+  <button
     class="book-export-item"
     :class="{ 'book-export-item-canceled': task.state === BookExportState.Canceled }"
     @mouseover="hovered = true"
     @mouseleave="hovered = false"
+    @focusin="hovered = true"
+    @focusout="hovered = false"
   >
     <BookCoverIconView :src="task.book.coverImageUrl" :title="task.book.info.title" />
     <span class="book-export-item-name">{{ task.book.info.title }}</span>
@@ -28,7 +30,7 @@
       :showIndicator="showIndicator"
       :strokeWidth="24"
     />
-  </div>
+  </button>
 </template>
 
 <script lang="ts" setup>

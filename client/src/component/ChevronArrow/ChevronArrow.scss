@@ -6,6 +6,8 @@
   height: 32px;
   padding: 10px;
   cursor: pointer;
+  background: inherit;
+  border: 0;
 
   @keyframes blink-left {
     from,

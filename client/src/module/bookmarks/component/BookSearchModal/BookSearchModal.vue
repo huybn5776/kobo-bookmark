@@ -4,7 +4,7 @@
     <NVirtualList ref="virtualListRef" keyField="id" :itemSize="itemSize" :items="filteredBooks">
       <!--suppress VueUnrecognizedSlot -->
       <template #default="{ item: book, index }">
-        <div
+        <button
           class="book-modal-item"
           :class="{ 'book-modal-item-pending': index === pendingBookIndex }"
           @click="selectBook($event, book)"
@@ -12,7 +12,7 @@
         >
           <img class="book-modal-cover" :src="book.coverImageUrl" :alt="book.info.title" />
           <span class="book-modal-title">{{ book.info.title }}</span>
-        </div>
+        </button>
       </template>
     </NVirtualList>
     <span class="book-modal-instruction">

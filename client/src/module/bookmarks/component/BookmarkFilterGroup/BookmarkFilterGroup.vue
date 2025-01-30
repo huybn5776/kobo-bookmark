@@ -25,14 +25,14 @@
       />
       <div class="bookmark-filter-group-items-container">
         <template v-for="(item, index) in visibleItems" :key="item[keyField]">
-          <div
+          <button
             class="bookmark-filter-group-item"
             :class="{ 'bookmark-filter-group-item-selected': selectedIndexes[index] }"
             @click="toggleSelectedItem(item)"
           >
             <slot :item="item as T" :index="index" />
             <Icon v-if="selectedIndexes[index]" name="check" class="bookmark-filter-checked-icon" />
-          </div>
+          </button>
         </template>
         <div v-if="!visibleItems.length" class="bookmark-filter-group-empty-item">
           (<i18n-t :keypath="emptyMessageKey || 'common.empty'" />)

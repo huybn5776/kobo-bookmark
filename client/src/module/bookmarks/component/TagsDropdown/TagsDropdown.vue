@@ -1,6 +1,13 @@
 <template>
   <div ref="elementRef" class="tags-dropdown">
-    <input ref="tagInput" v-model="tagInputValue" class="tag-input" type="text" @keydown="onTagInputKeyDown" />
+    <input
+      ref="tagInput"
+      v-model="tagInputValue"
+      class="tag-input"
+      type="text"
+      aria-label="tag"
+      @keydown="onTagInputKeyDown"
+    />
     <NVirtualList
       v-if="dropdownTags.length"
       ref="virtualListRef"
@@ -11,7 +18,7 @@
     >
       <!--suppress VueUnrecognizedSlot -->
       <template #default="{ item: tag }">
-        <div
+        <button
           class="tag-dropdown-item"
           :class="{
             'tag-dropdown-item-pending': tag.key === pendingTag?.key,
@@ -19,9 +26,10 @@
           }"
           @click="selectTag(tag)"
           @mouseover="onTagHover(tag)"
+          @focusin="onTagHover(tag)"
         >
           <TagBarItem class="tags-dropdown-tag" :label="tag.label" @removeClick="emit('removeTag', tag.key)" />
-        </div>
+        </button>
       </template>
     </NVirtualList>
   </div>

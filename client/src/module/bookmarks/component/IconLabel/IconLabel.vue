@@ -1,8 +1,8 @@
 <template>
   <div class="icon-label">
-    <div class="icon-label-icon-container" :class="{ 'icon-label-clickable': clickable }" @click="onIconClick">
+    <button class="icon-label-icon-container" :class="{ 'icon-label-clickable': clickable }" @click="onIconClick">
       <slot />
-    </div>
+    </button>
     <span class="icon-label-text">{{ label }}</span>
   </div>
 </template>

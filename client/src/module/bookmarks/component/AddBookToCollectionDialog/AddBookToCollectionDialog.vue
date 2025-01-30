@@ -13,15 +13,15 @@
             </template>
             <i18n-t keypath="page.bookmarks.book_collection_already_contained_books" />
           </NTooltip>
-          <div v-else class="book-collection" @click="onCollectionClick(item)">
+          <button v-else class="book-collection" @click="onCollectionClick(item)">
             <span>{{ item.name }}</span>
-          </div>
+          </button>
         </template>
       </NVirtualList>
-      <div class="book-collection" @click="emit('createCollectionClick')">
+      <button class="book-collection" @click="emit('createCollectionClick')">
         <Icon name="plus" class="icon-24" />
         <i18n-t keypath="page.bookmarks.create_collection" />
-      </div>
+      </button>
     </div>
 
     <div class="add-book-to-collection-dialog-actions">

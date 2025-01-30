@@ -1,11 +1,11 @@
 <template>
-  <div
-      class="chevron-arrow-container"
-      :class="{ 'chevron-arrow-container-disabled': disabled }"
-      @click="toggleDirection"
+  <button
+    class="chevron-arrow-container"
+    :class="{ 'chevron-arrow-container-disabled': disabled }"
+    @click="toggleDirection"
   >
     <i class="chevron-arrow" :class="direction" />
-  </div>
+  </button>
 </template>
 
 <script lang="ts" setup>

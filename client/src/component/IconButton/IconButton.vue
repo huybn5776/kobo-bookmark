@@ -12,6 +12,7 @@
         :loading="loading"
         @click="onClick"
         @mouseleave="waitForMouseLeave = false"
+        @focusout="waitForMouseLeave = false"
       >
         <div class="icon-button-icon-container">
           <slot />

@@ -19,16 +19,17 @@
               </div>
             </template>
             <template v-if="option.type !== 'group'">
-              <div
+              <button
                 class="bookmark-search-option bookmark-search-child-option"
                 :class="{ 'bookmark-search-child-option-pending': option.bookmark.id === pendingOption?.bookmark.id }"
                 @click="onSelect(option)"
                 @mouseover="onOptionHover(option)"
+                @focusin="onOptionHover(option)"
               >
                 <span class="bookmark-search-option-text bookmark-search-child-option-text">
                   <HighlightText :text="option.label" :search="searchModel" />
                 </span>
-              </div>
+              </button>
             </template>
           </div>
         </template>

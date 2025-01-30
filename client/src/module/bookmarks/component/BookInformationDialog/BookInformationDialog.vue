@@ -24,62 +24,62 @@
       </div>
 
       <template v-if="book.info.originalTitle">
-        <label class="book-info-label">
+        <span class="book-info-label">
           <i18n-t keypath="page.bookmarks.book_info.original_title" />
-        </label>
+        </span>
         <span>{{ book.info.originalTitle }}</span>
       </template>
       <template v-if="book.info.subtitle">
-        <label class="book-info-label">
+        <span class="book-info-label">
           <i18n-t keypath="page.bookmarks.book_info.subtitle" />
-        </label>
+        </span>
         <span>{{ book.info.subtitle }}</span>
       </template>
       <template v-if="book.info.author">
-        <label class="book-info-label">
+        <span class="book-info-label">
           <i18n-t keypath="page.bookmarks.book_info.author" />
-        </label>
+        </span>
         <span>{{ book.info.author }}</span>
       </template>
       <template v-if="book.info.series">
-        <label class="book-info-label">
+        <span class="book-info-label">
           <i18n-t keypath="page.bookmarks.book_info.series" />
-        </label>
+        </span>
         <span>{{ book.info.series }}</span>
       </template>
       <template v-if="book.info.publisher">
-        <label class="book-info-label">
+        <span class="book-info-label">
           <i18n-t keypath="page.bookmarks.book_info.publisher" />
-        </label>
+        </span>
         <span>{{ book.info.publisher }}</span>
       </template>
       <template v-if="publicationDate">
-        <label class="book-info-label">
+        <span class="book-info-label">
           <i18n-t keypath="page.bookmarks.book_info.publication_date" />
-        </label>
+        </span>
         <span>{{ publicationDate }}</span>
       </template>
       <template v-if="book.info.isbn">
-        <label class="book-info-label">
+        <span class="book-info-label">
           <i18n-t keypath="page.bookmarks.book_info.isbn" />
-        </label>
+        </span>
         <span>{{ book.info.isbn }}</span>
       </template>
 
       <template v-if="lastReadAt">
-        <label class="book-info-label">
+        <span class="book-info-label">
           <i18n-t keypath="page.bookmarks.book_info.last_read_at" />
-        </label>
+        </span>
         <span>{{ lastReadAt }}</span>
       </template>
 
-      <label class="book-info-label">
+      <span class="book-info-label">
         <i18n-t keypath="page.bookmarks.book_info.first_bookmark_at" />
-      </label>
+      </span>
       <span>{{ firstBookmarkAt }}</span>
-      <label class="book-info-label">
+      <span class="book-info-label">
         <i18n-t keypath="page.bookmarks.book_info.last_bookmark_at" />
-      </label>
+      </span>
       <span>{{ lastBookmarkAt }}</span>
     </div>
 

@@ -33,7 +33,10 @@
   height: 36px;
   padding: 0 12px;
   font-size: 15px;
+  text-align: start;
   cursor: pointer;
+  background: transparent;
+  border: 0;
 
   &.book-modal-item-pending {
     background-color: rgba(white, .1);
