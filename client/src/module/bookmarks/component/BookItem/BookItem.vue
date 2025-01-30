@@ -167,7 +167,7 @@ const { t } = useI18n<[I18NMessageSchema]>();
 const lastImportState = useSyncSetting(SettingKey.LastImportState);
 
 const newBookmarksCount = computed(() => {
-  const targetTime = (lastImportState.value?.importedAt || Date.now()) - newBookmarkTime;
+  const targetTime = (lastImportState.value?.importedAt ?? Date.now()) - newBookmarkTime;
   return props.book.bookmarks.filter((bookmark) => bookmark.importedAt && bookmark.importedAt.getTime() > targetTime)
     .length;
 });
@@ -188,10 +188,10 @@ function toggleExpanded(): void {
 }
 
 const timeSpanReadingHours = computed(() => {
-  if (!props.book?.info.timeSpentReading) {
+  if (!props.book.info.timeSpentReading) {
     return null;
   }
-  const seconds = props.book?.info.timeSpentReading ?? 0;
+  const seconds = props.book.info.timeSpentReading ?? 0;
   const minutes = seconds / 60;
   const hours = minutes / 60;
   if (hours >= 1) {

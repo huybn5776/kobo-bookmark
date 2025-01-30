@@ -4,8 +4,8 @@ import { OauthTokenResponse } from '@notionhq/client/build/src/api-endpoints';
 
 @Injectable()
 export class NotionAuthApiService {
-  notionClientId = process.env.NOTION_CLIENT_ID;
-  notionClientSecret = process.env.NOTION_CLIENT_SECRET;
+  notionClientId = process.env.NOTION_CLIENT_ID!;
+  notionClientSecret = process.env.NOTION_CLIENT_SECRET!;
 
   constructor(private readonly notion: Client) {}
 

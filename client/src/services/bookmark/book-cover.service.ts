@@ -27,7 +27,7 @@ export async function processImageUrl(url: string): Promise<E.Either<string, str
     return E.left('common.cannot_get_response_from_url');
   }
 
-  const contentType = response.headers?.get('content-type');
+  const contentType = response.headers.get('content-type');
   if (!contentType?.startsWith('image/')) {
     return E.left('page.bookmarks.not_image_url');
   }

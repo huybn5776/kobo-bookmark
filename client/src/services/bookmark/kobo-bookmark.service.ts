@@ -20,7 +20,7 @@ export async function getBooksFromSqliteFile(file: Blob, bookIds?: string[]): Pr
 
   return Object.entries(bookmarkByBooks).map(([volumeId, bookmarks]) => {
     const bookInfo = booksMap[volumeId];
-    const chapterEntities = bookChapters[volumeId] || [];
+    const chapterEntities = bookChapters[volumeId] ?? [];
     const chapters = chapterEntityToKoboChapters(chapterEntities);
     const koboBookmarks = bookmarkEntityToKoboBookmark(bookmarks, chapterEntities, chapters);
     const koboBook: KoboBook = {
@@ -89,13 +89,13 @@ function combineRelatedChaptersToParent(
   if (!parentChapters?.length) {
     return [relatedChapters[0]];
   }
-  const parentChapterKey = parentChapters.join();
+  const parentChapterKey = parentChapters.map(prop('index')).join();
   for (let i = 1; i < relatedChapters.length; i += 1) {
     const currentParentChapters = chapterParentsMap[relatedChapters[i].index];
     if (!currentParentChapters?.length) {
       return relatedChapters;
     }
-    const currentParentChaptersKey = currentParentChapters.join();
+    const currentParentChaptersKey = currentParentChapters.map(prop('index')).join();
     if (currentParentChaptersKey !== parentChapterKey) {
       return relatedChapters;
     }
@@ -196,7 +196,7 @@ export function getChapterIndexMap(chapters: KoboBookChapter[]): Record<number, 
 }
 
 function flattenChapter(chapter: KoboBookChapter): KoboBookChapter[] {
-  return [chapter, ...(chapter.children?.flatMap(flattenChapter) || [])];
+  return [chapter, ...(chapter.children?.flatMap(flattenChapter) ?? [])];
 }
 
 export function getChaptersParentIndexesMap(

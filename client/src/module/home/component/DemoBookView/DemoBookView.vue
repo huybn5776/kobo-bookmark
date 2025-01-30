@@ -69,7 +69,7 @@ function exportBookmarkToMarkdown(book: KoboBook): void {
   textToFileDownload(content, `${book.info.title}.md`, 'text/markdown');
 }
 
-async function toggleBookStar(book: KoboBook): Promise<void> {
+function toggleBookStar(book: KoboBook): void {
   const indexToUpdate = allBooks.value.findIndex((b) => b.id === book.id);
   if (indexToUpdate === -1) {
     return;
@@ -78,7 +78,7 @@ async function toggleBookStar(book: KoboBook): Promise<void> {
   allBooks.value[indexToUpdate] = { ...bookToUpdate, tags: { star: !bookToUpdate.tags?.star } };
 }
 
-async function updateBookCoverImage(book: KoboBook, coverImageUrl: string): Promise<void> {
+function updateBookCoverImage(book: KoboBook, coverImageUrl: string): void {
   const indexToUpdate = allBooks.value.findIndex((b) => b.id === book.id);
   if (indexToUpdate === -1) {
     return;

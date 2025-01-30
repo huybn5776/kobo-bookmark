@@ -5,7 +5,7 @@ export function isNotNilOrEmpty<T>(value: T | null | undefined): value is T {
   return !isNilOrEmpty(value);
 }
 
-export function isNestedEmpty<T extends object>(value: T | null | undefined): boolean {
+export function isNestedEmpty(value: object | null | undefined): boolean {
   if (isNilOrEmpty(value)) {
     return true;
   }

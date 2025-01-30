@@ -66,7 +66,7 @@ watch(isDragging, () => emit('dragging', isDragging.value));
 
 function subscribeForDragMove(startEvent: MouseEvent | TouchEvent, itemIndex: number): void {
   const targetElement = startEvent.target as HTMLElement;
-  const itemElement = targetElement.parentElement as HTMLElement;
+  const itemElement = targetElement.parentElement!;
   const draggableContainerElement = findDraggableContainerElement(itemElement);
 
   const itemHeight = draggableContainerElement.offsetHeight;
@@ -130,7 +130,7 @@ function subscribeForDragMove(startEvent: MouseEvent | TouchEvent, itemIndex: nu
 function findDraggableContainerElement(element: HTMLElement): HTMLElement {
   let currentElement = element;
   while (!currentElement.classList.contains('drag-list-item-container') && currentElement !== document.body) {
-    currentElement = currentElement.parentElement as HTMLElement;
+    currentElement = currentElement.parentElement!;
   }
   return currentElement;
 }

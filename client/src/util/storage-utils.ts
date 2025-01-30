@@ -1,5 +1,6 @@
 import { isNil } from 'ramda';
 
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
 export function getFromStorage<T>(key: string): T | null {
   const value = localStorage.getItem(key);
   if (value?.startsWith('[') || value?.startsWith('{')) {
@@ -14,6 +15,7 @@ export function getFromStorage<T>(key: string): T | null {
   return value as T;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
 export function saveToStorage<T>(key: string, value: T | null): void {
   if (typeof value === 'object') {
     localStorage.setItem(key.toString(), JSON.stringify(value));

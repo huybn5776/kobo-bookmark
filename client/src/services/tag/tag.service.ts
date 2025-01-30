@@ -5,7 +5,7 @@ import { KoboBook } from '@/dto/kobo-book';
 export function summarizeTagsOfBooks(books: KoboBook[]): { title: string; count: number }[] {
   const allTagTitles = books
     .flatMap((book) => book.bookmarks)
-    .flatMap((bookmark) => (bookmark.tags || []).map((tag) => tag.title));
+    .flatMap((bookmark) => (bookmark.tags ?? []).map((tag) => tag.title));
   const tagTitlesGrouping = groupBy(identity, allTagTitles);
   return sortBy(([, values]) => values?.length ?? 0, Object.entries(tagTitlesGrouping))
     .toReversed()

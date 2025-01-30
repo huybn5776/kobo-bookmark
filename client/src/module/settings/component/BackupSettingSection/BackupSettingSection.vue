@@ -199,7 +199,7 @@ async function importBooks(): Promise<void> {
   }
   const jsonFile = Object.values(files)[0];
   const jsonContent = await jsonFile.text();
-  const books = await parseBooksJson(jsonContent);
+  const books = parseBooksJson(jsonContent);
   if (!books) {
     return;
   }
@@ -268,7 +268,7 @@ async function processDownloadBooksFromDropbox(): Promise<void> {
   downloadBooksFromDropboxLoading.value = true;
   await (async () => {
     const jsonContent = await downloadBooksFromDropbox();
-    const books = jsonContent ? await parseBooksJson(jsonContent) : null;
+    const books = jsonContent ? parseBooksJson(jsonContent) : null;
     if (!books) {
       return;
     }

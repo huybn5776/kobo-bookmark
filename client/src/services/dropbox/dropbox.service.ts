@@ -54,10 +54,16 @@ export async function createDropboxAuthUrl(redirectUri: string): Promise<string>
   return url;
 }
 
-export async function getDropboxTokenFromAuthCode(redirectUri: string, authCode: string): Promise<DropboxTokenInfo> {
+export async function getDropboxTokenFromAuthCode(
+  redirectUri: string,
+  authCode: string,
+): Promise<DropboxTokenInfo | null> {
   const dbxAuth = getDropboxAuth();
   const codeVerifier = sessionStorage.getItem('dropbox-code-verifier');
-  dbxAuth.setCodeVerifier(codeVerifier as string);
+  if (!codeVerifier) {
+    return null;
+  }
+  dbxAuth.setCodeVerifier(codeVerifier);
   const response = await dbxAuth.getAccessTokenFromCode(redirectUri, authCode);
   const result = response.result as Record<string, string>;
 
@@ -65,12 +71,12 @@ export async function getDropboxTokenFromAuthCode(redirectUri: string, authCode:
   expiresAt.setSeconds(expiresAt.getSeconds() + +result.expires_in);
 
   return {
-    accessToken: result.access_token as string,
-    accountId: result.account_id as string,
+    accessToken: result.access_token,
+    accountId: result.account_id,
     expiresAt: expiresAt.getTime(),
     refreshToken: result.refresh_token,
     scope: result.scope.split(' '),
-    tokenType: result.token_type as string,
+    tokenType: result.token_type,
     uid: result.uid,
   };
 }
@@ -82,17 +88,21 @@ export function setTokenIntoDropboxAuth(token: DropboxTokenInfo): void {
   dbxAuth.setRefreshToken(token.refreshToken);
 }
 
-export async function refreshDropboxTokenIfNeeded(): Promise<DropboxTokenInfo | null> {
+export function refreshDropboxTokenIfNeeded(): DropboxTokenInfo | null {
   const dbxAuth = getDropboxAuth();
   const orgToken = dbxAuth.getAccessToken();
-  await dbxAuth.checkAndRefreshAccessToken();
+  dbxAuth.checkAndRefreshAccessToken();
   const newToken = dbxAuth.getAccessToken();
   if (orgToken === newToken) {
     return null;
   }
 
+  const tokenInfo = getSettingFromStorage(SettingKey.DropboxToken);
+  if (!tokenInfo) {
+    return null;
+  }
   const updatedTokenInfo: DropboxTokenInfo = {
-    ...(getSettingFromStorage(SettingKey.DropboxToken) as DropboxTokenInfo),
+    ...tokenInfo,
     accessToken: newToken,
     expiresAt: dbxAuth.getAccessTokenExpiresAt().getTime(),
   };
@@ -178,7 +188,7 @@ export async function getBookmarksShareFromDropboxShareId(shareId: string): Prom
 export function calcShareIdOfDropboxLink(dropboxLink: string): string {
   const urlPathRegex = /\/scl\/fi\/(.+)\/(.+)/g;
   const url = new URL(dropboxLink);
-  const [, fileId, fileName] = urlPathRegex.exec(url.pathname) || [];
+  const [, fileId, fileName] = urlPathRegex.exec(url.pathname) ?? [];
   const rlKey = url.searchParams.get('rlkey');
   const base64Content = [fileId, fileName, rlKey].join(',');
   return btoa(base64Content);

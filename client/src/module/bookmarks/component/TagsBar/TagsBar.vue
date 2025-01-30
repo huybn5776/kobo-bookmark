@@ -41,10 +41,10 @@ const emit = defineEmits<{
   (e: 'finish'): void;
 }>();
 
-const currentTagTitles = computed(() => props.bookmark.tags?.map((tag) => tag.title) || []);
+const currentTagTitles = computed(() => props.bookmark.tags?.map((tag) => tag.title) ?? []);
 
 function addTag(title: string): void {
-  const updatedTags = [...(props.bookmark.tags || []), { title, createdAt: new Date() }];
+  const updatedTags = [...(props.bookmark.tags ?? []), { title, createdAt: new Date() }];
   emit('tagUpdated', updatedTags);
 }
 
@@ -55,7 +55,7 @@ function onTagClick(title: string): void {
 }
 
 function removeTag(title: string): void {
-  const updatedTags = (props.bookmark.tags || []).filter((tag) => tag.title !== title);
+  const updatedTags = (props.bookmark.tags ?? []).filter((tag) => tag.title !== title);
   emit('tagUpdated', updatedTags);
 }
 </script>

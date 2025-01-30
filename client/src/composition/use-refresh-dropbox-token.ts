@@ -9,17 +9,17 @@ import { SettingKey } from '@/enum/setting-key';
 import { refreshDropboxTokenIfNeeded } from '@/services/dropbox/dropbox.service';
 import { deleteSettingFromStorage } from '@/services/setting.service';
 
-export function useRefreshDropboxToken(): { refreshDropboxToken: () => Promise<boolean> } {
+export function useRefreshDropboxToken(): { refreshDropboxToken: () => boolean } {
   const { t } = useI18n<[I18NMessageSchema]>();
   const message = useMessage();
   const tokenChecked = ref<boolean>(false);
 
-  async function refreshDropboxToken(): Promise<boolean> {
+  function refreshDropboxToken(): boolean {
     if (tokenChecked.value) {
       return true;
     }
     try {
-      await refreshDropboxTokenIfNeeded();
+      refreshDropboxTokenIfNeeded();
     } catch (e) {
       message.error(t('common.re_connect_to_dropbox_notice'), { duration: 10000 });
       deleteSettingFromStorage(SettingKey.DropboxToken, SettingEventType.Sync);

@@ -34,8 +34,7 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
 
-import { NProgress, NButton } from 'naive-ui';
-import type { Status } from 'naive-ui/es/progress/src/interface';
+import { NProgress, NButton, ProgressStatus } from 'naive-ui';
 import { isNotNil } from 'ramda';
 
 import BookCoverIconView from '@/component/BookCoverIconView/BookCoverIconView.vue';
@@ -69,7 +68,7 @@ const percentage = computed(() => {
   }
 });
 
-const status = computed<Status | undefined>(() => {
+const status = computed<ProgressStatus | undefined>(() => {
   const { task } = props;
   switch (task.state) {
     case BookExportState.Succeeded:

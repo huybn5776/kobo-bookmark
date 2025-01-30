@@ -136,7 +136,7 @@ const exportDatabaseTitle = useSyncSetting(SettingKey.NotionExportTargetDatabase
 const pageAndDatabaseSelectPlaceholder = computed(() =>
   notionAuth.value ? undefined : 'Please connect to Notion first',
 );
-const authReady = computed(() => notionAuth.value || !loadingToken.value);
+const authReady = computed(() => notionAuth.value ?? !loadingToken.value);
 
 onMounted(async () => {
   await getNotionToken();

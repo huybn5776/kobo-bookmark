@@ -39,7 +39,7 @@
     <div v-if="allBooks.length" class="bookmark-share-books-container">
       <VirtualList
         ref="virtualListRef"
-        v-slot:default="{ item: book }"
+        v-slot="{ item: book }"
         :itemSize="213"
         :items="booksToShow"
         :keyField="'id'"

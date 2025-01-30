@@ -92,19 +92,25 @@ function onInputKeyDown(event: KeyboardEvent): void {
 }
 
 function getSelection(): { start: number; end: number } {
-  const textareaElement = inputRef.value?.textareaElRef as HTMLTextAreaElement;
+  const textareaElement = inputRef.value?.textareaElRef;
+  if (!textareaElement) {
+    return { start: 0, end: 0 };
+  }
   const { selectionStart, selectionEnd } = textareaElement;
   return { start: selectionStart, end: selectionEnd };
 }
 
 function setSelection(start: number, end?: number): void {
-  const textareaElement = inputRef.value?.textareaElRef as HTMLTextAreaElement;
+  const textareaElement = inputRef.value?.textareaElRef;
+  if (!textareaElement) {
+    return;
+  }
   textareaElement.selectionStart = start;
   textareaElement.selectionEnd = start ?? end;
 }
 
 function revertBookmarkText(): void {
-  chapter.value = props.bookmark.originalChapter || props.bookmark.chapter;
+  chapter.value = props.bookmark.originalChapter ?? props.bookmark.chapter;
   text.value = props.bookmark.originalText || props.bookmark.text;
 }
 

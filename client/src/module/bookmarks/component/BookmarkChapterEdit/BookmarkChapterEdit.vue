@@ -27,7 +27,7 @@ const props = defineProps<{ allChapters: KoboBookChapter[]; chapterIndexMap: Rec
 const chapterModel = defineModel<KoboBookmarkChapter>('chapter');
 const bookmarkListRef = ref<InstanceType<typeof NTreeSelect>>();
 
-const defaultExpandedKeys = chapterModel.value?.parentChapterIndexes || chapterModel.value?.relatedChapterIndexes;
+const defaultExpandedKeys = chapterModel.value?.parentChapterIndexes ?? chapterModel.value?.relatedChapterIndexes;
 const options = computed<TreeSelectOption[]>(() => props.allChapters.map(chapterToOption));
 const chapterIndex = computed(() => chapterModel.value?.relatedChapterIndexes[0]);
 

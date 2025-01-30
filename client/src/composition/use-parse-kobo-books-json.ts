@@ -11,11 +11,11 @@ import { KoboBook } from '@/dto/kobo-book';
 import { koboBookSchema } from '@/schema/kobo-book-schema';
 import { migrateBookIfNeeds } from '@/services/bookmark/migrate/book-migrate.service';
 
-export function useParseKoboBooksJson(): { parseBooksJson: (json: string) => Promise<KoboBook[] | null> } {
+export function useParseKoboBooksJson(): { parseBooksJson: (json: string) => KoboBook[] | null } {
   const { t } = useI18n<[I18NMessageSchema]>();
   const notification = useNotification();
 
-  async function parseBooksJson(json: string): Promise<KoboBook[] | null> {
+  function parseBooksJson(json: string): KoboBook[] | null {
     let jsonArray: [];
     try {
       jsonArray = JSON.parse(json) as [];

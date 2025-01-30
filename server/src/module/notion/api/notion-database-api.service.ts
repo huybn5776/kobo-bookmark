@@ -29,7 +29,7 @@ export class NotionDatabaseApiService {
   }
 
   async queryDatabase(id: string, query?: Record<string, string>): Promise<QueryDatabaseResponse> {
-    const filters = Object.entries(query || {}).map(([key, value]) => {
+    const filters = Object.entries(query ?? {}).map(([key, value]) => {
       return {
         property: key,
         rich_text: { contains: value },

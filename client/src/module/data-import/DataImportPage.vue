@@ -47,7 +47,7 @@ import FileDropZone from '@/component/FileDropZone/FileDropZone.vue';
 import FullPageFileDropZone from '@/component/FullPageFileDropZone/FullPageFileDropZone.vue';
 import { useParseKoboBooksJson } from '@/composition/use-parse-kobo-books-json';
 import { I18NMessageSchema } from '@/config/i18n-config';
-import { KoboBookChanges, KoboBook, KoboBookmarkChanges, KoboBookmark, KoboBookmarkChangesType } from '@/dto/kobo-book';
+import { KoboBookChanges, KoboBook, KoboBookmarkChanges, KoboBookmarkChangesType } from '@/dto/kobo-book';
 import { SettingEventType } from '@/enum/setting-event-type';
 import { SettingKey } from '@/enum/setting-key';
 import DataImportResult from '@/module/data-import/component/DataImportResult/DataImportResult.vue';
@@ -93,7 +93,7 @@ async function onFile(files: Record<string, File>): Promise<void> {
   importedBooks.value = [];
   notification.destroyAll();
 
-  const targetFile = findSqliteFromFile(files) || findJsonFromFiles(files);
+  const targetFile = findSqliteFromFile(files) ?? findJsonFromFiles(files);
   if (!targetFile) {
     message.error(t('page.data_import.no_target_file'));
     return;
@@ -125,8 +125,8 @@ function sortUpdatesBookmarksByPosition(updates: KoboBookChanges[]): KoboBookCha
     }
     const sortedChanges = sortWith(
       [
-        createBookmarkPositionSortFn((c) => c.original || c.current),
-        ascend<KoboBookmarkChanges>((c) => ((c.original || c.current) as KoboBookmark).startContainerPath),
+        createBookmarkPositionSortFn((c) => c.original ?? c.current),
+        ascend<KoboBookmarkChanges>((c) => (c.original ?? c.current!).startContainerPath),
         ascend<KoboBookmarkChanges>((change) => change.type),
       ],
       update.changes,

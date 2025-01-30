@@ -91,12 +91,12 @@ const filteredOptions = computed<(SelectGroupOption | BookmarkSearchOption)[]>((
   const text = searchModel.value?.toLowerCase();
   if (!text) {
     return options.value.flatMap((groupOption) => [
-      groupOption as SelectGroupOption,
+      groupOption,
       ...((groupOption.children as BookmarkSearchOption[]) || []),
     ]);
   }
   return options.value.flatMap((groupOption) => {
-    const children = (groupOption.children || []).filter((option) =>
+    const children = (groupOption.children ?? []).filter((option) =>
       (option.label as string).toLowerCase().includes(text),
     ) as BookmarkSearchOption[];
     if (!children.length) {

@@ -12,5 +12,5 @@ export function useValueSample<T>(source: ComputedRef<UnwrapRef<T>>, open: Ref<b
     }
   }
 
-  return sampleResult;
+  return sampleResult as Ref<UnwrapRef<T>>;
 }

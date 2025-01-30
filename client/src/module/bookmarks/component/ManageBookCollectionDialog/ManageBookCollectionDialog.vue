@@ -5,7 +5,7 @@
         <i18n-t keypath="page.bookmarks.no_any_book_collections" />
       </p>
 
-      <ListDragSort v-slot:default="{ item }" :items="bookCollections" @update:items="onSortChanged($event)">
+      <ListDragSort v-slot="{ item }" :items="bookCollections" @update:items="onSortChanged($event)">
         <div class="book-collection">
           <span class="book-collection-name">{{ item.name }} ({{ item.bookIds.length }})</span>
           <NButton class="book-collection-delete-button" secondary round @click="deleteCollection(item)">

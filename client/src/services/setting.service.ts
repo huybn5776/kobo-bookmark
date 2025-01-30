@@ -4,22 +4,22 @@ import { emitter } from '@/services/emitter-service';
 import { isNilOrEmpty, isNotNilOrEmpty } from '@/util/object-utils';
 import { saveToStorage, getFromStorage, deleteFromStorage } from '@/util/storage-utils';
 
-export function getSettingFromStorage<K extends SettingKey, T extends SettingValueType[K]>(key: K): T | null {
-  return getFromStorage<T>(key);
+export function getSettingFromStorage<K extends SettingKey>(key: K): SettingValueType[K] | null {
+  return getFromStorage<SettingValueType[K]>(key);
 }
 
-export function saveSettingToStorage<K extends SettingKey, T extends SettingValueType[K]>(
+export function saveSettingToStorage<K extends SettingKey>(
   key: K,
-  value: T | null | undefined,
+  value: SettingValueType[K] | null | undefined,
   type: SettingEventType,
 ): void {
   saveToStorage(key, value);
   emitter.emit(key, { type, key, value: value as never });
 }
 
-export function saveOrDelete<K extends SettingKey, T extends SettingValueType[K]>(
+export function saveOrDelete<K extends SettingKey>(
   key: K,
-  value: T | null | undefined,
+  value: SettingValueType[K] | null | undefined,
   type: SettingEventType,
 ): void {
   if (isNilOrEmpty(value)) {

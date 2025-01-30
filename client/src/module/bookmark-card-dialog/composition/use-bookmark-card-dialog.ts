@@ -14,7 +14,7 @@ export function useBookmarkCardDialog(): {
   const { t } = useI18n<[I18NMessageSchema]>();
   const dialog = useDialog();
 
-  async function openBookmarkCardDialog(book: KoboBook, bookmark: KoboBookmark): Promise<void> {
+  function openBookmarkCardDialog(book: KoboBook, bookmark: KoboBookmark): void {
     const dialogReactive = dialog.create({
       showIcon: false,
       title: t('page.bookmarks.create_bookmark_card'),

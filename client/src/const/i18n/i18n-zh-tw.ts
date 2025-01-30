@@ -57,6 +57,7 @@ export const i18nZhTw = {
     dropbox_required: '需要 Dropbox 的設定',
     dropbox_required_set_notice: '需要設定過 Dropbox 才能執行這個動作，要現在設定嗎?',
     re_connect_to_dropbox_notice: 'Dropbox 連線已失效，請在設定頁面重新設定 Dropbox 的連線',
+    dropbox_connect_failed: 'Dropbox 連線失敗',
     color: {
       default: '預設',
       yellow: '黃色',

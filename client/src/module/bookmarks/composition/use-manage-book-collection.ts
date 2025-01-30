@@ -96,7 +96,7 @@ export function useManageBookCollection({
   }
 
   function upsertBookCollection(collection: BookCollection): void {
-    const collections: BookCollection[] = bookCollections.value?.collections || [];
+    const collections: BookCollection[] = bookCollections.value?.collections ?? [];
     const existingIndex = collections.findIndex((c) => c.id === collection.id);
     if (existingIndex === -1) {
       collections.push(collection);
@@ -107,7 +107,7 @@ export function useManageBookCollection({
   }
 
   function deleteBookCollection(collectionId: string): void {
-    let collections: BookCollection[] = bookCollections.value?.collections || [];
+    let collections: BookCollection[] = bookCollections.value?.collections ?? [];
     collections = collections.filter((c) => c.id !== collectionId);
     bookCollections.value = { collections, updatedAt: new Date() };
   }
@@ -122,7 +122,7 @@ export function useManageBookCollection({
       content: () =>
         h(AddBookToCollectionDialog, {
           bookIds: bookIdsToAdd,
-          bookCollections: bookCollections.value?.collections || [],
+          bookCollections: bookCollections.value?.collections ?? [],
           onCreateCollectionClick: () => {
             handleCreateCollection(bookIdsToAdd);
             dialogReactive.destroy();
@@ -176,7 +176,7 @@ export function useManageBookCollection({
       style: { width: '600px', maxWidth: '90vw' },
       content: () =>
         h(ManageBookCollectionDialog, {
-          collections: bookCollections.value?.collections || [],
+          collections: bookCollections.value?.collections ?? [],
           onCloseClick: () => dialogReactive.destroy(),
           onSaveClick: (collections) => {
             bookCollections.value = { collections, updatedAt: new Date() };
@@ -211,7 +211,7 @@ export function useManageBookCollection({
   }
 
   function getCollectionById(id: string): BookCollection | undefined {
-    const collections: BookCollection[] = bookCollections.value?.collections || [];
+    const collections: BookCollection[] = bookCollections.value?.collections ?? [];
     return collections.find((c) => c.id === id);
   }
 

@@ -110,7 +110,7 @@ const lastImportState = useSyncSetting(SettingKey.LastImportState);
 const highlightItem = ref<boolean>(false);
 
 const isNew = computed(() => {
-  const targetTime = (lastImportState.value?.importedAt || Date.now()) - newBookmarkTime;
+  const targetTime = (lastImportState.value?.importedAt ?? Date.now()) - newBookmarkTime;
   return props.bookmark.importedAt && props.bookmark.importedAt?.getTime() > targetTime;
 });
 const actions = computed<Partial<Record<BookmarkAction, boolean>>>(() => {

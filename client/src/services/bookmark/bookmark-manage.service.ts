@@ -43,7 +43,7 @@ export async function countAllBooksFromDb(): Promise<number> {
 export async function getBooksByIdFromDb(ids: string[]): Promise<KoboBook[]> {
   const db = await getDbInstance();
   const books = await Promise.all(ids.map((id) => db.get(booksStore, id)));
-  return books.filter((book) => !!book) as KoboBook[];
+  return books.filter((book) => !!book);
 }
 
 export async function putBooksToDb(books: KoboBook[]): Promise<void> {

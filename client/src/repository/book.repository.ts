@@ -120,5 +120,5 @@ where ContentType = 6
 }
 
 async function getSql(): Promise<SqlJsStatic> {
-  return sqlJs || (sqlJs = await initSqlJs({ locateFile: () => sqliteUrl }));
+  return sqlJs ?? (sqlJs = await initSqlJs({ locateFile: () => sqliteUrl }));
 }

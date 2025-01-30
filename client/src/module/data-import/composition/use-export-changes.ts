@@ -10,9 +10,9 @@ import { textToFileDownload, textToClipboard } from '@/util/browser-utils';
 
 export function useExportChanges({ bookChanges }: { bookChanges: Ref<KoboBookChanges[]> }): {
   exportChangeAsMarkdownFile: () => void;
-  exportChangeAsTextClipboard: () => Promise<void>;
+  exportChangeAsTextClipboard: () => void;
   exportChangeAsTextFile: () => void;
-  exportChangeAsMarkdownClipboard: () => Promise<void>;
+  exportChangeAsMarkdownClipboard: () => void;
 } {
   const { t } = useI18n<[I18NMessageSchema]>();
   const message = useMessage();
@@ -23,7 +23,7 @@ export function useExportChanges({ bookChanges }: { bookChanges: Ref<KoboBookCha
     );
   }
 
-  async function exportChangeAsTextClipboard(): Promise<void> {
+  function exportChangeAsTextClipboard(): void {
     exportChanges(async (books) => {
       await textToClipboard(bookmarkToText(books));
       message.info(t('page.data_import.bookmark_copied', [books.length], books.length));
@@ -36,7 +36,7 @@ export function useExportChanges({ bookChanges }: { bookChanges: Ref<KoboBookCha
     );
   }
 
-  async function exportChangeAsMarkdownClipboard(): Promise<void> {
+  function exportChangeAsMarkdownClipboard(): void {
     exportChanges(async (books) => {
       await textToClipboard(bookmarkToMarkdown(books));
       message.info(t('page.data_import.bookmark_copied', [books.length], books.length));

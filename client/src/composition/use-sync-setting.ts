@@ -12,8 +12,12 @@ export function useSyncSetting<K extends SettingKey, T extends SettingValueType[
   key: K,
   defaultValue?: T,
 ): Ref<UnwrapRef<T | undefined>> {
-  const settingValue = getSettingFromStorage<K, T>(key) || defaultValue;
-  const settingRef = ref(isNil(settingValue) ? undefined : settingValue);
+  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+  const settingValue = (getSettingFromStorage<K>(key) || defaultValue) as T;
+
+  const settingRef = ref<T | undefined>(isNil(settingValue) ? undefined : settingValue) as Ref<
+    UnwrapRef<T | undefined>
+  >;
   watchWithEvent(
     key,
     settingRef,
@@ -23,28 +27,7 @@ export function useSyncSetting<K extends SettingKey, T extends SettingValueType[
   return settingRef;
 }
 
-export function useSyncSettingMapNullArray<
-  K extends SettingValueType[K] extends Array<unknown> ? SettingKey : never,
-  T extends SettingValueType[K] extends Array<unknown> ? SettingValueType[K] : never,
-  V extends T,
-  RT extends V extends never ? T | undefined : V,
->(key: K, map?: (value: T | V | UnwrapRef<RT> | undefined) => T | V, defaultValue?: T): Ref<UnwrapRef<RT>> {
-  let settingValue = getSettingFromStorage<K, T>(key) || defaultValue;
-  settingValue = isNil(settingValue === null) ? ([] as Array<unknown> as T & Array<unknown>) : settingValue;
-
-  const refValue = (map ? map(settingValue) : settingValue) as unknown as RT;
-  const settingRef = ref<RT>(refValue);
-
-  watchWithEvent(
-    key,
-    settingRef,
-    (value) => saveOrDelete<K, T>(key, value as unknown as T, SettingEventType.User),
-    map,
-  );
-  return settingRef;
-}
-
-function watchWithEvent<K extends SettingKey, T extends SettingValueType[K], N>(
+function watchWithEvent<T extends SettingValueType[SettingKey], N>(
   key: SettingKey,
   settingRef: Ref<T | null | undefined>,
   callback: (value: T | null | undefined) => void,
@@ -58,7 +41,7 @@ function watchWithEvent<K extends SettingKey, T extends SettingValueType[K], N>(
     if (equal(newValue, lastValue)) {
       return;
     }
-    lastValue = (map ? map(newValue as T) : newValue) as T;
+    lastValue = (map ? map(newValue!) : newValue) as T;
     pauseEvent = true;
     callback(lastValue);
     pauseEvent = false;
@@ -71,7 +54,7 @@ function watchWithEvent<K extends SettingKey, T extends SettingValueType[K], N>(
       return;
     }
     lastValue = newValue;
-    // eslint-disable-next-line
+    // eslint-disable-next-line no-param-reassign
     settingRef.value = newValue;
   });
 }

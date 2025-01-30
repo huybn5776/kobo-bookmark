@@ -28,7 +28,7 @@
           <i18n-t keypath="page.bookmarks.no_selected_book" />
           <span>)</span>
         </span>
-        <ListDragSort v-slot:default="{ item }" :items="bookCollectionBooks" @update:items="onSortChanged($event)">
+        <ListDragSort v-slot="{ item }" :items="bookCollectionBooks" @update:items="onSortChanged($event)">
           <div class="book-collection">
             <span class="book-collection-name">{{ item.info.title }}</span>
             <NButton class="book-delete-button" secondary round @click="removeBookFromCollection(item)">
@@ -99,7 +99,7 @@ const bookCollection = ref<BookCollection>(
   getSettingFromStorage(SettingKey.BookCollection)?.collections.find((c) => c.id === props.collectionId) ?? {
     id: generateUuid(),
     name: '',
-    bookIds: props.presetBookIds || [],
+    bookIds: props.presetBookIds ?? [],
     updatedAt: new Date(),
   },
 );

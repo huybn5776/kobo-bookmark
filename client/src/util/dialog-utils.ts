@@ -4,7 +4,7 @@ import { DialogOptions } from 'naive-ui/lib/dialog/src/DialogProvider';
 export function wrapOnDialogCloseEvents(dialogReactive: DialogReactive, callback: () => void): void {
   const originalProps = { ...dialogReactive };
   const conditionType = (key: 'onClose' | 'onPositiveClick' | 'onNegativeClick') => (e?: MouseEvent) => {
-    const result = originalProps[key]?.(e as MouseEvent);
+    const result = originalProps[key]?.(e!);
     if (result instanceof Promise) {
       return new Promise((resole) => {
         result.then((close) => {
@@ -38,7 +38,7 @@ export function wrapOnDialogCloseEvents(dialogReactive: DialogReactive, callback
 
 export const focusLastButtonOfDialog = ((element: HTMLElement) => {
   const buttons = Array.from(element.querySelectorAll('button'));
-  const lastButton = buttons[buttons.length - 1] as HTMLButtonElement;
+  const lastButton = buttons[buttons.length - 1];
   lastButton.focus();
 }) as () => void;
 

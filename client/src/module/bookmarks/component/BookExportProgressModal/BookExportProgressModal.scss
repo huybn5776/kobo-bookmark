@@ -32,9 +32,9 @@
 
 .book-export-progress-message {
   overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 15px;
   color: lightgray;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <NCollapse :expanded-names="expandedNames" @update:expandedNames="onExpandedNamesChange">
+  <NCollapse :expandedNames="expandedNames" @update:expandedNames="onExpandedNamesChange">
     <NCollapseItem class="data-import-steps-collapse" name="import-steps">
       <template #header>
         <h3>

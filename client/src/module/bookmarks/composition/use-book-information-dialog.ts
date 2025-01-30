@@ -28,7 +28,7 @@ export function useBookInformationDialog({
       style: { width: '600px', maxWidth: '90vw' },
       content: () =>
         h(BookInformationDialog, {
-          book: bookRef.value || book,
+          book: bookRef.value ?? book,
           onTitleUpdated: (title) => {
             updateBookById(book.id, (b) => {
               const updatedBook = updateBookTitle(b, title);

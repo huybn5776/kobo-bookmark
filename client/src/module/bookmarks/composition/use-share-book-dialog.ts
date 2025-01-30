@@ -11,7 +11,7 @@ import BookmarkShareDialog from '@/module/bookmarks/component/BookmarkShareDialo
 import { focusLastButtonOfDialog } from '@/util/dialog-utils';
 
 export function useShareBookDialog(): {
-  openShareBooksWithDropboxDialog: (books: KoboBook[]) => Promise<void>;
+  openShareBooksWithDropboxDialog: (books: KoboBook[]) => void;
 } {
   const { t } = useI18n<[I18NMessageSchema]>();
   const dialog = useDialog();
@@ -19,12 +19,10 @@ export function useShareBookDialog(): {
   const { refreshDropboxToken } = useRefreshDropboxToken();
   const { checkIsDropboxReady } = useCheckDropboxToken();
 
-  async function openShareBooksWithDropboxDialog(books: KoboBook[]): Promise<void> {
+  function openShareBooksWithDropboxDialog(books: KoboBook[]): void {
     if (!checkIsDropboxReady()) {
       return;
     }
-    refreshDropboxToken().then((success) => (success ? undefined : dialogReactive.destroy()));
-
     const dialogReactive = dialog.create({
       showIcon: false,
       title: t('page.bookmarks.share_bookmarks'),
@@ -40,6 +38,9 @@ export function useShareBookDialog(): {
         }),
       onAfterEnter: focusLastButtonOfDialog,
     });
+    if (!refreshDropboxToken()) {
+      dialogReactive.destroy();
+    }
   }
 
   return { openShareBooksWithDropboxDialog };

@@ -40,12 +40,12 @@ export async function findNotionExportTargetPageFromAuth(
     return (await getPage(authResponse.duplicated_template_id)) as PageObjectResponse;
   }
   const pages = (await searchPages()).results as PageObjectResponse[];
-  return findNotionTemplatePage(pages) || null;
+  return findNotionTemplatePage(pages) ?? null;
 }
 
 export function findNotionTemplatePage(pages: PageObjectResponse[]): PageObjectResponse | undefined {
   return (
-    pages.find((page) => getTitleOfPage(page) === templatePageTile) ||
+    pages.find((page) => getTitleOfPage(page) === templatePageTile) ??
     pages.find((page) => page.parent.type === 'workspace')
   );
 }

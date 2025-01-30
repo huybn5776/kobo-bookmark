@@ -75,10 +75,10 @@ const { t } = useI18n<[I18NMessageSchema]>();
 
 const searchText = ref<string>('');
 
-const visibleItems = computed(() => {
-  const { searchable, searchField } = props;
+const visibleItems = computed<T[]>(() => {
+  const { searchable, searchField, items } = props;
   if (!searchable || !searchField || !searchText.value) {
-    return props.items;
+    return items;
   }
   const search = searchText.value.toLowerCase();
   return props.items.filter((item) => `${item[searchField]}`.toLowerCase().includes(search));

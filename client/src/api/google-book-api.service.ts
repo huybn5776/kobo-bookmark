@@ -14,12 +14,12 @@ export async function getCoverImageFromGoogleByTitleAndAuthor(title: string, aut
   const googleBooks = await queryGoogleBooks(`q=intitle:${title}&inauthor:${author}`);
   const prefix = title.substring(0, 2);
   const sortedBooks = sortBy((b) => !b.volumeInfo?.title?.startsWith(prefix), googleBooks);
-  return sortedBooks.map(getCoverImageUrlFromGoogleBook).find((url) => !!url) || null;
+  return sortedBooks.map(getCoverImageUrlFromGoogleBook).find((url) => !!url) ?? null;
 }
 
 function getCoverImageUrlFromGoogleBook(book: GoogleBook): string | null {
   const thumbnail = book.volumeInfo?.imageLinks?.thumbnail;
-  if (!thumbnail || !thumbnail.startsWith('http://')) {
+  if (!thumbnail?.startsWith('http://')) {
     return null;
   }
   const url = new URL(thumbnail);
@@ -34,5 +34,5 @@ function getCoverImageUrlFromGoogleBook(book: GoogleBook): string | null {
 async function queryGoogleBooks(paramsString: string): Promise<GoogleBook[]> {
   const apiUrl = `https://www.googleapis.com/books/v1/volumes?${paramsString}`;
   const response = await axios.get<{ items?: books_v1.Schema$Volume[] }>(apiUrl);
-  return response.data.items || [];
+  return response.data.items ?? [];
 }

@@ -51,7 +51,7 @@ const bufferCount = computed(() => props.bufferCount ?? 1);
 const listTransformPx = computed(() => Math.max(0, visibleStart.value - bufferCount.value) * props.itemSize);
 const visibleItemCount = computed(() => Math.ceil(maximumHeight.value / props.itemSize));
 const visibleItems = computed(() => {
-  const buffer = bufferCount.value;
+  const buffer = bufferCount.value as number;
   const start = Math.min(visibleStart.value, props.items.length - visibleItemCount.value + buffer);
   return props.items.slice(Math.max(0, start - buffer), start + visibleItemCount.value + buffer);
 });

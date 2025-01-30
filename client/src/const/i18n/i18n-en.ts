@@ -57,6 +57,7 @@ export const i18nEn = {
     dropbox_required: 'Dropbox settings required',
     dropbox_required_set_notice: 'This operation require Dropbox to be set, set it up now?',
     re_connect_to_dropbox_notice: 'Dropbox connect is expired, please re-connect it at Settings page.',
+    dropbox_connect_failed: 'Failed to connect to Dropbox.',
     color: {
       default: 'Default',
       yellow: 'Yellow',

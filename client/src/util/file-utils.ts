@@ -4,7 +4,9 @@ export async function getFileWithPathFromDataTransfer(
   dataTransfer: DataTransfer,
   fullPath: string,
 ): Promise<File | null> {
-  const itemEntries = Array.from(dataTransfer.items).map((item) => item.webkitGetAsEntry() as FileSystemEntry);
+  const itemEntries = Array.from(dataTransfer.items)
+    .map((item) => item.webkitGetAsEntry())
+    .flatMap((item) => (item ? [item] : []));
   const paths = fullPath.split('/');
 
   let currentFileEntries = itemEntries;
@@ -17,11 +19,10 @@ export async function getFileWithPathFromDataTransfer(
     if (!fileEntry) {
       return null;
     }
-    // eslint-disable-next-line no-await-in-loop
     currentFileEntries = await readDirectoryEntries(fileEntry as FileSystemDirectoryEntry);
   }
 
-  const fileEntry = currentFileEntries.find((file) => file.isFile && file.name === paths[paths.length - 1]) || null;
+  const fileEntry = currentFileEntries.find((file) => file.isFile && file.name === paths[paths.length - 1]) ?? null;
   if (!fileEntry) {
     return null;
   }
@@ -34,7 +35,9 @@ export async function getFilesFromDataTransfer(
   dataTransfer: DataTransfer,
   filter?: (fileName: string) => boolean,
 ): Promise<Record<string, File>> {
-  const itemEntries = Array.from(dataTransfer.items).map((item) => item.webkitGetAsEntry() as FileSystemEntry);
+  const itemEntries = Array.from(dataTransfer.items)
+    .map((item) => item.webkitGetAsEntry())
+    .flatMap((item) => (item ? [item] : []));
   return (await Promise.all(itemEntries.map((entry) => scanFiles(entry, filter)))).reduce((filesMap, newFiles) => ({
     ...filesMap,
     ...newFiles,
@@ -44,7 +47,7 @@ export async function getFilesFromDataTransfer(
 async function readDirectoryEntries(directoryEntry: FileSystemDirectoryEntry): Promise<FileSystemEntry[]> {
   const reader = directoryEntry.createReader();
   return new Promise<FileSystemEntry[]>((resolve) => {
-    reader.readEntries(async (entries) => {
+    reader.readEntries((entries) => {
       resolve(entries);
     });
   });
@@ -126,7 +129,7 @@ export function selectFile(config?: {
     input.multiple = config?.multiple || input.multiple;
     input.webkitdirectory = config?.directory || input.webkitdirectory;
     input.onchange = () => {
-      const files = Array.from(input.files || []);
+      const files = Array.from(input.files ?? []);
       if (config?.directory) {
         const filesMap = indexBy((file) => file.webkitRelativePath, files);
         resolve(filesMap);

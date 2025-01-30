@@ -57,7 +57,7 @@ export class NotionBlockApiService {
     do {
       const result = await this.getBlockChildren({ block_id: id, start_cursor: cursor });
       allBlocks.push(...result.results);
-      cursor = result.next_cursor;
+      cursor = result.next_cursor || undefined;
     } while (cursor);
 
     return allBlocks;

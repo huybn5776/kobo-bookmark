@@ -37,7 +37,7 @@ export function useBookFilter({ books: allBooks }: { books: Ref<KoboBook[]> }): 
   });
   const activeBookCollection = computed<BookCollection | undefined>(() => {
     return bookCollectionIdFilter.value
-      ? (bookCollections.value?.collections || []).find((c) => c.id === bookCollectionIdFilter.value)
+      ? (bookCollections.value?.collections ?? []).find((c) => c.id === bookCollectionIdFilter.value)
       : undefined;
   });
   provide(provideActiveCollection, activeBookCollection);
@@ -106,9 +106,7 @@ export function useBookFilter({ books: allBooks }: { books: Ref<KoboBook[]> }): 
       return books;
     }
     return books.flatMap((book) => {
-      const bookmarks = book.bookmarks.filter(
-        (bookmark) => bookmark.tags && bookmark.tags.some((tag) => tag.title === tagTitle),
-      );
+      const bookmarks = book.bookmarks.filter((bookmark) => bookmark.tags?.some((tag) => tag.title === tagTitle));
       return bookmarks.length ? [{ ...book, bookmarks }] : [];
     });
   }

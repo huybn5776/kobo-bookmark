@@ -39,10 +39,10 @@ const refreshingDropboxToken = ref(false);
 
 const dropboxTokenLoading = computed(() => loadingDropboxToken.value || refreshingDropboxToken.value);
 
-onMounted(async () => {
+onMounted(() => {
   if (dropboxToken.value) {
     refreshingDropboxToken.value = true;
-    const newTokenInfo = await refreshDropboxTokenIfNeeded();
+    const newTokenInfo = refreshDropboxTokenIfNeeded();
     refreshingDropboxToken.value = false;
     if (newTokenInfo) {
       dropboxToken.value = newTokenInfo;

@@ -15,7 +15,7 @@
       </template>
       <div class="bookmark-filter-groups">
         <BookmarkFilterGroup
-          v-slot:default="{ item }"
+          v-slot="{ item }"
           v-model:value="collectionModel"
           single
           searchable
@@ -36,7 +36,7 @@
           </IconLabel>
         </BookmarkFilterGroup>
         <BookmarkFilterGroup
-          v-slot:default="{ item }"
+          v-slot="{ item }"
           v-model:value="tagModel"
           single
           searchable
@@ -54,7 +54,7 @@
           </IconLabel>
         </BookmarkFilterGroup>
         <BookmarkFilterGroup
-          v-slot:default="{ item }"
+          v-slot="{ item }"
           v-model:value="colorsModel"
           titleKey="page.bookmarks.highlight_color"
           keyField="color"
@@ -134,7 +134,7 @@ const emptyTagMessageKey = computed(() => {
 
 function setExpandedFilter(key: BookmarkFilterKey, expanded: boolean): void {
   if (expanded) {
-    expandedFilters.value = { ...(expandedFilters.value || {}), [key]: true };
+    expandedFilters.value = { ...(expandedFilters.value ?? {}), [key]: true };
   } else if (expandedFilters.value?.[key]) {
     delete expandedFilters.value[key];
   }

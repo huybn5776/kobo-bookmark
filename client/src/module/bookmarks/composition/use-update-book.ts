@@ -32,7 +32,7 @@ export function useUpdateBook({
 
   async function toggleBookStar(book: KoboBook): Promise<void> {
     updateBookById(book.id, (originalBook) => {
-      const tags = { ...(book.tags || {}) };
+      const tags = { ...(book.tags ?? {}) };
       if (tags.star) {
         delete tags.star;
       } else {

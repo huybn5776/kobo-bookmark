@@ -124,9 +124,9 @@
   width: 100%;
   padding: 0 32px;
   overflow-x: hidden;
+  text-overflow: ellipsis;
   font-size: 16px;
   text-align: center;
-  text-overflow: ellipsis;
   white-space: pre;
 }
 

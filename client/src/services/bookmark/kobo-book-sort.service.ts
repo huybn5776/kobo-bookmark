@@ -63,12 +63,12 @@ export function createBookmarkPositionSortFn<T>(
 
 export function compareChapters(bookmark1: KoboBookmark, bookmark2: KoboBookmark): number {
   const chapterIndexes1 = [
-    ...(bookmark1.chapter.parentChapterIndexes || []),
-    ...(bookmark1.chapter.relatedChapterIndexes || []),
+    ...(bookmark1.chapter.parentChapterIndexes ?? []),
+    ...(bookmark1.chapter.relatedChapterIndexes ?? []),
   ];
   const chapterIndexes2 = [
-    ...(bookmark2.chapter.parentChapterIndexes || []),
-    ...(bookmark2.chapter.relatedChapterIndexes || []),
+    ...(bookmark2.chapter.parentChapterIndexes ?? []),
+    ...(bookmark2.chapter.relatedChapterIndexes ?? []),
   ];
   const maxChaptersLength = Math.max(chapterIndexes1.length, chapterIndexes2.length);
 

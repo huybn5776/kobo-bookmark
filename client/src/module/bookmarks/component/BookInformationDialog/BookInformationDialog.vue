@@ -111,7 +111,7 @@ const editingTitle = ref<boolean>(false);
 
 const lastReadAt = computed(() => props.book.info.lastReadAt?.toLocaleString());
 const publicationDate = computed(() => {
-  const date = props.book.info?.publicationDate;
+  const date = props.book.info.publicationDate;
   if (!date) {
     return undefined;
   }

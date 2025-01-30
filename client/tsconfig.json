@@ -3,7 +3,8 @@
   "compilerOptions": {
     "paths": {
       "@/*": ["client/src/*"]
-    }
+    },
+    "types": ["vite/client", "jest"]
   },
   "include": [
     "src/**/*.ts",

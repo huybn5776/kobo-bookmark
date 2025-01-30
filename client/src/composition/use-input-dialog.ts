@@ -17,7 +17,7 @@ export function useInputDialog(): {
       inputType?: 'text' | 'textarea';
       minRows?: number;
       inputProps?: InputHTMLAttributes;
-      beforeClose?: (value: string) => (boolean | void) | Promise<boolean | void>;
+      beforeClose?: (value: string) => (boolean | undefined) | Promise<boolean | undefined>;
       onValue?: (value: string) => void;
     } & DialogOptions,
   ) => DialogReactive;
@@ -55,9 +55,9 @@ export function useInputDialog(): {
     open: ({ placeholder, value, inputType, minRows, inputProps, onValue, beforeClose, ...options }) => {
       inputValue.value = value;
 
-      const beforeSubmitCheck = async (): Promise<boolean | void> => {
+      const beforeSubmitCheck = async (): Promise<boolean | undefined> => {
         const beforeCloseResult = beforeClose?.(inputValue.value);
-        let canClose: boolean | void;
+        let canClose: boolean | undefined;
         if (beforeCloseResult instanceof Promise) {
           loading.value = true;
           canClose = await beforeCloseResult;
@@ -105,7 +105,7 @@ export function useInputDialog(): {
             inputProps,
             autosize: inputType === 'textarea' ? { minRows } : false,
             disabled: loading.value,
-            status: isInvalid.value === true ? 'error' : undefined,
+            status: isInvalid.value ? 'error' : undefined,
             errorMessage: errorMessage.value,
           }),
         negativeText: t('common.cancel'),
