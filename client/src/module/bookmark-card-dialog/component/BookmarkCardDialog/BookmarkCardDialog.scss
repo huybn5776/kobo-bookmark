@@ -86,11 +86,13 @@
 .bookmark-card-quote-open {
   top: 16px;
   left: 16px;
+  mask-image: url('/src/assets/svg/format-quote-open.svg');
 }
 
 .bookmark-card-quote-close {
   right: 16px;
   bottom: 24px;
+  mask-image: url('/src/assets/svg/format-quote-close.svg');
 }
 
 .bookmark-card-bookmark-content {

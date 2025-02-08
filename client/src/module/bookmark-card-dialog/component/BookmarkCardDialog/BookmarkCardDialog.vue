@@ -24,8 +24,8 @@
           />
           <i class="bookmark-card-background-cover" :style="{ backgroundColor: cardBackgroundColor }" />
           <i class="bookmark-card-background-gradient" />
-          <Icon name="format-quote-open" class="bookmark-card-quote bookmark-card-quote-open" />
-          <Icon name="format-quote-close" class="bookmark-card-quote bookmark-card-quote-close" />
+          <i class="bookmark-card-quote bookmark-card-quote-open" :style="{ backgroundColor: cardFontColor }" />
+          <i class="bookmark-card-quote bookmark-card-quote-close" :style="{ backgroundColor: cardFontColor }" />
           <div class="bookmark-card-bookmark-content">
             <span
               ref="cardTextRef"
