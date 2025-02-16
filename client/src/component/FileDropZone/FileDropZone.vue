@@ -1,7 +1,7 @@
 <template>
   <div ref="dropTargetRef" class="file-drop-zone">
     <slot />
-    <div ref="dropOverlayRef" class="drag-overlay" :style="{ visibility: fileDragEnter ? 'visible' : 'hidden' }"></div>
+    <div ref="dropOverlayRef" class="drag-overlay" :style="{ visibility: fileDragEnter ? 'visible' : 'hidden' }" />
   </div>
 </template>
 

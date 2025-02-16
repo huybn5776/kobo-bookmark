@@ -4,7 +4,7 @@
     ref="dropOverlayRef"
     class="full-page-file-drop-zone-overlay"
     :style="{ visibility: fileDragEnter ? 'visible' : 'hidden' }"
-  ></div>
+  />
   <div
     class="full-page-file-drop-zone-message-container"
     :class="{ 'full-page-file-drop-overlay-message-container-hidden': !fileDragEnter }"
