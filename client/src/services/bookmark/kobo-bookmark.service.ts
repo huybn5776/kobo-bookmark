@@ -44,14 +44,19 @@ function bookmarkEntityToKoboBookmark(
   const chapterIndexMap = getChapterIndexMap(chapters);
   const chapterParentsMap = getChaptersParentIndexesMap(chapters);
 
-  return bookmarks.map((bookmark) => {
+  return bookmarks.flatMap((bookmark) => {
+    const text = bookmark.text?.trim();
+    if (!text) {
+      return [];
+    }
+
     const relatedChapterEntities = findBookmarkChapters(bookmark, chapterEntities);
     let relatedChapters = relatedChapterEntities.map((chapter) => chapterIndexMap[chapter.index]);
     relatedChapters = combineRelatedChaptersToParent(chapterParentsMap, relatedChapters);
     const koboBookChapter = buildBookmarkChapter(chapterParentsMap, relatedChapters);
     const koboBook: KoboBookmark = {
       id: bookmark.id,
-      text: prettifyBookmarkText(bookmark),
+      text: prettifyBookmarkText(text),
       annotation: bookmark.annotation,
       chapter: koboBookChapter,
       chapterProgress: bookmark.chapterProgress,
@@ -61,7 +66,7 @@ function bookmarkEntityToKoboBookmark(
       createdAt: bookmark.createdAt,
       updatedAt: bookmark.updatedAt,
     };
-    return koboBook;
+    return [koboBook];
   });
 }
 
@@ -120,8 +125,8 @@ export function buildBookmarkChapter(
   return bookmarkChapter;
 }
 
-function prettifyBookmarkText(bookmark: BookmarkEntity): string {
-  return bookmark.text
+function prettifyBookmarkText(text: string): string {
+  return text
     .trim()
     .replaceAll(/\t+\n/g, '')
     .replaceAll(/\n+/g, '\n')
