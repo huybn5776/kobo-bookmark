@@ -57,7 +57,7 @@ export const settingValueSchema = z.object({
   [SettingKey.NotionExportTargetPageTitle]: z.string().optional().nullable(),
   [SettingKey.NotionExportTargetDatabaseId]: z.string().optional().nullable(),
   [SettingKey.NotionExportTargetDatabaseTitle]: z.string().optional().nullable(),
-  [SettingKey.DropboxToken]: dropboxTokenSchema,
+  [SettingKey.DropboxToken]: dropboxTokenSchema.optional(),
   [SettingKey.ShowRemovedBooksWhenImporting]: z.boolean().optional().nullable(),
   [SettingKey.ShowArchived]: z.boolean().optional().nullable(),
   [SettingKey.LastImportState]: bookImportStatusSchema.optional().nullable(),
