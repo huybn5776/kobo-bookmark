@@ -2,6 +2,8 @@ import axios from 'axios';
 import type { books_v1 } from 'googleapis';
 import { sortBy } from 'ramda';
 
+const googleBooksApiToken = import.meta.env.VITE_GOOGLE_BOOKS_API_TOKEN as string;
+
 export type GoogleBook = books_v1.Schema$Volume;
 
 export async function getCoverImageFromGoogleByIsbn(isbn: string): Promise<string | null> {
@@ -33,6 +35,10 @@ function getCoverImageUrlFromGoogleBook(book: GoogleBook): string | null {
 
 async function queryGoogleBooks(paramsString: string): Promise<GoogleBook[]> {
   const apiUrl = `https://www.googleapis.com/books/v1/volumes?${paramsString}`;
-  const response = await axios.get<{ items?: books_v1.Schema$Volume[] }>(apiUrl);
+  const response = await axios.get<{ items?: books_v1.Schema$Volume[] }>(apiUrl, {
+    headers: {
+      'X-goog-api-key': googleBooksApiToken,
+    },
+  });
   return response.data.items ?? [];
 }
