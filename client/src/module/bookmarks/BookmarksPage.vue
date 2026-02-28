@@ -311,12 +311,22 @@ async function fetchMissingBookCoverImageUrl(): Promise<void> {
   if (!allBooks.value?.length) {
     return;
   }
-  const pendingBooks = allBooks.value.filter((book) => isNil(book.coverImageUrl));
+  const pendingBooks = allBooks.value.filter((book) => isNil(book.coverImageUrl) || isNil(book.fetchableCoverImageUrl));
   await Promise.all(
     pendingBooks.map(async (book) => {
-      const imageUrl = await findCoverImageForBook(book);
-      if (imageUrl) {
-        updateBookById(book.id, (b) => ({ ...b, coverImageUrl: imageUrl }));
+      const imageUrlSet = await findCoverImageForBook(book);
+      if (imageUrlSet) {
+        updateBookById(book.id, (b) => ({
+          ...b,
+          coverImageUrl: imageUrlSet.url,
+          fetchableCoverImageUrl: imageUrlSet.fetchableUrl,
+        }));
+      } else {
+        updateBookById(book.id, (b) => ({
+          ...b,
+          coverImageUrl: '',
+          fetchableCoverImageUrl: '',
+        }));
       }
       return Promise.resolve();
     }),

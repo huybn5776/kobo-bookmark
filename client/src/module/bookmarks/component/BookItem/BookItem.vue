@@ -130,7 +130,7 @@ import IconButton from '@/component/IconButton/IconButton.vue';
 import { useSyncSetting } from '@/composition/use-sync-setting';
 import { I18NMessageSchema } from '@/config/i18n-config';
 import { newBookmarkTime } from '@/const/consts';
-import { KoboBook } from '@/dto/kobo-book';
+import { KoboBook, ImageUrlSet } from '@/dto/kobo-book';
 import { BookAction } from '@/enum/book-action';
 import { SettingKey } from '@/enum/setting-key';
 import BookCoverView from '@/module/bookmarks/component/BookCoverView/BookCoverView.vue';
@@ -155,7 +155,7 @@ const emit = defineEmits<{
   (e: 'markdownExportClick', value: KoboBook): void;
   (e: 'notionExportClick', value: KoboBook): void;
   (e: 'bookStarClick', value: KoboBook): void;
-  (e: 'bookCoverImageUpdated', value: string): void;
+  (e: 'bookCoverImageUpdated', value: ImageUrlSet): void;
   (e: 'bookArchiveClick', value: KoboBook): void;
   (e: 'bookCancelArchive', value: KoboBook): void;
   (e: 'shareClick', value: KoboBook): void;

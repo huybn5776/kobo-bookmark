@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { Ref } from 'vue';
 
-import { KoboBook } from '@/dto/kobo-book';
+import { KoboBook, ImageUrlSet } from '@/dto/kobo-book';
 import { putBooksToDb, getBooksFromDb } from '@/services/bookmark/bookmark-manage.service';
 import { deepToRaw } from '@/util/vue-utils';
 
@@ -13,7 +13,7 @@ export function useUpdateBook({
   keepSortingOnce: () => void;
 }): {
   toggleBookStar: (book: KoboBook) => Promise<void>;
-  updateBookCoverImage: (book: KoboBook, coverImageUrl: string) => Promise<void>;
+  updateBookCoverImage: (book: KoboBook, coverImageUrl: ImageUrlSet) => Promise<void>;
   updateBookById: (bookId: string, updater: (book: KoboBook) => KoboBook) => void;
 } {
   function updateBookById(bookId: string, updater: (book: KoboBook) => KoboBook): void {
@@ -55,8 +55,12 @@ export function useUpdateBook({
     keepSortingOnce();
   }
 
-  async function updateBookCoverImage(book: KoboBook, coverImageUrl: string): Promise<void> {
-    updateBookById(book.id, (b) => ({ ...b, coverImageUrl }));
+  async function updateBookCoverImage(book: KoboBook, urlSet: ImageUrlSet): Promise<void> {
+    updateBookById(book.id, (b) => ({
+      ...b,
+      coverImageUrl: urlSet.url,
+      fetchableCoverImageUrl: urlSet.fetchableUrl,
+    }));
     allBooks.value = await getBooksFromDb();
   }
 

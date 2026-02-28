@@ -4,6 +4,7 @@ export interface KoboBook {
   id: string;
   info: KoboBookInfo;
   coverImageUrl?: string;
+  fetchableCoverImageUrl?: string;
   chapters: KoboBookChapter[];
   bookmarks: KoboBookmark[];
   notion?: NotionExportState;
@@ -99,4 +100,9 @@ export enum KoboBookmarkChangesType {
   Added = 'added',
   Updated = 'updated',
   Removed = 'removed',
+}
+
+export interface ImageUrlSet {
+  url: string;
+  fetchableUrl?: string;
 }

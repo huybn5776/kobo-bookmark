@@ -30,7 +30,7 @@ import { useI18n } from 'vue-i18n';
 
 import { useProvideAllBookmarkTags } from '@/composition/use-provide-all-bookmark-tags';
 import { I18NMessageSchema } from '@/config/i18n-config';
-import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
+import { KoboBook, KoboBookmark, ImageUrlSet } from '@/dto/kobo-book';
 import { BookAction } from '@/enum/book-action';
 import { useBookmarkCardDialog } from '@/module/bookmark-card-dialog/composition/use-bookmark-card-dialog';
 import BookItem from '@/module/bookmarks/component/BookItem/BookItem.vue';
@@ -78,12 +78,16 @@ function toggleBookStar(book: KoboBook): void {
   allBooks.value[indexToUpdate] = { ...bookToUpdate, tags: { star: !bookToUpdate.tags?.star } };
 }
 
-function updateBookCoverImage(book: KoboBook, coverImageUrl: string): void {
+function updateBookCoverImage(book: KoboBook, urlSet: ImageUrlSet): void {
   const indexToUpdate = allBooks.value.findIndex((b) => b.id === book.id);
   if (indexToUpdate === -1) {
     return;
   }
-  allBooks.value[indexToUpdate] = { ...allBooks.value[indexToUpdate], coverImageUrl };
+  allBooks.value[indexToUpdate] = {
+    ...allBooks.value[indexToUpdate],
+    coverImageUrl: urlSet.url,
+    fetchableCoverImageUrl: urlSet.fetchableUrl,
+  };
 }
 
 function updateByPatch(book: KoboBook, bookmarkId: string, bookmarkPatch: Partial<KoboBookmark>): void {

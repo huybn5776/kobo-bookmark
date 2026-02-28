@@ -119,7 +119,7 @@ import { I18NMessageSchema } from '@/config/i18n-config';
 import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
 import { HighlightStyle } from '@/enum/highlight-style';
 import BookmarkCardHighlightText from '@/module/bookmark-card-dialog/component/BookmarkCardHighlightText/BookmarkCardHighlightText.vue';
-import { tryFetchUrl } from '@/services/bookmark/book-cover.service';
+import { tryFetchUrl, isValidImageUrlResponse, mapToFetchableUrl } from '@/services/bookmark/book-cover.service';
 import { downloadFile } from '@/util/file-utils';
 
 const props = defineProps<{ book: KoboBook; bookmark: KoboBookmark }>();
@@ -163,7 +163,7 @@ const dialogContentRef = ref<HTMLElement>();
 const cardPreviewContainerRef = ref<HTMLElement>();
 const cardPreviewRef = ref<HTMLElement>();
 const cardTextRef = ref<HTMLElement>();
-const coverImageUrl = ref(props.book.coverImageUrl);
+const coverImageUrl = ref(props.book.fetchableCoverImageUrl ?? mapToFetchableUrl(props.book.coverImageUrl));
 const cardBackgroundColor = ref(cardThemes[0].bg);
 const cardFontColor = ref(cardThemes[0].fg);
 const highlightStyle = ref(cardThemes[0].highlightStyle);
@@ -204,12 +204,10 @@ async function proxyCoverImageIfNeed(): Promise<void> {
     return;
   }
   const response = await tryFetchUrl(coverImageUrl.value);
-  if (!response?.ok || response?.headers.get('content-type')?.startsWith('text')) {
-    coverImageUrl.value = '';
+  if (!isValidImageUrlResponse(response)) {
     message.info(t('page.bookmarks.fail_to_load_image_for_card'));
-    return;
+    coverImageUrl.value = null;
   }
-  coverImageUrl.value = response.url;
 }
 
 function updateCardShape(): void {

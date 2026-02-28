@@ -70,6 +70,7 @@ export const koboBookSchema = z.object({
   id: z.string(),
   info: koboBookInfoSchema,
   coverImageUrl: z.string().optional().nullable(),
+  fetchableCoverImageUrl: z.string().optional().nullable(),
   chapters: z.array(koboBookChapterSchema),
   bookmarks: z.array(koboBookmarkSchema),
   notion: notionExportStateSchema.optional().nullable(),

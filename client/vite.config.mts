@@ -66,6 +66,30 @@ export default defineConfig({
         changeOrigin: true,
         followRedirects: true,
       },
+      '/kobo-book-images/': {
+        target: 'https://cdn.kobo.com/book-images',
+        rewrite(urlPath) {
+          return urlPath.replace(/^\/kobo-book-images/, '');
+        },
+        changeOrigin: true,
+        followRedirects: true,
+      },
+      '/rakuten-image/': {
+        target: 'https://thumbnail.image.rakuten.co.jp',
+        rewrite(urlPath) {
+          return urlPath.replace(/^\/rakuten-image/, '');
+        },
+        changeOrigin: true,
+        followRedirects: true,
+      },
+      '/google-books/': {
+        target: 'https://books.google.com/books',
+        rewrite(urlPath) {
+          return urlPath.replace(/^\/google-books/, '');
+        },
+        changeOrigin: true,
+        followRedirects: true,
+      },
     },
   },
   build: {

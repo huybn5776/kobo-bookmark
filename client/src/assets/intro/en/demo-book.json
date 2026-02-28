@@ -8,6 +8,7 @@
     "isSideLoaded": true
   },
   "coverImageUrl": "https://books.google.com/books/content?id=fFCjDQAAQBAJ&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api",
+  "fetchableCoverImageUrl": "/google-books/content?id=fFCjDQAAQBAJ&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api",
   "chapters": [
     { "title": "Cover", "index": 0 },
     { "title": "Title Page", "index": 1 },

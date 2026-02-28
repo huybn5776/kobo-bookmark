@@ -45,7 +45,7 @@
 <script lang="ts" setup>
 import { ref, computed, ComponentInstance } from 'vue';
 
-import { KoboBook, KoboBookmark } from '@/dto/kobo-book';
+import { KoboBook, KoboBookmark, ImageUrlSet } from '@/dto/kobo-book';
 import { BookAction } from '@/enum/book-action';
 import BookItem from '@/module/bookmarks/component/BookItem/BookItem.vue';
 import BookItemSimple from '@/module/bookmarks/component/BookItemSimple/BookItemSimple.vue';
@@ -71,7 +71,7 @@ const emit = defineEmits<{
   (e: 'markdownExportClick', value: KoboBook): void;
   (e: 'notionExportClick', value: KoboBook): void;
   (e: 'bookStarClick', value: KoboBook): void;
-  (e: 'bookCoverImageUpdated', value: string): void;
+  (e: 'bookCoverImageUpdated', value: ImageUrlSet): void;
   (e: 'bookmarkTagClick', value: string): void;
   (e: 'bookArchiveClick', value: KoboBook): void;
   (e: 'bookCancelArchive', value: KoboBook): void;
