@@ -17,35 +17,34 @@
       }
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/kobo-book-images/(.*)",
-      "dest": "https://cdn.kobo.com/book-images/$1"
+      "source": "/kobo-book-images/:path*",
+      "destination": "https://cdn.kobo.com/book-images/:path*"
     },
     {
-      "src": "/rakuten-image/(.*)",
-      "dest": "https://thumbnail.image.rakuten.co.jp/$1"
+      "source": "/rakuten-image/:path*",
+      "destination": "https://thumbnail.image.rakuten.co.jp/:path*"
     },
     {
-      "src": "/google-books/(.*)",
-      "dest": "https://books.google.com/books/$1"
+      "source": "/google-books/:path*",
+      "destination": "https://books.google.com/books/:path*"
     },
     {
-      "src": "/api/(.*)",
-      "dest": "server/dist/main.js"
+      "source": "/api/:path*",
+      "destination": "/server/dist/main.js"
     },
     {
-      "src": "/",
-      "dest": "client/dist/index.html"
+      "source": "/",
+      "destination": "client/dist/index.html"
     },
     {
-      "src": "/[^.]+",
-      "dest": "client/dist/index.html",
-      "status": 200
+      "source": "/:path(.+\\..+)",
+      "destination": "/client/dist/:path"
     },
     {
-      "src": "/(.+)",
-      "dest": "client/dist/$1"
+      "source": "/:path*",
+      "destination": "/client/dist/index.html"
     }
   ]
 }
