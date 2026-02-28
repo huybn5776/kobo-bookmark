@@ -11,6 +11,7 @@
       :status="status"
       @update:value="(v) => emit('update:value', v)"
     />
+    <span v-if="loadingMessage">⏳ {{ loadingMessage }}</span>
     <span v-if="errorMessage">❌ {{ errorMessage }}</span>
   </div>
 </template>
@@ -26,6 +27,7 @@ defineProps<{
   autosize: InstanceType<typeof NInput>['autosize'];
   inputProps: InstanceType<typeof NInput>['inputProps'];
   status: InstanceType<typeof NInput>['status'];
+  loadingMessage?: string;
   errorMessage?: string;
 }>();
 const emit = defineEmits<{ (e: 'update:value', value: string): void }>();

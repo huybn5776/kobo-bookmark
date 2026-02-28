@@ -38,11 +38,14 @@ import Icon from '@/component/icon/Icon.vue';
 import IconButton from '@/component/IconButton/IconButton.vue';
 import { useInputDialog } from '@/composition/use-input-dialog';
 import { I18NMessageSchema } from '@/config/i18n-config';
-import { KoboBook } from '@/dto/kobo-book';
-import { processImageUrl } from '@/services/bookmark/book-cover.service';
+import { KoboBook, ImageUrlSet } from '@/dto/kobo-book';
+import { processImageUrl, findCoverImageForBook } from '@/services/bookmark/book-cover.service';
 
 const props = defineProps<{ book: KoboBook }>();
-const emit = defineEmits<{ (e: 'starClick'): void; (e: 'coverImageUpdated', value: string): void }>();
+const emit = defineEmits<{
+  (e: 'starClick'): void;
+  (e: 'coverImageUpdated', value: ImageUrlSet): void;
+}>();
 
 const { t } = useI18n<[I18NMessageSchema]>();
 
@@ -50,6 +53,11 @@ const message = useMessage();
 const inputDialog = useInputDialog();
 
 function showChangeCoverImageDialog(): void {
+  const updatePositiveText = (text: string | null | undefined): void => {
+    inputDialog.overridePositiveText(text ? null : t('common.auto_find_cover_image'));
+  };
+
+  updatePositiveText(props.book.coverImageUrl);
   inputDialog.open({
     showIcon: false,
     title: t('page.bookmarks.change_cover_image'),
@@ -59,14 +67,26 @@ function showChangeCoverImageDialog(): void {
     minRows: 3,
     inputProps: { type: 'url' },
     beforeClose: onNewCoverImageEntered,
+    onValueUpdate: updatePositiveText,
   });
 }
 
 async function onNewCoverImageEntered(newCoverImageUrl: string): Promise<boolean> {
   const url = newCoverImageUrl.trim();
-  if (url === props.book.coverImageUrl) {
-    return true;
+
+  if (!url) {
+    inputDialog.setLoadingMessage(t('common.finding_cover_image'));
+    const imageUrlSet = await findCoverImageForBook(props.book).catch(() => inputDialog.setLoadingMessage(''));
+    inputDialog.setLoadingMessage('');
+    if (imageUrlSet) {
+      emit('coverImageUpdated', imageUrlSet);
+      message.success(t('page.bookmarks.cover_image_updated'));
+      return true;
+    }
+    inputDialog.setErrorMessage(t('common.fail_to_find_cover_image'));
+    return false;
   }
+
   const result = await processImageUrl(url);
   if (E.isLeft(result)) {
     inputDialog.setErrorMessage(t(result.left));
