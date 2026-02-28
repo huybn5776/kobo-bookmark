@@ -5,7 +5,7 @@ import type {
   DatabaseObjectResponse,
 } from '@notionhq/client/build/src/api-endpoints';
 
-import { searchDatabase, getDatabase, queryDatabase } from '@/api/notion-database-api.service';
+import { searchDatabase, getDatabase, queryDatabaseWithBookId } from '@/api/notion-database-api.service';
 import { searchPages, getPage } from '@/api/notion-page-api.service';
 import { KoboBook } from '@/dto/kobo-book';
 import { SettingEventType } from '@/enum/setting-event-type';
@@ -98,6 +98,6 @@ export async function findDatabasePageByBookId(
   databaseId: string,
   book: KoboBook,
 ): Promise<PageObjectResponse | undefined> {
-  const pages = (await queryDatabase(databaseId, { 'Book id': book.id })).results;
+  const pages = (await queryDatabaseWithBookId(databaseId, book.id)).results;
   return pages?.[0] as PageObjectResponse;
 }

@@ -20,10 +20,7 @@ export class NotionDatabaseController {
   }
 
   @Get('/:id/query')
-  queryDatabase(
-    @Param('id') id: string,
-    @Query() queryParams?: Record<string, string>,
-  ): Promise<QueryDatabaseResponse> {
-    return this.notionDatabaseApiService.queryDatabase(id, queryParams);
+  queryDatabase(@Param('id') id: string, @Query('bookId') bookId: string): Promise<QueryDatabaseResponse> {
+    return this.notionDatabaseApiService.queryDatabase(id, { 'Book id': bookId });
   }
 }

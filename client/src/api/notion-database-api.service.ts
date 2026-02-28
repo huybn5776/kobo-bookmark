@@ -17,6 +17,6 @@ export async function getDatabase(id: string): Promise<GetDatabaseResponse> {
   return (await axiosInstance.get(`/api/notion/databases/${id}`)).data;
 }
 
-export async function queryDatabase(id: string, queryParams?: Record<string, string>): Promise<QueryDatabaseResponse> {
-  return (await axiosInstance.get(`/api/notion/databases/${id}/query`, { params: queryParams })).data;
+export async function queryDatabaseWithBookId(id: string, bookId: string): Promise<QueryDatabaseResponse> {
+  return (await axiosInstance.get(`/api/notion/databases/${id}/query`, { params: { bookId } })).data;
 }
