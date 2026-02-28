@@ -25,9 +25,12 @@ export function bookToNotionUpdatePageParams(
     },
   };
   if (book.coverImageUrl) {
+    const coverImageUrl = mapImageUrlToNotionFetchableUrl(book.coverImageUrl);
+    const url = new URL(coverImageUrl);
+    url.searchParams.set('kobo-bookmark-book-id', book.id);
     const image: { external: { url: string }; type?: 'external' } = {
       type: 'external',
-      external: { url: book.coverImageUrl },
+      external: { url: url.toString() },
     };
     pageParams.cover = image;
     pageParams.icon = image;
@@ -136,4 +139,18 @@ function highlightColorToNotionTextColor(color: HighlightColor | undefined): Blo
     default:
       return undefined;
   }
+}
+
+function mapImageUrlToNotionFetchableUrl(url: string): string {
+  // relate to ImageProxyController
+  if (url.startsWith('https://cdn.kobo.com/book-images/')) {
+    const id = url.split('/')[4];
+    return `https://kobo-bookmark.vercel.app/api/image-proxy/kobo-book-images/${id}`;
+  }
+  if (url.startsWith('https://thumbnail.image.rakuten.co.jp/')) {
+    const path = url.replace('https://thumbnail.image.rakuten.co.jp/', '');
+    return `https://kobo-bookmark.vercel.app/api/image-proxy/rakuten-image/${path}`;
+  }
+
+  return url;
 }
